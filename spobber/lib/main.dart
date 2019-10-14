@@ -28,55 +28,35 @@
  * THE SOFTWARE.
  */
 import 'package:flutter/material.dart';
-import 'places_search_map.dart';
-import 'search_filter.dart';
 
 
-void main() => runApp(GoogleMapsSampleApp());
+import 'login_page.dart';
+import 'home_page.dart';
 
-class GoogleMapsSampleApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _GoogleMapSampleApp();
-  }
-}
 
-class _GoogleMapSampleApp extends State<GoogleMapsSampleApp>{
-  static String keyword = "Es-las";
+// void main() => runApp(GoogleMapsSampleApp());
 
-  void updateKeyWord(String newKeyword) {
-    print(newKeyword);
-    setState(() {
-      keyword = newKeyword;  
-    });
-  }
 
-  
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  final routes = <String, WidgetBuilder>{
+    LoginPage.tag: (context) => LoginPage(),
+    HomePage.tag: (context) => HomePage(),
+  };
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Spobber',
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: Text('Filteren op: ' + keyword, textAlign: TextAlign.center,) ,
-          actions: <Widget>[
-            Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                    icon: Icon(Icons.filter_list),
-                    tooltip: 'Filter Search',
-                    onPressed: () {
-                      Scaffold.of(context).openEndDrawer();                      
-                    });
-              },
-            ),
-          ],
-        ),
-        body: PlacesSearchMapSample(keyword),
-        endDrawer: SearchFilter(updateKeyWord),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.lightBlue,      
       ),
+      home: LoginPage(),
+      routes: routes,
     );
   }
 }
+

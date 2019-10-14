@@ -27,10 +27,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import 'dart:ui' as prefix1;
 
-import 'package:flutter/material.dart' as prefix0;
-import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart' as prefix2;
 
 import 'dart:async';
@@ -38,9 +35,9 @@ import 'dart:async';
 import 'dart:ui';
 import 'dart:math' show cos, sqrt, asin;
 import 'dart:convert';
-import 'data/error.dart';
+
 import 'data/place_response.dart';
-import 'data/result.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -156,9 +153,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         await LocationPermissions().requestPermissions();
     print(permission);
     var location = new Location();
-    GeolocationStatus geolocationStatus =
-        await Geolocator().checkGeolocationPermissionStatus();
-    Position position = await Geolocator()
+    prefix2.GeolocationStatus geolocationStatus =
+        await prefix2.Geolocator().checkGeolocationPermissionStatus();
+    prefix2.Position position = await prefix2.Geolocator()
         .getCurrentPosition(desiredAccuracy: prefix2.LocationAccuracy.best);
     try {
       currentLocation = await location.getLocation();
@@ -190,7 +187,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
       "https://spobberapi20190919041857.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
 
   List<Marker> markers2 = <Marker>[];
-  Error error;
+
   List<PlaceResponse> places;
   bool searching = true;
   String keyword;
@@ -243,19 +240,24 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         MapType.values[(_mapType.index + 1) % MapType.values.length];
 
     return Padding(
-        padding: EdgeInsets.fromLTRB(10, 50, 10, 50),
+        padding: EdgeInsets.fromLTRB(0, 55, 12, 0),
         child: Align(
             alignment: Alignment.topRight,
-            child: IconButton(
-              color: Colors.white,
-              icon: Icon(Icons.map),
-              onPressed: () {
-                setState(() {
-                  _mapType = nextType;
-                  print("test");
-                });
-              },
-            )));
+            child: Container(
+                alignment: Alignment.centerRight,
+                width: 37,
+                height: 37,
+                color: Colors.white.withOpacity(0.7),
+                child: IconButton(
+                  color: Colors.black54,
+                  icon: Icon(Icons.map),
+                  onPressed: () {
+                    setState(() {
+                      _mapType = nextType;
+                      print("test");
+                    });
+                  },
+                ))));
   }
 
   void _handleResponse(List data) {
@@ -316,12 +318,16 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   Widget _buildGoogleMap(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height ,
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
         onMapCreated: (GoogleMapController controller) {
           // _setStyle(controller);
-          _controller.complete(controller);
+          if (controller == null) {
+            _controller.complete(controller);
+          } else {
+            print("Do nothing");
+          }
         },
         mapType: _mapType,
         initialCameraPosition: _myLocation,
@@ -429,16 +435,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         ),
       );
     } else {
-      return Align(
-        alignment: Alignment.bottomLeft,
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 5.0),
-          height: 150.0,
-          child:
-              ListView(scrollDirection: Axis.horizontal, children: formWidget),
-        ),
-      );
-    }
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 5.0),
+        height: 150.0,
+        child: ListView(scrollDirection: Axis.horizontal, children: formWidget),
+      ),
+    );
+      }
   }
 
   List<Widget> formWidget = new List();
@@ -627,105 +632,109 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         child: Image.asset('assets/result_data.png'),
       ));
     } else {
-    return new Scaffold(
-      body: Stack(
-              children: <Widget>[
-                _buildGoogleMap(context),
-                // _zoomminusfunction(),
-                // _zoomplusfunction(),
-                _mapTypeCycler(),
-                _buildContainer(),
-              ],
-            ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   child: const Icon(Icons.add),
-      //   onPressed: () {
-      //     _add();
-      //   },
-      // ),
-      bottomNavigationBar: BottomAppBar(
-        //shape: CircularNotchedRectangle(),
-        //    notchMargin: 4.0,
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              height: 50.0,
-
-              // color: Colors.black,
-              child: FlatButton(
-                onPressed: () async {
-                  final GoogleMapController controller =
-                      await _controller.future;
-                  final LatLngBounds visibleRegion =
-                      await controller.getVisibleRegion();
-
-                  setState(() {
-                    _visibleRegion = visibleRegion;
-                  });
-
-                  searchNearby();
-                },
-                child: Column(
-                  children: <Widget>[
-                    Icon(
-                      Icons.refresh,
-                      color: Colors.blue,
-                    ),
-                    Text(
-                      'Zoeken',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: 50.0,
-              child: FlatButton(
-                onPressed: () async {
-                  _add();
-                },
-                child: Column(
-                  children: <Widget>[
-                    Icon(
-                      Icons.add,
-                      color: Colors.blue,
-                    ),
-                    Text(
-                      'Object toevoegen',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              height: 50.0,
-              child: FlatButton(
-                onPressed: () {
-                  _mapTypeCycler();
-                },
-                child: Column(
-                  children: <Widget>[
-                    Icon(
-                      Icons.scanner,
-                      color: Colors.blue,
-                    ),
-                    Text(
-                      'Scannen',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+      return Scaffold(
+          
+          body: Stack(children: <Widget>[
+            _buildGoogleMap(context),           
+             
+                
+            // _zoomminusfunction(),
+            // _zoomplusfunction(),
+            _mapTypeCycler(),
+            _buildContainer(),
           ],
         ),
-      ),
-    );
+        
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: FloatingActionButton(
+        //   child: const Icon(Icons.add),
+        //   onPressed: () {
+        //     _add();
+        //   },
+        // ),
+
+        // bottomNavigationBar: BottomAppBar(
+        //   //shape: CircularNotchedRectangle(),
+        //   //    notchMargin: 4.0,
+        //   child: new Row(
+        //     mainAxisSize: MainAxisSize.max,
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: <Widget>[
+        //       Container(
+        //         height: 50.0,
+
+        //         // color: Colors.black,
+        //         child: FlatButton(
+        //           onPressed: () async {
+        //             final GoogleMapController controller =
+        //                 await _controller.future;
+        //             final LatLngBounds visibleRegion =
+        //                 await controller.getVisibleRegion();
+
+        //             setState(() {
+        //               _visibleRegion = visibleRegion;
+        //             });
+
+        //             searchNearby();
+        //           },
+        //           child: Column(
+        //             children: <Widget>[
+        //               Icon(
+        //                 Icons.refresh,
+        //                 color: Colors.blue,
+        //               ),
+        //               Text(
+        //                 'Zoeken',
+        //                 style: TextStyle(color: Colors.black),
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //       Container(
+        //         height: 50.0,
+        //         child: FlatButton(
+        //           onPressed: () async {
+        //             _add();
+        //           },
+        //           child: Column(
+        //             children: <Widget>[
+        //               Icon(
+        //                 Icons.add,
+        //                 color: Colors.blue,
+        //               ),
+        //               Text(
+        //                 'Object toevoegen',
+        //                 style: TextStyle(color: Colors.black),
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //       Container(
+        //         height: 50.0,
+        //         child: FlatButton(
+        //           onPressed: () {
+        //             _mapTypeCycler();
+        //           },
+        //           child: Column(
+        //             children: <Widget>[
+        //               Icon(
+        //                 Icons.scanner,
+        //                 color: Colors.blue,
+        //               ),
+        //               Text(
+        //                 'Scannen',
+        //                 style: TextStyle(color: Colors.black),
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+          );
     }
   }
 
