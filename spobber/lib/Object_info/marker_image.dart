@@ -6,7 +6,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
 
-import '../data/object_photo.dart';
+import '../data/lower_object.dart';
 import 'dart:convert';
 
 import 'dart:io';
@@ -26,7 +26,7 @@ class MarkerImage extends StatefulWidget {
 }
 
 class _MarkerImage extends State<MarkerImage> {
-  static List<ObjectPhoto> _objectPhoto;
+  static List<LowerObject> _objectPhoto;
   bool loading = true;
 
   var test;
@@ -57,7 +57,7 @@ class _MarkerImage extends State<MarkerImage> {
           widget.imageUrl);
       if (response.statusCode == 200) {
         _objectPhoto = (json.decode(response.body) as List)
-            .map((data) => new ObjectPhoto.fromJson(data))
+            .map((data) => new LowerObject.fromJson(data))
             .toList();
 
         for (int i = 0; i < _objectPhoto.length; i++) {

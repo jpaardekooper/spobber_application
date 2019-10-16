@@ -48,6 +48,7 @@ import 'Object_info/marker_template.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'data/marker_detail.dart';
+import 'data/upper_object.dart';
 
 class PlacesSearchMapSample extends StatefulWidget {
   final String keyword;
@@ -183,12 +184,13 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   // static const String baseUrl =
   //     "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 
-  String baseUrl =
-      "https://spobberapi20190919041857.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
+  // String baseUrl =
+  //     "https://spobberapi20190919041857.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
 
   List<Marker> markers2 = <Marker>[];
 
   List<PlaceResponse> places;
+
   bool searching = true;
   String keyword;
 
@@ -210,7 +212,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     print(_visibleRegion.northeast.longitude);
     setState(() {
       markers.clear();
-      formWidget.clear();
+    //  formWidget.clear();
+    places.clear();
+      circles.clear();
     });
     String url =
         "https://spobberapi20190919041857.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
@@ -235,14 +239,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   }
 
   MapType _mapType = MapType.satellite;
+
   Widget _mapTypeCycler() {
     final MapType nextType =
         MapType.values[(_mapType.index + 1) % MapType.values.length];
 
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 55, 12, 0),
+        padding: EdgeInsets.fromLTRB(12, 15, 0, 0),
         child: Align(
-            alignment: Alignment.topRight,
+            alignment: Alignment.topLeft,
             child: Container(
                 alignment: Alignment.centerRight,
                 width: 37,
@@ -254,14 +259,110 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                   onPressed: () {
                     setState(() {
                       _mapType = nextType;
-                      print("test");
+                      print("test map");
                     });
                   },
                 ))));
   }
 
+  Widget _search() {
+    return Padding(
+        padding: EdgeInsets.fromLTRB(0, 90, 12, 0),
+        child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+                width: 37,
+                height: 37,
+                color: Colors.white.withOpacity(0.7),
+                child: IconButton(
+                  color: Colors.black54,
+                  icon: Icon(Icons.search),
+                  // child: Text("test"),
+                  onPressed: () async {
+                    final GoogleMapController controller =
+                        await _controller.future;
+                    final LatLngBounds visibleRegion =
+                        await controller.getVisibleRegion();
+
+                    setState(() {
+                      _visibleRegion = visibleRegion;
+                    });
+                    searchNearby();
+                  },
+                ))));
+  }
+
+  Widget _addMarker() {
+    return Padding(
+        padding: EdgeInsets.fromLTRB(0, 165, 12, 0),
+        child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+                alignment: Alignment.centerRight,
+                width: 37,
+                height: 37,
+                color: Colors.white.withOpacity(0.7),
+                child: IconButton(
+                  color: Colors.black54,
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+
+loadProduct();
+//_add();
+                  },
+                ))));
+  }
+
+// _fetchMappingData() async{
+//   String uri = "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
+
+
+//     print(uri);
+//     final response = await http.get(Uri.encodeFull(uri));
+//     if (response.statusCode == 200) {
+
+//   Map JSON = json.decode(response.body);
+
+
+    
+//   //  print(result);
+//     } else {
+//       throw Exception('Failed to load photos');
+//     }
+// }
+
+Future loadProduct() async {
+  // List<UpperObject> objects;
+  String uri = "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
+
+
+    print(uri);
+    final response = await http.get(Uri.encodeFull(uri));
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+  UpperObject upperObject = new UpperObject.fromJson(jsonResponse);
+  print(upperObject.content.length);
+
+  print(upperObject.id.toString());
+  print(upperObject.content[6].latitude.toString());
+
+
+  List<Content> words = new List<Content>();
+  // for (var word in jsonResponse['content']) {    
+  //   words.add(new Content());
+   
+  // }
+  
+  for(int i = 0; i< upperObject.content.length; i++){
+    print(upperObject.content[i].latitude);
+  }
+
+    }
+}
+
   void _handleResponse(List data) {
     setState(() {
+      _emptyList = false;
       for (int i = 0; i < places.length; i++) {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
@@ -294,15 +395,16 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
             _onMarkerTapped(markerId);
           },
         );
-        getFormWidget(
-            places[i].id.toString(),
-            places[i].type,
-            places[i].status.toString(),
-            places[i].preview_image_uri,
-            places[i].object_uri,
-            places[i].latitude,
-            places[i].longitude,
-            markerId);
+
+        // getFormWidget(
+        //     places[i].id.toString(),
+        //     places[i].type,
+        //     places[i].status.toString(),
+        //     places[i].preview_image_uri,
+        //     places[i].object_uri,
+        //     places[i].latitude,
+        //     places[i].longitude,
+        //     markerId);
 
         setState(() {
           markers[markerId] = marker;
@@ -318,16 +420,17 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   Widget _buildGoogleMap(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height ,
+      height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
         onMapCreated: (GoogleMapController controller) {
           // _setStyle(controller);
-          if (controller == null) {
-            _controller.complete(controller);
-          } else {
-            print("Do nothing");
-          }
+          _controller.complete(controller);
+          // if (controller == null) {
+          //   _controller.complete(controller);
+          // } else {
+          //   print("Do nothing");
+          // }
         },
         mapType: _mapType,
         initialCameraPosition: _myLocation,
@@ -339,45 +442,48 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
       ),
     );
   }
+ 
+bool _emptyList = true;
 
   Widget _buildContainer() {
-    if (formWidget.length <= 0) {
+    if (_emptyList) {
       return Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 5.0),
+          margin: EdgeInsets.symmetric(vertical: 15.0),
           height: 150.0,
           child: Padding(
-            padding: const EdgeInsets.all(1.0),
+            padding: const EdgeInsets.all(15.0),
             child: Container(
               child: new FittedBox(
                 child: Material(
-                    color: Colors.white,
-                    elevation: 14.0,
-                    borderRadius: BorderRadius.circular(5.0),
+                    color: Color.fromRGBO(255, 255, 255, 0.8),
+                    elevation: 15.0,
+                    borderRadius: BorderRadius.circular(
+                      15.0,
+                    ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          width: 200,
-                          height: 200,
+                          width: 150,
+                          height: 150,
                           child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(5.0),
+                            borderRadius: new BorderRadius.circular(15.0),
                             child: Image(
-                              fit: BoxFit.fitHeight,
+                              fit: BoxFit.cover,
                               image: AssetImage("assets/location-loader.gif"),
                             ),
                           ),
                         ),
                         Container(
                           child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(15.0),
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 5.0),
+                                    padding: const EdgeInsets.only(top: 1),
                                     child: Container(
                                         child: Text(
                                       "Er zijn geen objecten gevonden",
@@ -396,6 +502,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                                       Container(
                                           child: Text(
                                         "(huidige locatie)",
+                                        textAlign: TextAlign.left,
                                         style: TextStyle(
                                           color: Colors.black54,
                                           fontSize: 18.0,
@@ -435,92 +542,165 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         ),
       );
     } else {
-    return Align(
-      alignment: Alignment.bottomLeft,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5.0),
-        height: 150.0,
-        child: ListView(scrollDirection: Axis.horizontal, children: formWidget),
-      ),
-    );
-      }
-  }
-
-  List<Widget> formWidget = new List();
-
-  getFormWidget(String id, String type, String status, String imgurl,
-      String imginfo, double lat, double long, MarkerId markerid) {
-    formWidget.add(
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: _boxes(id, type, status, imgurl, imginfo, lat, long, markerid),
-      ),
-    );
-  }
-
-  Widget _boxes(String id, String type, String status, String imgurl,
-      String imginfo, double lat, double long, MarkerId markerid) {
-    return GestureDetector(
-      onTap: () {
-        _gotoLocation(lat, long);
-        _onMarkerTapped(markerid);
-      },
-      child: Container(
-        child: new FittedBox(
-          child: Material(
-              color: Colors.white,
-              //elevation: 14.0,
-              borderRadius: BorderRadius.circular(5.0),
-              // shadowColor: Color(0x802196F3),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 150,
-                    height: 150,
-                    child: ClipRRect(
-                      borderRadius: new BorderRadius.circular(5.0),
-                      child: Image(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(imgurl),
+      return Align(
+        alignment: Alignment.bottomLeft,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 15.0),
+          height: 150.0,
+          //  child:  ListView(scrollDirection: Axis.horizontal, children: formWidget),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: places.length,
+            itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+_onSelected(index);
+                  _gotoLocation(places[index].latitude, places[index].longitude);
+         // _onMarkerTapped(places[index].);
+                },
+                // child: Container(
+                //   width: MediaQuery.of(context).size.width * 0.6,
+                //   child: Card(
+                //     color: _selectedIndex != null && _selectedIndex == index
+                //         ? Colors.red
+                //         : Colors.white,
+                //     child: Container(
+                //       child: Center(
+                //           child: Text(
+                //         places[index].id.toString(),
+                //         style: TextStyle(color: Colors.white, fontSize: 36.0),
+                //       )),
+                //     ),
+                child: Padding(padding: EdgeInsets.all(8), child:Container(
+          child: FittedBox( 
+            child: Material(
+                color: _selectedIndex != null && _selectedIndex == index
+                        ? Color.fromRGBO(255,255,255,1)
+                        : Color.fromRGBO(255,255,255,0.6),
+                //elevation: 14.0,
+                borderRadius: BorderRadius.circular(5.0),
+                // shadowColor: Color(0x802196F3),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      width: 100,
+                      height: 150,
+                      child: ClipRRect(
+                        borderRadius: new BorderRadius.circular(5.0),
+                        child: Image(
+                          fit: BoxFit.fitHeight,
+                          image: NetworkImage(places[index].preview_image_uri),
+                        ),
+                        // child: Image(
+                        //   fit: BoxFit.fill,
+                        //   image: AssetImage("assets/spoor.jpg"),
+                        // ),
                       ),
-                      // child: Image(
-                      //   fit: BoxFit.fill,
-                      //   image: AssetImage("assets/spoor.jpg"),
-                      // ),
                     ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: myDetailsContainer1(
-                          id, type, status, imginfo, lat, long),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: myDetailsContainer1(
+                            places[index].id.toString(), places[index].type.toString(), places[index].status.toString(), places[index].preview_image_uri.toString(), places[index].latitude, places[index].longitude),
+                      ),
                     ),
+                  ],
+                )),
+          ),
+        )
                   ),
-                ],
-              )),
-        ),
-      ),
-    );
+                )),
+          )
+      );
+      
+    }
   }
+
+  int _selectedIndex = 0;
+
+  _onSelected(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
+  // List<Widget> formWidget = new List();
+
+  // getFormWidget(String id, String type, String status, String imgurl,
+  //     String imginfo, double lat, double long, MarkerId markerid) {
+  //   formWidget.add(
+  //     Padding(
+  //       padding: const EdgeInsets.all(15.0),
+  //       child: _boxes(id, type, status, imgurl, imginfo, lat, long, markerid),
+  //     ),
+  //   );
+  // }
+
+  // bool tapped = false;
+
+  // Widget _boxes(String id, String type, String status, String imgurl,
+  //     String imginfo, double lat, double long, MarkerId markerid) {
+  //   return GestureDetector(
+  //       onTap: () {
+  //         tapped = true;
+  //         _gotoLocation(lat, long);
+  //         _onMarkerTapped(markerid);
+  //         print(tapped);
+  //       },
+  //       child: Container(
+  //         child: FittedBox(
+  //           child: Material(
+  //               color: tapped ? Colors.white : Colors.red,
+  //               //elevation: 14.0,
+  //               borderRadius: BorderRadius.circular(5.0),
+  //               // shadowColor: Color(0x802196F3),
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: <Widget>[
+  //                   Container(
+  //                     width: 100,
+  //                     height: 150,
+  //                     child: ClipRRect(
+  //                       borderRadius: new BorderRadius.circular(5.0),
+  //                       child: Image(
+  //                         fit: BoxFit.fill,
+  //                         image: NetworkImage(imgurl),
+  //                       ),
+  //                       // child: Image(
+  //                       //   fit: BoxFit.fill,
+  //                       //   image: AssetImage("assets/spoor.jpg"),
+  //                       // ),
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.all(15.0),
+  //                       child: myDetailsContainer1(
+  //                           id, type, status, imginfo, lat, long),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               )),
+  //         ),
+  //       ));
+  // }
 
   Widget myDetailsContainer1(String id, String type, String status,
       String imginfo, double lat, double long) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Container(
-              child: Text(
-            type,
-            style: TextStyle(
-                color: Colors.blue,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold),
-          )),
-        ),
-        SizedBox(height: 5.0),
+        // Padding(
+        //   padding: const EdgeInsets.all(15.0),
+        //   child:
+        Container(
+            child: Text(
+          type,
+          style: TextStyle(
+              color: Colors.blue,
+              fontSize: 20.0,
+              fontWeight: FontWeight.normal),
+        )),
+        // ),
+        // SizedBox(height: 5.0),
         Container(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -568,14 +748,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                 size: 15.0,
               ),
             ),
-            // Container(
-            //     child: Text(
-            //   "(946)",
-            //   style: TextStyle(
-            //     color: Colors.black54,
-            //     fontSize: 18.0,
-            //   ),
-            // )),
           ],
         )),
         SizedBox(height: 5.0),
@@ -623,28 +795,27 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   bool _loading = true;
   @override
   Widget build(BuildContext context) {
-    // print(_loading);
+    //print(_loading);
     //print(currentLocation.latitude);
     if (_loading) {
       return new Scaffold(
-          body: Container(
-        alignment: FractionalOffset.center,
-        child: Image.asset('assets/result_data.png'),
+          body: Center(child: CircularProgressIndicator()
       ));
     } else {
       return Scaffold(
-          
-          body: Stack(children: <Widget>[
-            _buildGoogleMap(context),           
-             
-                
+        body: Stack(
+          children: <Widget>[
+            _buildGoogleMap(context),
+
             // _zoomminusfunction(),
             // _zoomplusfunction(),
             _mapTypeCycler(),
             _buildContainer(),
+
+            _search(),
+            _addMarker(),
           ],
         ),
-        
         // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         // floatingActionButton: FloatingActionButton(
         //   child: const Icon(Icons.add),
@@ -652,7 +823,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         //     _add();
         //   },
         // ),
-
         // bottomNavigationBar: BottomAppBar(
         //   //shape: CircularNotchedRectangle(),
         //   //    notchMargin: 4.0,
@@ -734,7 +904,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         //     ],
         //   ),
         // ),
-          );
+      );
     }
   }
 
@@ -753,7 +923,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       target: LatLng(lat, long),
-      zoom: 18,
+      zoom: 23,
       // tilt: 50.0,
       // bearing: 45.0,
     )));
@@ -783,6 +953,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   }
 
   void _add2(double lat, double long) {
+    circles.clear();
     final int circleCount = circles.length;
 
     if (circleCount == 12) {

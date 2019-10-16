@@ -29,7 +29,6 @@
  */
 import 'package:flutter/material.dart';
 
-import 'result.dart';
 
 class PlaceResponse {
   // final List<String> htmlAttributions;
