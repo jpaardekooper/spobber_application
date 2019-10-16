@@ -50,24 +50,47 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
           bottom: PreferredSize(
               preferredSize: Size.fromHeight(50.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Icon(
-                    Icons.linear_scale,
-                    size: 60.0,
-                  ),
-                 
-                  Icon(
-                    Icons.linear_scale,
-                    size: 60.0,
-                  ),
-                  Icon(
-                    Icons.linear_scale,
-                    size: 60.0,
-                  ),
-                ],
-              ))),
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.all(15),
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.drafts,
+                                  color: Colors.white,
+                                  size: 20.0,
+                                ),
+                                Text("data",
+                                    style: TextStyle(color: Colors.white)),
+                              ],
+                            ))
+                      ],
+                    ),
+                  
+                        Stack(
+                          children: <Widget>[
+                            Padding(
+                                padding: EdgeInsets.all(15),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.notifications,
+                                      color: Colors.red,
+                                      size: 20.0,
+                                    ),
+                                    Text("15",
+                                        style: TextStyle(color: Colors.white)),
+                                  ],
+                                ))
+                          ],
+                        ),
+                      ],
+                    )
+                  )),
       body: PlacesSearchMapSample(keyword),
       endDrawer: SearchFilter(updateKeyWord),
       //     ),

@@ -189,7 +189,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   List<Marker> markers2 = <Marker>[];
 
-  List<PlaceResponse> places;
+  List<PlaceResponse> places = new List<PlaceResponse>();
 
   bool searching = true;
   String keyword;
@@ -213,7 +213,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     setState(() {
       markers.clear();
     //  formWidget.clear();
-    places.clear();
+ places.clear();
+ polylines.clear();
+ 
       circles.clear();
     });
     String url =
@@ -245,7 +247,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         MapType.values[(_mapType.index + 1) % MapType.values.length];
 
     return Padding(
-        padding: EdgeInsets.fromLTRB(12, 15, 0, 0),
+        padding: EdgeInsets.fromLTRB(12, 70, 0, 0),
         child: Align(
             alignment: Alignment.topLeft,
             child: Container(
@@ -267,7 +269,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   Widget _search() {
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 90, 12, 0),
+        padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
         child: Align(
             alignment: Alignment.topRight,
             child: Container(
@@ -294,7 +296,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   Widget _addMarker() {
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 165, 12, 0),
+        padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
         child: Align(
             alignment: Alignment.topRight,
             child: Container(
@@ -307,31 +309,47 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                   icon: Icon(Icons.add),
                   onPressed: () async {
 
-loadProduct();
+
+
+_add();
+                  },
+                ))));
+  }
+
+  Widget _addPolyLine() {
+    return Padding(
+        padding: EdgeInsets.fromLTRB(0, 190, 12, 0),
+        child: Align(
+            alignment: Alignment.topRight,
+            child: Container(
+                alignment: Alignment.centerRight,
+                width: 37,
+                height: 37,
+                color: Colors.white.withOpacity(0.7),
+                child: IconButton(
+                  color: Colors.black54,
+                  icon: Icon(Icons.linear_scale),
+                  onPressed: () async {
+
+
+loadPolyline();
 //_add();
                   },
                 ))));
   }
 
-// _fetchMappingData() async{
-//   String uri = "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
+ List<LatLng> pointsRed = <LatLng>[];
+  List<LatLng> pointsOrange = <LatLng>[];
+  List<LatLng> pointsGreen = <LatLng>[];
+   List<LatLng> pointsAll = <LatLng>[];
 
+Future loadPolyline() async {
+  polylines.clear();
+    pointsAll.clear();
+  pointsOrange.clear();
+  pointsGreen.clear();
+  pointsRed.clear();
 
-//     print(uri);
-//     final response = await http.get(Uri.encodeFull(uri));
-//     if (response.statusCode == 200) {
-
-//   Map JSON = json.decode(response.body);
-
-
-    
-//   //  print(result);
-//     } else {
-//       throw Exception('Failed to load photos');
-//     }
-// }
-
-Future loadProduct() async {
   // List<UpperObject> objects;
   String uri = "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
 
@@ -347,18 +365,105 @@ Future loadProduct() async {
   print(upperObject.content[6].latitude.toString());
 
 
-  List<Content> words = new List<Content>();
+  //List<Content> words = new List<Content>();
   // for (var word in jsonResponse['content']) {    
   //   words.add(new Content());
    
   // }
-  
+ 
+
   for(int i = 0; i< upperObject.content.length; i++){
     print(upperObject.content[i].latitude);
-  }
+    pointsAll.add(_createLatLng(upperObject.content[i].latitude, upperObject.content[i].longitude));
 
+    if(upperObject.content[i].value < 1600){
+ pointsRed.add(_createLatLng(upperObject.content[i].latitude, upperObject.content[i].longitude));
+    }
+    else if(upperObject.content[i].value < 1800 &&  upperObject.content[i].value >=  1600){
+  pointsOrange.add(_createLatLng(upperObject.content[i].latitude, upperObject.content[i].longitude));
+    }
+     else if (upperObject.content[i].value >= 1800){
+        pointsGreen.add(_createLatLng(upperObject.content[i].latitude, upperObject.content[i].longitude));
+    }
+
+  }
+ final String polylineIdVal = 'polyline_id_ALL';  
+    final PolylineId polylineId = PolylineId(polylineIdVal);
+
+    
+    final Polyline polylineAll = Polyline(
+      polylineId: polylineId,
+      consumeTapEvents: true,
+      color: Colors.blue,
+      width: 5,
+      points: pointsAll,
+      zIndex: 0,
+      onTap: () {          
+        _onPolylineTapped(polylineId);       
+      },
+      
+    );
+
+    setState(() {
+      polylines[polylineId] = polylineAll;
+    });
+
+     final String polylineIdValRed = 'polyline_id_Red';  
+    final PolylineId polylineIdRed = PolylineId(polylineIdValRed);
+
+    
+    final Polyline polylineRed = Polyline(
+      polylineId: polylineIdRed,
+      consumeTapEvents: false,
+      color: Colors.red,
+      width: 4,
+      points: pointsRed,  
+      zIndex: 1      
+    );
+
+     setState(() {
+      polylines[polylineIdRed] = polylineRed;
+    });
+
+    final String polylineIdValOrange = 'polyline_id_Orange';  
+    final PolylineId polylineIdOrange = PolylineId(polylineIdValOrange);
+
+    
+    final Polyline polylineOrange = Polyline(
+      polylineId: polylineIdOrange,
+      consumeTapEvents: false,
+      color: Colors.orange,
+      width: 4,
+      points: pointsOrange,  
+      zIndex: 2      
+    );
+
+     setState(() {
+      polylines[polylineIdOrange] = polylineOrange;
+    });
+
+         final String polylineIdValGreen = 'polyline_id_Green';  
+    final PolylineId polylineIdGreen = PolylineId(polylineIdValGreen);
+
+    
+    final Polyline polylineGreen = Polyline(
+      polylineId: polylineIdGreen,
+      consumeTapEvents: false,
+      color: Colors.green,
+      width: 4,
+      points: pointsGreen,  
+      zIndex: 3      
+    );
+
+     setState(() {
+      polylines[polylineIdGreen] = polylineGreen;
+    });
+ 
     }
 }
+  LatLng _createLatLng(double lat, double lng) {
+    return LatLng(lat, lng);
+  }
 
   void _handleResponse(List data) {
     setState(() {
@@ -439,6 +544,7 @@ Future loadProduct() async {
         myLocationEnabled: true,
         markers: Set<Marker>.of(markers.values),
         circles: Set<Circle>.of(circles.values),
+        polylines: Set<Polyline>.of(polylines.values),
       ),
     );
   }
@@ -707,7 +813,7 @@ _onSelected(index);
           children: <Widget>[
             Container(
                 child: Text(
-              status,
+              "Status ",
               style: TextStyle(
                 color: Colors.black54,
                 fontSize: 18.0,
@@ -814,96 +920,10 @@ _onSelected(index);
 
             _search(),
             _addMarker(),
+            _addPolyLine(),
           ],
         ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // floatingActionButton: FloatingActionButton(
-        //   child: const Icon(Icons.add),
-        //   onPressed: () {
-        //     _add();
-        //   },
-        // ),
-        // bottomNavigationBar: BottomAppBar(
-        //   //shape: CircularNotchedRectangle(),
-        //   //    notchMargin: 4.0,
-        //   child: new Row(
-        //     mainAxisSize: MainAxisSize.max,
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: <Widget>[
-        //       Container(
-        //         height: 50.0,
-
-        //         // color: Colors.black,
-        //         child: FlatButton(
-        //           onPressed: () async {
-        //             final GoogleMapController controller =
-        //                 await _controller.future;
-        //             final LatLngBounds visibleRegion =
-        //                 await controller.getVisibleRegion();
-
-        //             setState(() {
-        //               _visibleRegion = visibleRegion;
-        //             });
-
-        //             searchNearby();
-        //           },
-        //           child: Column(
-        //             children: <Widget>[
-        //               Icon(
-        //                 Icons.refresh,
-        //                 color: Colors.blue,
-        //               ),
-        //               Text(
-        //                 'Zoeken',
-        //                 style: TextStyle(color: Colors.black),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //       Container(
-        //         height: 50.0,
-        //         child: FlatButton(
-        //           onPressed: () async {
-        //             _add();
-        //           },
-        //           child: Column(
-        //             children: <Widget>[
-        //               Icon(
-        //                 Icons.add,
-        //                 color: Colors.blue,
-        //               ),
-        //               Text(
-        //                 'Object toevoegen',
-        //                 style: TextStyle(color: Colors.black),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //       Container(
-        //         height: 50.0,
-        //         child: FlatButton(
-        //           onPressed: () {
-        //             _mapTypeCycler();
-        //           },
-        //           child: Column(
-        //             children: <Widget>[
-        //               Icon(
-        //                 Icons.scanner,
-        //                 color: Colors.blue,
-        //               ),
-        //               Text(
-        //                 'Scannen',
-        //                 style: TextStyle(color: Colors.black),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
+      
       );
     }
   }
@@ -990,4 +1010,62 @@ _onSelected(index);
   // LatLng _createLatLng(double lat, double lng) {
   //   return LatLng(lat, lng);
   // }
+  //////////////////////////
+  ///
+  ///
+  ///
+ 
+  Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
+  int _polylineIdCounter = 1;
+  PolylineId selectedPolyline;
+
+  // Values when toggling polyline color
+  int colorsIndex = 0;
+  List<Color> colors = <Color>[
+    Colors.purple,
+    Colors.red,
+    Colors.green,
+    Colors.pink,
+  ];
+
+  // Values when toggling polyline width
+  int widthsIndex = 0;
+  List<int> widths = <int>[10, 20, 5];
+
+  int jointTypesIndex = 0;
+  List<JointType> jointTypes = <JointType>[
+    JointType.mitered,
+    JointType.bevel,
+    JointType.round
+  ];
+
+  // Values when toggling polyline end cap type
+  int endCapsIndex = 0;
+  List<Cap> endCaps = <Cap>[Cap.buttCap, Cap.squareCap, Cap.roundCap];
+
+  // Values when toggling polyline start cap type
+  int startCapsIndex = 0;
+  List<Cap> startCaps = <Cap>[Cap.buttCap, Cap.squareCap, Cap.roundCap];
+
+  // Values when toggling polyline pattern
+  int patternsIndex = 0;
+  List<List<PatternItem>> patterns = <List<PatternItem>>[
+    <PatternItem>[],
+    <PatternItem>[
+      PatternItem.dash(30.0),
+      PatternItem.gap(20.0),
+      PatternItem.dot,
+      PatternItem.gap(20.0)
+    ],
+    <PatternItem>[PatternItem.dash(30.0), PatternItem.gap(20.0)],
+    <PatternItem>[PatternItem.dot, PatternItem.gap(10.0)],
+  ];
+
+  void _onPolylineTapped(PolylineId polylineId) {
+    setState(() {
+      selectedPolyline = polylineId;
+    });
+  }
+
+  
 }
