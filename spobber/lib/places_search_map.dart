@@ -212,10 +212,10 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     print(_visibleRegion.northeast.longitude);
     setState(() {
       markers.clear();
-    //  formWidget.clear();
- places.clear();
- polylines.clear();
- 
+      //  formWidget.clear();
+      places.clear();
+      polylines.clear();
+
       circles.clear();
     });
     String url =
@@ -268,6 +268,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   }
 
   Widget _search() {
+    
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
         child: Align(
@@ -308,10 +309,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                   color: Colors.black54,
                   icon: Icon(Icons.add),
                   onPressed: () async {
-
-
-
-_add();
+                    _add();
                   },
                 ))));
   }
@@ -330,137 +328,127 @@ _add();
                   color: Colors.black54,
                   icon: Icon(Icons.linear_scale),
                   onPressed: () async {
-
-
-loadPolyline();
+                    loadPolyline();
 //_add();
                   },
                 ))));
   }
 
- List<LatLng> pointsRed = <LatLng>[];
+  List<LatLng> pointsRed = <LatLng>[];
   List<LatLng> pointsOrange = <LatLng>[];
   List<LatLng> pointsGreen = <LatLng>[];
-   List<LatLng> pointsAll = <LatLng>[];
+  List<LatLng> pointsAll = <LatLng>[];
 
-Future loadPolyline() async {
-  polylines.clear();
+  Future loadPolyline() async {
+    polylines.clear();
     pointsAll.clear();
-  pointsOrange.clear();
-  pointsGreen.clear();
-  pointsRed.clear();
+    pointsOrange.clear();
+    pointsGreen.clear();
+    pointsRed.clear();
 
-  // List<UpperObject> objects;
-  String uri = "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
-
+    // List<UpperObject> objects;
+    String uri =
+        "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
 
     print(uri);
     final response = await http.get(Uri.encodeFull(uri));
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-  UpperObject upperObject = new UpperObject.fromJson(jsonResponse);
-  print(upperObject.content.length);
+      UpperObject upperObject = new UpperObject.fromJson(jsonResponse);
+      print(upperObject.content.length);
 
-  print(upperObject.id.toString());
-  print(upperObject.content[6].latitude.toString());
+      print(upperObject.id.toString());
+      print(upperObject.content[6].latitude.toString());
 
+      //List<Content> words = new List<Content>();
+      // for (var word in jsonResponse['content']) {
+      //   words.add(new Content());
 
-  //List<Content> words = new List<Content>();
-  // for (var word in jsonResponse['content']) {    
-  //   words.add(new Content());
-   
-  // }
- 
+      // }
 
-  for(int i = 0; i< upperObject.content.length; i++){
-    print(upperObject.content[i].latitude);
-    pointsAll.add(_createLatLng(upperObject.content[i].latitude, upperObject.content[i].longitude));
+      for (int i = 0; i < upperObject.content.length; i++) {
+        print(upperObject.content[i].latitude);
+        pointsAll.add(_createLatLng(
+            upperObject.content[i].latitude, upperObject.content[i].longitude));
 
-    if(upperObject.content[i].value < 1600){
- pointsRed.add(_createLatLng(upperObject.content[i].latitude, upperObject.content[i].longitude));
+        if (upperObject.content[i].value < 1600) {
+          pointsRed.add(_createLatLng(upperObject.content[i].latitude,
+              upperObject.content[i].longitude));
+        } else if (upperObject.content[i].value < 1800 &&
+            upperObject.content[i].value >= 1600) {
+          pointsOrange.add(_createLatLng(upperObject.content[i].latitude,
+              upperObject.content[i].longitude));
+        } else if (upperObject.content[i].value >= 1800) {
+          pointsGreen.add(_createLatLng(upperObject.content[i].latitude,
+              upperObject.content[i].longitude));
+        }
+      }
+      final String polylineIdVal = 'polyline_id_ALL';
+      final PolylineId polylineId = PolylineId(polylineIdVal);
+
+      final Polyline polylineAll = Polyline(
+        polylineId: polylineId,
+        consumeTapEvents: true,
+        color: Colors.blue,
+        width: 5,
+        points: pointsAll,
+        zIndex: 0,
+        onTap: () {
+          _onPolylineTapped(polylineId);
+        },
+      );
+
+      setState(() {
+        polylines[polylineId] = polylineAll;
+      });
+
+      final String polylineIdValRed = 'polyline_id_Red';
+      final PolylineId polylineIdRed = PolylineId(polylineIdValRed);
+
+      final Polyline polylineRed = Polyline(
+          polylineId: polylineIdRed,
+          consumeTapEvents: false,
+          color: Colors.red,
+          width: 4,
+          points: pointsRed,
+          zIndex: 1);
+
+      setState(() {
+        polylines[polylineIdRed] = polylineRed;
+      });
+
+      final String polylineIdValOrange = 'polyline_id_Orange';
+      final PolylineId polylineIdOrange = PolylineId(polylineIdValOrange);
+
+      final Polyline polylineOrange = Polyline(
+          polylineId: polylineIdOrange,
+          consumeTapEvents: false,
+          color: Colors.orange,
+          width: 4,
+          points: pointsOrange,
+          zIndex: 2);
+
+      setState(() {
+        polylines[polylineIdOrange] = polylineOrange;
+      });
+
+      final String polylineIdValGreen = 'polyline_id_Green';
+      final PolylineId polylineIdGreen = PolylineId(polylineIdValGreen);
+
+      final Polyline polylineGreen = Polyline(
+          polylineId: polylineIdGreen,
+          consumeTapEvents: false,
+          color: Colors.green,
+          width: 4,
+          points: pointsGreen,
+          zIndex: 3);
+
+      setState(() {
+        polylines[polylineIdGreen] = polylineGreen;
+      });
     }
-    else if(upperObject.content[i].value < 1800 &&  upperObject.content[i].value >=  1600){
-  pointsOrange.add(_createLatLng(upperObject.content[i].latitude, upperObject.content[i].longitude));
-    }
-     else if (upperObject.content[i].value >= 1800){
-        pointsGreen.add(_createLatLng(upperObject.content[i].latitude, upperObject.content[i].longitude));
-    }
-
   }
- final String polylineIdVal = 'polyline_id_ALL';  
-    final PolylineId polylineId = PolylineId(polylineIdVal);
 
-    
-    final Polyline polylineAll = Polyline(
-      polylineId: polylineId,
-      consumeTapEvents: true,
-      color: Colors.blue,
-      width: 5,
-      points: pointsAll,
-      zIndex: 0,
-      onTap: () {          
-        _onPolylineTapped(polylineId);       
-      },
-      
-    );
-
-    setState(() {
-      polylines[polylineId] = polylineAll;
-    });
-
-     final String polylineIdValRed = 'polyline_id_Red';  
-    final PolylineId polylineIdRed = PolylineId(polylineIdValRed);
-
-    
-    final Polyline polylineRed = Polyline(
-      polylineId: polylineIdRed,
-      consumeTapEvents: false,
-      color: Colors.red,
-      width: 4,
-      points: pointsRed,  
-      zIndex: 1      
-    );
-
-     setState(() {
-      polylines[polylineIdRed] = polylineRed;
-    });
-
-    final String polylineIdValOrange = 'polyline_id_Orange';  
-    final PolylineId polylineIdOrange = PolylineId(polylineIdValOrange);
-
-    
-    final Polyline polylineOrange = Polyline(
-      polylineId: polylineIdOrange,
-      consumeTapEvents: false,
-      color: Colors.orange,
-      width: 4,
-      points: pointsOrange,  
-      zIndex: 2      
-    );
-
-     setState(() {
-      polylines[polylineIdOrange] = polylineOrange;
-    });
-
-         final String polylineIdValGreen = 'polyline_id_Green';  
-    final PolylineId polylineIdGreen = PolylineId(polylineIdValGreen);
-
-    
-    final Polyline polylineGreen = Polyline(
-      polylineId: polylineIdGreen,
-      consumeTapEvents: false,
-      color: Colors.green,
-      width: 4,
-      points: pointsGreen,  
-      zIndex: 3      
-    );
-
-     setState(() {
-      polylines[polylineIdGreen] = polylineGreen;
-    });
- 
-    }
-}
   LatLng _createLatLng(double lat, double lng) {
     return LatLng(lat, lng);
   }
@@ -472,7 +460,9 @@ Future loadPolyline() async {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
-          icon: BitmapDescriptor.fromAsset('assets/marker.png'),
+          //icon: BitmapDescriptor.fromAsset('assets/marker.png'),
+          icon: BitmapDescriptor.defaultMarker
+          ,
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].type,
@@ -548,178 +538,193 @@ Future loadPolyline() async {
       ),
     );
   }
- 
-bool _emptyList = true;
+
+  bool _emptyList = true;
 
   Widget _buildContainer() {
-    if (_emptyList) {
-      return Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 15.0),
-          height: 150.0,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-              child: new FittedBox(
-                child: Material(
-                    color: Color.fromRGBO(255, 255, 255, 0.8),
-                    elevation: 15.0,
-                    borderRadius: BorderRadius.circular(
-                      15.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: 150,
-                          height: 150,
-                          child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(15.0),
-                            child: Image(
-                              fit: BoxFit.cover,
-                              image: AssetImage("assets/location-loader.gif"),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 1),
-                                    child: Container(
-                                        child: Text(
-                                      "Er zijn geen objecten gevonden",
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Container(
-                                      child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Container(
-                                          child: Text(
-                                        "(huidige locatie)",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 18.0,
-                                        ),
-                                      )),
-                                    ],
-                                  )),
-                                  SizedBox(height: 5.0),
-                                  Container(
-                                      child: Text(
-                                    "Latitude: " +
-                                        currentLocation.latitude.toString(),
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )),
-                                  SizedBox(height: 5.0),
-                                  Container(
-                                      child: Text(
-                                    "Longitude: " +
-                                        currentLocation.longitude.toString(),
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                                ],
-                              )),
-                        ),
-                      ],
-                    )),
-              ),
-            ),
-          ),
-        ),
-      );
-    } else {
-      return Align(
+    // if (_emptyList) {
+    //   return Align(
+    //     alignment: Alignment.bottomCenter,
+    //     child: Container(
+    //       margin: EdgeInsets.symmetric(vertical: 15.0),
+    //       height: 150.0,
+    //       child: Padding(
+    //         padding: const EdgeInsets.all(15.0),
+    //         child: Container(
+    //           child: new FittedBox(
+    //             child: Material(
+    //                 color: Color.fromRGBO(255, 255, 255, 0.8),
+    //                 elevation: 15.0,
+    //                 borderRadius: BorderRadius.circular(
+    //                   15.0,
+    //                 ),
+    //                 child: Row(
+    //                   mainAxisAlignment: MainAxisAlignment.start,
+    //                   children: <Widget>[
+    //                     Container(
+    //                       width: 150,
+    //                       height: 150,
+    //                       child: ClipRRect(
+    //                         borderRadius: new BorderRadius.circular(15.0),
+    //                         child: Image(
+    //                           fit: BoxFit.cover,
+    //                           image: AssetImage("assets/location-loader.gif"),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                     Container(
+    //                       child: Padding(
+    //                           padding: const EdgeInsets.all(15.0),
+    //                           child: Column(
+    //                             crossAxisAlignment: CrossAxisAlignment.start,
+    //                             children: <Widget>[
+    //                               Padding(
+    //                                 padding: const EdgeInsets.only(top: 1),
+    //                                 child: Container(
+    //                                     child: Text(
+    //                                   "Er zijn geen objecten gevonden",
+    //                                   style: TextStyle(
+    //                                       color: Colors.blue,
+    //                                       fontSize: 20.0,
+    //                                       fontWeight: FontWeight.bold),
+    //                                 )),
+    //                               ),
+    //                               SizedBox(height: 5.0),
+    //                               Container(
+    //                                   child: Row(
+    //                                 mainAxisAlignment:
+    //                                     MainAxisAlignment.spaceEvenly,
+    //                                 children: <Widget>[
+    //                                   Container(
+    //                                       child: Text(
+    //                                     "(huidige locatie)",
+    //                                     textAlign: TextAlign.left,
+    //                                     style: TextStyle(
+    //                                       color: Colors.black54,
+    //                                       fontSize: 18.0,
+    //                                     ),
+    //                                   )),
+    //                                 ],
+    //                               )),
+    //                               SizedBox(height: 5.0),
+    //                               Container(
+    //                                   child: Text(
+    //                                 "Latitude: " +
+    //                                     currentLocation.latitude.toString(),
+    //                                 style: TextStyle(
+    //                                   color: Colors.black54,
+    //                                   fontSize: 18.0,
+    //                                   fontWeight: FontWeight.bold,
+    //                                 ),
+    //                               )),
+    //                               SizedBox(height: 5.0),
+    //                               Container(
+    //                                   child: Text(
+    //                                 "Longitude: " +
+    //                                     currentLocation.longitude.toString(),
+    //                                 style: TextStyle(
+    //                                     color: Colors.black54,
+    //                                     fontSize: 18.0,
+    //                                     fontWeight: FontWeight.bold),
+    //                               )),
+    //                             ],
+    //                           )),
+    //                     ),
+    //                   ],
+    //                 )),
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // } else {
+    return Align(
         alignment: Alignment.bottomLeft,
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 15.0),
           height: 150.0,
           //  child:  ListView(scrollDirection: Axis.horizontal, children: formWidget),
           child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: places.length,
-            itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-_onSelected(index);
-                  _gotoLocation(places[index].latitude, places[index].longitude);
-         // _onMarkerTapped(places[index].);
-                },
-                // child: Container(
-                //   width: MediaQuery.of(context).size.width * 0.6,
-                //   child: Card(
-                //     color: _selectedIndex != null && _selectedIndex == index
-                //         ? Colors.red
-                //         : Colors.white,
-                //     child: Container(
-                //       child: Center(
-                //           child: Text(
-                //         places[index].id.toString(),
-                //         style: TextStyle(color: Colors.white, fontSize: 36.0),
-                //       )),
-                //     ),
-                child: Padding(padding: EdgeInsets.all(8), child:Container(
-          child: FittedBox( 
-            child: Material(
-                color: _selectedIndex != null && _selectedIndex == index
-                        ? Color.fromRGBO(255,255,255,1)
-                        : Color.fromRGBO(255,255,255,0.6),
-                //elevation: 14.0,
-                borderRadius: BorderRadius.circular(5.0),
-                // shadowColor: Color(0x802196F3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      width: 100,
-                      height: 150,
-                      child: ClipRRect(
-                        borderRadius: new BorderRadius.circular(5.0),
-                        child: Image(
-                          fit: BoxFit.fitHeight,
-                          image: NetworkImage(places[index].preview_image_uri),
-                        ),
-                        // child: Image(
-                        //   fit: BoxFit.fill,
-                        //   image: AssetImage("assets/spoor.jpg"),
-                        // ),
-                      ),
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: myDetailsContainer1(
-                            places[index].id.toString(), places[index].type.toString(), places[index].status.toString(), places[index].preview_image_uri.toString(), places[index].latitude, places[index].longitude),
-                      ),
-                    ),
-                  ],
-                )),
-          ),
-        )
-                  ),
-                )),
-          )
-      );
-      
-    }
+              scrollDirection: Axis.horizontal,
+              itemCount: places.length,
+              itemBuilder: (context, index) => GestureDetector(
+                    onTap: () {
+                      _onSelected(index);
+                      _gotoLocation(
+                          places[index].latitude, places[index].longitude); 
+
+                      Navigator.pop(context);
+                      // _onMarkerTapped(places[index].);
+                    },
+                    // child: Container(
+                    //   width: MediaQuery.of(context).size.width * 0.6,
+                    //   child: Card(
+                    //     color: _selectedIndex != null && _selectedIndex == index
+                    //         ? Colors.red
+                    //         : Colors.white,
+                    //     child: Container(
+                    //       child: Center(
+                    //           child: Text(
+                    //         places[index].id.toString(),
+                    //         style: TextStyle(color: Colors.white, fontSize: 36.0),
+                    //       )),
+                    //     ),
+                    child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Container(
+                          child: FittedBox(
+                            child: Material(
+                                color: _selectedIndex != null &&
+                                        _selectedIndex == index
+                                    ? Colors.blue
+                                    : Color.fromRGBO(255, 255, 255, 1),
+                                //elevation: 14.0,
+
+                                borderRadius: BorderRadius.circular(5.0),
+                                // shadowColor: Color(0x802196F3),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 100,
+                                      height: 150,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            new BorderRadius.circular(5.0),
+                                        child: Image(
+                                          fit: BoxFit.fitHeight,
+                                          image: NetworkImage(
+                                              places[index].preview_image_uri),
+                                        ),
+                                        // child: Image(
+                                        //   fit: BoxFit.fill,
+                                        //   image: AssetImage("assets/spoor.jpg"),
+                                        // ),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: myDetailsContainer1(
+                                            places[index].id.toString(),
+                                            places[index].type.toString(),
+                                            places[index].status.toString(),
+                                            places[index]
+                                                .preview_image_uri
+                                                .toString(),
+                                            places[index].latitude,
+                                            places[index].longitude),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        )),
+                  )),
+        ));
+
+    //  }
   }
 
   int _selectedIndex = 0;
@@ -901,32 +906,73 @@ _onSelected(index);
   bool _loading = true;
   @override
   Widget build(BuildContext context) {
+    
     //print(_loading);
     //print(currentLocation.latitude);
     if (_loading) {
-      return new Scaffold(
-          body: Center(child: CircularProgressIndicator()
-      ));
+      return new Scaffold(body: Center(child: CircularProgressIndicator()));
     } else {
       return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            _buildGoogleMap(context),
+          body: Stack(
+            children: <Widget>[
+              _buildGoogleMap(context),
 
-            // _zoomminusfunction(),
-            // _zoomplusfunction(),
-            _mapTypeCycler(),
-            _buildContainer(),
+              // _zoomminusfunction(),
+              // _zoomplusfunction(),
+              _mapTypeCycler(),
 
-            _search(),
-            _addMarker(),
-            _addPolyLine(),
-          ],
-        ),
-      
-      );
+// _buildContainer(),
+              _search(),
+              _addMarker(),
+              _addPolyLine(),
+            ],
+          ),
+          bottomNavigationBar: BottomAppBar(
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+              children: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.menu),
+                    onPressed: () {
+                      _showModal();
+                    }),
+                Padding(
+                  padding: EdgeInsets.only(left: 30),
+                  child: text(places.length),
+                ),
+              ],
+            ),
+          )
+          );
     }
   }
+
+  Widget text(int value) {
+    Text text;
+    if (value <= 0) {
+      text = Text("Er zijn geen objecten gevonden klik op zoeken");
+    } else {
+      text = Text("Er zijn $value objecten gevonden");
+    }
+    return text;
+  }
+
+  void _showModal() {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return new Column(            
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _buildContainer(),
+            ],
+          );
+        });
+  }
+
+
 
   String calculateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
@@ -943,12 +989,12 @@ _onSelected(index);
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
       target: LatLng(lat, long),
-      zoom: 23,
+      zoom: 20,
       // tilt: 50.0,
       // bearing: 45.0,
     )));
 
-    _add2(lat, long);
+    _add2(lat, long );
   }
 
   Map<CircleId, Circle> circles = <CircleId, Circle>{};
@@ -1014,58 +1060,14 @@ _onSelected(index);
   ///
   ///
   ///
- 
+
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
-  int _polylineIdCounter = 1;
+
   PolylineId selectedPolyline;
-
-  // Values when toggling polyline color
-  int colorsIndex = 0;
-  List<Color> colors = <Color>[
-    Colors.purple,
-    Colors.red,
-    Colors.green,
-    Colors.pink,
-  ];
-
-  // Values when toggling polyline width
-  int widthsIndex = 0;
-  List<int> widths = <int>[10, 20, 5];
-
-  int jointTypesIndex = 0;
-  List<JointType> jointTypes = <JointType>[
-    JointType.mitered,
-    JointType.bevel,
-    JointType.round
-  ];
-
-  // Values when toggling polyline end cap type
-  int endCapsIndex = 0;
-  List<Cap> endCaps = <Cap>[Cap.buttCap, Cap.squareCap, Cap.roundCap];
-
-  // Values when toggling polyline start cap type
-  int startCapsIndex = 0;
-  List<Cap> startCaps = <Cap>[Cap.buttCap, Cap.squareCap, Cap.roundCap];
-
-  // Values when toggling polyline pattern
-  int patternsIndex = 0;
-  List<List<PatternItem>> patterns = <List<PatternItem>>[
-    <PatternItem>[],
-    <PatternItem>[
-      PatternItem.dash(30.0),
-      PatternItem.gap(20.0),
-      PatternItem.dot,
-      PatternItem.gap(20.0)
-    ],
-    <PatternItem>[PatternItem.dash(30.0), PatternItem.gap(20.0)],
-    <PatternItem>[PatternItem.dot, PatternItem.gap(10.0)],
-  ];
 
   void _onPolylineTapped(PolylineId polylineId) {
     setState(() {
       selectedPolyline = polylineId;
     });
   }
-
-  
 }
