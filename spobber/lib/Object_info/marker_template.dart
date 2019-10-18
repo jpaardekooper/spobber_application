@@ -30,7 +30,7 @@ class MarkerTemplate extends StatelessWidget {
                 text: "Afbeeldingen",
               ),
             
-              Tab(icon: Icon(Icons.history), text: "Geschiedenis"),
+              Tab(icon: Icon(Icons.comment), text: "Commentaar"),
             ],
           ),
           title: Text(markerDetail.type),

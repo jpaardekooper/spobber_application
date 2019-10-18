@@ -15,7 +15,8 @@ class MarkerInfo extends StatefulWidget {
   final String imageStatus;
 
   // In the constructor, require a Person
-  MarkerInfo(this.imageId, this.imageType, this.imageLat, this.imageLong, this.imageStatus);
+  MarkerInfo(this.imageId, this.imageType, this.imageLat, this.imageLong,
+      this.imageStatus);
 
   @override
   _MarkerInfoState createState() => _MarkerInfoState();
@@ -241,7 +242,8 @@ class _MarkerInfoState extends State<MarkerInfo> {
     //getName information
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text: "lat: " + widget.imageLat +" long: " + widget.imageLong),
+      controller: TextEditingController(
+          text: "lat: " + widget.imageLat + " long: " + widget.imageLong),
       decoration: InputDecoration(
           labelText: "GPS coordinatie",
           hintText: 'object positie',
@@ -280,33 +282,50 @@ class _MarkerInfoState extends State<MarkerInfo> {
           },
         )));
 
-    formWidget.add(FloatingActionButton(
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Icon(Icons.file_upload, color: Colors.white),
-          Text(
-            "Opslaan",
-            style: TextStyle(color: Colors.white, fontSize: 10),
-          ),
-        ],
-      ),
-      onPressed: () {
-        return showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              // Retrieve the text the user has typed in using our
-              // TextEditingController
-              content: Text("uploading"),
+    formWidget.add(
+      OutlineButton(
+        focusColor: Colors.blue[600],
+        onPressed: () {
+          if (status == '') {
+            setState(() {
+              status = "Uploaden is gelukt";
+            });
+            return showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  // Retrieve the text the user has typed in using our
+                  // TextEditingController
+                  content: Text("uploading"),
+                );
+              },
             );
-          },
-        );
-      },
-    ));
+          } else {
+            setState(() {
+              status = "Error: Het uploaden is niet gelukt";
+            });
+          }
+        },
+        child: Text('Opslaan'),
+      ),
+    );
+
+    formWidget.add(
+      Text(
+        status,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.green,
+          fontWeight: FontWeight.w500,
+          fontSize: 20.0,
+        ),
+      ),
+    );
 
     return formWidget;
   }
+
+  String status = '';
 
   @override
   Widget build(BuildContext context) {
