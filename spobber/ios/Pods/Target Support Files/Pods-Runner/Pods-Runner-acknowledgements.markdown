@@ -32,7 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## GoogleMaps
 
-Copyright 2018 Google
+Copyright 2019 Google
 
 ## camera
 
