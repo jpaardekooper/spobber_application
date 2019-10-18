@@ -338,6 +338,8 @@ spobber/.dart_tool/
 /.dart_tool/
 spobber/build\ios
 /spobber/build\ios/
+spobber/build\\ios
+/spobber/build\\ios/
 
 
 
