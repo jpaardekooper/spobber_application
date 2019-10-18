@@ -1,36 +1,10 @@
-/*
- * Copyright (c) 2019 Razeware LLC
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
- * distribute, sublicense, create a derivative work, and/or sell copies of the
- * Software in any work that is designed, intended, or marketed for pedagogical or
- * instructional purposes related to programming, coding, application development,
- * or information technology.  Permission for such use, copying, modification,
- * merger, publication, distribution, sublicensing, creation of derivative works,
- * or sale is expressly withheld.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 import "package:flutter/material.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'places_search_map.dart';
+bool isSap = false;
+bool isSigma = false;
+bool isUST02 = false;
+bool isVideo = false;
 
 class SearchFilter extends StatefulWidget {
   final Function updateKeyword;
@@ -44,6 +18,8 @@ class SearchFilter extends StatefulWidget {
 }
 
 class _SearchFilter extends State<SearchFilter> {
+//this goes in our State class as a global variable
+
   static final List<String> filterOptions = <String>[
     "Es-las",
     "Bovenleiding",
@@ -73,12 +49,12 @@ class _SearchFilter extends State<SearchFilter> {
               return IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
-                  Navigator.pop(context);                  
+                  Navigator.pop(context);
                 },
               );
             },
           ),
-          title: Text('Place preferences'),
+          title: Text('Selecteer object'),
         ),
         body: ListView(
           children: <Widget>[
@@ -87,6 +63,10 @@ class _SearchFilter extends State<SearchFilter> {
               leading: Icon(Icons.room),
               title: Text(filterOptions[0]),
               onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildAboutDialog(context),
+                );
                 _saveKeywordPreference(0);
               },
               trailing: _getIcon(0),
@@ -96,10 +76,16 @@ class _SearchFilter extends State<SearchFilter> {
               leading: Icon(Icons.tram),
               title: Text(filterOptions[1]),
               onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => _buildAboutDialog(context),
+                );
                 _saveKeywordPreference(1);
               },
               trailing: _getIcon(1),
             ),
+            //this goes in as one of the children in our column
+
             // ListTile(
             //   selected: _selectedPosition == 2,
             //   leading: Icon(Icons.local_cafe),
@@ -160,8 +146,106 @@ class _SearchFilter extends State<SearchFilter> {
       _selectedPosition = position;
       prefs.setString(_KEY_SELECTED_VALUE, filterOptions[position]);
       prefs.setInt(_KEY_SELECTED_POSITION, position);
-      updateKeyword(filterOptions[position]);      
-       Navigator.pop(context);   
+      updateKeyword(filterOptions[position]);
+      // Navigator.pop(context);
+      //Scaffold.of(context).openEndDrawer();
     });
   }
+
+
+
+  Widget _buildAboutDialog(BuildContext context) {
+    return new AlertDialog(
+      // title: const Text(
+      //   'Selecteer Data bronnen',
+      //   style: TextStyle(fontSize: 15),
+      // ),
+      content: new Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            ListTile(
+              title: new Text(
+                "Selecteer data bronnen ",
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // _buildAboutText(),
+            // _buildLogoAttribution(),
+            SwitchListTile(
+                title: const Text('SAP'),
+                value: isSap,
+                onChanged: (bool value) {
+                  setState(() {
+                    isSap = value;
+                  });
+                },
+                secondary: const Icon(Icons.tram)),
+            SwitchListTile(
+                title: const Text('Sigma'),
+                value: isSigma,
+                onChanged: (bool value) {
+                  setState(() {
+                    isSigma = value;
+                  });
+                },
+                secondary: const Icon(Icons.tram)),
+            SwitchListTile(
+                title: const Text('UST02 meettrein'),
+                value: isUST02,
+                onChanged: (bool value) {
+                  setState(() {
+                    isUST02 = value;
+                  });
+                },
+                secondary: const Icon(Icons.tram)),
+            SwitchListTile(
+                title: const Text('Videoschouwtrein'),
+                value: isVideo,
+                onChanged: (bool value) {
+                  setState(() {
+                    isVideo = value;
+                  });
+                },
+                secondary: const Icon(Icons.tram)),
+
+            ListTile(
+              title: new Text(
+                "Opslaan ",
+                style: TextStyle(
+                    color: Colors.lightBlue, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      ),
+      // actions: <Widget>[
+      //   new FlatButton(
+      //     onPressed: () {
+      //       Navigator.of(context).pop();
+      //     },
+      //     textColor: Theme.of(context).primaryColor,
+      //     child: const Text(
+      //       'Opslaan, en doorgaan',
+      //     ),
+      //   ),
+      // ],
+    );
+  }
+
+  bool _isChecked = true;
+
+  List<String> _texts = [
+    "InduceSmile.com," "Flutter.io",
+    "google.com",
+    "youtube.com",
+    "yahoo.com",
+    "gmail.com"
+  ];
 }

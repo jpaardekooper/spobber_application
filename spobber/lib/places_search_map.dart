@@ -29,6 +29,7 @@
  */
 
 import 'package:geolocator/geolocator.dart' as prefix2;
+import 'package:spobber/search_filter.dart';
 
 import 'dart:async';
 
@@ -205,7 +206,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   //   controller.setMapStyle(value);
   // }
 
-  void searchNearby() async {
+  void searchNearby(
+      bool isSap, bool isSigma, bool isUST02, bool isVideo) async {
     print(_visibleRegion.southwest.latitude);
     print(_visibleRegion.southwest.longitude);
     print(_visibleRegion.northeast.latitude);
@@ -268,7 +270,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   }
 
   Widget _search() {
-    
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
         child: Align(
@@ -290,7 +291,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                     setState(() {
                       _visibleRegion = visibleRegion;
                     });
-                    searchNearby();
+                    searchNearby(isSap, isSigma, isUST02, isVideo);
                   },
                 ))));
   }
@@ -461,8 +462,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
           //icon: BitmapDescriptor.fromAsset('assets/img/marker.png'),
-          icon: BitmapDescriptor.defaultMarker
-          ,
+          icon: BitmapDescriptor.defaultMarker,
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].type,
@@ -651,7 +651,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                     onTap: () {
                       _onSelected(index);
                       _gotoLocation(
-                          places[index].latitude, places[index].longitude); 
+                          places[index].latitude, places[index].longitude);
 
                       Navigator.pop(context);
                       // _onMarkerTapped(places[index].);
@@ -906,7 +906,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   bool _loading = true;
   @override
   Widget build(BuildContext context) {
-    
     //print(_loading);
     //print(currentLocation.latitude);
     if (_loading) {
@@ -944,8 +943,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                 ),
               ],
             ),
-          )
-          );
+          ));
     }
   }
 
@@ -963,7 +961,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
-          return new Column(            
+          return new Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               _buildContainer(),
@@ -971,8 +969,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
           );
         });
   }
-
-
 
   String calculateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
@@ -994,7 +990,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
       // bearing: 45.0,
     )));
 
-    _add2(lat, long );
+    _add2(lat, long);
   }
 
   Map<CircleId, Circle> circles = <CircleId, Circle>{};

@@ -3,6 +3,7 @@ import 'maps_widget.dart';
 
 Widget _buildDrawer(context) {
   return Drawer(
+    
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
       // space to fit everything.
@@ -11,9 +12,9 @@ Widget _buildDrawer(context) {
     padding: EdgeInsets.zero,
     children: <Widget>[
       DrawerHeader(
-        child: Text('Drawer Header'),
+        child: Text('Heading'),
         decoration: BoxDecoration(
-          color: Colors.blue[300],
+          color: Colors.blue,
         ),
       ),
       ListTile(
@@ -65,7 +66,7 @@ Widget _buildDrawer(context) {
 class HomePage extends StatelessWidget {
   static String tag = 'Dashboard';
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Color primaryColor = Color.fromRGBO(0, 73, 144, 1);
+  Color primaryColor = Color.fromRGBO(6, 71, 138, 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +81,7 @@ class HomePage extends StatelessWidget {
                   constraints: BoxConstraints.expand(height: 225),
                   decoration: BoxDecoration(
                       gradient: new LinearGradient(
-                          colors: [Colors.white, Colors.blue],
+                          colors: [primaryColor, primaryColor],
                           begin: const FractionalOffset(1.0, 1.0),
                           end: const FractionalOffset(0.2, 0.1),
                           stops: [0.0, 1.0],
@@ -104,7 +105,7 @@ class HomePage extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(top: 10.0),
                           child: Text(
-                            "Dashboaard",
+                            "Dashboard",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 25.0),
                           ),
@@ -113,7 +114,9 @@ class HomePage extends StatelessWidget {
                           icon: Icon(Icons.power_settings_new),
                           color: Colors.white,
                           iconSize: 30.0,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         )
                       ],
                     ),
@@ -129,7 +132,7 @@ class HomePage extends StatelessWidget {
                         children: <Widget>[
                           Padding(
                             padding: EdgeInsets.only(
-                                top: 275.0),
+                                top: 230.0),
                             child: Container(
                               // width: double.infinity,
                               // height: 500.0,
