@@ -460,7 +460,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
-          //icon: BitmapDescriptor.fromAsset('assets/marker.png'),
+          //icon: BitmapDescriptor.fromAsset('assets/img/marker.png'),
           icon: BitmapDescriptor.defaultMarker
           ,
           position: LatLng(places[i].latitude, places[i].longitude),
