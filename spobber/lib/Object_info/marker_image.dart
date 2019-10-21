@@ -10,7 +10,7 @@ import 'package:timeline_list/timeline_model.dart';
 import '../data/lower_object.dart';
 import 'dart:convert';
 
-import 'UploadImage.dart';
+import 'upload_image.dart';
 
 class MarkerImage extends StatefulWidget {
   final String imageId;
