@@ -46,7 +46,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LoginPage.tag: (context) => LoginPage(),
-    HomePage.tag: (context) => HomePage(),
+  //  HomePage.tag: (context) => HomePage(),
     GoogleMapsApp.tag: (context) => GoogleMapsApp(),
   };
 

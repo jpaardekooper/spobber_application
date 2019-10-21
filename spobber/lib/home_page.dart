@@ -1,392 +1,295 @@
-import 'package:flutter/material.dart';
-import 'maps_widget.dart';
-import 'data/global_variable.dart';
-
-Widget _buildDrawer(context) {
-
-return Drawer(
-      // column holds all the widgets in the drawer
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            // ListView contains a group of widgets that scroll inside the drawer
-            child: ListView(
-              children: <Widget>[
-                UserAccountsDrawerHeader(),
-      //           DrawerHeader(
-      //   child: Text('Heading'),
-      //   decoration: BoxDecoration(
-      //     color: Colors.blue,
-      //   ),
-      // ),
-      
-        ListTile(
-        leading: Icon(Icons.map),
-        title: Text('Maps'),
-        onTap: () {
-          // Update the state of the app
-          // ...
-          // Then close the drawer
-          Navigator.pop(context);
-        },
-      ),
-      Divider(),
-      ListTile(
-        leading: Icon(Icons.show_chart),
-        title: Text('Statistiek'),
-        onTap: () {
-          // Update the state of the app
-          // ...
-          // Then close the drawer
-          print("pressed item 2");
-          Navigator.pop(context);
-        },
-      ),
-       Divider(),
-      ListTile(
-        leading: Icon(Icons.history),
-        title: Text('Geschiedenis'),
-        onTap: () {
-          // Update the state of the app
-          // ...
-          // Then close the drawer
-          Navigator.pop(context);
-        },
-      ),
-       Divider(),
-      ListTile(
-        leading: Icon(Icons.settings),
-        title: Text('Account'),
-        onTap: () {
-          // Update the state of the app
-          // ...
-          // Then close the drawer
-          print("pressed item 2");
-          Navigator.pop(context);
-        },
-      ),
-       Divider(),
-              ],
-            ),
-          ),
-          // This container holds the align
-          Container(
-              // This align moves the children to the bottom
-              child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  // This container holds all the children that will be aligned
-                  // on the bottom and should not scroll with the above ListView
-                  child: Container(
-                      child: Column(
-                    children: <Widget>[
-                      Divider(),
-                      ListTile(
-                          leading: Icon(Icons.settings),
-                          title: Text('Settings')),
-                          
-                      ListTile(
-                          leading: Icon(Icons.help),
-                          title: Text('Help and Feedback')),
-
-                            ListTile(
-                          //leading: Icon(Icons.help),
-                          title: Text('Versie 1.0.0', style: TextStyle(fontWeight: FontWeight.w200),))
-                    ],
-                  )
-                )
-              )
-            )
-        ],
-      ),
-    );
-  }
+// import 'package:flutter/material.dart';
+// import 'maps_widget.dart';
+// import 'data/global_variable.dart';
 
 
 
-//   return Drawer(
 
-//       // Add a ListView to the drawer. This ensures the user can scroll
-//       // through the options in the drawer if there isn't enough vertical
-//       // space to fit everything.
-//       child: ListView(
-//     // Important: Remove any padding from the ListView.
-//     padding: EdgeInsets.zero,
-//     children: <Widget>[
+
+// //   return Drawer(
+
+// //       // Add a ListView to the drawer. This ensures the user can scroll
+// //       // through the options in the drawer if there isn't enough vertical
+// //       // space to fit everything.
+// //       child: ListView(
+// //     // Important: Remove any padding from the ListView.
+// //     padding: EdgeInsets.zero,
+// //     children: <Widget>[
       
     
-//     ],
-//   ));
+// //     ],
+// //   ));
+// // }
+
+// class HomePage extends StatelessWidget {
+//   static String tag = 'Dashboard';
+//   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+//   Color primaryColor = Color.fromRGBO(6, 71, 138, 1);
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       key: _scaffoldKey,
+//       drawer: _buildDrawer(context),
+//       body: Container(
+//         color: Color(0xFFEFEEF5),
+//         child: Column(
+//           children: <Widget>[
+//             Stack(
+//               children: <Widget>[
+//                 Container(
+//                   padding: EdgeInsets.all(10),
+//                   constraints: BoxConstraints.expand(height: 225),
+//                   decoration: BoxDecoration(
+//                       gradient: new LinearGradient(
+//                           colors: [primaryColor, primaryColor],
+//                           begin: const FractionalOffset(1.0, 1.0),
+//                           end: const FractionalOffset(0.2, 0.1),
+//                           stops: [0.0, 1.0],
+//                           tileMode: TileMode.clamp),
+//                       borderRadius: BorderRadius.only(
+//                           bottomLeft: Radius.circular(30),
+//                           bottomRight: Radius.circular(30))),
+//                   child: Container(
+//                     padding: EdgeInsets.only(top: 50),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: <Widget>[
+//                         IconButton(
+//                           icon: Icon(Icons.menu),
+//                           color: Colors.white,
+//                           iconSize: 30.0,
+//                           onPressed: () =>
+//                               _scaffoldKey.currentState.openDrawer(),
+//                         ),
+//                         Padding(
+//                           padding: EdgeInsets.only(top: 10.0),
+//                           child: Text(
+//                             "Dashboard",
+//                             style:
+//                                 TextStyle(color: Colors.white, fontSize: 25.0),
+//                           ),
+//                         ),
+//                         IconButton(
+//                           icon: Icon(Icons.power_settings_new),
+//                           color: Colors.white,
+//                           iconSize: 30.0,
+//                           onPressed: () {
+//                             Navigator.pop(context);
+//                           },
+//                         )
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//                 Container(
+//                   // backgroundColor: Color.fromRGBO(244, 244, 244, 1),
+//                   // body: SingleChildScrollView(
+//                   child: Column(
+//                     //  crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: <Widget>[
+//                       Stack(
+//                         children: <Widget>[
+//                           Padding(
+//                             padding: EdgeInsets.only(top: 230.0),
+//                             child: Container(
+//                               // width: double.infinity,
+//                               // height: 500.0,
+//                               // decoration: BoxDecoration(
+//                               //     color: Colors.blueGrey,
+//                               //     borderRadius:
+//                               //         BorderRadius.all(Radius.circular(15.0)),
+//                               //     boxShadow: [
+//                               //       BoxShadow(
+//                               //           color: Colors.black.withOpacity(0.1),
+//                               //           offset: Offset(0.0, 5.0),
+//                               //           blurRadius: 15.0)
+//                               //     ]),
+//                               child: Column(children: <Widget>[
+//                                 Padding(
+//                                   padding: EdgeInsets.symmetric(
+//                                       horizontal: 15.0, vertical: 15.0),
+//                                   child: Row(
+//                                     mainAxisAlignment:
+//                                         MainAxisAlignment.spaceBetween,
+//                                     children: <Widget>[
+//                                       //maps container
+//                                       Container(
+//                                         margin: EdgeInsets.only(
+//                                             top: 10,
+//                                             right: 0,
+//                                             left: 0,
+//                                             bottom: 10),
+//                                         height: 180,
+//                                         width: 110,
+//                                         decoration: BoxDecoration(
+//                                           color: Colors.white,
+//                                           borderRadius: BorderRadius.all(
+//                                               Radius.circular(15)),
+//                                           boxShadow: [
+//                                             new BoxShadow(
+//                                               color: Colors.grey,
+//                                               blurRadius: 10.0,
+//                                             ),
+//                                           ],
+//                                         ),
+//                                         child: Padding(
+//                                           padding: EdgeInsets.only(top: 50),
+//                                           child: Column(
+//                                             children: <Widget>[
+//                                               Material(
+//                                                 borderRadius:
+//                                                     BorderRadius.circular(
+//                                                         100.0),
+//                                                 color: Colors.blue
+//                                                     .withOpacity(0.1),
+//                                                 child: IconButton(
+//                                                   padding: EdgeInsets.all(15.0),
+//                                                   icon: Icon(Icons.map),
+//                                                   color: Colors.blue,
+//                                                   iconSize: 30.0,
+//                                                   onPressed: () {
+//                                                     // Navigator.pop(context);
+
+//                                                     Navigator.push(
+//                                                       context,
+//                                                       MaterialPageRoute(
+//                                                           builder: (context) =>
+//                                                               GoogleMapsApp()),
+//                                                     );
+//                                                   },
+//                                                 ),
+//                                               ),
+//                                               SizedBox(height: 8.0),
+//                                               Text('Maps',
+//                                                   style: TextStyle(
+//                                                       color: Colors.black54,
+//                                                       fontWeight:
+//                                                           FontWeight.bold))
+//                                             ],
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       //end maps container
+
+//                                       //new container
+//                                       Container(
+//                                           margin: EdgeInsets.only(
+//                                               top: 10,
+//                                               right: 0,
+//                                               left: 0,
+//                                               bottom: 10),
+//                                           height: 180,
+//                                           width: 110,
+//                                           decoration: BoxDecoration(
+//                                             color: Colors.white,
+//                                             borderRadius: BorderRadius.all(
+//                                                 Radius.circular(15)),
+//                                             boxShadow: [
+//                                               new BoxShadow(
+//                                                 color: Colors.grey,
+//                                                 blurRadius: 10.0,
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           child: Padding(
+//                                             padding: EdgeInsets.only(top: 50),
+//                                             child: Column(
+//                                               children: <Widget>[
+//                                                 Material(
+//                                                   borderRadius:
+//                                                       BorderRadius.circular(
+//                                                           100.0),
+//                                                   color: Colors.purple
+//                                                       .withOpacity(0.1),
+//                                                   child: IconButton(
+//                                                     padding:
+//                                                         EdgeInsets.all(15.0),
+//                                                     icon:
+//                                                         Icon(Icons.show_chart),
+//                                                     color: Colors.purple,
+//                                                     iconSize: 30.0,
+//                                                     onPressed: () {},
+//                                                   ),
+//                                                 ),
+//                                                 SizedBox(height: 8.0),
+//                                                 Text('Statistiek',
+//                                                     style: TextStyle(
+//                                                         color: Colors.black54,
+//                                                         fontWeight:
+//                                                             FontWeight.bold))
+//                                               ],
+//                                             ),
+//                                           )),
+
+//                                       //new
+//                                       Container(
+//                                           margin: EdgeInsets.only(
+//                                               top: 10,
+//                                               right: 0,
+//                                               left: 0,
+//                                               bottom: 10),
+//                                           height: 180,
+//                                           width: 110,
+//                                           decoration: BoxDecoration(
+//                                             color: Colors.white,
+//                                             borderRadius: BorderRadius.all(
+//                                                 Radius.circular(15)),
+//                                             boxShadow: [
+//                                               new BoxShadow(
+//                                                 color: Colors.grey,
+//                                                 blurRadius: 10.0,
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           child: Padding(
+//                                               padding: EdgeInsets.only(top: 50),
+//                                               child: Column(
+//                                                 children: <Widget>[
+//                                                   Material(
+//                                                     borderRadius:
+//                                                         BorderRadius.circular(
+//                                                             100.0),
+//                                                     color: Colors.orange
+//                                                         .withOpacity(0.1),
+//                                                     child: IconButton(
+//                                                       padding:
+//                                                           EdgeInsets.all(15.0),
+//                                                       icon: Icon(Icons.history),
+//                                                       color: Colors.orange,
+//                                                       iconSize: 30.0,
+//                                                       onPressed: () {},
+//                                                     ),
+//                                                   ),
+//                                                   SizedBox(height: 8.0),
+//                                                   Text('Activiteit',
+//                                                       style: TextStyle(
+//                                                           color: Colors.black54,
+//                                                           fontWeight:
+//                                                               FontWeight.bold))
+//                                                 ],
+//                                               ))),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               ]),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ],
+//             )
+//           ],
+//         ),
+//       ),
+    
+    
+//     );
+//   }
+
+
+
 // }
-
-class HomePage extends StatelessWidget {
-  static String tag = 'Dashboard';
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Color primaryColor = Color.fromRGBO(6, 71, 138, 1);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: _buildDrawer(context),
-      body: Container(
-        color: Color(0xFFEFEEF5),
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(10),
-                  constraints: BoxConstraints.expand(height: 225),
-                  decoration: BoxDecoration(
-                      gradient: new LinearGradient(
-                          colors: [primaryColor, primaryColor],
-                          begin: const FractionalOffset(1.0, 1.0),
-                          end: const FractionalOffset(0.2, 0.1),
-                          stops: [0.0, 1.0],
-                          tileMode: TileMode.clamp),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30))),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 50),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.menu),
-                          color: Colors.white,
-                          iconSize: 30.0,
-                          onPressed: () =>
-                              _scaffoldKey.currentState.openDrawer(),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                          child: Text(
-                            "Dashboard",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 25.0),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.power_settings_new),
-                          color: Colors.white,
-                          iconSize: 30.0,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  // backgroundColor: Color.fromRGBO(244, 244, 244, 1),
-                  // body: SingleChildScrollView(
-                  child: Column(
-                    //  crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top: 230.0),
-                            child: Container(
-                              // width: double.infinity,
-                              // height: 500.0,
-                              // decoration: BoxDecoration(
-                              //     color: Colors.blueGrey,
-                              //     borderRadius:
-                              //         BorderRadius.all(Radius.circular(15.0)),
-                              //     boxShadow: [
-                              //       BoxShadow(
-                              //           color: Colors.black.withOpacity(0.1),
-                              //           offset: Offset(0.0, 5.0),
-                              //           blurRadius: 15.0)
-                              //     ]),
-                              child: Column(children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15.0, vertical: 15.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      //maps container
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            top: 10,
-                                            right: 0,
-                                            left: 0,
-                                            bottom: 10),
-                                        height: 180,
-                                        width: 110,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
-                                          boxShadow: [
-                                            new BoxShadow(
-                                              color: Colors.grey,
-                                              blurRadius: 10.0,
-                                            ),
-                                          ],
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.only(top: 50),
-                                          child: Column(
-                                            children: <Widget>[
-                                              Material(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        100.0),
-                                                color: Colors.blue
-                                                    .withOpacity(0.1),
-                                                child: IconButton(
-                                                  padding: EdgeInsets.all(15.0),
-                                                  icon: Icon(Icons.map),
-                                                  color: Colors.blue,
-                                                  iconSize: 30.0,
-                                                  onPressed: () {
-                                                    // Navigator.pop(context);
-
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              GoogleMapsApp()),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                              SizedBox(height: 8.0),
-                                              Text('Maps',
-                                                  style: TextStyle(
-                                                      color: Colors.black54,
-                                                      fontWeight:
-                                                          FontWeight.bold))
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      //end maps container
-
-                                      //new container
-                                      Container(
-                                          margin: EdgeInsets.only(
-                                              top: 10,
-                                              right: 0,
-                                              left: 0,
-                                              bottom: 10),
-                                          height: 180,
-                                          width: 110,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15)),
-                                            boxShadow: [
-                                              new BoxShadow(
-                                                color: Colors.grey,
-                                                blurRadius: 10.0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Padding(
-                                            padding: EdgeInsets.only(top: 50),
-                                            child: Column(
-                                              children: <Widget>[
-                                                Material(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100.0),
-                                                  color: Colors.purple
-                                                      .withOpacity(0.1),
-                                                  child: IconButton(
-                                                    padding:
-                                                        EdgeInsets.all(15.0),
-                                                    icon:
-                                                        Icon(Icons.show_chart),
-                                                    color: Colors.purple,
-                                                    iconSize: 30.0,
-                                                    onPressed: () {},
-                                                  ),
-                                                ),
-                                                SizedBox(height: 8.0),
-                                                Text('Statistiek',
-                                                    style: TextStyle(
-                                                        color: Colors.black54,
-                                                        fontWeight:
-                                                            FontWeight.bold))
-                                              ],
-                                            ),
-                                          )),
-
-                                      //new
-                                      Container(
-                                          margin: EdgeInsets.only(
-                                              top: 10,
-                                              right: 0,
-                                              left: 0,
-                                              bottom: 10),
-                                          height: 180,
-                                          width: 110,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15)),
-                                            boxShadow: [
-                                              new BoxShadow(
-                                                color: Colors.grey,
-                                                blurRadius: 10.0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Padding(
-                                              padding: EdgeInsets.only(top: 50),
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Material(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100.0),
-                                                    color: Colors.orange
-                                                        .withOpacity(0.1),
-                                                    child: IconButton(
-                                                      padding:
-                                                          EdgeInsets.all(15.0),
-                                                      icon: Icon(Icons.history),
-                                                      color: Colors.orange,
-                                                      iconSize: 30.0,
-                                                      onPressed: () {},
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: 8.0),
-                                                  Text('Activiteit',
-                                                      style: TextStyle(
-                                                          color: Colors.black54,
-                                                          fontWeight:
-                                                              FontWeight.bold))
-                                                ],
-                                              ))),
-                                    ],
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    
-    
-    );
-  }
-
-
-
-}
