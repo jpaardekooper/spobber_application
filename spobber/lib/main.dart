@@ -30,6 +30,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:spobber/maps_widget.dart';
 
 
 import 'login_page.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LoginPage.tag: (context) => LoginPage(),
     HomePage.tag: (context) => HomePage(),
+    GoogleMapsApp.tag: (context) => GoogleMapsApp(),
   };
 
 

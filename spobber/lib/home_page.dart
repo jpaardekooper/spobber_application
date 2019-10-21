@@ -3,22 +3,24 @@ import 'maps_widget.dart';
 import 'data/global_variable.dart';
 
 Widget _buildDrawer(context) {
-  return Drawer(
 
-      // Add a ListView to the drawer. This ensures the user can scroll
-      // through the options in the drawer if there isn't enough vertical
-      // space to fit everything.
-      child: ListView(
-    // Important: Remove any padding from the ListView.
-    padding: EdgeInsets.zero,
-    children: <Widget>[
-      DrawerHeader(
-        child: Text('Heading'),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-        ),
-      ),
-      ListTile(
+return Drawer(
+      // column holds all the widgets in the drawer
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            // ListView contains a group of widgets that scroll inside the drawer
+            child: ListView(
+              children: <Widget>[
+                UserAccountsDrawerHeader(),
+      //           DrawerHeader(
+      //   child: Text('Heading'),
+      //   decoration: BoxDecoration(
+      //     color: Colors.blue,
+      //   ),
+      // ),
+      
+        ListTile(
         leading: Icon(Icons.map),
         title: Text('Maps'),
         onTap: () {
@@ -28,6 +30,7 @@ Widget _buildDrawer(context) {
           Navigator.pop(context);
         },
       ),
+      Divider(),
       ListTile(
         leading: Icon(Icons.show_chart),
         title: Text('Statistiek'),
@@ -39,6 +42,7 @@ Widget _buildDrawer(context) {
           Navigator.pop(context);
         },
       ),
+       Divider(),
       ListTile(
         leading: Icon(Icons.history),
         title: Text('Geschiedenis'),
@@ -49,6 +53,7 @@ Widget _buildDrawer(context) {
           Navigator.pop(context);
         },
       ),
+       Divider(),
       ListTile(
         leading: Icon(Icons.settings),
         title: Text('Account'),
@@ -60,9 +65,58 @@ Widget _buildDrawer(context) {
           Navigator.pop(context);
         },
       ),
-    ],
-  ));
-}
+       Divider(),
+              ],
+            ),
+          ),
+          // This container holds the align
+          Container(
+              // This align moves the children to the bottom
+              child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  // This container holds all the children that will be aligned
+                  // on the bottom and should not scroll with the above ListView
+                  child: Container(
+                      child: Column(
+                    children: <Widget>[
+                      Divider(),
+                      ListTile(
+                          leading: Icon(Icons.settings),
+                          title: Text('Settings')),
+                          
+                      ListTile(
+                          leading: Icon(Icons.help),
+                          title: Text('Help and Feedback')),
+
+                            ListTile(
+                          //leading: Icon(Icons.help),
+                          title: Text('Versie 1.0.0', style: TextStyle(fontWeight: FontWeight.w200),))
+                    ],
+                  )
+                )
+              )
+            )
+        ],
+      ),
+    );
+  }
+
+
+
+//   return Drawer(
+
+//       // Add a ListView to the drawer. This ensures the user can scroll
+//       // through the options in the drawer if there isn't enough vertical
+//       // space to fit everything.
+//       child: ListView(
+//     // Important: Remove any padding from the ListView.
+//     padding: EdgeInsets.zero,
+//     children: <Widget>[
+      
+    
+//     ],
+//   ));
+// }
 
 class HomePage extends StatelessWidget {
   static String tag = 'Dashboard';

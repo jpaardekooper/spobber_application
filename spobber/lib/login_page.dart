@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spobber/maps_widget.dart';
 import 'home_page.dart';
 
 
@@ -52,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         onPressed: () {
      
-          Navigator.of(context).pushNamed(HomePage.tag);
+          Navigator.of(context).pushReplacementNamed(GoogleMapsApp.tag);
         },
         padding: EdgeInsets.all(12),
         color:  Color.fromRGBO(0,73,144,1),
