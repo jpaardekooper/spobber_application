@@ -33,13 +33,13 @@ class MarkerTemplate extends StatelessWidget {
               Tab(icon: Icon(Icons.comment), text: "Commentaar"),
             ],
           ),
-          title: Text(markerDetail.type),
+          title: Text(markerDetail.type + markerDetail.id),
         ),
         body: TabBarView(
            physics: NeverScrollableScrollPhysics(),
           children: [
             MarkerInfo(markerDetail.id.toString(), markerDetail.type.toString(), markerDetail.lat.toString(), markerDetail.long.toString(), markerDetail.status.toString()),
-            MarkerImage(markerDetail.objectinfo),            
+            MarkerImage(markerDetail.id.toString(), markerDetail.objectinfo),            
             MarkerHistory(),
           ],
         ),

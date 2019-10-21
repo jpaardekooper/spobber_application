@@ -4,22 +4,24 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:spobber/data/marker_detail.dart';
 
 class TakePictureScreen extends StatefulWidget {
-  // // MarkerImage() : super();
-
-  // final String imageUrl;
-  // // In the constructor, require a Person
-  // TakePictureScreen(this.imageUrl);
+  final String imageId;
+ 
+  TakePictureScreen({ this.imageId});
 
   @override
   _TakePictureScreen createState() => _TakePictureScreen();
 }
 
 class _TakePictureScreen extends State<TakePictureScreen> {
+  String correctUrl;
+
   //
-  static final String uploadEndPoint =
-      'http://localhost/flutter_test/upload_image.php';
+  final String uploadEndPoint =
+      'http://spobberapi20190919041857.azurewebsites.net/api/uploadimage/';
+
   Future<File> file;
   String status = '';
   String base64Image;
@@ -30,7 +32,9 @@ class _TakePictureScreen extends State<TakePictureScreen> {
     setState(() {
       file = ImagePicker.pickImage(source: ImageSource.camera);
     });
-    setStatus('');
+    setStatus(''); 
+       correctUrl = uploadEndPoint + widget.imageId;
+  //  print(correctUrl);
   }
 
   chooseImage() {
@@ -38,6 +42,9 @@ class _TakePictureScreen extends State<TakePictureScreen> {
       file = ImagePicker.pickImage(source: ImageSource.gallery);
     });
     setStatus('');
+    correctUrl = uploadEndPoint + widget.imageId;
+ //   print(correctUrl);
+
   }
 
   setStatus(String message) {
@@ -53,11 +60,11 @@ class _TakePictureScreen extends State<TakePictureScreen> {
       return;
     }
     String fileName = tmpFile.path.split('/').last;
-   // upload(fileName);
+    upload(fileName);
   }
 
   upload(String fileName) {    
-    http.post(uploadEndPoint, body: {
+    http.post(correctUrl, body: {
       "image": base64Image,
       "name": fileName,
     }).then((result) {
@@ -67,7 +74,8 @@ class _TakePictureScreen extends State<TakePictureScreen> {
     });
   }
 
-  Widget showImage() {
+
+  Widget showImage() {    
     return FutureBuilder<File>(
       future: file,
       builder: (BuildContext context, AsyncSnapshot<File> snapshot) {

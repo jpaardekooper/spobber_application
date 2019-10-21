@@ -1,10 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data/global_variable.dart';
 
-bool isSap = false;
-bool isSigma = false;
-bool isUST02 = false;
-bool isVideo = false;
+
 
 class SearchFilter extends StatefulWidget {
   final Function updateKeyword;
@@ -239,13 +237,7 @@ class _SearchFilter extends State<SearchFilter> {
     );
   }
 
-  bool _isChecked = true;
 
-  List<String> _texts = [
-    "InduceSmile.com," "Flutter.io",
-    "google.com",
-    "youtube.com",
-    "yahoo.com",
-    "gmail.com"
-  ];
+
+
 }

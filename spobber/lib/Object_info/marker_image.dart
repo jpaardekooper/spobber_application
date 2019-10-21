@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:photo_view/photo_view.dart';
+import 'package:spobber/data/marker_detail.dart';
 
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
@@ -12,9 +13,12 @@ import 'dart:convert';
 import 'UploadImage.dart';
 
 class MarkerImage extends StatefulWidget {
+  final String imageId;
   final String imageUrl;
+  
   // In the constructor, require a Person
-  MarkerImage(this.imageUrl);
+  MarkerImage(this.imageId, this.imageUrl);
+
   @override
   _MarkerImage createState() => _MarkerImage();
 }
@@ -29,14 +33,14 @@ class _MarkerImage extends State<MarkerImage> {
 
     _fetchData();
     print(widget.imageUrl);
+      print(widget.imageId);
   }
 
   void _fetchData() async {
     if (widget.imageUrl == null || widget.imageUrl == "-") {
       return;
     } else {
-      final response = await http.get(
-          // "http://objectlabeler.azurewebsites.net/api/marker/?latitude=$latitude&longitude=$longtitude&zoomlevel=$zoom");
+      final response = await http.get(   
           widget.imageUrl);
       if (response.statusCode == 200) {
         _objectPhoto = (json.decode(response.body) as List)
@@ -58,38 +62,39 @@ class _MarkerImage extends State<MarkerImage> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading == true) {
+    // if (loading == true) {
+    //   return Scaffold(
+    //     body: Center(
+    //       child: CircularProgressIndicator(),
+    //     ),
+    //     // floatingActionButton: FloatingActionButton(
+    //     //   child: Icon(Icons.ac_unit),
+    //     //   onPressed: () {
+    //     //     // _fetchData();
+    //     //   },
+    //     // ),
+    //   );
+    // } else {
+    
       return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.ac_unit),
-          onPressed: () {
-            // _fetchData();
-          },
-        ),
-      );
-    } else {
-      return Scaffold(
-        body: timelineModel(),
+        body: loading ? noimageFound() : timelineModel() ,
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.camera_alt),
           onPressed: () {
             print("u pressed me");
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TakePictureScreen()));
+                MaterialPageRoute(builder: (context) => TakePictureScreen(imageId: widget.imageId)));
           },
         ),
       );
     }
-  }
+ // }
 
-  // @override
-  // void dispose() {
-  //   print("Disposing second route");
-  //   super.dispose();
-  // }
+
+  Widget noimageFound(){
+    return Center(child: 
+        Container(child: Text("Geen foto's gevonden van " + widget.imageId),));
+  }
 
   Widget timelineModel() => Timeline.builder(
         itemBuilder: centerTimelineBuilder,

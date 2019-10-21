@@ -32,7 +32,7 @@ import 'package:flutter/material.dart';
 
 import 'login_page.dart';
 import 'home_page.dart';
-
+import 'splashscreen.dart';
 
 // void main() => runApp(GoogleMapsSampleApp());
 
@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
           body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
       ),
-      home: LoginPage(),
+      home: SplashScreen(),
       routes: routes,
     );
   }

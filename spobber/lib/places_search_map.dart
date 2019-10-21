@@ -27,7 +27,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+import 'data/global_variable.dart';
 import 'package:geolocator/geolocator.dart' as prefix2;
 import 'package:spobber/search_filter.dart';
 

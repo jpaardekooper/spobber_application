@@ -41,7 +41,7 @@ class _MarkerInfoState extends State<MarkerInfo> {
   String age;
   String position;
   String objectType;
-  String phpEndPoint = '/';
+  String phpEndPoint = "";
   int _selectedStatus = 0;
   int _selectedType = 0;
 
