@@ -52,7 +52,7 @@ class _SearchFilter extends State<SearchFilter> {
               );
             },
           ),
-          title: Text('Selecteer object'),
+          title: Text('Selecteer een object type' , style: TextStyle(fontSize: 16)),
         ),
         body: ListView(
           children: <Widget>[
@@ -61,10 +61,6 @@ class _SearchFilter extends State<SearchFilter> {
               leading: Icon(Icons.room),
               title: Text(filterOptions[0]),
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => _buildAboutDialog(context),
-                );
                 _saveKeywordPreference(0);
               },
               trailing: _getIcon(0),
@@ -73,47 +69,17 @@ class _SearchFilter extends State<SearchFilter> {
               selected: _selectedPosition == 1,
               leading: Icon(Icons.tram),
               title: Text(filterOptions[1]),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => _buildAboutDialog(context),
-                );
+              onTap: () {          
                 _saveKeywordPreference(1);
               },
               trailing: _getIcon(1),
-            ),
-            //this goes in as one of the children in our column
-
-            // ListTile(
-            //   selected: _selectedPosition == 2,
-            //   leading: Icon(Icons.local_cafe),
-            //   title: Text(filterOptions[2]),
-            //   onTap: () {
-            //     _saveKeywordPreference(2);
-            //   },
-            //   trailing: _getIcon(2),
-            // ),
-            // ListTile(
-            //   selected: _selectedPosition == 3,
-            //   leading: Icon(Icons.local_dining),
-            //   title: Text(filterOptions[3]),
-            //   onTap: () {
-            //     _saveKeywordPreference(3);
-            //   },
-            //   trailing: _getIcon(3),
-            // ),
-            // ListTile(
-            //   selected: _selectedPosition == 4,
-            //   leading: Icon(Icons.local_grocery_store),
-            //   title: Text(filterOptions[4]),
-            //   onTap: () {
-            //     _saveKeywordPreference(4);
-            //   },
-            //   trailing: _getIcon(4),
-            // ),
+            ),   
+       
           ],
         ),
+        endDrawer: new SearchFilter2(),
       ),
+      
     );
   }
 
@@ -148,31 +114,54 @@ class _SearchFilter extends State<SearchFilter> {
       // Navigator.pop(context);
       //Scaffold.of(context).openEndDrawer();
     });
+  } 
   }
 
 
 
-  Widget _buildAboutDialog(BuildContext context) {
-    return new AlertDialog(
-      // title: const Text(
-      //   'Selecteer Data bronnen',
-      //   style: TextStyle(fontSize: 15),
-      // ),
-      content: new Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+class SearchFilter2 extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return _SearchFilter2();
+  }
+}
+
+class _SearchFilter2 extends State<SearchFilter2> {
+//this goes in our State class as a global variable 
+
+  @override
+  void initState() {
+    super.initState();
+  //  _loadPreferences();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
+          title: Text('Selecteer een of meerdere bronnen' , style: TextStyle(fontSize: 16)),
+        ),
+        body: ListView(
           children: <Widget>[
-            ListTile(
-              title: new Text(
-                "Selecteer data bronnen ",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            // _buildAboutText(),
-            // _buildLogoAttribution(),
             SwitchListTile(
                 title: const Text('SAP'),
                 value: isSap,
@@ -208,36 +197,19 @@ class _SearchFilter extends State<SearchFilter> {
                     isVideo = value;
                   });
                 },
-                secondary: const Icon(Icons.tram)),
-
-            ListTile(
-              title: new Text(
-                "Opslaan ",
-                style: TextStyle(
-                    color: Colors.lightBlue, fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
+                secondary: const Icon(Icons.tram)
+                ),    
           ],
-        ),
+        ),  
       ),
-      // actions: <Widget>[
-      //   new FlatButton(
-      //     onPressed: () {
-      //       Navigator.of(context).pop();
-      //     },
-      //     textColor: Theme.of(context).primaryColor,
-      //     child: const Text(
-      //       'Opslaan, en doorgaan',
-      //     ),
-      //   ),
-      // ],
+      
     );
   }
 
 
+
+  
+  
 
 
 }

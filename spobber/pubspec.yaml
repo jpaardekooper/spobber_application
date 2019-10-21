@@ -62,18 +62,19 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - assets/img/maps_style.json
-    - assets/img/location.png
-    - assets/img/result_data.png
-    - assets/img/marker.png
-    - assets/img/cluster.png
-    - assets/img/SAP.png
-    - assets/img/opzij1.jpg
-    - assets/img/opzij2.jpg
-    - assets/img/spoor.jpg
-    - assets/img/location-loader.gif
-    - assets/img/spobber.png
-    - assets/img/result_data.png
+    # - assets/img/maps_style.json
+    # - assets/img/location.png
+    # - assets/img/result_data.png
+    # - assets/img/marker.png
+    # - assets/img/cluster.png
+    # - assets/img/SAP.png
+    # - assets/img/opzij1.jpg
+    # - assets/img/opzij2.jpg
+    # - assets/img/spoor.jpg
+    # - assets/img/location-loader.gif
+    # - assets/img/spobber.png
+    # - assets/img/result_data.png
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

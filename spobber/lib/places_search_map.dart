@@ -27,6 +27,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+import 'dart:io';
+
+import 'package:flutter/material.dart' as prefix0;
+
 import 'data/global_variable.dart';
 import 'package:geolocator/geolocator.dart' as prefix2;
 import 'package:spobber/search_filter.dart';
@@ -352,6 +356,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
 
     print(uri);
+    
     final response = await http.get(Uri.encodeFull(uri));
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -455,14 +460,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   }
 
   void _handleResponse(List data) {
+
     setState(() {
       _emptyList = false;
       for (int i = 0; i < places.length; i++) {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
-          //icon: BitmapDescriptor.fromAsset('assets/img/marker.png'),
-          icon: BitmapDescriptor.defaultMarker,
+         // icon: BitmapDescriptor.fromAsset('assets/marker.png'),        
+          icon: Platform.isAndroid ? BitmapDescriptor.fromAsset('assets/marker.png') : BitmapDescriptor.fromAsset('assets/2.0x/marker_yellow.png'),       
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].type,
@@ -541,108 +547,18 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   bool _emptyList = true;
 
+
+
+
+
+
   Widget _buildContainer() {
-    // if (_emptyList) {
-    //   return Align(
-    //     alignment: Alignment.bottomCenter,
-    //     child: Container(
-    //       margin: EdgeInsets.symmetric(vertical: 15.0),
-    //       height: 150.0,
-    //       child: Padding(
-    //         padding: const EdgeInsets.all(15.0),
-    //         child: Container(
-    //           child: new FittedBox(
-    //             child: Material(
-    //                 color: Color.fromRGBO(255, 255, 255, 0.8),
-    //                 elevation: 15.0,
-    //                 borderRadius: BorderRadius.circular(
-    //                   15.0,
-    //                 ),
-    //                 child: Row(
-    //                   mainAxisAlignment: MainAxisAlignment.start,
-    //                   children: <Widget>[
-    //                     Container(
-    //                       width: 150,
-    //                       height: 150,
-    //                       child: ClipRRect(
-    //                         borderRadius: new BorderRadius.circular(15.0),
-    //                         child: Image(
-    //                           fit: BoxFit.cover,
-    //                           image: AssetImage("assets/location-loader.gif"),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                     Container(
-    //                       child: Padding(
-    //                           padding: const EdgeInsets.all(15.0),
-    //                           child: Column(
-    //                             crossAxisAlignment: CrossAxisAlignment.start,
-    //                             children: <Widget>[
-    //                               Padding(
-    //                                 padding: const EdgeInsets.only(top: 1),
-    //                                 child: Container(
-    //                                     child: Text(
-    //                                   "Er zijn geen objecten gevonden",
-    //                                   style: TextStyle(
-    //                                       color: Colors.blue,
-    //                                       fontSize: 20.0,
-    //                                       fontWeight: FontWeight.bold),
-    //                                 )),
-    //                               ),
-    //                               SizedBox(height: 5.0),
-    //                               Container(
-    //                                   child: Row(
-    //                                 mainAxisAlignment:
-    //                                     MainAxisAlignment.spaceEvenly,
-    //                                 children: <Widget>[
-    //                                   Container(
-    //                                       child: Text(
-    //                                     "(huidige locatie)",
-    //                                     textAlign: TextAlign.left,
-    //                                     style: TextStyle(
-    //                                       color: Colors.black54,
-    //                                       fontSize: 18.0,
-    //                                     ),
-    //                                   )),
-    //                                 ],
-    //                               )),
-    //                               SizedBox(height: 5.0),
-    //                               Container(
-    //                                   child: Text(
-    //                                 "Latitude: " +
-    //                                     currentLocation.latitude.toString(),
-    //                                 style: TextStyle(
-    //                                   color: Colors.black54,
-    //                                   fontSize: 18.0,
-    //                                   fontWeight: FontWeight.bold,
-    //                                 ),
-    //                               )),
-    //                               SizedBox(height: 5.0),
-    //                               Container(
-    //                                   child: Text(
-    //                                 "Longitude: " +
-    //                                     currentLocation.longitude.toString(),
-    //                                 style: TextStyle(
-    //                                     color: Colors.black54,
-    //                                     fontSize: 18.0,
-    //                                     fontWeight: FontWeight.bold),
-    //                               )),
-    //                             ],
-    //                           )),
-    //                     ),
-    //                   ],
-    //                 )),
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   );
-    // } else {
     return Align(
         alignment: Alignment.bottomLeft,
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 15.0),
-          height: 150.0,
+          color: Colors.blue[100],
+          padding: EdgeInsets.symmetric(vertical: 15.0),
+          height: 175.0,
           //  child:  ListView(scrollDirection: Axis.horizontal, children: formWidget),
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -672,37 +588,43 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                     child: Padding(
                         padding: EdgeInsets.all(8),
                         child: Container(
+                             color: Colors.white,
                           child: FittedBox(
-                            child: Material(
-                                color: _selectedIndex != null &&
-                                        _selectedIndex == index
-                                    ? Colors.blue
-                                    : Color.fromRGBO(255, 255, 255, 1),
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 5,
+                                    color: _selectedIndex != null &&
+                                            _selectedIndex == index
+                                        ? Colors.red
+                                        : Color.fromRGBO(255, 255, 255, 1),
+                                  ),
+                                ),
+
                                 //elevation: 14.0,
 
-                                borderRadius: BorderRadius.circular(5.0),
+                                //  borderRadius: BorderRadius.circular(5.0),
                                 // shadowColor: Color(0x802196F3),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Container(
-                                      width: 100,
-                                      height: 150,
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            new BorderRadius.circular(5.0),
-                                        child: Image(
-                                          fit: BoxFit.fitHeight,
-                                          image: NetworkImage(
-                                              places[index].preview_image_uri),
-                                        ),
-                                        // child: Image(
-                                        //   fit: BoxFit.fill,
-                                        //   image: AssetImage("assets/spoor.jpg"),
-                                        // ),
-                                      ),
-                                    ),
+                                    // Container(
+                                    //   width: 100,
+                                    //   height: 150,
+                                    //   child: ClipRRect(
+                                    //     borderRadius:
+                                    //         new BorderRadius.circular(5.0),
+                                    //     child: Image(
+                                    //       fit: BoxFit.fitHeight,
+                                    //       image: NetworkImage(
+                                    //           places[index].preview_image_uri),
+                                    //     ),
+                                    //     child: Image(
+                                    //       fit: BoxFit.fill,
+                                    //       image: AssetImage("assets/spoor.jpg"),
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     Container(
                                       child: Padding(
                                         padding: const EdgeInsets.all(15.0),
@@ -733,67 +655,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     setState(() => _selectedIndex = index);
   }
 
-  // List<Widget> formWidget = new List();
-
-  // getFormWidget(String id, String type, String status, String imgurl,
-  //     String imginfo, double lat, double long, MarkerId markerid) {
-  //   formWidget.add(
-  //     Padding(
-  //       padding: const EdgeInsets.all(15.0),
-  //       child: _boxes(id, type, status, imgurl, imginfo, lat, long, markerid),
-  //     ),
-  //   );
-  // }
-
-  // bool tapped = false;
-
-  // Widget _boxes(String id, String type, String status, String imgurl,
-  //     String imginfo, double lat, double long, MarkerId markerid) {
-  //   return GestureDetector(
-  //       onTap: () {
-  //         tapped = true;
-  //         _gotoLocation(lat, long);
-  //         _onMarkerTapped(markerid);
-  //         print(tapped);
-  //       },
-  //       child: Container(
-  //         child: FittedBox(
-  //           child: Material(
-  //               color: tapped ? Colors.white : Colors.red,
-  //               //elevation: 14.0,
-  //               borderRadius: BorderRadius.circular(5.0),
-  //               // shadowColor: Color(0x802196F3),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: <Widget>[
-  //                   Container(
-  //                     width: 100,
-  //                     height: 150,
-  //                     child: ClipRRect(
-  //                       borderRadius: new BorderRadius.circular(5.0),
-  //                       child: Image(
-  //                         fit: BoxFit.fill,
-  //                         image: NetworkImage(imgurl),
-  //                       ),
-  //                       // child: Image(
-  //                       //   fit: BoxFit.fill,
-  //                       //   image: AssetImage("assets/spoor.jpg"),
-  //                       // ),
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.all(15.0),
-  //                       child: myDetailsContainer1(
-  //                           id, type, status, imginfo, lat, long),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               )),
-  //         ),
-  //       ));
-  // }
-
   Widget myDetailsContainer1(String id, String type, String status,
       String imginfo, double lat, double long) {
     return Column(
@@ -810,57 +671,63 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
               fontSize: 20.0,
               fontWeight: FontWeight.normal),
         )),
-        // ),
-        // SizedBox(height: 5.0),
+     //   Divider(),
+      SizedBox(height: 5.0),
         Container(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-                child: Text(
-              "Status ",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 18.0,
-              ),
-            )),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-            Container(
-              child: Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-            ),
-          ],
-        )),
+          child: Text("Equipment:", style: TextStyle(fontSize: 18.0,)),
+        ),
+        // ),
+     
+        // Container(
+        //     child: Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: <Widget>[
+        //     Container(
+        //         child: Text(
+        //       "Status ",
+        //       style: TextStyle(
+        //         color: Colors.black54,
+        //         fontSize: 18.0,
+        //       ),
+        //     )),
+        //     Container(
+        //       child: Icon(
+        //         FontAwesomeIcons.solidStar,
+        //         color: Colors.amber,
+        //         size: 15.0,
+        //       ),
+        //     ),
+        //     Container(
+        //       child: Icon(
+        //         FontAwesomeIcons.solidStar,
+        //         color: Colors.amber,
+        //         size: 15.0,
+        //       ),
+        //     ),
+        //     Container(
+        //       child: Icon(
+        //         FontAwesomeIcons.solidStar,
+        //         color: Colors.amber,
+        //         size: 15.0,
+        //       ),
+        //     ),
+        //     Container(
+        //       child: Icon(
+        //         FontAwesomeIcons.solidStar,
+        //         color: Colors.amber,
+        //         size: 15.0,
+        //       ),
+        //     ),
+        //     Container(
+        //       child: Icon(
+        //         FontAwesomeIcons.solidStarHalf,
+        //         color: Colors.amber,
+        //         size: 15.0,
+        //       ),
+        //     ),
+        //   ],
+        // )),
+        
         SizedBox(height: 5.0),
         Container(
             child: Row(
@@ -926,8 +793,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
               _addPolyLine(),
             ],
           ),
-          bottomNavigationBar: BottomAppBar(
-            child: new Row(
+          bottomNavigationBar: BottomAppBar(          
+            child: new Row(            
               mainAxisSize: MainAxisSize.max,
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
