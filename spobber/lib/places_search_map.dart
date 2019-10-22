@@ -467,7 +467,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
          // icon: BitmapDescriptor.fromAsset('assets/marker.png'),        
-          icon: BitmapDescriptor.fromAsset('assets/2.0x/marker_yellow.png'),       
+          icon: BitmapDescriptor.fromAsset('assets/marker_yellow.png'),       
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].type,
@@ -509,7 +509,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
          // icon: BitmapDescriptor.fromAsset('assets/marker.png'),        
-          icon: BitmapDescriptor.fromAsset('assets/marker.png'),       
+          icon: BitmapDescriptor.fromAsset('assets/marker_yellow.png'),       
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].type,
