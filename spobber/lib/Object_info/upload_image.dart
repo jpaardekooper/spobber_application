@@ -64,14 +64,16 @@ class _TakePictureScreen extends State<TakePictureScreen> {
   }
 
   upload(String fileName) {    
+    print(correctUrl);
     http.post(correctUrl, body: {
-      "image": base64Image,
-      "name": fileName,
+       "filename": fileName,
+      "image": base64Image,     
     }).then((result) {
       setStatus(result.statusCode == 200 ? result.body : errMessage);
     }).catchError((error) {
       setStatus(error);
     });
+    print(base64Image);
   }
 
 

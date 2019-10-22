@@ -67,7 +67,8 @@ class PlacesSearchMapSample extends StatefulWidget {
 
 typedef Marker MarkerUpdateAction(Marker marker);
 
-class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
+class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
+    with SingleTickerProviderStateMixin {
   LocationData currentLocation;
 
   bool currentWidget = true;
@@ -76,11 +77,23 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   MarkerId selectedMarker;
   int _markerIdCounter = 1;
 
+  double _scale;
+  AnimationController _controllerAnimation;
+
   @override
   void initState() {
     super.initState();
 
     _getLocation();
+
+    _controllerAnimation = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 200),
+      lowerBound: 0.0,
+      upperBound: 0.1,
+    )..addListener(() {
+        setState(() {});
+      });
   }
 
   //When clicked function is performed on a marker
@@ -275,31 +288,83 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   Widget _search() {
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
-        child: Align(
-            alignment: Alignment.topRight,
-            child: Container(
-                width: 37,
-                height: 37,
-                color: Colors.white.withOpacity(0.7),
-                child: IconButton(
-                  color: Colors.black54,
-                  icon: Icon(Icons.search),
-                  // child: Text("test"),
-                  onPressed: () async {
-                    final GoogleMapController controller =
-                        await _controller.future;
-                    final LatLngBounds visibleRegion =
-                        await controller.getVisibleRegion();
+      padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: GestureDetector(
+          onTapDown: _onTapDown,
+          onTapUp: _onTapUp,
+          onTap: () async {
+            final GoogleMapController controller = await _controller.future;
+            final LatLngBounds visibleRegion =
+                await controller.getVisibleRegion();
 
-                    setState(() {
-                      _visibleRegion = visibleRegion;
-                    });
-                    searchNearby(isSap, isSigma, isUST02, isVideo);
-                  },
-                ))));
+            setState(() {
+              _visibleRegion = visibleRegion;
+            });
+
+            searchNearby(isSap, isSigma, isUST02, isVideo);
+          },
+          child: Transform.scale(
+            scale: _scale,
+            child: _animatedButtonUI,
+          ),
+        ),
+        //  child: GestureDetector(
+        // onTapDown: _onTapDown,
+        // onTapUp: _onTapUp,
+        // child: Transform.scale(
+        //   scale: _scale,
+        //   child: AnimatedContainer(
+        //     // Use the properties stored in the State class.
+        //   width: 37,
+        //   height: 37,
+        //     decoration: BoxDecoration(
+        //     ),
+        //     // Define how long the animation should take.
+        //     duration: Duration(seconds: 1),
+        //     // Provide an optional curve to make the animation feel smoother.
+        //     curve: Curves.fastOutSlowIn,
+        //     child:  IconButton(
+        //     color: Colors.black54,
+        //     icon: Icon(Icons.search),
+        //     // child: Text("test"),
+        //     onPressed: () async {
+        //       final GoogleMapController controller = await _controller.future;
+        //       final LatLngBounds visibleRegion =
+        //           await controller.getVisibleRegion();
+
+        //       setState(() {
+        //         _visibleRegion = visibleRegion;
+
+        //       });
+
+        //       searchNearby(isSap, isSigma, isUST02, isVideo);
+        //     },
+        //   ),
+        //   ),
+        // ),
+        // ),
+      ),
+    );
   }
 
+  void _onTapDown(TapDownDetails details) {
+    _controllerAnimation.forward();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _controllerAnimation.reverse();
+  }
+
+  @override
+  void dispose() {
+    _controllerAnimation.dispose();
+    super.dispose();
+  }
+
+// Color _color = Colors.white.withOpacity(0.7);
+// BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
   Widget _addMarker() {
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
@@ -321,22 +386,25 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   Widget _addPolyLine() {
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 190, 12, 0),
-        child: Align(
-            alignment: Alignment.topRight,
-            child: Container(
-                alignment: Alignment.centerRight,
-                width: 37,
-                height: 37,
-                color: Colors.white.withOpacity(0.7),
-                child: IconButton(
-                  color: Colors.black54,
-                  icon: Icon(Icons.linear_scale),
-                  onPressed: () async {
-                    loadPolyline();
+      padding: EdgeInsets.fromLTRB(0, 190, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Container(
+          alignment: Alignment.centerRight,
+          width: 37,
+          height: 37,
+          color: Colors.white.withOpacity(0.7),
+          child: IconButton(
+            color: Colors.black54,
+            icon: Icon(Icons.linear_scale),
+            onPressed: () async {
+              loadPolyline();
 //_add();
-                  },
-                ))));
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   List<LatLng> pointsRed = <LatLng>[];
@@ -356,7 +424,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
 
     print(uri);
-    
+
     final response = await http.get(Uri.encodeFull(uri));
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -460,14 +528,14 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   }
 
   void _handleResponse(List data) {
-    if(Platform.isIOS){
+    if (Platform.isIOS) {
       _emptyList = false;
       for (int i = 0; i < places.length; i++) {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
-         // icon: BitmapDescriptor.fromAsset('assets/marker.png'),        
-          icon: BitmapDescriptor.fromAsset('assets/marker_yellow.png'),       
+          // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
+          icon: BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].type,
@@ -494,22 +562,20 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
           onTap: () {
             _onMarkerTapped(markerId);
           },
-        );     
+        );
 
         setState(() {
           markers[markerId] = marker;
         });
       }
-    }
-
-    else if(Platform.isAndroid){
+    } else if (Platform.isAndroid) {
       _emptyList = false;
       for (int i = 0; i < places.length; i++) {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
-         // icon: BitmapDescriptor.fromAsset('assets/marker.png'),        
-          icon: BitmapDescriptor.fromAsset('assets/marker_yellow.png'),       
+          // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
+          icon: BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].type,
@@ -536,19 +602,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
           onTap: () {
             _onMarkerTapped(markerId);
           },
-        );     
+        );
 
         setState(() {
           markers[markerId] = marker;
         });
       }
-    }
-    else{
+    } else {
       print("platform");
     }
-
-
-
   }
 
 //widget building
@@ -580,11 +642,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   }
 
   bool _emptyList = true;
-
-
-
-
-
 
   Widget _buildContainer() {
     return Align(
@@ -622,11 +679,12 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                     child: Padding(
                         padding: EdgeInsets.all(8),
                         child: Container(
-                             color: Colors.white,
+                          color: Colors.white,
                           child: FittedBox(
                             child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(width: 5,
+                                  border: Border.all(
+                                    width: 5,
                                     color: _selectedIndex != null &&
                                             _selectedIndex == index
                                         ? Colors.red
@@ -705,13 +763,16 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
               fontSize: 20.0,
               fontWeight: FontWeight.normal),
         )),
-     //   Divider(),
-      SizedBox(height: 5.0),
+        //   Divider(),
+        SizedBox(height: 5.0),
         Container(
-          child: Text("Equipment:", style: TextStyle(fontSize: 18.0,)),
+          child: Text("Equipment:",
+              style: TextStyle(
+                fontSize: 18.0,
+              )),
         ),
         // ),
-     
+
         // Container(
         //     child: Row(
         //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -761,7 +822,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         //     ),
         //   ],
         // )),
-        
+
         SizedBox(height: 5.0),
         Container(
             child: Row(
@@ -807,6 +868,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   bool _loading = true;
   @override
   Widget build(BuildContext context) {
+    _scale = 1 - _controllerAnimation.value;
     //print(_loading);
     //print(currentLocation.latitude);
     if (_loading) {
@@ -827,8 +889,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
               _addPolyLine(),
             ],
           ),
-          bottomNavigationBar: BottomAppBar(          
-            child: new Row(            
+          bottomNavigationBar: BottomAppBar(
+            child: new Row(
               mainAxisSize: MainAxisSize.max,
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
@@ -967,4 +1029,11 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
       selectedPolyline = polylineId;
     });
   }
+
+  Widget get _animatedButtonUI => Container(
+        height: 37,
+        width: 37,
+        color: Colors.white.withOpacity(0.7),
+        child: Center(child: Icon(Icons.search)),
+      );
 }
