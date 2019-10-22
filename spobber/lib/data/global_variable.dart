@@ -5,3 +5,4 @@ bool isSap = false;
 bool isSigma = false;
 bool isUST02 = false;
 bool isVideo = false;
+
