@@ -114,13 +114,13 @@ return Drawer(
             // ListView contains a group of widgets that scroll inside the drawer
             child: ListView(
               children: <Widget>[
-                UserAccountsDrawerHeader(),
-      //           DrawerHeader(
-      //   child: Text('Heading'),
-      //   decoration: BoxDecoration(
-      //     color: Colors.blue,
-      //   ),
-      // ),
+       //         UserAccountsDrawerHeader(),
+                DrawerHeader(
+        child: Text('Heading'),
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+      ),
       
         ListTile(
         leading: Icon(Icons.map),

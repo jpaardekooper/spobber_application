@@ -460,15 +460,14 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   }
 
   void _handleResponse(List data) {
-
-    setState(() {
+    if(Platform.isIOS){
       _emptyList = false;
       for (int i = 0; i < places.length; i++) {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
           markerId: MarkerId(places[i].id.toString()),
          // icon: BitmapDescriptor.fromAsset('assets/marker.png'),        
-          icon: Platform.isAndroid ? BitmapDescriptor.fromAsset('assets/marker.png') : BitmapDescriptor.fromAsset('assets/2.0x/marker_yellow.png'),       
+          icon: BitmapDescriptor.fromAsset('assets/2.0x/marker_yellow.png'),       
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].type,
@@ -495,26 +494,61 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
           onTap: () {
             _onMarkerTapped(markerId);
           },
-        );
-
-        // getFormWidget(
-        //     places[i].id.toString(),
-        //     places[i].type,
-        //     places[i].status.toString(),
-        //     places[i].preview_image_uri,
-        //     places[i].object_uri,
-        //     places[i].latitude,
-        //     places[i].longitude,
-        //     markerId);
+        );     
 
         setState(() {
           markers[markerId] = marker;
         });
       }
-    });
-    // } else {
-    //   print(data);
-    // }
+    }
+
+    else if(Platform.isAndroid){
+      _emptyList = false;
+      for (int i = 0; i < places.length; i++) {
+        MarkerId markerId = MarkerId(places[i].id.toString());
+        Marker marker = Marker(
+          markerId: MarkerId(places[i].id.toString()),
+         // icon: BitmapDescriptor.fromAsset('assets/marker.png'),        
+          icon: BitmapDescriptor.fromAsset('assets/2.0x/marker_yellow.png'),       
+          position: LatLng(places[i].latitude, places[i].longitude),
+          infoWindow: InfoWindow(
+              title: places[i].type,
+              snippet: "lat: " +
+                  places[i].latitude.toString() +
+                  " long: " +
+                  places[i].longitude.toString(),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MarkerTemplate(
+                              markerDetail: new MarkerDetail(
+                            places[i].id.toString(),
+                            places[i].type.toString(),
+                            places[i].latitude.toString(),
+                            places[i].longitude.toString(),
+                            places[i].status.toString(),
+                            places[i].preview_image_uri.toString(),
+                            places[i].object_uri.toString(),
+                          ))),
+                );
+              }),
+          onTap: () {
+            _onMarkerTapped(markerId);
+          },
+        );     
+
+        setState(() {
+          markers[markerId] = marker;
+        });
+      }
+    }
+    else{
+      print("platform");
+    }
+
+
+
   }
 
 //widget building
