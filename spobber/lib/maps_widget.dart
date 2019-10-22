@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'places_search_map.dart';
 import 'search_filter.dart';
@@ -51,50 +52,7 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
               },
             ),
           ],
-          // bottom: PreferredSize(
-          //     preferredSize: Size.fromHeight(50.0),
-          //     child: Row(
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: <Widget>[
-          //           Stack(
-          //             children: <Widget>[
-          //               Padding(
-          //                   padding: EdgeInsets.all(15),
-          //                   child: Row(
-          //                     children: <Widget>[
-          //                       Icon(
-          //                         Icons.drafts,
-          //                         color: Colors.white,
-          //                         size: 20.0,
-          //                       ),
-          //                       Text("data",
-          //                           style: TextStyle(color: Colors.white)),
-          //                     ],
-          //                   ))
-          //             ],
-          //           ),
-                  
-          //               Stack(
-          //                 children: <Widget>[
-          //                   Padding(
-          //                       padding: EdgeInsets.all(15),
-          //                       child: Row(
-          //                         children: <Widget>[
-          //                           Icon(
-          //                             Icons.notifications,
-          //                             color: Colors.red,
-          //                             size: 20.0,
-          //                           ),
-          //                           Text("15",
-          //                               style: TextStyle(color: Colors.white)),
-          //                         ],
-          //                       ))
-          //                 ],
-          //               ),
-          //             ],
-          //           )
-          //         )),
+    
       ),
       drawer: _buildDrawer(context),
       body: PlacesSearchMapSample(keyword),
@@ -103,7 +61,8 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
     );
   }
 }
-
+bool _switchValue = false;
+bool _switchValue2 = false;
 Widget _buildDrawer(context) {
 
 return Drawer(
@@ -141,7 +100,18 @@ return Drawer(
           // ...
           // Then close the drawer
           print("pressed item 2");
-          Navigator.pop(context);
+          // Navigator.pop(context);
+           showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return BottomSheetSwitch(
+                    switchValue: _switchValue,
+                    valueChanged: (value) {
+                      _switchValue = value;
+                    },
+                  );
+                },
+           );
         },
       ),
        Divider(),
@@ -152,7 +122,19 @@ return Drawer(
           // Update the state of the app
           // ...
           // Then close the drawer
-          Navigator.pop(context);
+         // Navigator.pop(context);
+         showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return BottomSheetSwitch2(
+        switchValue: _switchValue2,
+                    valueChanged: (value) {
+                      _switchValue2 = value;
+                    },
+        
+      );
+    },
+  );
         },
       ),
        Divider(),
@@ -202,3 +184,72 @@ return Drawer(
       ),
     );
   }
+
+  class BottomSheetSwitch extends StatefulWidget {
+  BottomSheetSwitch({@required this.switchValue, @required this.valueChanged});
+
+  final bool switchValue;
+  final ValueChanged valueChanged;
+
+  @override
+  _BottomSheetSwitch createState() => _BottomSheetSwitch();
+}
+
+class _BottomSheetSwitch extends State<BottomSheetSwitch> {
+  bool _switchValue;
+
+  @override
+  void initState() {
+    _switchValue = widget.switchValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: CupertinoSwitch(
+          value: _switchValue,
+          onChanged: (bool value) {
+            setState(() {
+              _switchValue = value;
+              widget.valueChanged(value);
+            });
+          }),
+    );
+  }
+}
+
+  class BottomSheetSwitch2 extends StatefulWidget {
+  BottomSheetSwitch2({@required this.switchValue, @required this.valueChanged});
+
+  final bool switchValue;
+  final ValueChanged valueChanged;
+
+  @override
+  _BottomSheetSwitch2 createState() => _BottomSheetSwitch2();
+}
+
+class _BottomSheetSwitch2 extends State<BottomSheetSwitch2> {
+  bool _switchValue;
+
+  @override
+  void initState() {
+    _switchValue = widget.switchValue;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: 
+       CupertinoSwitch(
+          value: _switchValue,
+          onChanged: (bool value) {
+            setState(() {
+              _switchValue = value;
+              widget.valueChanged(value);
+            });
+          }),
+    );
+  }
+}
