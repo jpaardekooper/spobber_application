@@ -220,46 +220,46 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   //   controller.setMapStyle(value);
   // }
 
-void searchNearby(){
-places.add(PlaceResponse(id: 1, type: "es-las", latitude: currentLocation.latitude, longitude: currentLocation.longitude, status: 1, preview_image_uri: "12", object_uri: "dsa"));
-places.add(PlaceResponse(id: 2, type: "es-las", latitude: currentLocation.latitude + 0.0000000005, longitude: currentLocation.longitude + 0.0000000005, status: 1, preview_image_uri: "12", object_uri: "dsa"));
+// void searchNearby(){
+// places.add(PlaceResponse(id: 1, type: "es-las", latitude: currentLocation.latitude, longitude: currentLocation.longitude, status: 1, preview_image_uri: "12", object_uri: "dsa"));
+// places.add(PlaceResponse(id: 2, type: "es-las", latitude: currentLocation.latitude + 0.0000000005, longitude: currentLocation.longitude + 0.0000000005, status: 1, preview_image_uri: "12", object_uri: "dsa"));
 
-}
-  // void searchNearby(
-  //     bool isSap, bool isSigma, bool isUST02, bool isVideo) async {
-  //   print(_visibleRegion.southwest.latitude);
-  //   print(_visibleRegion.southwest.longitude);
-  //   print(_visibleRegion.northeast.latitude);
-  //   print(_visibleRegion.northeast.longitude);
-  //   setState(() {
-  //     markers.clear();
-  //     //  formWidget.clear();
-  //     places.clear();
-  //     polylines.clear();
+// }
+  void searchNearby(
+      bool isSap, bool isSigma, bool isUST02, bool isVideo) async {
+    print(_visibleRegion.southwest.latitude);
+    print(_visibleRegion.southwest.longitude);
+    print(_visibleRegion.northeast.latitude);
+    print(_visibleRegion.northeast.longitude);
+    setState(() {
+      markers.clear();
+      //  formWidget.clear();
+      places.clear();
+      polylines.clear();
 
-  //     circles.clear();
-  //   });
-  //   String url =
-  //       "https://spobberapi.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
-  //   ;
-  //   print(url);
-  //   final response = await http.get(url);
+      circles.clear();
+    });
+    String url =
+        "https://spobber.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
+    ;
+    print(url);
+    final response = await http.get(url);
 
-  //   if (response.statusCode == 200) {
-  //     // final data = json.decode(response.body);
-  //     places = (json.decode(response.body) as List)
-  //         .map((data) => new PlaceResponse().fromJson(data))
-  //         .toList();
-  //     _handleResponse(places);
-  //   } else {
-  //     //throw Exception('An error occurred getting places nearby');
-  //   }
+    if (response.statusCode == 200) {
+      // final data = json.decode(response.body);
+      places = (json.decode(response.body) as List)
+          .map((data) => new PlaceResponse().fromJson(data))
+          .toList();
+      _handleResponse(places);
+    } else {
+      //throw Exception('An error occurred getting places nearby');
+    }
 
-  //   // make sure to hide searching
-  //   setState(() {
-  //     searching = false;
-  //   });
-  // }
+    // make sure to hide searching
+    setState(() {
+      searching = false;
+    });
+  }
 
   MapType _mapType = MapType.satellite;
 
@@ -289,11 +289,7 @@ places.add(PlaceResponse(id: 2, type: "es-las", latitude: currentLocation.latitu
   }
 
   Widget _search() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
-      child: Align(
-        alignment: Alignment.topRight,
-        child: GestureDetector(
+    return GestureDetector(
           onTapDown: _onTapDown,
           onTapUp: _onTapUp,
           onTap: () async {
@@ -304,10 +300,14 @@ places.add(PlaceResponse(id: 2, type: "es-las", latitude: currentLocation.latitu
             setState(() {
               _visibleRegion = visibleRegion;
             });
-searchNearby();
-           // searchNearby(isSap, isSigma, isUST02, isVideo);
+//searchNearby();
+            searchNearby(isSap, isSigma, isUST02, isVideo);
           },
-          child: Transform.scale(
+          child: Padding(
+      padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Transform.scale(
             scale: _scale,
             child: _animatedButtonUI,
           ),
@@ -656,9 +656,9 @@ searchNearby();
     _scale = 1 - _controllerAnimation.value;
     //print(_loading);
     //print(currentLocation.latitude);
-    if (_loading) {
-      return new Scaffold(body: Center(child: CircularProgressIndicator()));
-    } else {
+    // if (_loading) {
+    //   return new Scaffold(body: Center(child: CircularProgressIndicator()));
+    // } else {
       return Scaffold(
         body: Stack(
           children: <Widget>[
@@ -705,7 +705,7 @@ searchNearby();
         ),
       );
     }
-  }
+ // }
 
   Widget text(int value) {
     Text text;
