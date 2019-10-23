@@ -6,3 +6,5 @@ bool isSigma = false;
 bool isUST02 = false;
 bool isVideo = false;
 
+bool switchValue1 = false;
+bool switchValue2 = false;

@@ -30,11 +30,10 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:spobber/maps_widget.dart';
+import 'package:spobber/maps_widgets/maps_header.dart';
 
 
 import 'login_page.dart';
-import 'home_page.dart';
 import 'splashscreen.dart';
 
 // void main() => runApp(GoogleMapsSampleApp());

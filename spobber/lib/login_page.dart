@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spobber/maps_widget.dart';
+import 'package:spobber/maps_widgets/maps_header.dart';
 import 'home_page.dart';
 
 
