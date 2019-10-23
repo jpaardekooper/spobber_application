@@ -124,18 +124,18 @@ return Drawer(
           // ...
           // Then close the drawer
          // Navigator.pop(context);
-         showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return BottomSheetSwitch2(
-        switchValue: switchValue2,
-                    valueChanged: (value) {
-                      switchValue2 = value;
-                    },
+  //        showDialog<void>(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return BottomSheetSwitch2(
+  //       switchValue: switchValue2,
+  //                   valueChanged: (value) {
+  //                     switchValue2 = value;
+  //                   },
         
-      );
-    },
-  );
+  //     );
+  //   },
+  // );
         },
       ),
        Divider(),

@@ -1,8 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:shared_preferences/shared_preferences.dart';
-import '../data/global_variable.dart';
-
-
+import 'package:spobber/data/global_variable.dart';
+import 'alertdialog_filter.dart';
 
 class SearchFilter extends StatefulWidget {
   final Function updateKeyword;
@@ -37,6 +36,8 @@ class _SearchFilter extends State<SearchFilter> {
     _loadPreferences();
   }
 
+  bool eenvalue = false;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -52,7 +53,7 @@ class _SearchFilter extends State<SearchFilter> {
               );
             },
           ),
-          title: Text('Selecteer een object type' , style: TextStyle(fontSize: 16)),
+          title: Text('Selecteer een object', style: TextStyle(fontSize: 14)),
         ),
         body: ListView(
           children: <Widget>[
@@ -62,6 +63,26 @@ class _SearchFilter extends State<SearchFilter> {
               title: Text(filterOptions[0]),
               onTap: () {
                 _saveKeywordPreference(0);
+
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialogFilter(
+                      switchValueisSap: isSap,
+                      valueChangedisSap: (value) {
+                        isSap = value;
+                      },
+                      switchValueisSigma: isSigma,
+                      valueChangedisSigma: (value) {
+                        isSigma = value;
+                      },
+                      switchValueisVideo: isVideo,
+                      valueChangedisVideo: (value) {
+                        isVideo = value;
+                      },
+                    );
+                  },
+                );
               },
               trailing: _getIcon(0),
             ),
@@ -69,17 +90,34 @@ class _SearchFilter extends State<SearchFilter> {
               selected: _selectedPosition == 1,
               leading: Icon(Icons.tram),
               title: Text(filterOptions[1]),
-              onTap: () {          
+              onTap: () {
                 _saveKeywordPreference(1);
+
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialogFilter(
+                      switchValueisSap: isSap,
+                      valueChangedisSap: (value) {
+                        isSap = value;
+                      },
+                      switchValueisSigma: isSigma,
+                      valueChangedisSigma: (value) {
+                        isSigma = value;
+                      },
+                      switchValueisVideo: isVideo,
+                      valueChangedisVideo: (value) {
+                        isVideo = value;
+                      },
+                    );
+                  },
+                );
               },
               trailing: _getIcon(1),
-            ),   
-       
+            ),
           ],
         ),
-        endDrawer: new SearchFilter2(),
       ),
-      
     );
   }
 
@@ -114,102 +152,5 @@ class _SearchFilter extends State<SearchFilter> {
       // Navigator.pop(context);
       //Scaffold.of(context).openEndDrawer();
     });
-  } 
   }
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-
-
-class SearchFilter2 extends StatefulWidget {
-
-  @override
-  State<StatefulWidget> createState() {
-    return _SearchFilter2();
-  }
-}
-
-class _SearchFilter2 extends State<SearchFilter2> {
-//this goes in our State class as a global variable 
-
-  @override
-  void initState() {
-    super.initState();
-  //  _loadPreferences();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              );
-            },
-          ),
-          title: Text('Selecteer een of meerdere bronnen' , style: TextStyle(fontSize: 16)),
-        ),
-        body: ListView(
-          children: <Widget>[
-            SwitchListTile(
-                title: const Text('SAP'),
-                value: isSap,
-                onChanged: (bool value) {
-                  setState(() {
-                    isSap = value;
-                  });
-                },
-                secondary: const Icon(Icons.tram)),
-            SwitchListTile(
-                title: const Text('Sigma'),
-                value: isSigma,
-                onChanged: (bool value) {
-                  setState(() {
-                    isSigma = value;
-                  });
-                },
-                secondary: const Icon(Icons.tram)),
-            SwitchListTile(
-                title: const Text('UST02 meettrein'),
-                value: isUST02,
-                onChanged: (bool value) {
-                  setState(() {
-                    isUST02 = value;
-                  });
-                },
-                secondary: const Icon(Icons.tram)),
-            SwitchListTile(
-                title: const Text('Videoschouwtrein'),
-                value: isVideo,
-                onChanged: (bool value) {
-                  setState(() {
-                    isVideo = value;
-                  });
-                },
-                secondary: const Icon(Icons.tram)
-                ),    
-          ],
-        ),  
-      ),
-      
-    );
-  }
-
-
-
-  
-  
-
-
 }
