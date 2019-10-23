@@ -76,9 +76,9 @@ class _SearchFilter extends State<SearchFilter> {
                       valueChangedisSigma: (value) {
                         isSigma = value;
                       },
-                      switchValueisVideo: isVideo,
-                      valueChangedisVideo: (value) {
-                        isVideo = value;
+                      switchValueisUST02: isUST02,
+                      valueChangedisUST02: (value) {
+                        isUST02 = value;
                       },
                     );
                   },
@@ -105,9 +105,9 @@ class _SearchFilter extends State<SearchFilter> {
                       valueChangedisSigma: (value) {
                         isSigma = value;
                       },
-                      switchValueisVideo: isVideo,
-                      valueChangedisVideo: (value) {
-                        isVideo = value;
+                      switchValueisUST02: isUST02,
+                      valueChangedisUST02: (value) {
+                        isUST02 = value;
                       },
                     );
                   },

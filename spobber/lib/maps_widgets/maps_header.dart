@@ -175,7 +175,7 @@ return Drawer(
 
                             ListTile(
                           //leading: Icon(Icons.help),
-                          title: Text('Versie 1.0.0', style: TextStyle(fontWeight: FontWeight.w200),))
+                          title: Text('Versie 1.0.1', style: TextStyle(fontWeight: FontWeight.w200),))
                     ],
                   )
                 )

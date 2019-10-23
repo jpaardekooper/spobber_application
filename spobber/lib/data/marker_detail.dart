@@ -7,6 +7,13 @@ class MarkerDetail {
   final String objecturi;
   final String objectinfo;
 
-  MarkerDetail(this.id, this.type, this.lat, this.long, this.status,
-      this.objecturi, this.objectinfo);
+  MarkerDetail(
+      {this.id,
+      this.type,
+      this.lat,
+      this.long,
+      this.status,
+      this.objecturi,
+      this.objectinfo
+      });
 }

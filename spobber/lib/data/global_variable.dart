@@ -8,3 +8,6 @@ bool isVideo = false;
 
 bool switchValue1 = false;
 bool switchValue2 = false;
+
+List<String> setObjectType = new List<String>();
+List<String> setDataSource = new List<String>();

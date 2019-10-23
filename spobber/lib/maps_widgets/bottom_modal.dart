@@ -254,19 +254,6 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
     );
   }
 
-  //    void _showModal() {
-  //   showModalBottomSheet<void>(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return new Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: <Widget>[
-  //             _buildContainer(),
-  //           ],
-  //         );
-  //       });
-  // }
-
   String calculateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var c = cos;

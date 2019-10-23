@@ -148,20 +148,20 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       infoWindow: InfoWindow(title: markerIdVal, snippet: '*', onTap: () {}),
       onTap: () {
         // _onMarkerTapped(markerId);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MarkerTemplate(
-                      markerDetail: new MarkerDetail(
-                    markerId.toString(),
-                    widget.keyword,
-                    currentLocation.latitude.toString(),
-                    currentLocation.longitude.toString(),
-                    "-",
-                    "-",
-                    "-",
-                  ))),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) => MarkerTemplate(
+        //               markerDetail: new MarkerDetail(
+        //             markerId.toString(),
+        //             widget.keyword,
+        //             currentLocation.latitude.toString(),
+        //             currentLocation.longitude.toString(),
+        //             "-",
+        //             "-",
+        //             "-",
+        //           ))),
+        // );
       },
     );
 
@@ -225,8 +225,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 // places.add(PlaceResponse(id: 2, type: "es-las", latitude: currentLocation.latitude + 0.0000000005, longitude: currentLocation.longitude + 0.0000000005, status: 1, preview_image_uri: "12", object_uri: "dsa"));
 
 // }
-  void searchNearby(
-      bool isSap, bool isSigma, bool isUST02, bool isVideo) async {
+  void searchNearby(String objectype) async {
     print(_visibleRegion.southwest.latitude);
     print(_visibleRegion.southwest.longitude);
     print(_visibleRegion.northeast.latitude);
@@ -239,9 +238,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
       circles.clear();
     });
-    String url =
-        "https://spobber.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
-    ;
+    print(objectype);
+
+    String url = "https://spobber.azurewebsites.net/api/objects/?nlat=${_visibleRegion.northeast.latitude}&blat=${_visibleRegion.southwest.latitude}&nlon=${_visibleRegion.northeast.longitude}&blon=${_visibleRegion.southwest.longitude}&source=";
+    // String url =
+    //     "https://spobber.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
+    // ;
+    for(int i = 0; i < setDataSource.length; i++){     
+      url += setDataSource[i]+",";        
+    }
     print(url);
     final response = await http.get(url);
 
@@ -301,7 +306,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
               _visibleRegion = visibleRegion;
             });
 //searchNearby();
-            searchNearby(isSap, isSigma, isUST02, isVideo);
+            searchNearby(widget.keyword);
           },
           child: Padding(
       padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
@@ -546,21 +551,22 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   " long: " +
                   places[i].longitude.toString(),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MarkerTemplate(
-                              markerDetail: new MarkerDetail(
-                            places[i].id.toString(),
-                            places[i].type.toString(),
-                            places[i].latitude.toString(),
-                            places[i].longitude.toString(),
-                            places[i].status.toString(),
-                            places[i].preview_image_uri.toString(),
-                            places[i].object_uri.toString(),
-                          ))),
-                );
-              }),
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => MarkerTemplate(
+                //               markerDetail: new MarkerDetail(
+                //             places[i].id.toString(),
+                //             places[i].type.toString(),
+                //             places[i].latitude.toString(),
+                //             places[i].longitude.toString(),
+                //             places[i].status.toString(),
+                //             places[i].preview_image_uri.toString(),
+                //             places[i].object_uri.toString(),
+                //           ))),
+                // );
+              }
+              ),
           onTap: () {
             _onMarkerTapped(markerId);
           },
@@ -586,20 +592,20 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   " long: " +
                   places[i].longitude.toString(),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MarkerTemplate(
-                              markerDetail: new MarkerDetail(
-                            places[i].id.toString(),
-                            places[i].type.toString(),
-                            places[i].latitude.toString(),
-                            places[i].longitude.toString(),
-                            places[i].status.toString(),
-                            places[i].preview_image_uri.toString(),
-                            places[i].object_uri.toString(),
-                          ))),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => MarkerTemplate(
+                //               markerDetail: new MarkerDetail(
+                //             places[i].id.toString(),
+                //             places[i].type.toString(),
+                //             places[i].latitude.toString(),
+                //             places[i].longitude.toString(),
+                //             places[i].status.toString(),
+                //             places[i].preview_image_uri.toString(),
+                //             places[i].object_uri.toString(),
+                //           ))),
+                // );
               }),
           onTap: () {
             _onMarkerTapped(markerId);
