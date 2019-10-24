@@ -8,15 +8,9 @@ class MarkerInfo extends StatefulWidget {
 
   // // In the constructor, require a Person
   // MarkerInfo({Key key, @required this.markerDetail}) : super(key: key);
-  final String imageId;
-  final String imageType;
-  final String imageLat;
-  final String imageLong;
-  final String imageStatus;
+
 
   // In the constructor, require a Person
-  MarkerInfo(this.imageId, this.imageType, this.imageLat, this.imageLong,
-      this.imageStatus);
 
   @override
   _MarkerInfoState createState() => _MarkerInfoState();
@@ -148,44 +142,44 @@ class _MarkerInfoState extends State<MarkerInfo> {
     List<Widget> formWidget = new List();
 
 //getId information 1
-    formWidget.add(new TextFormField(
-      enabled: false,
-      controller: TextEditingController(text: widget.imageId),
-      decoration: InputDecoration(
-          labelText: 'Object ID',
-          hintText: 'vul een naam in',
-          icon: Icon(Icons.content_paste)),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'ID';
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          name = value;
-        });
-      },
-    ));
+    // formWidget.add(new TextFormField(
+    //   enabled: false,
+    //   controller: TextEditingController(text: widget.imageId),
+    //   decoration: InputDecoration(
+    //       labelText: 'Object ID',
+    //       hintText: 'vul een naam in',
+    //       icon: Icon(Icons.content_paste)),
+    //   validator: (value) {
+    //     if (value.isEmpty) {
+    //       return 'ID';
+    //     }
+    //   },
+    //   onSaved: (value) {
+    //     setState(() {
+    //       name = value;
+    //     });
+    //   },
+    // ));
 
-    //getName information 2
-    formWidget.add(new TextFormField(
-      enabled: false,
-      controller: TextEditingController(text: widget.imageType),
-      decoration: InputDecoration(
-          labelText: "Type Object",
-          hintText: 'object type',
-          icon: Icon(Icons.filter)),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'vul een de juiste type in';
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          objectType = value;
-        });
-      },
-    ));
+    // //getName information 2
+    // formWidget.add(new TextFormField(
+    //   enabled: false,
+    //   controller: TextEditingController(text: widget.imageType),
+    //   decoration: InputDecoration(
+    //       labelText: "Type Object",
+    //       hintText: 'object type',
+    //       icon: Icon(Icons.filter)),
+    //   validator: (value) {
+    //     if (value.isEmpty) {
+    //       return 'vul een de juiste type in';
+    //     }
+    //   },
+    //   onSaved: (value) {
+    //     setState(() {
+    //       objectType = value;
+    //     });
+    //   },
+    // ));
 
     formWidget.add(new Container(
       width: 300,
@@ -240,25 +234,25 @@ class _MarkerInfoState extends State<MarkerInfo> {
         )));
 
     //getName information
-    formWidget.add(new TextFormField(
-      enabled: false,
-      controller: TextEditingController(
-          text: "lat: " + widget.imageLat + " long: " + widget.imageLong),
-      decoration: InputDecoration(
-          labelText: "GPS coordinatie",
-          hintText: 'object positie',
-          icon: Icon(Icons.gps_fixed)),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'vul een de juiste coordinaten in';
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          position = value;
-        });
-      },
-    ));
+    // formWidget.add(new TextFormField(
+    //   enabled: false,
+    //   controller: TextEditingController(
+    //       text: "lat: " + widget.imageLat + " long: " + widget.imageLong),
+    //   decoration: InputDecoration(
+    //       labelText: "GPS coordinatie",
+    //       hintText: 'object positie',
+    //       icon: Icon(Icons.gps_fixed)),
+    //   validator: (value) {
+    //     if (value.isEmpty) {
+    //       return 'vul een de juiste coordinaten in';
+    //     }
+    //   },
+    //   onSaved: (value) {
+    //     setState(() {
+    //       position = value;
+    //     });
+    //   },
+    // ));
 
     //getId information
     formWidget.add(Container(

@@ -5,6 +5,7 @@ import 'dart:math' show cos, sqrt, asin;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spobber/data/place_response.dart';
 import 'maps_body.dart';
+import '../data/global_variable.dart';
 
 class BottomSheetSwitch extends StatefulWidget {
   BottomSheetSwitch(
@@ -26,123 +27,183 @@ class BottomSheetSwitch extends StatefulWidget {
 }
 
 class _BottomSheetSwitch extends State<BottomSheetSwitch> {
-
   bool _switchValue;
+  int _lengthOfPlaces;
+
+  int _selectedIndex = 0;
 
   @override
   void initState() {
     _switchValue = widget.switchValue;
+    _lengthOfPlaces = widget.places.length;
+
+    // if(_selectedIndex == 0 && lastSelectedindex != 0){
+    //   _selectedIndex = _selectedIndex;
+    // }
     super.initState();
   }
 
-  int _selectedIndex = 0;
-
   _onSelected(int index) {
-    setState(() => _selectedIndex = index);
+    setState(() {
+      _selectedIndex = index;
+      //  lastSelectedindex = _selectedIndex;
+    });
   }
-  
+
+  Widget _returnImage(int index) {
+    print(widget.places[index].previewImageUri.toString());
+    if (_lengthOfPlaces < 0) {
+      print("ik kom bij de niet gevulde data");
+      return ClipRRect(
+        borderRadius: new BorderRadius.circular(5.0),
+        child: Image(
+          fit: BoxFit.fitHeight,
+          image: AssetImage("assets/marker_yellow.png"),
+        ),
+      );
+    } else {
+      print("ik kom bij de gevulde data");
+      return ClipRRect(
+        borderRadius: new BorderRadius.circular(5.0),
+        child: Image(
+            fit: BoxFit.fitHeight,
+            image:
+                NetworkImage(widget.places[index].previewImageUri.toString())),
+      );
+    }
+  }
 
   Widget _buildContainer() {
-    return Align(
+    if (_lengthOfPlaces <= 0) {
+      return Container(
         alignment: Alignment.bottomCenter,
         child: Container(
-          color: Colors.blue[100],
+          color: Colors.white,
           padding: EdgeInsets.symmetric(vertical: 15.0),
           height: 175.0,
           //  child:  ListView(scrollDirection: Axis.horizontal, children: formWidget),
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.places.length,
-              itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      _onSelected(index);
-                   widget.gotoLocation(
-                          widget.places[index].latitude, widget.places[index].longitude);
+          child: Text("Test"),
+        ),
+      );
+    } else {
+      return Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            color: Colors.white,
+            padding: EdgeInsets.symmetric(vertical: 15.0),
+            height: 175.0,
+            //  child:  ListView(scrollDirection: Axis.horizontal, children: formWidget),
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.places.length,
+                itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        _onSelected(index);
+                        widget.gotoLocation(widget.places[index].latitude,
+                            widget.places[index].longitude);
 
-                   //   Navigator.pop(context);
-                      // _onMarkerTapped(places[index].);
-                    },
-                    // child: Container(
-                    //   width: MediaQuery.of(context).size.width * 0.6,
-                    //   child: Card(
-                    //     color: _selectedIndex != null && _selectedIndex == index
-                    //         ? Colors.red
-                    //         : Colors.white,
-                    //     child: Container(
-                    //       child: Center(
-                    //           child: Text(
-                    //         places[index].id.toString(),
-                    //         style: TextStyle(color: Colors.white, fontSize: 36.0),
-                    //       )),
-                    //     ),
-                    child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Container(
-                          color: Colors.white,
-                          child: FittedBox(
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 5,
-                                    color: _selectedIndex == index
-                                        ? Colors.red
-                                        : Color.fromRGBO(255, 255, 255, 1),
-                                  ),
-                                ),
-
-                                //elevation: 14.0,
-
-                                //  borderRadius: BorderRadius.circular(5.0),
-                                // shadowColor: Color(0x802196F3),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    // Container(
-                                    //   width: 100,
-                                    //   height: 150,
-                                    //   child: ClipRRect(
-                                    //     borderRadius:
-                                    //         new BorderRadius.circular(5.0),
-                                    //     child: Image(
-                                    //       fit: BoxFit.fitHeight,
-                                    //       image: NetworkImage(
-                                    //           places[index].preview_image_uri),
-                                    //     ),
-                                    //     child: Image(
-                                    //       fit: BoxFit.fill,
-                                    //       image: AssetImage("assets/spoor.jpg"),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: myDetailsContainer1(
-                                            widget.places[index].id.toString(),
-                                            widget.places[index].parentEquipKind
-                                                .toString(),
-                                            widget.places[index].userStatusEquipment
-                                                .toString(),
-                                            widget
-                                                .places[index].image
-                                                .toString(),
-                                            widget.places[index].latitude,
-                                            widget.places[index].longitude),
-                                      ),
+                        //   Navigator.pop(context);
+                        // _onMarkerTapped(places[index].);
+                      },
+                      // child: Container(
+                      //   width: MediaQuery.of(context).size.width * 0.6,
+                      //   child: Card(
+                      //     color: _selectedIndex != null && _selectedIndex == index
+                      //         ? Colors.red
+                      //         : Colors.white,
+                      //     child: Container(
+                      //       child: Center(
+                      //           child: Text(
+                      //         places[index].id.toString(),
+                      //         style: TextStyle(color: Colors.white, fontSize: 36.0),
+                      //       )),
+                      //     ),
+                      child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Container(
+                            color: Colors.white,
+                            child: FittedBox(
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      width: 5,
+                                      color: _selectedIndex == index
+                                          ? Colors.blue[800]
+                                          : Color.fromRGBO(255, 255, 255, 1),
                                     ),
-                                  ],
-                                )),
-                          ),
-                        )),
-                  )),
-        ));
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 8.0,
+                                        color: Colors.black.withOpacity(.5),
+                                        //     offset: Offset(3.0, 4.0),
+                                      ),
+                                    ],
+                                  ),
+
+                                  //elevation: 14.0,
+
+                                  //  borderRadius: BorderRadius.circular(5.0),
+                                  // shadowColor: Color(0x802196F3),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                          width: 100,
+                                          height: 150,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                new BorderRadius.circular(5.0),
+                                            child: Image(
+                                                fit: BoxFit.fitHeight,
+                                                image: new NetworkImage(widget
+                                                    .places[index]
+                                                    .previewImageUri
+                                                    .toString())),
+                                          )),
+                                      // Container(
+                                      //   height: 100,
+                                      //   width: 100,
+                                      //   decoration: BoxDecoration(
+                                      //     borderRadius:
+                                      //         BorderRadius.circular(10),
+                                      //     color: Colors.red,
+                                      //   ),
+                                      //   child: ClipRect(
+                                      //     clipBehavior: Clip.hardEdge,
+                                      //     child: OverflowBox(
+                                      //       maxHeight: 100,
+                                      //       maxWidth: 100,
+                                      //       child: Center(
+                                      //         child: Container(
+                                      //           decoration: BoxDecoration(
+                                      //             color: Colors.white,
+                                      //             shape: BoxShape.circle,
+                                      //           ),
+                                      //         ),
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: myDetailsContainer1(index),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                          )),
+                    )),
+          ));
+    }
 
     //  }
   }
 
-  Widget myDetailsContainer1(String id, String type, String status,
-      String imginfo, double lat, double long) {
+  Widget myDetailsContainer1(int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -151,7 +212,15 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         //   child:
         Container(
             child: Text(
-          type,
+          widget.places[index].source,
+          style: TextStyle(
+              color: Colors.blue,
+              fontSize: 20.0,
+              fontWeight: FontWeight.normal),
+        )),
+        Container(
+            child: Text(
+          widget.places[index].type,
           style: TextStyle(
               color: Colors.blue,
               fontSize: 20.0,
@@ -160,10 +229,18 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         //   Divider(),
         SizedBox(height: 5.0),
         Container(
-          child: Text("Equipment:",
+          child: Text("Equipment: \t" + widget.places[index].id.toString(),
               style: TextStyle(
                 fontSize: 18.0,
               )),
+        ),
+        Container(
+          child: Text(
+            widget.places[index].placement,
+            style: TextStyle(
+              fontSize: 18.0,
+            ),
+          ),
         ),
         // ),
 
@@ -233,7 +310,10 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
               Container(
                   child: Text(
                 calculateDistance(
-                        lat, long, widget.latitude, widget.longitude) +
+                        widget.places[index].latitude,
+                        widget.places[index].latitude,
+                        widget.latitude,
+                        widget.longitude) +
                     " km",
                 style: TextStyle(
                   color: Colors.black54,
@@ -241,15 +321,15 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                 ),
               )),
             ])),
-        SizedBox(height: 5.0),
-        Container(
-            child: Text(
-          "Id: " + id,
-          style: TextStyle(
-              color: Colors.black54,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold),
-        )),
+        //SizedBox(height: 5.0),
+        // Container(
+        //     child: Text(
+        //   "Id: " + id,
+        //   style: TextStyle(
+        //       color: Colors.black54,
+        //       fontSize: 18.0,
+        //       fontWeight: FontWeight.bold),
+        // )),
       ],
     );
   }

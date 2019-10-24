@@ -1,19 +1,52 @@
 class MarkerDetail {
-  final String id;
+  final int id;
   final String type;
-  final String lat;
-  final String long;
-  final String status;
-  final String objecturi;
-  final String objectinfo;
+  final String description;
+  final String userStatusEquipment;
+  final String parentEquipKind;
+  final String datacollection;
+  final String placement;
+  final double latitude;
+  final double longitude;
+  final String picFileName;
+  final String runNr;
+  final String trackVersion;
+  final String source;
+  final int year;
+  final String image;
 
   MarkerDetail(
       {this.id,
       this.type,
-      this.lat,
-      this.long,
-      this.status,
-      this.objecturi,
-      this.objectinfo
-      });
+      this.description,
+      this.userStatusEquipment,
+      this.parentEquipKind,
+      this.datacollection,
+      this.placement,
+      this.latitude,
+      this.longitude,
+      this.picFileName,
+      this.runNr,
+      this.trackVersion,
+      this.source,
+      this.year,
+      this.image});
+
+
+  //      MarkerDetail fromJson(Map<String, dynamic> json) {
+  //   return MarkerDetail(
+  //       // htmlAttributions: List<String>.from(json['html_attributions']),
+  //       // nextPageToken: json['next_page_token'],
+  //       // results: parseResults(json['results']),
+  //       // status: json['status']);
+  //       secretId: json['secret_Id'],
+  //       id: json['id'],
+  //       type: json['type'],      
+  //       placement: json['placement'],
+  //       latitude: json['latitude'],
+  //       longitude: json['longitude'],    
+  //       source: json['source'],
+  //       previewImageUri: json['preview_image_url'],
+  //       objectUri: json['object_uri']);
+  // }
 }

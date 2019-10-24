@@ -11,3 +11,5 @@ bool switchValue2 = false;
 
 List<String> setObjectType = new List<String>();
 List<String> setDataSource = new List<String>();
+
+int lastSelectedindex;

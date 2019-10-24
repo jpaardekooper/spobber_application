@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spobber/maps_widgets/maps_header.dart';
 import 'home_page.dart';
-
-
+import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -11,7 +10,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
@@ -52,11 +50,11 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-     
           Navigator.of(context).pushReplacementNamed(GoogleMapsApp.tag);
+          showToast("Maps wordt ingeladen", gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
         },
         padding: EdgeInsets.all(12),
-        color:  Color.fromRGBO(0,73,144,1),
+        color: Color.fromRGBO(0, 73, 144, 1),
         child: Text('Log In', style: TextStyle(color: Colors.white)),
       ),
     );
@@ -88,6 +86,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void showToast(String msg, {int duration, int gravity}) {
+    Toast.show(msg, context, duration: duration, gravity: gravity);
   }
 
 }

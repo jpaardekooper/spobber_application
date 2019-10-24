@@ -30,38 +30,27 @@
 import 'package:flutter/material.dart';
 
 class PlaceResponse {
+  final String secretId;
   final int id;
   final String type;
-  final String description;
-  final String userStatusEquipment;
-  final String parentEquipKind;
-  final String datacollection;
   final String placement;
   final double latitude;
   final double longitude;
-  final String picFileName;
-  final String runNr;
-  final String trackVersion;
   final String source;
-  final int year;
-  final String image;
+  final String previewImageUri;
+  final String objectUri;
 
-  PlaceResponse(
-      {this.id,
-      this.type,
-      this.description,
-      this.userStatusEquipment,
-      this.parentEquipKind,
-      this.datacollection,
-      this.placement,
-      this.latitude,
-      this.longitude,
-      this.picFileName,
-      this.runNr,
-      this.trackVersion,
-      this.source,
-      this.year,
-      this.image});
+  PlaceResponse({
+    this.secretId,
+    this.id,
+    this.type,
+    this.placement,
+    this.latitude,
+    this.longitude,
+    this.source,
+    this.previewImageUri,
+    this.objectUri,
+  });
   //PlaceResponse({this.id, this.type, this.latitude, this.longitude, this.status, this.preview_image_uri, this.object_uri});
 
   PlaceResponse fromJson(Map<String, dynamic> json) {
@@ -70,20 +59,14 @@ class PlaceResponse {
         // nextPageToken: json['next_page_token'],
         // results: parseResults(json['results']),
         // status: json['status']);
+        secretId: json['secret_Id'],
         id: json['id'],
-        type: json['type'],
-        description: json['description'],
-        userStatusEquipment: json['user_status_equipment'],
-        parentEquipKind: json['parent_equip_kind'],
-        datacollection: json['datacollection'],
+        type: json['type'],      
         placement: json['placement'],
         latitude: json['latitude'],
-        longitude: json['longitude'],
-        picFileName: json['pic_file_name'],
-        runNr: json['run_nr'],
-        trackVersion: json['track_version'],
+        longitude: json['longitude'],    
         source: json['source'],
-        year: json['year'],
-        image: json['image']);
+        previewImageUri: json['preview_image_uri'],
+        objectUri: json['object_uri']);
   }
 }

@@ -55,6 +55,7 @@ import 'bottom_modal.dart';
 
 import '../data/marker_detail.dart';
 import '../data/upper_object.dart';
+import 'package:toast/toast.dart';
 
 class PlacesSearchMapSample extends StatefulWidget {
   final String keyword;
@@ -305,8 +306,10 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             setState(() {
               _visibleRegion = visibleRegion;
             });
+            
 //searchNearby();
             searchNearby(widget.keyword);
+              showToast("Data wordt ingeladen", gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
           },
           child: Padding(
       padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
@@ -405,7 +408,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             color: Colors.black54,
             icon: Icon(Icons.linear_scale),
             onPressed: () async {
-              loadPolyline();
+        //      loadPolyline();
 //_add();
             },
           ),
@@ -420,6 +423,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   List<LatLng> pointsAll = <LatLng>[];
 
   Future loadPolyline() async {
+   
     polylines.clear();
     pointsAll.clear();
     pointsOrange.clear();
@@ -432,7 +436,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
     print(uri);
 
-    final response = await http.get(Uri.encodeFull(uri));
+    final response = await 
+    http.get(Uri.encodeFull(uri));
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       UpperObject upperObject = new UpperObject.fromJson(jsonResponse);
@@ -534,8 +539,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     return LatLng(lat, lng);
   }
 
-  void _handleResponse(List data) { 
-    
+  void _handleResponse(List data) {
       for (int i = 0; i < places.length; i++) {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
@@ -547,25 +551,17 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
               title: places[i].id.toString(),
-             snippet: "latitude: " +
-                  places[i].latitude.toString() +
-                  " longitude: " +
-                  places[i].longitude.toString(),
+             snippet: "equipment: " +
+                  places[i].id.toString(),
+                
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => MarkerTemplate(
-                //               markerDetail: new MarkerDetail(
-                //             places[i].id.toString(),
-                //             places[i].type.toString(),
-                //             places[i].latitude.toString(),
-                //             places[i].longitude.toString(),
-                //             places[i].status.toString(),
-                //             places[i].preview_image_uri.toString(),
-                //             places[i].object_uri.toString(),
-                //           ))),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MarkerTemplate(type: places[i].type.toString(), objectUri: places[i].objectUri.toString(), id: places[i].id.toString(), secretId: places[i].id.toString(),
+                          
+                          ),),
+                );
               }),
           onTap: () {
             _onMarkerTapped(markerId);
@@ -602,12 +598,26 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         myLocationEnabled: true,
         markers: Set<Marker>.of(markers.values),
         circles: Set<Circle>.of(circles.values),
-        polylines: Set<Polyline>.of(polylines.values),
+        polylines: Set<Polyline>.of(polylines.values),      
+        onCameraIdle:  () async {
+            final GoogleMapController controller = await _controller.future;
+            final LatLngBounds visibleRegion = await controller.getVisibleRegion();
+
+            setState(() {
+              _visibleRegion = visibleRegion;
+              print("CAMERA STOPPED MOVING");
+        //       searchNearby(widget.keyword);
+            });
+          
+        }
       ),
     );
   }
 
-  bool _emptyList = true;
+
+  
+
+ 
 
   static LatLngBounds _visibleRegion = LatLngBounds(
     southwest: LatLng(0, 0),
@@ -660,7 +670,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
               children: <Widget>[
                 IconButton(icon: Icon(Icons.menu), onPressed: () {}),
                 Padding(
-                  padding: EdgeInsets.only(left: 30),
+                  padding: EdgeInsets.only(left: 5),
                   child: text(places.length),
                 ),
               ],
@@ -773,4 +783,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         color: Colors.white.withOpacity(0.7),
         child: Center(child: Icon(Icons.search)),
       );
+
+        void showToast(String msg, {int duration, int gravity}) {
+    Toast.show(msg, context, duration: duration, gravity: gravity);
+  }
 }

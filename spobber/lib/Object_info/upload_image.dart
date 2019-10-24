@@ -1,15 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/data/marker_detail.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class TakePictureScreen extends StatefulWidget {
-  final String imageId;
- 
-  TakePictureScreen({ this.imageId});
+  final String id;
+  final String secretId;
+
+  TakePictureScreen({@required this.id, @required this.secretId});
 
   @override
   _TakePictureScreen createState() => _TakePictureScreen();
@@ -32,9 +34,9 @@ class _TakePictureScreen extends State<TakePictureScreen> {
     setState(() {
       file = ImagePicker.pickImage(source: ImageSource.camera);
     });
-    setStatus(''); 
-       correctUrl = uploadEndPoint + widget.imageId;
-  //  print(correctUrl);
+    setStatus('');
+    //   correctUrl = uploadEndPoint + widget.id;
+    //  print(correctUrl);
   }
 
   chooseImage() {
@@ -42,9 +44,8 @@ class _TakePictureScreen extends State<TakePictureScreen> {
       file = ImagePicker.pickImage(source: ImageSource.gallery);
     });
     setStatus('');
-    correctUrl = uploadEndPoint + widget.imageId;
- //   print(correctUrl);
-
+    // correctUrl = uploadEndPoint + widget.id;
+    //   print(correctUrl);
   }
 
   setStatus(String message) {
@@ -59,25 +60,59 @@ class _TakePictureScreen extends State<TakePictureScreen> {
       setStatus(errMessage);
       return;
     }
-    String fileName = tmpFile.path.split('/').last;
-    upload(fileName);
+    // String fileName = tmpFile.path.split('/').last;
+    upload(tmpFile.path);
   }
 
-  upload(String fileName) {    
+  // upload(String fileName) {
+  //   print(correctUrl);
+  //   http.post(correctUrl, body: {
+  //      "filename": fileName,
+  //     "image": base64Image,
+  //   }).then((result) {
+  //     setStatus(result.statusCode == 200 ? result.body : errMessage);
+  //   }).catchError((error) {
+  //     setStatus(error);
+  //   });
+  //   print(base64Image);
+  // }
+
+  upload(String fileN) async {
+    correctUrl = uploadEndPoint + widget.id;
+    String base64Image = base64Encode(
+        (await testCompressAndGetFile(new File(fileN), fileN))
+            .readAsBytesSync());
+    String fileName = fileN.split("/").last;
+    HttpClient provider = new HttpClient();
+    HttpClientRequest request = await provider.postUrl(Uri.parse(correctUrl));
     print(correctUrl);
-    http.post(correctUrl, body: {
-       "filename": fileName,
-      "image": base64Image,     
-    }).then((result) {
-      setStatus(result.statusCode == 200 ? result.body : errMessage);
-    }).catchError((error) {
-      setStatus(error);
-    });
-    print(base64Image);
+    request.headers.set('content-type', 'application/json');
+    Map data = {
+      "filename": fileName,
+      "image": base64Image,
+    };
+    request.add(utf8.encode(json.encode(data)));
+    HttpClientResponse response = await request.close();
+
+    if (response.statusCode == 200) {
+      setState(() {
+        status = "Het uploaden is voltooid";
+      });
+    } else {
+      status = "error tijdens het uploaden";
+    }
   }
 
+  Future<File> testCompressAndGetFile(File file, String targetPath) async {
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 88,
+    );
+    return result;
+  }
 
-  Widget showImage() {    
+  Widget showImage() {
     return FutureBuilder<File>(
       future: file,
       builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
@@ -88,7 +123,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
           return Flexible(
             child: Image.file(
               snapshot.data,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ),
           );
         } else if (null != snapshot.error) {
@@ -105,6 +140,8 @@ class _TakePictureScreen extends State<TakePictureScreen> {
       },
     );
   }
+
+  bool magdrukken = true;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +170,17 @@ class _TakePictureScreen extends State<TakePictureScreen> {
               height: 20.0,
             ),
             OutlineButton(
-              onPressed: startUpload,
+              onPressed: () {
+                if (magdrukken) {
+                  startUpload();
+                  setState(() {
+                    magdrukken = false;
+                  });
+                } else {
+                  print("mag niet drukken");
+                }
+              },
+              color: magdrukken ? Colors.black : Colors.red,
               child: Text('Upload Foto'),
             ),
             SizedBox(

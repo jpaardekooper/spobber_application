@@ -13,11 +13,12 @@ import 'dart:convert';
 import 'upload_image.dart';
 
 class MarkerImage extends StatefulWidget {
-  final String imageId;
-  final String imageUrl;
+  final String id;
+  final String secretId;
+  // final String imageUrl;
   
-  // In the constructor, require a Person
-  MarkerImage(this.imageId, this.imageUrl);
+  // // In the constructor, require a Person
+  MarkerImage({@required this.id, @required this.secretId});
 
   @override
   _MarkerImage createState() => _MarkerImage();
@@ -31,34 +32,34 @@ class _MarkerImage extends State<MarkerImage> {
   void initState() {
     super.initState();
 
-    _fetchData();
-    print(widget.imageUrl);
-      print(widget.imageId);
+ //   _fetchData();
+    // print(widget.imageUrl);
+    //   print(widget.imageId);
   }
 
-  void _fetchData() async {
-    if (widget.imageUrl == null || widget.imageUrl == "-") {
-      return;
-    } else {
-      final response = await http.get(   
-          widget.imageUrl);
-      if (response.statusCode == 200) {
-        _objectPhoto = (json.decode(response.body) as List)
-            .map((data) => new LowerObject.fromJson(data))
-            .toList();
+  // void _fetchData() async {
+  //   if (widget.imageUrl == null || widget.imageUrl == "-") {
+  //     return;
+  //   } else {
+  //     final response = await http.get(   
+  //         widget.imageUrl);
+  //     if (response.statusCode == 200) {
+  //       _objectPhoto = (json.decode(response.body) as List)
+  //           .map((data) => new LowerObject.fromJson(data))
+  //           .toList();
 
-        for (int i = 0; i < _objectPhoto.length; i++) {
-          print("Object id is: " + _objectPhoto[i].id.toString());
-        }
+  //       for (int i = 0; i < _objectPhoto.length; i++) {
+  //         print("Object id is: " + _objectPhoto[i].id.toString());
+  //       }
 
-        if (mounted) {
-          setState(() {
-            loading = false;
-          });
-        }
-      }
-    }
-  }
+  //       if (mounted) {
+  //         setState(() {
+  //           loading = false;
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +84,7 @@ class _MarkerImage extends State<MarkerImage> {
           onPressed: () {
             print("u pressed me");
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TakePictureScreen(imageId: widget.imageId)));
+                MaterialPageRoute(builder: (context) => TakePictureScreen(id: widget.id, secretId: widget.secretId,)));
           },
         ),
       );
@@ -93,7 +94,7 @@ class _MarkerImage extends State<MarkerImage> {
 
   Widget noimageFound(){
     return Center(child: 
-        Container(child: Text("Geen foto's gevonden van " + widget.imageId),));
+        Container(child: Text("Geen foto's gevonden van " ),));
   }
 
   Widget timelineModel() => Timeline.builder(
