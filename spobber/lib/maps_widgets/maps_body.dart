@@ -86,10 +86,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   void initState() {
     super.initState();
 
-
-   
     _getLocation();
- 
 
     _controllerAnimation = AnimationController(
       vsync: this,
@@ -241,12 +238,13 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     });
     print(objectype);
 
-    String url = "https://spobber.azurewebsites.net/api/objects/?nlat=${_visibleRegion.northeast.latitude}&blat=${_visibleRegion.southwest.latitude}&nlon=${_visibleRegion.northeast.longitude}&blon=${_visibleRegion.southwest.longitude}&source=";
+    String url =
+        "https://spobber.azurewebsites.net/api/objects/?nlat=${_visibleRegion.northeast.latitude}&blat=${_visibleRegion.southwest.latitude}&nlon=${_visibleRegion.northeast.longitude}&blon=${_visibleRegion.southwest.longitude}&source=";
     // String url =
     //     "https://spobber.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
     // ;
-    for(int i = 0; i < setDataSource.length; i++){     
-      url += setDataSource[i]+",";        
+    for (int i = 0; i < setDataSource.length; i++) {
+      url += setDataSource[i] + ",";
     }
     print(url);
     final response = await http.get(url);
@@ -296,26 +294,33 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
   Widget _search() {
     return GestureDetector(
-          onTapDown: _onTapDown,
-          onTapUp: _onTapUp,
-          onTap: () async {
-            final GoogleMapController controller = await _controller.future;
-            final LatLngBounds visibleRegion =
-                await controller.getVisibleRegion();
+      onTapDown: _onTapDown,
+      onTapUp: _onTapUp,
+      onTap: () async {
+        final GoogleMapController controller = await _controller.future;
+        final LatLngBounds visibleRegion = await controller.getVisibleRegion();
 
-            setState(() {
-              _visibleRegion = visibleRegion;
-            });
-            
+        setState(() {
+          _visibleRegion = visibleRegion;
+        });
+
 //searchNearby();
-            searchNearby(widget.keyword);
-              showToast("Data wordt ingeladen", gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
-          },
-          child: Padding(
-      padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
-      child: Align(
-        alignment: Alignment.topRight,
-        child: Transform.scale(
+        searchNearby(widget.keyword);
+        if (setDataSource.length <= 0) {
+          showToast(
+              "Selecteer minimaal 1 databron. Gebruik de filter rechtsboven in",
+              gravity: Toast.CENTER,
+              duration: Toast.LENGTH_LONG);
+        } else {
+          showToast("Data wordt ingeladen",
+              gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Transform.scale(
             scale: _scale,
             child: _animatedButtonUI,
           ),
@@ -408,7 +413,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             color: Colors.black54,
             icon: Icon(Icons.linear_scale),
             onPressed: () async {
-        //      loadPolyline();
+              //      loadPolyline();
 //_add();
             },
           ),
@@ -423,7 +428,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   List<LatLng> pointsAll = <LatLng>[];
 
   Future loadPolyline() async {
-   
     polylines.clear();
     pointsAll.clear();
     pointsOrange.clear();
@@ -436,8 +440,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
     print(uri);
 
-    final response = await 
-    http.get(Uri.encodeFull(uri));
+    final response = await http.get(Uri.encodeFull(uri));
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       UpperObject upperObject = new UpperObject.fromJson(jsonResponse);
@@ -540,39 +543,42 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   }
 
   void _handleResponse(List data) {
-      for (int i = 0; i < places.length; i++) {
-        MarkerId markerId = MarkerId(places[i].id.toString());
-        Marker marker = Marker(
+    for (int i = 0; i < places.length; i++) {
+      MarkerId markerId = MarkerId(places[i].id.toString());
+      Marker marker = Marker(
         anchor: Platform.isAndroid ? Offset(0.0, 1.0) : Offset(0.0, 2.0),
-         //rotation: 100,
-          markerId: MarkerId(places[i].id.toString()),
-          // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
-          icon: Platform.isAndroid ? BitmapDescriptor.fromAsset('assets/android/marker_yellow.png') : BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
-          position: LatLng(places[i].latitude, places[i].longitude),
-          infoWindow: InfoWindow(
-              title: places[i].id.toString(),
-             snippet: "equipment: " +
-                  places[i].id.toString(),
-                
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MarkerTemplate(type: places[i].type.toString(), objectUri: places[i].objectUri.toString(), id: places[i].id.toString(), secretId: places[i].id.toString(),
-                          
-                          ),),
-                );
-              }),
-          onTap: () {
-            _onMarkerTapped(markerId);
-          },
-        );
+        //rotation: 100,
+        markerId: MarkerId(places[i].id.toString()),
+        // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
+        icon: Platform.isAndroid
+            ? BitmapDescriptor.fromAsset('assets/android/marker_yellow.png')
+            : BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
+        position: LatLng(places[i].latitude, places[i].longitude),
+        infoWindow: InfoWindow(
+            title: places[i].id.toString(),
+            snippet: "equipment: " + places[i].id.toString(),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MarkerTemplate(
+                    type: places[i].type.toString(),
+                    objectUri: places[i].objectUri.toString(),
+                    id: places[i].id.toString(),
+                    secretId: places[i].id.toString(),
+                  ),
+                ),
+              );
+            }),
+        onTap: () {
+          _onMarkerTapped(markerId);
+        },
+      );
 
-        setState(() {
-          markers[markerId] = marker;
-        });
-      }
-   
+      setState(() {
+        markers[markerId] = marker;
+      });
+    }
   }
 
 //widget building
@@ -582,42 +588,36 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
-        onMapCreated: (GoogleMapController controller) {
-          // _setStyle(controller);
-          _controller.complete(controller);
-          // if (controller == null) {
-          //   _controller.complete(controller);
-          // } else {
-          //   print("Do nothing");
-          // }
-        },
-        mapType: _mapType,
-        initialCameraPosition: _myLocation,
-        compassEnabled: true,
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        markers: Set<Marker>.of(markers.values),
-        circles: Set<Circle>.of(circles.values),
-        polylines: Set<Polyline>.of(polylines.values),      
-        onCameraIdle:  () async {
+          onMapCreated: (GoogleMapController controller) {
+            // _setStyle(controller);
+            _controller.complete(controller);
+            // if (controller == null) {
+            //   _controller.complete(controller);
+            // } else {
+            //   print("Do nothing");
+            // }
+          },
+          mapType: _mapType,
+          initialCameraPosition: _myLocation,
+          compassEnabled: true,
+          myLocationButtonEnabled: true,
+          myLocationEnabled: true,
+          markers: Set<Marker>.of(markers.values),
+          circles: Set<Circle>.of(circles.values),
+          polylines: Set<Polyline>.of(polylines.values),
+          onCameraIdle: () async {
             final GoogleMapController controller = await _controller.future;
-            final LatLngBounds visibleRegion = await controller.getVisibleRegion();
+            final LatLngBounds visibleRegion =
+                await controller.getVisibleRegion();
 
             setState(() {
               _visibleRegion = visibleRegion;
               print("CAMERA STOPPED MOVING");
-        //       searchNearby(widget.keyword);
+              //       searchNearby(widget.keyword);
             });
-          
-        }
-      ),
+          }),
     );
   }
-
-
-  
-
- 
 
   static LatLngBounds _visibleRegion = LatLngBounds(
     southwest: LatLng(0, 0),
@@ -633,18 +633,21 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     // if (_loading) {
     //   return new Scaffold(body: Center(child: CircularProgressIndicator()));
     // } else {
-      return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            _buildGoogleMap(context),
-            _mapTypeCycler(),
-            _search(),
-            _addMarker(),
-            _addPolyLine(),
-          ],
-        ),
-        bottomNavigationBar: GestureDetector(
-          onTap: () {
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          _buildGoogleMap(context),
+          _mapTypeCycler(),
+          _search(),
+          _addMarker(),
+          _addPolyLine(),
+        ],
+      ),
+      bottomNavigationBar: GestureDetector(
+        onTap: () {
+          if (places.length <= 0) {
+            return;
+          } else {
             //           print("u pressed me");
             showModalBottomSheet<void>(
               context: context,
@@ -661,25 +664,26 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                 );
               },
             );
-          },
-          child: BottomAppBar(
-            child: new Row(
-              mainAxisSize: MainAxisSize.max,
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          }
+        },
+        child: BottomAppBar(
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-              children: <Widget>[
-                IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-                Padding(
-                  padding: EdgeInsets.only(left: 5),
-                  child: text(places.length),
-                ),
-              ],
-            ),
+            children: <Widget>[
+              IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+              Padding(
+                padding: EdgeInsets.only(left: 5),
+                child: text(places.length),
+              ),
+            ],
           ),
         ),
-      );
-    }
- // }
+      ),
+    );
+  }
+  // }
 
   Widget text(int value) {
     Text text;
@@ -784,7 +788,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         child: Center(child: Icon(Icons.search)),
       );
 
-        void showToast(String msg, {int duration, int gravity}) {
+  void showToast(String msg, {int duration, int gravity}) {
     Toast.show(msg, context, duration: duration, gravity: gravity);
   }
 }

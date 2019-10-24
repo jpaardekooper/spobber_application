@@ -75,9 +75,9 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   Widget _buildContainer() {
     if (_lengthOfPlaces <= 0) {
-      return Container(
-        alignment: Alignment.bottomCenter,
+      return Center(
         child: Container(
+          width: MediaQuery.of(context).size.width / 2,
           color: Colors.white,
           padding: EdgeInsets.symmetric(vertical: 15.0),
           height: 175.0,
@@ -157,28 +157,34 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                                                 new BorderRadius.circular(5.0),
                                             child: Image(
                                                 fit: BoxFit.fitHeight,
-                                                image: new NetworkImage(widget
-                                                    .places[index]
-                                                    .previewImageUri
-                                                    .toString())),
+                                                image: widget.places[index]
+                                                            .previewImageUri
+                                                            .toString() !=
+                                                        null
+                                                    ? new NetworkImage(widget
+                                                        .places[index]
+                                                        .previewImageUri
+                                                        .toString())
+                                                    : new AssetImage(
+                                                        "assets/no_image.png")),
                                           )),
                                       // Container(
-                                      //   height: 100,
-                                      //   width: 100,
+                                      //   height: 50,
+                                      //   width: 50,
                                       //   decoration: BoxDecoration(
                                       //     borderRadius:
                                       //         BorderRadius.circular(10),
-                                      //     color: Colors.red,
+                                      //     color: Colors.white,
                                       //   ),
                                       //   child: ClipRect(
                                       //     clipBehavior: Clip.hardEdge,
                                       //     child: OverflowBox(
-                                      //       maxHeight: 100,
-                                      //       maxWidth: 100,
+                                      //       maxHeight: 50,
+                                      //       maxWidth: 50,
                                       //       child: Center(
                                       //         child: Container(
                                       //           decoration: BoxDecoration(
-                                      //             color: Colors.white,
+                                      //             color: Colors.red,
                                       //             shape: BoxShape.circle,
                                       //           ),
                                       //         ),

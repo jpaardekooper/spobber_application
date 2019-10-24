@@ -12,7 +12,12 @@ class MarkerTemplate extends StatelessWidget {
   final String secretId;
 
   // // In the constructor, require a Person
-  MarkerTemplate({Key key, @required this.type, @required this.objectUri, this.id, this.secretId})
+  MarkerTemplate(
+      {Key key,
+      @required this.type,
+      @required this.objectUri,
+      this.id,
+      this.secretId})
       : super(key: key);
 
   @override
@@ -39,10 +44,9 @@ class MarkerTemplate extends StatelessWidget {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-           MarkerInfo(),
-           MarkerImage(id: id, secretId: secretId),
-             MarkerHistory(),
-            
+            MarkerInfo(),
+            MarkerImage(id: id, secretId: secretId),
+            MarkerHistory(),
           ],
         ),
 
