@@ -539,7 +539,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       for (int i = 0; i < places.length; i++) {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
-        //anchor: Platform.isAndroid ? Offset(0.0, 2.0) : Offset(0.0, 3.0),
+        anchor: Platform.isAndroid ? Offset(0.0, 1.0) : Offset(0.0, 2.0),
          //rotation: 100,
           markerId: MarkerId(places[i].id.toString()),
           // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
