@@ -74,18 +74,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
   }
 
   Widget _buildContainer() {
-    if (_lengthOfPlaces <= 0) {
-      return Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width / 2,
-          color: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 15.0),
-          height: 175.0,
-          //  child:  ListView(scrollDirection: Axis.horizontal, children: formWidget),
-          child: Text("Test"),
-        ),
-      );
-    } else {
+
       return Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -207,7 +196,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
     }
 
     //  }
-  }
+  
 
   Widget myDetailsContainer1(int index) {
     return Column(
