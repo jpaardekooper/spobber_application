@@ -534,62 +534,22 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     return LatLng(lat, lng);
   }
 
-  void _handleResponse(List data) {
-    if (Platform.isIOS) {
-      _emptyList = false;
+  void _handleResponse(List data) { 
+    
       for (int i = 0; i < places.length; i++) {
         MarkerId markerId = MarkerId(places[i].id.toString());
         Marker marker = Marker(
+        //anchor: Platform.isAndroid ? Offset(0.0, 2.0) : Offset(0.0, 3.0),
+         //rotation: 100,
           markerId: MarkerId(places[i].id.toString()),
           // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
-          icon: BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
+          icon: Platform.isAndroid ? BitmapDescriptor.fromAsset('assets/android/marker_yellow.png') : BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
           position: LatLng(places[i].latitude, places[i].longitude),
           infoWindow: InfoWindow(
-              title: places[i].type,
-              snippet: "lat: " +
+              title: places[i].id.toString(),
+             snippet: "latitude: " +
                   places[i].latitude.toString() +
-                  " long: " +
-                  places[i].longitude.toString(),
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => MarkerTemplate(
-                //               markerDetail: new MarkerDetail(
-                //             places[i].id.toString(),
-                //             places[i].type.toString(),
-                //             places[i].latitude.toString(),
-                //             places[i].longitude.toString(),
-                //             places[i].status.toString(),
-                //             places[i].preview_image_uri.toString(),
-                //             places[i].object_uri.toString(),
-                //           ))),
-                // );
-              }
-              ),
-          onTap: () {
-            _onMarkerTapped(markerId);
-          },
-        );
-
-        setState(() {
-          markers[markerId] = marker;
-        });
-      }
-    } else if (Platform.isAndroid) {
-      _emptyList = false;
-      for (int i = 0; i < places.length; i++) {
-        MarkerId markerId = MarkerId(places[i].id.toString());
-        Marker marker = Marker(
-          markerId: MarkerId(places[i].id.toString()),
-          // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
-          icon: BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
-          position: LatLng(places[i].latitude, places[i].longitude),
-          infoWindow: InfoWindow(
-              title: places[i].type,
-              snippet: "lat: " +
-                  places[i].latitude.toString() +
-                  " long: " +
+                  " longitude: " +
                   places[i].longitude.toString(),
               onTap: () {
                 // Navigator.push(
@@ -616,9 +576,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
           markers[markerId] = marker;
         });
       }
-    } else {
-      print("platform");
-    }
+   
   }
 
 //widget building

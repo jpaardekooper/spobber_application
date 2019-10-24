@@ -120,12 +120,12 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                                         padding: const EdgeInsets.all(15.0),
                                         child: myDetailsContainer1(
                                             widget.places[index].id.toString(),
-                                            widget.places[index].type
+                                            widget.places[index].parentEquipKind
                                                 .toString(),
-                                            widget.places[index].status
+                                            widget.places[index].userStatusEquipment
                                                 .toString(),
                                             widget
-                                                .places[index].preview_image_uri
+                                                .places[index].image
                                                 .toString(),
                                             widget.places[index].latitude,
                                             widget.places[index].longitude),

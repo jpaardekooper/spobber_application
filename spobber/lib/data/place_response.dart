@@ -29,22 +29,40 @@
  */
 import 'package:flutter/material.dart';
 
-
 class PlaceResponse {
-  // final List<String> htmlAttributions;
-  // final List<Result> results;
-  // final String status;
-  // final String nextPageToken;
-
   final int id;
   final String type;
+  final String description;
+  final String userStatusEquipment;
+  final String parentEquipKind;
+  final String datacollection;
+  final String placement;
   final double latitude;
   final double longitude;
-  final int status;
-  final String preview_image_uri;
-  final String object_uri;
+  final String picFileName;
+  final String runNr;
+  final String trackVersion;
+  final String source;
+  final int year;
+  final String image;
 
-  PlaceResponse({this.id, this.type, this.latitude, this.longitude, this.status, this.preview_image_uri, this.object_uri});
+  PlaceResponse(
+      {this.id,
+      this.type,
+      this.description,
+      this.userStatusEquipment,
+      this.parentEquipKind,
+      this.datacollection,
+      this.placement,
+      this.latitude,
+      this.longitude,
+      this.picFileName,
+      this.runNr,
+      this.trackVersion,
+      this.source,
+      this.year,
+      this.image});
+  //PlaceResponse({this.id, this.type, this.latitude, this.longitude, this.status, this.preview_image_uri, this.object_uri});
 
   PlaceResponse fromJson(Map<String, dynamic> json) {
     return PlaceResponse(
@@ -54,12 +72,18 @@ class PlaceResponse {
         // status: json['status']);
         id: json['id'],
         type: json['type'],
+        description: json['description'],
+        userStatusEquipment: json['user_status_equipment'],
+        parentEquipKind: json['parent_equip_kind'],
+        datacollection: json['datacollection'],
+        placement: json['placement'],
         latitude: json['latitude'],
         longitude: json['longitude'],
-        status: json['status'],
-        preview_image_uri: json['preview_image_uri'],
-        object_uri: json['object_uri'],
-    );
+        picFileName: json['pic_file_name'],
+        runNr: json['run_nr'],
+        trackVersion: json['track_version'],
+        source: json['source'],
+        year: json['year'],
+        image: json['image']);
   }
-
 }
