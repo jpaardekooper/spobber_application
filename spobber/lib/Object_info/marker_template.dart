@@ -7,9 +7,9 @@ import '../data/marker_detail.dart';
 
 class MarkerTemplate extends StatelessWidget {
   final String type;
-  final String objectUri;
   final String id;
   final String secretId;
+  final String objectUri;
 
   // // In the constructor, require a Person
   MarkerTemplate(
@@ -22,10 +22,11 @@ class MarkerTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(id + " " + secretId );
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        appBar: AppBar(
+      child: Scaffold(        
+        appBar: AppBar(   
           bottom: TabBar(
             tabs: [
               Tab(
@@ -41,15 +42,17 @@ class MarkerTemplate extends StatelessWidget {
           ),
           title: Text(type),
         ),
-        body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            MarkerInfo(),
-            MarkerImage(id: id, secretId: secretId),
-            MarkerHistory(),
-          ],
+        body: Container(
+          //color: Colors.lightBlue[800],
+          child: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              MarkerInfo(id: id, objectUri: objectUri),
+              MarkerImage(id: id, secretId: secretId),
+              MarkerHistory(),
+            ],
+          ),
         ),
-
         // body: Container(
         //     margin: const EdgeInsets.symmetric(vertical: 20.0),
         //     height: 300.0,

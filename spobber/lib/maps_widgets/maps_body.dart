@@ -59,8 +59,6 @@ typedef Marker MarkerUpdateAction(Marker marker);
 
 class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     with SingleTickerProviderStateMixin {
-  //LocationData currentLocation;
-
   bool currentWidget = true;
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
@@ -87,7 +85,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   }
 
   //When clicked function is performed on a marker
-
   void _onMarkerTapped(MarkerId markerId) {
     final Marker tappedMarker = markers[markerId];
     if (tappedMarker != null) {
@@ -161,8 +158,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
   List<Marker> markers2 = <Marker>[];
 
-  
-
   bool searching = true;
   String keyword;
 
@@ -183,66 +178,24 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
 // }
 
-
-  // void searchNearby(String objectype) async {
-  // print(_visibleRegion.southwest.latitude);
-  //   print(_visibleRegion.southwest.longitude);
-  //   print(_visibleRegion.northeast.latitude);
-  //   print(_visibleRegion.northeast.longitude);
-  //   setState(() {
-  //     markers.clear();
-  //     //  formWidget.clear();
-  //     places.clear();
-  //     polylines.clear();
-
-  //     circles.clear();
-  //   });
-  //   print(objectype);
-
-  //   String url =
-  //       "https://spobber.azurewebsites.net/api/objects/?nlat=${_visibleRegion.northeast.latitude}&blat=${_visibleRegion.southwest.latitude}&nlon=${_visibleRegion.northeast.longitude}&blon=${_visibleRegion.southwest.longitude}&source=";
-  //   // String url =
-  //   //     "https://spobber.azurewebsites.net/api/objects/?nelatitude=${_visibleRegion.northeast.latitude}&swlatitude=${_visibleRegion.southwest.latitude}&nelongitude=${_visibleRegion.northeast.longitude}&swlongitude=${_visibleRegion.southwest.longitude}";
-  //   // ;
-  //   for (int i = 0; i < setDataSource.length; i++) {
-  //     url += setDataSource[i] + ",";
-  //   }
-  //   print(url);
-  //   final response = await http.get(url);
-
-  //   if (response.statusCode == 200) {
-  //     // final data = json.decode(response.body);
-  //     places = (json.decode(response.body) as List)
-  //         .map((data) => new PlaceResponse().fromJson(data))
-  //         .toList();
-  //     _handleResponse(places);
-  //   } else {
-  //     //throw Exception('An error occurred getting places nearby');
-  //   }
-
-  //   // make sure to hide searching
-  //   setState(() {
-  //     searching = false;
-  //   });
-  // }
-
-    void searchNearby(String objectype) async {
-       final GoogleMapController controller = await _controller.future;
-            final LatLngBounds visibleRegion =
-                await controller.getVisibleRegion();
-
-            setState(() {
-              _visibleRegion = visibleRegion;
-              print("setting visible region");
-              //       searchNearby(widget.keyword);
-            });
-
-      LoadMarkers loadmarkers = new LoadMarkers(northLatitude: _visibleRegion.northeast.latitude, northLongitude: _visibleRegion.northeast.longitude, bottomLatitude: _visibleRegion.southwest.latitude, bottomLongitude:_visibleRegion.southwest.longitude);
-      loadmarkers.searchNearby(objectype);
-
-      _handleResponse(places);
-    }
-
+  void searchNearby() async {
+    final GoogleMapController controller = await _controller.future;
+    final LatLngBounds visibleRegion = await controller.getVisibleRegion();
+    setState(() {
+      _visibleRegion = visibleRegion;
+      print("setting visible region: $visibleRegion");
+    });
+    LoadMarkers loadmarkers = LoadMarkers(
+      northLatitude: _visibleRegion.northeast.latitude,
+      northLongitude: _visibleRegion.northeast.longitude,
+      bottomLatitude: _visibleRegion.southwest.latitude,
+      bottomLongitude: _visibleRegion.southwest.longitude,
+    );
+    loadmarkers.searchNearby(widget.keyword).then((value) {
+      _handleResponse();
+    });
+  
+  }
 
   MapType _mapType = MapType.satellite;
 
@@ -276,14 +229,10 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       onTapDown: _onTapDown,
       onTapUp: _onTapUp,
       onTap: () async {
-        final GoogleMapController controller = await _controller.future;
-        final LatLngBounds visibleRegion = await controller.getVisibleRegion();
-
-        setState(() {
-          _visibleRegion = visibleRegion;
-        });
-
-        searchNearby(widget.keyword);
+        markers.clear();
+        circles.clear();
+        polylines.clear();
+        searchNearby();
         if (setDataSource.length <= 0) {
           showToast(
               "Selecteer minimaal 1 databron. Gebruik de filter rechtsboven in",
@@ -324,7 +273,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 // Color _color = Colors.white.withOpacity(0.7);
 // BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
   Widget _addMarker(double lat, double long) {
-    
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
         child: Align(
@@ -338,7 +286,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   color: Colors.black54,
                   icon: Icon(Icons.add),
                   onPressed: () async {
-                 _add(lat, long);
+                    _add(lat, long);
                   },
                 ))));
   }
@@ -480,7 +428,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     return LatLng(lat, lng);
   }
 
-  void _handleResponse(List data) {
+  void _handleResponse() {
     for (int i = 0; i < places.length; i++) {
       MarkerId markerId = MarkerId(places[i].id.toString());
       Marker marker = Marker(
@@ -503,7 +451,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                     type: places[i].type.toString(),
                     objectUri: places[i].objectUri.toString(),
                     id: places[i].id.toString(),
-                    secretId: places[i].id.toString(),
+                    secretId: places[i].secretId.toString(),
                   ),
                 ),
               );
@@ -526,25 +474,24 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
-          onMapCreated: (GoogleMapController controller) {
-            // _setStyle(controller);
-            _controller.complete(controller);
-            // if (controller == null) {
-            //   _controller.complete(controller);
-            // } else {
-            //   print("Do nothing");
-            // }
-          },
-          
-          mapType: _mapType,
-          initialCameraPosition: _myLocation,
-          compassEnabled: true,
-          myLocationButtonEnabled: true,
-          myLocationEnabled: true,
-          markers: Set<Marker>.of(markers.values),
-          circles: Set<Circle>.of(circles.values),
-          polylines: Set<Polyline>.of(polylines.values),          
-         ),
+        onMapCreated: (GoogleMapController controller) {
+          // _setStyle(controller);
+          _controller.complete(controller);
+          // if (controller == null) {
+          //   _controller.complete(controller);
+          // } else {
+          //   print("Do nothing");
+          // }
+        },
+        mapType: _mapType,
+        initialCameraPosition: _myLocation,
+        compassEnabled: true,
+        myLocationButtonEnabled: true,
+        myLocationEnabled: true,
+        markers: Set<Marker>.of(markers.values),
+        circles: Set<Circle>.of(circles.values),
+        polylines: Set<Polyline>.of(polylines.values),    
+      ),
     );
   }
 
@@ -562,18 +509,20 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     // if (_loading) {
     //   return new Scaffold(body: Center(child: CircularProgressIndicator()));
     // } else {
-    var userLocation = Provider.of<UserLocation>(context);  
-    
+    var userLocation = Provider.of<UserLocation>(context);
+
     return Scaffold(
-      body: userLocation == null ? Center(child: CircularProgressIndicator()): Stack(
-        children: <Widget>[
-          _buildGoogleMap(context),
-          _mapTypeCycler(),
-          _search(),
-          _addMarker(userLocation.latitude, userLocation.longitude),
-          _addPolyLine(),
-        ],
-      ),
+      body: userLocation == null
+          ? Center(child: CircularProgressIndicator())
+          : Stack(
+              children: <Widget>[
+                _buildGoogleMap(context),
+                _mapTypeCycler(),
+                _search(),
+                _addMarker(userLocation.latitude, userLocation.longitude),
+                _addPolyLine(),
+              ],
+            ),
       bottomNavigationBar: GestureDetector(
         onTap: () {
           if (places.length <= 0) {
@@ -689,7 +638,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     });
   }
 
-  
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
 
   PolylineId selectedPolyline;

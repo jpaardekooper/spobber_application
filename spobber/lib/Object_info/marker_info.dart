@@ -2,16 +2,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:spobber/data/global_variable.dart';
+import 'package:spobber/data/marker_detail.dart';
 
 class MarkerInfo extends StatefulWidget {
-  // final MarkerDetail markerDetail;
-
-  // // In the constructor, require a Person
-  // MarkerInfo({Key key, @required this.markerDetail}) : super(key: key);
-
+  final String id;
+  final String objectUri;
 
   // In the constructor, require a Person
-
+  MarkerInfo({@required this.id, @required this.objectUri});
   @override
   _MarkerInfoState createState() => _MarkerInfoState();
 }
@@ -23,11 +22,11 @@ class _MarkerInfoState extends State<MarkerInfo> {
   // us to validate the form
   //
   // Note: This is a GlobalKey<FormState>, not a GlobalKey<MyCustomFormState>!
-  @override
-  void dispose() {
-    print("Disposing second route");
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   print("Disposing second route");
+  //   super.dispose();
+  // }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -142,77 +141,343 @@ class _MarkerInfoState extends State<MarkerInfo> {
     List<Widget> formWidget = new List();
 
 //getId information 1
-    // formWidget.add(new TextFormField(
-    //   enabled: false,
-    //   controller: TextEditingController(text: widget.imageId),
-    //   decoration: InputDecoration(
-    //       labelText: 'Object ID',
-    //       hintText: 'vul een naam in',
-    //       icon: Icon(Icons.content_paste)),
-    //   validator: (value) {
-    //     if (value.isEmpty) {
-    //       return 'ID';
-    //     }
-    //   },
-    //   onSaved: (value) {
-    //     setState(() {
-    //       name = value;
-    //     });
-    //   },
-    // ));
-
-    // //getName information 2
-    // formWidget.add(new TextFormField(
-    //   enabled: false,
-    //   controller: TextEditingController(text: widget.imageType),
-    //   decoration: InputDecoration(
-    //       labelText: "Type Object",
-    //       hintText: 'object type',
-    //       icon: Icon(Icons.filter)),
-    //   validator: (value) {
-    //     if (value.isEmpty) {
-    //       return 'vul een de juiste type in';
-    //     }
-    //   },
-    //   onSaved: (value) {
-    //     setState(() {
-    //       objectType = value;
-    //     });
-    //   },
-    // ));
-
-    formWidget.add(new Container(
-      width: 300,
-      margin: const EdgeInsets.only(top: 20.0, left: 40.0),
-      child: new Text('Soort'),
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text: markerDetailandInformation[0].id.toString()),
+      decoration: InputDecoration(
+          labelText: 'type',
+          hintText: 'equipment',
+          icon: Icon(Icons.content_paste)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'ID';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          name = value;
+        });
+      },
     ));
 
-    formWidget.add(new Container(
-        margin: const EdgeInsets.only(top: 1.0, left: 40.0),
-        child: new DropdownButton(
-          elevation: 5,
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: 15,
-              decorationStyle: TextDecorationStyle.wavy),
-          isDense: true,
-          iconSize: 40.0,
-          items: typeList,
-          value: _selectedType,
-          onChanged: (value) {
-            setState(() {
-              _selectedType = value;
-            });
-          },
-          isExpanded: true,
-        )));
-
-    formWidget.add(new Container(
-      width: 300,
-      margin: const EdgeInsets.only(top: 20.0, left: 40.0),
-      child: new Text('Status van het object'),
+    //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].secretId.toString()),
+      decoration: InputDecoration(
+          labelText: "equipment",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
     ));
 
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].type.toString()),
+      decoration: InputDecoration(
+          labelText: "Type",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].description.toString()),
+      decoration: InputDecoration(
+          labelText: "beschrijving",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].equipmentStatus.toString()),
+      decoration: InputDecoration(
+          labelText: "equipment status",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].parentEquipKind.toString()),
+      decoration: InputDecoration(
+          labelText: "parent equipment",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].datacollection.toString()),
+      decoration: InputDecoration(
+          labelText: "datacollection",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].placement.toString()),
+      decoration: InputDecoration(
+          labelText: "plaatsing",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].latitude.toString()),
+      decoration: InputDecoration(
+          labelText: "latitude",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].longitude.toString()),
+      decoration: InputDecoration(
+          labelText: "longitude",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].runNr.toString()),
+      decoration: InputDecoration(
+          labelText: "run nummer",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].trackVersion.toString()),
+      decoration: InputDecoration(
+          labelText: "track version",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].source.toString()),
+      decoration: InputDecoration(
+          labelText: "source",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].id.toString()),
+      decoration: InputDecoration(
+          labelText: "equipment",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+        //getName information 2
+    formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(text:  markerDetailandInformation[0].id.toString()),
+      decoration: InputDecoration(
+          labelText: "equipment",
+          hintText: 'object type',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
+    // formWidget.add(new Container(
+    //   width: 300,
+    //   margin: const EdgeInsets.only(top: 20.0, left: 40.0),
+    //   child: new Text('Soort'),
+    // ));
+
+    // formWidget.add(new Container(
+    //     margin: const EdgeInsets.only(top: 1.0, left: 40.0),
+    //     child: new DropdownButton(
+    //       elevation: 5,
+    //       style: TextStyle(
+    //           color: Colors.black,
+    //           fontSize: 15,
+    //           decorationStyle: TextDecorationStyle.wavy),
+    //       isDense: true,
+    //       iconSize: 40.0,
+    //       items: typeList,
+    //       value: _selectedType,
+    //       onChanged: (value) {
+    //         setState(() {
+    //           _selectedType = value;
+    //         });
+    //       },
+    //       isExpanded: true,
+    //     )));
+
+ 
     formWidget.add(new Container(
         margin: const EdgeInsets.only(top: 1.0, left: 40.0),
         child: new DropdownButton(
@@ -259,10 +524,10 @@ class _MarkerInfoState extends State<MarkerInfo> {
         margin: const EdgeInsets.only(bottom: 60),
         child: new TextFormField(
           enabled: false,
-          controller: TextEditingController(text: "1-9-2017"),
+          controller: TextEditingController(text:  markerDetailandInformation[0].year.toString()),
           decoration: InputDecoration(
-              labelText: "gemaakt op:",
-              hintText: 'leeftijd',
+              labelText: "bron datum:",
+              hintText: 'bron datum',
               icon: Icon(Icons.date_range)),
           validator: (value) {
             if (value.isEmpty) {
@@ -321,17 +586,56 @@ class _MarkerInfoState extends State<MarkerInfo> {
 
   String status = '';
 
+  _loadList() async {
+    markerDetailandInformation.clear();
+
+    String url = widget.objectUri;
+    print(url);
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      // final data = json.decode(response.body);
+      markerDetailandInformation = (json.decode(response.body) as List)
+          .map((data) => new MarkerDetail().fromJson(data))
+          .toList();
+
+setState(() {
+  
+});
+     
+    } else {
+      print("url is niet gevonden");
+      //throw Exception('An error occurred getting places nearby');
+    }
+  }
+
+  @override
+  void initState() {    
+     _loadList();
+    print("lOADING LIST");
+    super.initState();
+   
+  }
+
   @override
   Widget build(BuildContext context) {
-    loadStatusList();
-    loadTypeList();
-    return Container(
+    // loadStatusList();
+    // loadTypeList();
+
+    if (markerDetailandInformation.length <= 0) {
+      print(markerDetailandInformation.length);
+      return Center(child: CircularProgressIndicator());
+    } else {
+            return Container(
         child: Form(
             key: _formKey,
             child: new ListView(
               padding: EdgeInsets.all(20.0),
               children: getFormWidget(),
             )));
+      
+    }
+
+    // }
 
     //  return
   }

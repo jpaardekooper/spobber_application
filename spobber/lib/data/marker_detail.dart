@@ -1,7 +1,16 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:spobber/data/global_variable.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:spobber/data/place_response.dart';
+
 class MarkerDetail {
   final int id;
+  final String secretId;
   final String type;
   final String description;
+  final String equipmentStatus;
   final String userStatusEquipment;
   final String parentEquipKind;
   final String datacollection;
@@ -13,12 +22,14 @@ class MarkerDetail {
   final String trackVersion;
   final String source;
   final int year;
-  final String image;
+ // final String image;
 
   MarkerDetail(
       {this.id,
+      this.secretId,
       this.type,
       this.description,
+      this.equipmentStatus,
       this.userStatusEquipment,
       this.parentEquipKind,
       this.datacollection,
@@ -30,23 +41,27 @@ class MarkerDetail {
       this.trackVersion,
       this.source,
       this.year,
-      this.image});
+      //this.image
+      });
 
-
-  //      MarkerDetail fromJson(Map<String, dynamic> json) {
-  //   return MarkerDetail(
-  //       // htmlAttributions: List<String>.from(json['html_attributions']),
-  //       // nextPageToken: json['next_page_token'],
-  //       // results: parseResults(json['results']),
-  //       // status: json['status']);
-  //       secretId: json['secret_Id'],
-  //       id: json['id'],
-  //       type: json['type'],      
-  //       placement: json['placement'],
-  //       latitude: json['latitude'],
-  //       longitude: json['longitude'],    
-  //       source: json['source'],
-  //       previewImageUri: json['preview_image_url'],
-  //       objectUri: json['object_uri']);
-  // }
+   MarkerDetail fromJson(Map<String, dynamic> json) {
+    return MarkerDetail(
+      id: json['id'],
+      secretId: json['secret_Id'],
+      type: json['type'],
+      description: json['description'],
+      equipmentStatus: json['equipment_status'],
+      parentEquipKind: json['parent_equip_kind'],
+      datacollection: json['datacollection'],
+      placement: json['placement'],
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+      picFileName: json['pic_file_name'],
+      runNr: json['run_nr'],
+      trackVersion: json['track_version'],
+      source: json['source'],
+      year: json['year'],
+   //   image: json['image'],
+    );
+  }
 }

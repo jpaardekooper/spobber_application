@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:photo_view/photo_view.dart';
 import 'package:spobber/data/marker_detail.dart';
+import 'package:spobber/helper/load_images.dart';
 
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
@@ -11,12 +12,13 @@ import '../data/lower_object.dart';
 import 'dart:convert';
 
 import 'upload_image.dart';
+import 'package:spobber/helper/load_images.dart';
 
 class MarkerImage extends StatefulWidget {
   final String id;
   final String secretId;
   // final String imageUrl;
-  
+
   // // In the constructor, require a Person
   MarkerImage({@required this.id, @required this.secretId});
 
@@ -25,41 +27,47 @@ class MarkerImage extends StatefulWidget {
 }
 
 class _MarkerImage extends State<MarkerImage> {
-  static List<LowerObject> _objectPhoto;
+  List<LoadImages> _images;
   bool loading = true;
 
+  String url = "https://spobber.azurewebsites.net/api/image/";
   @override
   void initState() {
     super.initState();
 
- //   _fetchData();
+  //  _fetchData();
     // print(widget.imageUrl);
     //   print(widget.imageId);
   }
 
-  // void _fetchData() async {
-  //   if (widget.imageUrl == null || widget.imageUrl == "-") {
-  //     return;
-  //   } else {
-  //     final response = await http.get(   
-  //         widget.imageUrl);
-  //     if (response.statusCode == 200) {
-  //       _objectPhoto = (json.decode(response.body) as List)
-  //           .map((data) => new LowerObject.fromJson(data))
-  //           .toList();
+  void _fetchData() async {
+    String correctUrl = url + widget.secretId;
+     print(correctUrl);
+    final response = await http.get(correctUrl);
+   
+    if (response.statusCode == 200) {
+      _images = (json.decode(response.body) as List)
+          .map((data) => new LoadImages.fromJson(data))
+          .toList();
 
-  //       for (int i = 0; i < _objectPhoto.length; i++) {
-  //         print("Object id is: " + _objectPhoto[i].id.toString());
-  //       }
+      setState(() {
+        loading = false;
+      });
 
-  //       if (mounted) {
-  //         setState(() {
-  //           loading = false;
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
+      for (int i = 0; i < _images.length; i++) {
+        print("Object id is: " + _images[i].image.toString());
+      }
+
+      // if (mounted) {
+      //   setState(() {
+      //     loading = false;
+      //   });
+      // }
+
+    } else {
+      print("error geen foto's gevonden");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,34 +84,40 @@ class _MarkerImage extends State<MarkerImage> {
     //     // ),
     //   );
     // } else {
-    
-      return Scaffold(
-        body: loading ? noimageFound() : timelineModel() ,
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.camera_alt),
-          onPressed: () {
-            print("u pressed me");
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TakePictureScreen(id: widget.id, secretId: widget.secretId,)));
-          },
-        ),
-      );
-    }
- // }
 
+    return Scaffold(
+      body: loading ? noimageFound() : timelineModel(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.camera_alt),
+        onPressed: () {
+          print("u pressed me");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TakePictureScreen(
+                        id: widget.id,
+                        secretId: widget.secretId,
+                      )));
+        },
+      ),
+    );
+  }
+  // }
 
-  Widget noimageFound(){
-    return Center(child: 
-        Container(child: Text("Geen foto's gevonden van " ),));
+  Widget noimageFound() {
+    return Center(
+        child: Container(
+      child: Text("Geen foto's gevonden van "),
+    ));
   }
 
   Widget timelineModel() => Timeline.builder(
         itemBuilder: centerTimelineBuilder,
-        itemCount: _objectPhoto.length,
+        itemCount: _images.length,
       );
 
   TimelineModel centerTimelineBuilder(BuildContext context, int i) {
-    final doodle = _objectPhoto[i];
+    final doodle = _images[i];
     // final textTheme = Theme.of(context).textTheme;
     return TimelineModel(
         Card(
@@ -134,14 +148,14 @@ class _MarkerImage extends State<MarkerImage> {
                 const SizedBox(
                   height: 8.0,
                 ),
-                Text(doodle.id.toString()),
+                Text(doodle.image.toString()),
                 const SizedBox(
                   height: 8.0,
                 ),
-                Text(
-                  doodle.status.toString(),
-                  textAlign: TextAlign.center,
-                ),
+                // Text(
+                //   doodle.image.toString(),
+                //   textAlign: TextAlign.center,
+                // ),
                 const SizedBox(
                   height: 8.0,
                 ),
@@ -152,7 +166,7 @@ class _MarkerImage extends State<MarkerImage> {
         position:
             i % 2 == 0 ? TimelineItemPosition.right : TimelineItemPosition.left,
         isFirst: i == 0,
-        isLast: i == _objectPhoto.length,
+        isLast: i == _images.length,
         iconBackground: Colors.cyan,
         icon: Icon(Icons.star, color: Colors.white));
   }
@@ -210,12 +224,13 @@ class FullScreenWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("test"),),
-        body: Container(           
+        appBar: AppBar(
+          title: Text("test"),
+        ),
+        body: Container(
             constraints: BoxConstraints.expand(
-              height: MediaQuery.of(context).size.height,          
+              height: MediaQuery.of(context).size.height,
             ),
-            
             child: Stack(children: <Widget>[
               PhotoView(
                 imageProvider: imageProvider,

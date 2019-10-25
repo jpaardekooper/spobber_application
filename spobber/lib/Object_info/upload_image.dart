@@ -78,7 +78,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
   // }
 
   upload(String fileN) async {
-    correctUrl = uploadEndPoint + widget.id;
+    correctUrl = uploadEndPoint + widget.secretId;
     String base64Image = base64Encode(
         (await testCompressAndGetFile(new File(fileN), fileN))
             .readAsBytesSync());
@@ -145,6 +145,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.secretId);
     return Scaffold(
       appBar: AppBar(
         title: Text("Voeg een foto toe"),
