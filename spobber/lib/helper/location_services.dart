@@ -10,7 +10,7 @@ class LocationService {
   StreamController<UserLocation> _locationController =
       StreamController<UserLocation>.broadcast();
 
-  LocationService() {
+  LocationService() {    
     location.requestPermission().then((granted) {
       if (granted) {
         location.onLocationChanged().listen((locationData) {
