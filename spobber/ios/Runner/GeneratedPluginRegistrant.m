@@ -4,8 +4,6 @@
 
 #import "GeneratedPluginRegistrant.h"
 #import <flutter_image_compress/FlutterImageCompressPlugin.h>
-#import <geolocator/GeolocatorPlugin.h>
-#import <google_api_availability/GoogleApiAvailabilityPlugin.h>
 #import <google_maps_flutter/GoogleMapsPlugin.h>
 #import <image_picker/ImagePickerPlugin.h>
 #import <location/LocationPlugin.h>
@@ -16,8 +14,6 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [FlutterImageCompressPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterImageCompressPlugin"]];
-  [GeolocatorPlugin registerWithRegistrar:[registry registrarForPlugin:@"GeolocatorPlugin"]];
-  [GoogleApiAvailabilityPlugin registerWithRegistrar:[registry registrarForPlugin:@"GoogleApiAvailabilityPlugin"]];
   [FLTGoogleMapsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMapsPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [LocationPlugin registerWithRegistrar:[registry registrarForPlugin:@"LocationPlugin"]];

@@ -36,6 +36,7 @@ import 'package:spobber/maps_widgets/maps_header.dart';
 import 'login_page.dart';
 import 'splashscreen.dart';
 
+
 // void main() => runApp(GoogleMapsSampleApp());
 
 
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       title: 'Spobber',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

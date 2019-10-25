@@ -32,7 +32,7 @@ import 'dart:io';
 import 'package:flutter/material.dart' as prefix0;
 
 import '../data/global_variable.dart';
-import 'package:geolocator/geolocator.dart' as prefix2;
+//import 'package:geolocator/geolocator.dart' as prefix2;
 import 'package:spobber/maps_widgets/search_filter.dart';
 
 import 'dart:async';
@@ -48,7 +48,7 @@ import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'package:location_permissions/location_permissions.dart';
+//import 'package:location_permissions/location_permissions.dart';
 import '../Object_info/marker_template.dart';
 
 import 'bottom_modal.dart';
@@ -56,6 +56,9 @@ import 'bottom_modal.dart';
 import '../data/marker_detail.dart';
 import '../data/upper_object.dart';
 import 'package:toast/toast.dart';
+
+import 'package:provider/provider.dart';
+import '../helper/location_services.dart';
 
 class PlacesSearchMapSample extends StatefulWidget {
   final String keyword;
@@ -71,7 +74,7 @@ typedef Marker MarkerUpdateAction(Marker marker);
 
 class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     with SingleTickerProviderStateMixin {
-  LocationData currentLocation;
+  //LocationData currentLocation;
 
   bool currentWidget = true;
 
@@ -82,11 +85,14 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   double _scale;
   AnimationController _controllerAnimation;
 
+
+
   @override
   void initState() {
+   
     super.initState();
 
-    _getLocation();
+//    _getLocation();
 
     _controllerAnimation = AnimationController(
       vsync: this,
@@ -129,7 +135,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   //   }
   // }
 
-  void _add() {
+  void _add(double userlat, double userlong ) {
     final int markerCount = markers.length;
 
     if (markerCount == 12) {
@@ -142,7 +148,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
     final Marker marker = Marker(
       markerId: markerId,
-      position: LatLng(currentLocation.latitude, currentLocation.longitude),
+      position: LatLng(userlat, userlong),
       infoWindow: InfoWindow(title: markerIdVal, snippet: '*', onTap: () {}),
       onTap: () {
         // _onMarkerTapped(markerId);
@@ -169,33 +175,33 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  _getLocation() async {
-    PermissionStatus permission =
-        await LocationPermissions().requestPermissions();
-    print(permission);
-    var location = new Location();
-    prefix2.GeolocationStatus geolocationStatus =
-        await prefix2.Geolocator().checkGeolocationPermissionStatus();
-    prefix2.Position position = await prefix2.Geolocator()
-        .getCurrentPosition(desiredAccuracy: prefix2.LocationAccuracy.best);
-    try {
-      currentLocation = await location.getLocation();
-      if (position != null) {
-        setState(() {
-          print(_loading);
+  // _getLocation() async {
+  //   PermissionStatus permission =
+  //       await LocationPermissions().requestPermissions();
+  //   print(permission);
+  //   var location = new Location();
+  //   prefix2.GeolocationStatus geolocationStatus =
+  //       await prefix2.Geolocator().checkGeolocationPermissionStatus();
+  //   prefix2.Position position = await prefix2.Geolocator()
+  //       .getCurrentPosition(desiredAccuracy: prefix2.LocationAccuracy.best);
+  //   try {
+  //     currentLocation = await location.getLocation();
+  //     if (position != null) {
+  //       setState(() {
+  //         print(_loading);
 
-          _loading = false;
-          print(_loading);
-        });
-      }
+  //         _loading = false;
+  //         print(_loading);
+  //       });
+  //     }
 
-      print(geolocationStatus);
+  //     print(geolocationStatus);
 
-      //rebuild the widget after getting the current location of the user
-    } on PlatformException {
-      currentLocation = null;
-    }
-  }
+  //     //rebuild the widget after getting the current location of the user
+  //   } on PlatformException {
+  //     currentLocation = null;
+  //   }
+  // }
 
   static double latitude = 52.051968;
   static double longitude = 4.5121536;
@@ -380,7 +386,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
 // Color _color = Colors.white.withOpacity(0.7);
 // BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
-  Widget _addMarker() {
+  Widget _addMarker(double userLat, double userLong) {
     return Padding(
         padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
         child: Align(
@@ -394,7 +400,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   color: Colors.black54,
                   icon: Icon(Icons.add),
                   onPressed: () async {
-                    _add();
+                    _add(userLat, userLong);
                   },
                 ))));
   }
@@ -633,13 +639,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     // if (_loading) {
     //   return new Scaffold(body: Center(child: CircularProgressIndicator()));
     // } else {
+      var userLocation = Provider.of<UserLocation>(context);
+    
     return Scaffold(
       body: Stack(
         children: <Widget>[
           _buildGoogleMap(context),
           _mapTypeCycler(),
           _search(),
-          _addMarker(),
+          _addMarker(userLocation.latitude, userLocation.longitude),
           _addPolyLine(),
         ],
       ),
@@ -658,8 +666,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                     switchValue1 = value;
                   },
                   places: places,
-                  latitude: currentLocation.longitude,
-                  longitude: currentLocation.longitude,
+                  latitude: userLocation.longitude,
+                  longitude: userLocation.longitude,
                   gotoLocation: gotoLocation,
                 );
               },

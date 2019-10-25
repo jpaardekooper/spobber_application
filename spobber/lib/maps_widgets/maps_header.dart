@@ -6,6 +6,9 @@ import 'alertdialog_filter.dart';
 import 'bottom_modal.dart';
 import '../data/global_variable.dart';
 
+import '../helper/location_services.dart';
+import 'package:provider/provider.dart';
+
 class GoogleMapsApp extends StatefulWidget {
   static String tag = 'Maps';
   @override
@@ -27,7 +30,9 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return StreamProvider<UserLocation>(
+        builder: (context) => LocationService().locationStream,
+        child: Scaffold(
       key: _scaffoldKey,
       // title: 'Spobber',
       // home: Scaffold(
@@ -60,7 +65,7 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
       body: PlacesSearchMapSample(keyword),
       endDrawer: SearchFilter(updateKeyWord),
       //     ),
-    );
+    ),);
   }
 }
 
