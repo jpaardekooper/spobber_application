@@ -8,25 +8,29 @@ class MarkerHistory extends StatefulWidget {
   _MarkerHistoryState createState() => _MarkerHistoryState();
 }
 
-class _MarkerHistoryState extends State<MarkerHistory>{
+class _MarkerHistoryState extends State<MarkerHistory>
+    with AutomaticKeepAliveClientMixin<MarkerHistory> {
   @override
   void dispose() {
     print("Disposing second route");
     super.dispose();
   }
-  
+
+  @override
+  bool get wantKeepAlive => true;
+
   var list = List();
 
   _loadList() async {
     final response =
         await http.get("https://jsonplaceholder.typicode.com/posts/");
     if (response.statusCode == 200) {
-     await new Future.delayed(const Duration(seconds: 1));
-     if (mounted){
+      await new Future.delayed(const Duration(seconds: 1));
+      if (mounted) {
         setState(() {
           list = json.decode(response.body) as List;
         });
-     }
+      }
     } else {
       throw Exception('Failed to load posts');
     }

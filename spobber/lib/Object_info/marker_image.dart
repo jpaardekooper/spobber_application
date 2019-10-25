@@ -35,7 +35,7 @@ class _MarkerImage extends State<MarkerImage> {
   void initState() {
     super.initState();
 
-  //  _fetchData();
+    //_fetchData();
     // print(widget.imageUrl);
     //   print(widget.imageId);
   }

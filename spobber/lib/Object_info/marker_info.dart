@@ -17,7 +17,7 @@ class MarkerInfo extends StatefulWidget {
 
 // Create a corresponding State class. This class will hold the data related to
 // the form.
-class _MarkerInfoState extends State<MarkerInfo> {
+class _MarkerInfoState extends State<MarkerInfo> with AutomaticKeepAliveClientMixin<MarkerInfo> {
   // Create a global key that will uniquely identify the Form widget and allow
   // us to validate the form
   //
@@ -28,6 +28,8 @@ class _MarkerInfoState extends State<MarkerInfo> {
   //   super.dispose();
   // }
 
+@override
+bool get wantKeepAlive => true;
   final _formKey = GlobalKey<FormState>();
 
   String name;
