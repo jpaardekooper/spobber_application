@@ -18,3 +18,7 @@ int lastSelectedindex;
 
 List<PlaceResponse> places = new List<PlaceResponse>();
 List<MarkerDetail> markerDetailandInformation = new List<MarkerDetail>();
+
+String currentSelectedMarkerID;
+String currentSelectedMarkerSecretID;
+String currentSelectedMarkerObjectUri;

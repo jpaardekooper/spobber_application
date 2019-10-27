@@ -21,7 +21,7 @@ class LoadMarkers {
       @required this.bottomLongitude});
 
   Future<bool> searchNearby(String objectype) async {     
-    places.clear();  
+   
     
     String url = "https://spobber.azurewebsites.net/api/objects/?nlat=$northLatitude&blat=$bottomLatitude&nlon=$northLongitude&blon=$bottomLongitude&source=";
 

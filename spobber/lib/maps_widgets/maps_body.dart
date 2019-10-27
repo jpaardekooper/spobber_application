@@ -28,22 +28,27 @@
  * THE SOFTWARE.
  */
 import 'dart:io';
+import 'package:spobber/data/global_variable.dart' as prefix0;
+import 'package:spobber/data/place_response.dart';
+
 import '../data/global_variable.dart';
-import 'package:spobber/maps_widgets/search_filter.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../Object_info/marker_template.dart';
+import '../marker_information/marker_template.dart';
 import 'bottom_modal.dart';
-import '../data/marker_detail.dart';
 import '../data/upper_object.dart';
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 import '../helper/location_services.dart';
 import 'package:spobber/helper/load_markers.dart';
+
+import 'package:fluster/fluster.dart';
+import 'package:spobber/helper/map_helper.dart';
+import 'package:spobber/helper/map_marker.dart';
 
 class PlacesSearchMapSample extends StatefulWidget {
   final String keyword;
@@ -179,6 +184,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 // }
 
   void searchNearby() async {
+    setState(() {
+      places.clear();
+    });
     final GoogleMapController controller = await _controller.future;
     final LatLngBounds visibleRegion = await controller.getVisibleRegion();
     setState(() {
@@ -192,9 +200,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       bottomLongitude: _visibleRegion.southwest.longitude,
     );
     loadmarkers.searchNearby(widget.keyword).then((value) {
-      _handleResponse();
+      //   _handleResponse();
+      _initMarkers();
     });
-  
   }
 
   MapType _mapType = MapType.satellite;
@@ -428,44 +436,44 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     return LatLng(lat, lng);
   }
 
-  void _handleResponse() {
-    for (int i = 0; i < places.length; i++) {
-      MarkerId markerId = MarkerId(places[i].id.toString());
-      Marker marker = Marker(
-        anchor: Platform.isAndroid ? Offset(0.0, 1.0) : Offset(0.0, 2.0),
-        //rotation: 100,
-        markerId: MarkerId(places[i].id.toString()),
-        // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
-        icon: Platform.isAndroid
-            ? BitmapDescriptor.fromAsset('assets/android/marker_yellow.png')
-            : BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
-        position: LatLng(places[i].latitude, places[i].longitude),
-        infoWindow: InfoWindow(
-            title: places[i].id.toString(),
-            snippet: "equipment: " + places[i].id.toString(),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MarkerTemplate(
-                    type: places[i].type.toString(),
-                    objectUri: places[i].objectUri.toString(),
-                    id: places[i].id.toString(),
-                    secretId: places[i].secretId.toString(),
-                  ),
-                ),
-              );
-            }),
-        onTap: () {
-          _onMarkerTapped(markerId);
-        },
-      );
+  // void _handleResponse() {
+  //   for (int i = 0; i < places.length; i++) {
+  //     MarkerId markerId = MarkerId(places[i].id.toString());
+  //     Marker marker = Marker(
+  //       anchor: Platform.isAndroid ? Offset(0.0, 1.0) : Offset(0.0, 2.0),
+  //       //rotation: 100,
+  //       markerId: MarkerId(places[i].id.toString()),
+  //       // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
+  //       icon: Platform.isAndroid
+  //           ? BitmapDescriptor.fromAsset('assets/android/marker_yellow.png')
+  //           : BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
+  //       position: LatLng(places[i].latitude, places[i].longitude),
+  //       infoWindow: InfoWindow(
+  //           title: places[i].id.toString(),
+  //           snippet: "equipment: " + places[i].id.toString(),
+  //           onTap: () {
+  //             Navigator.push(
+  //               context,
+  //               MaterialPageRoute(
+  //                 builder: (context) => MarkerTemplate(
+  //                   type: places[i].type.toString(),
+  //                   objectUri: places[i].objectUri.toString(),
+  //                   id: places[i].id.toString(),
+  //                   secretId: places[i].secretId.toString(),
+  //                 ),
+  //               ),
+  //             );
+  //           }),
+  //       onTap: () {
+  //         _onMarkerTapped(markerId);
+  //       },
+  //     );
 
-      setState(() {
-        markers[markerId] = marker;
-      });
-    }
-  }
+  //     setState(() {
+  //       markers[markerId] = marker;
+  //     });
+  //   }
+  // }
 
 //widget building
 
@@ -483,14 +491,16 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
           //   print("Do nothing");
           // }
         },
+        onCameraMove: (position) => _updateMarkers(position.zoom),
         mapType: _mapType,
         initialCameraPosition: _myLocation,
         compassEnabled: true,
         myLocationButtonEnabled: true,
         myLocationEnabled: true,
-        markers: Set<Marker>.of(markers.values),
-        circles: Set<Circle>.of(circles.values),
-        polylines: Set<Polyline>.of(polylines.values),    
+        markers: _markers,
+        // markers: Set<Marker>.of(markers.values),
+        // circles: Set<Circle>.of(circles.values),
+        // polylines: Set<Polyline>.of(polylines.values),
       ),
     );
   }
@@ -521,6 +531,25 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                 _search(),
                 _addMarker(userLocation.latitude, userLocation.longitude),
                 _addPolyLine(),
+                // Map markers loading indicator
+                if (_areMarkersLoading)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Card(
+                        elevation: 2,
+                        color: Colors.grey.withOpacity(0.9),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text(
+                            'Loading',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             ),
       bottomNavigationBar: GestureDetector(
@@ -657,5 +686,142 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
   void showToast(String msg, {int duration, int gravity}) {
     Toast.show(msg, context, duration: duration, gravity: gravity);
+  }
+
+  ///google maps clustering
+  ///
+  ////// Set of displayed markers and cluster markers on the map
+  final Set<Marker> _markers = Set();
+
+  /// Minimum zoom at which the markers will cluster
+  final int _minClusterZoom = 0;
+
+  /// Maximum zoom at which the markers will cluster
+  final int _maxClusterZoom = 19;
+
+  /// [Fluster] instance used to manage the clusters
+  Fluster<MapMarker> _clusterManager;
+
+  /// Current map zoom. Initial zoom will be 15, street level
+  double _currentZoom = 15;
+
+  /// Map loading flag
+  bool _isMapLoading = true;
+
+  /// Markers loading flag
+  bool _areMarkersLoading = true;
+
+  /// Url image used on normal markers
+  final String _markerImageUrl =
+      'https://img.icons8.com/office/80/000000/marker.png';
+
+  /// Url image used on cluster markers
+  final String _clusterImageUrl =
+      'https://img.icons8.com/officel/80/000000/place-marker.png';
+
+  /// Example marker coordinates
+  // final List<LatLng> _markerLocations = [
+  //   LatLng(41.147125, -8.611249),
+  //   LatLng(41.145599, -8.610691),
+  //   LatLng(41.145645, -8.614761),
+  //   LatLng(41.146775, -8.614913),
+  //   LatLng(41.146982, -8.615682),
+  //   LatLng(41.140558, -8.611530),
+  //   LatLng(41.138393, -8.608642),
+  //   LatLng(41.137860, -8.609211),
+  //   LatLng(41.138344, -8.611236),
+  //   LatLng(41.139813, -8.609381),
+  // ];
+
+  /// Inits [Fluster] and all the markers with network images and updates the loading state.
+  void _initMarkers() async {
+    final List<MapMarker> markers = [];
+
+    markers.clear();
+
+    for (PlaceResponse markerLocation in places) {
+      if (markerLocation.previewImageUri == null ||
+          markerLocation.previewImageUri == "" ||
+          markerLocation.previewImageUri == "about:blank") {
+        final BitmapDescriptor markerImage =
+            await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
+
+        markers.add(
+          MapMarker(
+            id: places.indexOf(markerLocation).toString(),
+            equipment: markerLocation.id.toString(),
+            secretId: markerLocation.secretId,
+            objectUri: markerLocation.objectUri,
+            onTapFunction: test,
+            position:
+                new LatLng(markerLocation.latitude, markerLocation.longitude),
+            icon: markerImage,
+          ),
+        );
+      } else {
+        final BitmapDescriptor markerImage2 =
+            await MapHelper.getMarkerImageFromUrl(
+                markerLocation.previewImageUri);
+
+        markers.add(
+          MapMarker(
+            id: places.indexOf(markerLocation).toString(),
+            secretId: markerLocation.secretId,
+            equipment: markerLocation.id.toString(),
+            objectUri: markerLocation.objectUri,
+            onTapFunction: test,
+            position:
+                new LatLng(markerLocation.latitude, markerLocation.longitude),
+            icon: markerImage2,
+          ),
+        );
+      }
+    }
+
+    _clusterManager = await MapHelper.initClusterManager(
+      markers,
+      _minClusterZoom,
+      _maxClusterZoom,
+      _clusterImageUrl,
+    );
+
+    _updateMarkers();
+  }
+
+  test() {
+    print("HALO test function activated");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MarkerTemplate(
+          type: "ES-LAS",
+          objectUri: currentSelectedMarkerObjectUri,
+          id: currentSelectedMarkerID,
+          secretId: currentSelectedMarkerSecretID,
+        ),
+      ),
+    );
+  }
+
+  /// Gets the markers and clusters to be displayed on the map for the current zoom level and
+  /// updates state.
+  void _updateMarkers([double updatedZoom]) {
+    if (_clusterManager == null || updatedZoom == _currentZoom) return;
+
+    if (updatedZoom != null) {
+      _currentZoom = updatedZoom;
+    }
+
+    setState(() {
+      _areMarkersLoading = true;
+    });
+
+    _markers
+      ..clear()
+      ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+
+    setState(() {
+      _areMarkersLoading = false;
+    });
   }
 }
