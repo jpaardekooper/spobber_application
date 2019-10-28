@@ -81,6 +81,7 @@ flutter:
     # - assets/img/spobber.png
     # - assets/img/result_data.png
     - assets/
+    - assets/no_image.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
