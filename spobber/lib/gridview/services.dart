@@ -3,19 +3,20 @@ import 'package:http/http.dart' as http;
 import 'album.dart';
 
 class Services {
-  static const String url = "https://jsonplaceholder.typicode.com/photos";
+  static const String url = "https://spobber.azurewebsites.net/api/image/";
 
-  static Future<List<Album>> getPhotos() async {
+  static Future<List<Album>> getPhotos(String secretId) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url+secretId);
       if (response.statusCode == 200) {
         List<Album> list = parsePhotos(response.body);
         return list;
       } else {
-        throw Exception("Error");
+        throw Exception("Error");        
       }
-    } catch (e) {
-      throw Exception(e.toString());
+    } 
+    catch (e) {
+    throw Exception("Er zijn geen foto's gevonden");
     }
   }
 

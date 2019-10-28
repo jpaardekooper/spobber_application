@@ -4,11 +4,14 @@ import 'album.dart';
 import 'gridcell.dart';
 import 'details.dart';
 import 'dart:async';
+import 'package:spobber/marker_information/upload_image.dart';
 
 class GridViewDemo extends StatefulWidget {
   // GridViewDemo() : super();
-
+  final String id;
   // final String title = "Photos";
+  final String secretId;
+  GridViewDemo({@required this.id, @required this.secretId});
 
   @override
   GridViewDemoState createState() => GridViewDemoState();
@@ -48,8 +51,8 @@ class GridViewDemoState extends State<GridViewDemo> {
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (BuildContext context) => GridDetails(
-              curAlbum: album,
-            ),
+          curAlbum: album,
+        ),
       ),
     );
   }
@@ -62,22 +65,22 @@ class GridViewDemoState extends State<GridViewDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-       Column(
+    return Scaffold(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           StreamBuilder(
-        initialData: 0,
-        stream: streamController.stream,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return Text("aantal gevonden foto's ${snapshot.data}");
-        },
-      ),
+            initialData: 0,
+            stream: streamController.stream,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              return Text("aantal gevonden foto's ${snapshot.data}");
+            },
+          ),
           Flexible(
             child: FutureBuilder<List<Album>>(
-              future: Services.getPhotos(),
+              future: Services.getPhotos(widget.secretId),
               builder: (context, snapshot) {
                 // not setstate here
                 //
@@ -96,8 +99,21 @@ class GridViewDemoState extends State<GridViewDemo> {
             ),
           ),
         ],
-      );
-  
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.camera_alt),
+        onPressed: () {
+          print("u pressed me");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TakePictureScreen(
+                        id: widget.id,
+                        secretId: widget.secretId,
+                      )));
+        },
+      ),
+    );
   }
 
   @override

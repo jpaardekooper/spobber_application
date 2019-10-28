@@ -17,7 +17,8 @@ class MarkerInfo extends StatefulWidget {
 
 // Create a corresponding State class. This class will hold the data related to
 // the form.
-class _MarkerInfoState extends State<MarkerInfo> with AutomaticKeepAliveClientMixin<MarkerInfo> {
+class _MarkerInfoState extends State<MarkerInfo>
+    with AutomaticKeepAliveClientMixin<MarkerInfo> {
   // Create a global key that will uniquely identify the Form widget and allow
   // us to validate the form
   //
@@ -28,8 +29,8 @@ class _MarkerInfoState extends State<MarkerInfo> with AutomaticKeepAliveClientMi
   //   super.dispose();
   // }
 
-@override
-bool get wantKeepAlive => true;
+  @override
+  bool get wantKeepAlive => true;
   final _formKey = GlobalKey<FormState>();
 
   String name;
@@ -145,14 +146,15 @@ bool get wantKeepAlive => true;
 //getId information 1
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text: markerDetailandInformation[0].id.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].id.toString()),
       decoration: InputDecoration(
-          labelText: 'type',
+          labelText: 'equipment',
           hintText: 'equipment',
           icon: Icon(Icons.content_paste)),
       validator: (value) {
         if (value.isEmpty) {
-          return 'ID';
+          return 'equipment';
         }
       },
       onSaved: (value) {
@@ -162,14 +164,14 @@ bool get wantKeepAlive => true;
       },
     ));
 
+   
     //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].secretId.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].type.toString()),
       decoration: InputDecoration(
-          labelText: "equipment",
-          hintText: 'object type',
-          icon: Icon(Icons.filter)),
+          labelText: "Type", hintText: 'object type', icon: Icon(Icons.filter)),
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
@@ -182,32 +184,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].type.toString()),
-      decoration: InputDecoration(
-          labelText: "Type",
-          hintText: 'object type',
-          icon: Icon(Icons.filter)),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'vul een de juiste type in';
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          objectType = value;
-        });
-      },
-    ));
-
-
-        //getName information 2
-    formWidget.add(new TextFormField(
-      enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].description.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].description.toString()),
       decoration: InputDecoration(
           labelText: "beschrijving",
           hintText: 'object type',
@@ -224,11 +205,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].equipmentStatus.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].equipmentStatus.toString()),
       decoration: InputDecoration(
           labelText: "equipment status",
           hintText: 'object type',
@@ -245,11 +226,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].parentEquipKind.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].parentEquipKind.toString()),
       decoration: InputDecoration(
           labelText: "parent equipment",
           hintText: 'object type',
@@ -266,11 +247,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].datacollection.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].datacollection.toString()),
       decoration: InputDecoration(
           labelText: "datacollection",
           hintText: 'object type',
@@ -287,12 +268,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].placement.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].placement.toString()),
       decoration: InputDecoration(
           labelText: "plaatsing",
           hintText: 'object type',
@@ -309,11 +289,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].latitude.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].latitude.toString()),
       decoration: InputDecoration(
           labelText: "latitude",
           hintText: 'object type',
@@ -330,11 +310,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].longitude.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].longitude.toString()),
       decoration: InputDecoration(
           labelText: "longitude",
           hintText: 'object type',
@@ -351,11 +331,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].runNr.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].runNr.toString()),
       decoration: InputDecoration(
           labelText: "run nummer",
           hintText: 'object type',
@@ -372,11 +352,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].trackVersion.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].trackVersion.toString()),
       decoration: InputDecoration(
           labelText: "track version",
           hintText: 'object type',
@@ -393,10 +373,11 @@ bool get wantKeepAlive => true;
       },
     ));
 
-        //getName information 2
+    //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].source.toString()),
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].source.toString()),
       decoration: InputDecoration(
           labelText: "source",
           hintText: 'object type',
@@ -413,45 +394,7 @@ bool get wantKeepAlive => true;
       },
     ));
 
-        //getName information 2
-    formWidget.add(new TextFormField(
-      enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].id.toString()),
-      decoration: InputDecoration(
-          labelText: "equipment",
-          hintText: 'object type',
-          icon: Icon(Icons.filter)),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'vul een de juiste type in';
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          objectType = value;
-        });
-      },
-    ));
-
-        //getName information 2
-    formWidget.add(new TextFormField(
-      enabled: false,
-      controller: TextEditingController(text:  markerDetailandInformation[0].id.toString()),
-      decoration: InputDecoration(
-          labelText: "equipment",
-          hintText: 'object type',
-          icon: Icon(Icons.filter)),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'vul een de juiste type in';
-        }
-      },
-      onSaved: (value) {
-        setState(() {
-          objectType = value;
-        });
-      },
-    ));
+  
 
     // formWidget.add(new Container(
     //   width: 300,
@@ -479,26 +422,25 @@ bool get wantKeepAlive => true;
     //       isExpanded: true,
     //     )));
 
- 
-    formWidget.add(new Container(
-        margin: const EdgeInsets.only(top: 1.0, left: 40.0),
-        child: new DropdownButton(
-          elevation: 5,
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: 15,
-              decorationStyle: TextDecorationStyle.wavy),
-          isDense: true,
-          iconSize: 40.0,
-          items: statusList,
-          value: _selectedStatus,
-          onChanged: (value) {
-            setState(() {
-              _selectedStatus = value;
-            });
-          },
-          isExpanded: true,
-        )));
+    // formWidget.add(new Container(
+    //     margin: const EdgeInsets.only(top: 1.0, left: 40.0),
+    //     child: new DropdownButton(
+    //       elevation: 5,
+    //       style: TextStyle(
+    //           color: Colors.black,
+    //           fontSize: 15,
+    //           decorationStyle: TextDecorationStyle.wavy),
+    //       isDense: true,
+    //       iconSize: 40.0,
+    //       items: statusList,
+    //       value: _selectedStatus,
+    //       onChanged: (value) {
+    //         setState(() {
+    //           _selectedStatus = value;
+    //         });
+    //       },
+    //       isExpanded: true,
+    //     )));
 
     //getName information
     // formWidget.add(new TextFormField(
@@ -526,7 +468,8 @@ bool get wantKeepAlive => true;
         margin: const EdgeInsets.only(bottom: 60),
         child: new TextFormField(
           enabled: false,
-          controller: TextEditingController(text:  markerDetailandInformation[0].year.toString()),
+          controller: TextEditingController(
+              text: markerDetailandInformation[0].year.toString()),
           decoration: InputDecoration(
               labelText: "bron datum:",
               hintText: 'bron datum',
@@ -599,23 +542,20 @@ bool get wantKeepAlive => true;
       markerDetailandInformation = (json.decode(response.body) as List)
           .map((data) => new MarkerDetail().fromJson(data))
           .toList();
-
-setState(() {
-  
-});
-     
     } else {
-      print("url is niet gevonden");
-      //throw Exception('An error occurred getting places nearby');
+      print(url);
+      print("URL NOT FOUND");
     }
+
+    setState(() {});
   }
 
   @override
-  void initState() {    
-    _loadList();
-    print("lOADING LIST");
+  void initState() {
+      print("lOADING LIST");
+     _loadList();
+  
     super.initState();
-   
   }
 
   @override
@@ -627,14 +567,13 @@ setState(() {
       print(markerDetailandInformation.length);
       return Center(child: CircularProgressIndicator());
     } else {
-            return Container(
-        child: Form(
-            key: _formKey,
-            child: new ListView(
-              padding: EdgeInsets.all(20.0),
-              children: getFormWidget(),
-            )));
-      
+      return Container(
+          child: Form(
+              key: _formKey,
+              child: new ListView(
+                padding: EdgeInsets.all(20.0),
+                children: getFormWidget(),
+              )));
     }
 
     // }

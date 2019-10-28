@@ -22,10 +22,10 @@ class GridDetailsState extends State<GridDetails> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Hero(
-              tag: "image${widget.curAlbum.id}",
+              tag: "image${widget.curAlbum.uri}",
               child: FadeInImage.assetNetwork(
                 placeholder: "images/no_image.png",
-                image: widget.curAlbum.url,
+                image: widget.curAlbum.uri,
               ),
             ),
             SizedBox(

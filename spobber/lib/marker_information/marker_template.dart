@@ -7,7 +7,7 @@ import '../data/marker_detail.dart';
 
 class MarkerTemplate extends StatelessWidget {
   final String type;
-  final String id;
+  final int id;
   final String secretId;
   final String objectUri;
 
@@ -22,7 +22,7 @@ class MarkerTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(id + " " + secretId );
+    print(id.toString() + " " + secretId );
     return DefaultTabController(
       length: 3,
       child: Scaffold(        
@@ -47,8 +47,8 @@ class MarkerTemplate extends StatelessWidget {
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             children: [
-              MarkerInfo(id: id, objectUri: objectUri),
-              GridViewDemo(),
+              MarkerInfo(id: id.toString(), objectUri: objectUri),
+              GridViewDemo(id:id.toString(), secretId: secretId),
            //   MarkerImage(id: id, secretId: secretId),
               MarkerHistory(),
             ],

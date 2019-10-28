@@ -251,10 +251,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   searchNearby();
 
                   if (setDataSource.length <= 0) {
-                    showToast(
-                        "Selecteer minimaal 1 databron. Gebruik de filter rechtsboven in",
-                        gravity: Toast.CENTER,
-                        duration: Toast.LENGTH_LONG);
+                    showToast("Selecteer minimaal één databron.",
+                        gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
                   } else {
                     showToast("Data wordt ingeladen",
                         gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
@@ -323,33 +321,31 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
               child: InkWell(
                 splashColor: Colors.blue[600], // splash color
                 onTap: () {
-                    showDialog<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialogFilter(
-                      switchValueisSap: isSap,
-                      valueChangedisSap: (value) {
-                        isSap = value;
-                      },
-                      switchValueisSigma: isSigma,
-                      valueChangedisSigma: (value) {
-                        isSigma = value;
-                      },
-                      switchValueisUST02: isUST02,
-                      valueChangedisUST02: (value) {
-                        isUST02 = value;
-                      },
-                    );
-                  },
-                );
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialogFilter(
+                        switchValueisSap: isSap,
+                        valueChangedisSap: (value) {
+                          isSap = value;
+                        },
+                        switchValueisSigma: isSigma,
+                        valueChangedisSigma: (value) {
+                          isSigma = value;
+                        },
+                        switchValueisUST02: isUST02,
+                        valueChangedisUST02: (value) {
+                          isUST02 = value;
+                        },
+                      );
+                    },
+                  );
                 }, // button pressed
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     getIcon(setDataSource.length), // icon
                     // Text("Call"), // text
-
-                    
                   ],
                 ),
               ),
@@ -371,7 +367,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       return Icon(Icons.filter_3);
     } else {
       return Icon(Icons.filter_9_plus);
-    }     
+    }
   }
 
   List<LatLng> pointsRed = <LatLng>[];
@@ -550,6 +546,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         myLocationButtonEnabled: true,
         myLocationEnabled: true,
         markers: _markers,
+        
+        
         // markers: Set<Marker>.of(markers.values),
         // circles: Set<Circle>.of(circles.values),
         // polylines: Set<Polyline>.of(polylines.values),
@@ -794,6 +792,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             secretId: markerLocation.secretId,
             objectUri: markerLocation.objectUri,
             onTapFunction: openMarkerInfo,
+            placement: markerLocation.placement,
             position:
                 new LatLng(markerLocation.latitude, markerLocation.longitude),
             icon: markerImage,
@@ -810,6 +809,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             equipment: markerLocation.id.toString(),
             objectUri: markerLocation.objectUri,
             onTapFunction: openMarkerInfo,
+            placement: markerLocation.placement,
             position:
                 new LatLng(markerLocation.latitude, markerLocation.longitude),
             icon: markerImage2,
@@ -826,6 +826,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             equipment: markerLocation.id.toString(),
             objectUri: markerLocation.objectUri,
             onTapFunction: openMarkerInfo,
+            placement: markerLocation.placement,
             position:
                 new LatLng(markerLocation.latitude, markerLocation.longitude),
             icon: markerImage3,
@@ -852,7 +853,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         builder: (context) => MarkerTemplate(
           type: "ES-LAS",
           objectUri: currentSelectedMarkerObjectUri,
-          id: currentSelectedMarkerID,
+          id: int.parse(currentSelectedMarkerID),
           secretId: currentSelectedMarkerSecretID,
         ),
       ),

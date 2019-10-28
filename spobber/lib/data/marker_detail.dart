@@ -50,7 +50,7 @@ class MarkerDetail {
       secretId: json['secret_Id'],
       type: json['type'],
       description: json['description'],
-      equipmentStatus: json['equipment_status'],
+      equipmentStatus: json['equipment_Status'],
       parentEquipKind: json['parent_equip_kind'],
       datacollection: json['datacollection'],
       placement: json['placement'],

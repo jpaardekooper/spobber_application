@@ -20,6 +20,7 @@ class MapMarker extends Clusterable {
   final VoidCallback onTapFunction;
   final String equipment;
   final String objectUri;
+  final String placement;
 
   MapMarker({
     @required this.id,
@@ -27,6 +28,7 @@ class MapMarker extends Clusterable {
     @required this.icon,
     @required this.secretId,
     @required this.equipment,
+    this.placement,    
     this.onTapFunction,
     this.objectUri,
     isCluster = false,
@@ -56,10 +58,12 @@ class MapMarker extends Clusterable {
           currentSelectedMarkerSecretID = secretId;
           currentSelectedMarkerObjectUri = objectUri;
         },
+     //   consumeTapEvents: true,
         infoWindow: isCluster
             ? null
             : InfoWindow(
-                title: secretId,
+                title: "equipment $id",
+                snippet: "plaatsing: $placement",
                 onTap: onTapFunction,
               ),
       );
