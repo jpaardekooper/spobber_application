@@ -62,8 +62,8 @@ class MapMarker extends Clusterable {
         infoWindow: isCluster
             ? null
             : InfoWindow(
-                title: "equipment $id",
-                snippet: "plaatsing: $placement",
+                title: "Equipment: $equipment",
+                snippet: "Plaatsing: $placement",
                 onTap: onTapFunction,
               ),
       );

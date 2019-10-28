@@ -2,22 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math' show cos, sqrt, asin;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:spobber/data/place_response.dart';
-import 'maps_body.dart';
+
 import '../data/global_variable.dart';
+
 
 class BottomSheetSwitch extends StatefulWidget {
   BottomSheetSwitch(
-      {@required this.switchValue,
-      @required this.valueChanged,
-      @required this.places,
+      {
+    //  @required this.places,
       @required this.latitude,
       @required this.longitude,
       @required this.gotoLocation});
-  final List<PlaceResponse> places;
-  final bool switchValue;
-  final ValueChanged valueChanged;
+  //final List<PlaceResponse> places;
+  
   final double latitude;
   final double longitude;
   final Function gotoLocation;
@@ -27,15 +24,15 @@ class BottomSheetSwitch extends StatefulWidget {
 }
 
 class _BottomSheetSwitch extends State<BottomSheetSwitch> {
-  bool _switchValue;
+ 
   int _lengthOfPlaces;
 
   int _selectedIndex = 0;
 
   @override
   void initState() {
-    _switchValue = widget.switchValue;
-    _lengthOfPlaces = widget.places.length;
+   
+    _lengthOfPlaces = places.length;
 
     // if(_selectedIndex == 0 && lastSelectedindex != 0){
     //   _selectedIndex = _selectedIndex;
@@ -51,7 +48,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
   }
 
   Widget _returnImage(int index) {
-    print(widget.places[index].previewImageUri.toString());
+    print(places[index].previewImageUri.toString());
     if (_lengthOfPlaces < 0) {
       print("ik kom bij de niet gevulde data");
       return ClipRRect(
@@ -68,7 +65,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         child: Image(
             fit: BoxFit.fitHeight,
             image:
-                NetworkImage(widget.places[index].previewImageUri.toString())),
+                NetworkImage(places[index].previewImageUri.toString())),
       );
     }
   }
@@ -84,12 +81,12 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
             //  child:  ListView(scrollDirection: Axis.horizontal, children: formWidget),
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: widget.places.length,
+                itemCount: places.length,
                 itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
                         _onSelected(index);
-                        widget.gotoLocation(widget.places[index].latitude,
-                            widget.places[index].longitude);
+                        widget.gotoLocation(places[index].latitude,
+                            places[index].longitude);
 
                         //   Navigator.pop(context);
                         // _onMarkerTapped(places[index].);
@@ -146,41 +143,17 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                                                 new BorderRadius.circular(5.0),
                                             child: Image(
                                                 fit: BoxFit.fitHeight,
-                                                image: widget.places[index]
+                                                image: places[index]
                                                             .previewImageUri
                                                             .toString() !=
                                                         null
-                                                    ? new NetworkImage(widget
-                                                        .places[index]
+                                                    ? new NetworkImage(places[index]
                                                         .previewImageUri
                                                         .toString())
                                                     : new AssetImage(
                                                         "assets/no_image.png")),
                                           )),
-                                      // Container(
-                                      //   height: 50,
-                                      //   width: 50,
-                                      //   decoration: BoxDecoration(
-                                      //     borderRadius:
-                                      //         BorderRadius.circular(10),
-                                      //     color: Colors.white,
-                                      //   ),
-                                      //   child: ClipRect(
-                                      //     clipBehavior: Clip.hardEdge,
-                                      //     child: OverflowBox(
-                                      //       maxHeight: 50,
-                                      //       maxWidth: 50,
-                                      //       child: Center(
-                                      //         child: Container(
-                                      //           decoration: BoxDecoration(
-                                      //             color: Colors.red,
-                                      //             shape: BoxShape.circle,
-                                      //           ),
-                                      //         ),
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
+                         
                                       Container(
                                         child: Padding(
                                           padding: const EdgeInsets.all(15.0),
@@ -207,7 +180,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         //   child:
         Container(
             child: Text(
-          widget.places[index].source,
+          places[index].source,
           style: TextStyle(
               color: Colors.blue,
               fontSize: 20.0,
@@ -215,7 +188,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         )),
         Container(
             child: Text(
-          widget.places[index].type,
+          places[index].type,
           style: TextStyle(
               color: Colors.blue,
               fontSize: 20.0,
@@ -224,14 +197,14 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         //   Divider(),
         SizedBox(height: 5.0),
         Container(
-          child: Text("Equipment: \t" + widget.places[index].id.toString(),
+          child: Text("Equipment: \t" + places[index].id.toString(),
               style: TextStyle(
                 fontSize: 18.0,
               )),
         ),
         Container(
           child: Text(
-            widget.places[index].placement,
+            places[index].placement,
             style: TextStyle(
               fontSize: 18.0,
             ),
@@ -305,10 +278,11 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
               Container(
                   child: Text(
                 calculateDistance(
-                        widget.places[index].latitude,
-                        widget.places[index].latitude,
-                        widget.latitude,
-                        widget.longitude) +
+                  widget.latitude,
+                        widget.longitude,
+                        places[index].latitude,
+                        places[index].latitude,
+                        ) +
                     " km",
                 style: TextStyle(
                   color: Colors.black54,

@@ -172,6 +172,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   void searchNearby() async {
     setState(() {
       places.clear();
+      _markers.clear();
     });
     final GoogleMapController controller = await _controller.future;
     final LatLngBounds visibleRegion = await controller.getVisibleRegion();
@@ -244,7 +245,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                 onTap: () {
                   setState(() {
                     places.clear();
-                    markers.clear();
+                  //  markers.clear();
+                    _markers.clear();
                     circles.clear();
                     polylines.clear();
                   });
@@ -606,16 +608,14 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
           if (places.length <= 0) {
             return;
           } else {
+            print("${userLocation.latitude}, ${userLocation.longitude} ");
+       
             //           print("u pressed me");
             showModalBottomSheet<void>(
               context: context,
               builder: (BuildContext context) {
-                return BottomSheetSwitch(
-                  switchValue: switchValue1,
-                  valueChanged: (value) {
-                    switchValue1 = value;
-                  },
-                  places: places,
+                return BottomSheetSwitch(                
+                  //places: places,
                   latitude: userLocation.longitude,
                   longitude: userLocation.longitude,
                   gotoLocation: gotoLocation,

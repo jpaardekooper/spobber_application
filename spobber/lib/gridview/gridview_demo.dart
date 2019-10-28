@@ -51,8 +51,12 @@ class GridViewDemoState extends State<GridViewDemo> {
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (BuildContext context) => GridDetails(
-          curAlbum: album,
-        ),
+            curAlbum: album,
+            imageProvider: NetworkImage(album.uri),
+             minScale: 0.2,
+             maxScale: 1.1,
+             initialScale: 0.1,
+            ),
       ),
     );
   }
@@ -72,7 +76,7 @@ class GridViewDemoState extends State<GridViewDemo> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           StreamBuilder(
-            initialData: 0,
+            // initialData: 0,
             stream: streamController.stream,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               return Text("aantal gevonden foto's ${snapshot.data}");
@@ -84,17 +88,17 @@ class GridViewDemoState extends State<GridViewDemo> {
               builder: (context, snapshot) {
                 // not setstate here
                 //
-                if (snapshot.hasError) {
-                  return Text('Error ${snapshot.error}');
-                }
+                // if (snapshot.hasError) {
+                //   return Text('Error ${snapshot.error}');
+                // }
                 //
                 if (snapshot.hasData) {
                   streamController.sink.add(snapshot.data.length);
                   // gridview
                   return gridview(snapshot);
+                } else {
+                  return circularProgress();
                 }
-
-                return circularProgress();
               },
             ),
           ),

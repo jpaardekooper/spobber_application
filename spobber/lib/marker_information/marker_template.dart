@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'marker_image.dart';
 import 'marker_info.dart';
 import 'marker_history.dart';
 import '../gridview/gridview_demo.dart';
@@ -54,12 +53,6 @@ class MarkerTemplate extends StatelessWidget {
             ],
           ),
         ),
-        // body: Container(
-        //     margin: const EdgeInsets.symmetric(vertical: 20.0),
-        //     height: 300.0,
-        //     child: PhotoView(
-        //       imageProvider: NetworkImage("http://objectlabeler.azurewebsites.net/api/image/?id="+markerDetail.name),
-        //     )),
       ),
     );
   }

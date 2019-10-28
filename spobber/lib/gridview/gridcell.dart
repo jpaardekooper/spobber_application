@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'album.dart';
 
 class AlbumCell extends StatelessWidget {
-  const AlbumCell(this.album);
+  AlbumCell(this.album);
   @required
   final Album album;
 
@@ -28,7 +28,7 @@ class AlbumCell extends StatelessWidget {
                   child: Hero(
                     tag: "image${album.uri}",
                     child: FadeInImage.assetNetwork(
-                      placeholder: "images/no_image.png",
+                      placeholder: "assets/no_image.png",
                       image: album.uri,
                       width: 100,
                       height: 100,
