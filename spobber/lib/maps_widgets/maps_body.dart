@@ -50,6 +50,8 @@ import 'package:fluster/fluster.dart';
 import 'package:spobber/helper/map_helper.dart';
 import 'package:spobber/helper/map_marker.dart';
 
+import 'package:spobber/maps_widgets/alertdialog_filter.dart';
+
 class PlacesSearchMapSample extends StatefulWidget {
   final String keyword;
   PlacesSearchMapSample(this.keyword);
@@ -70,23 +72,11 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   MarkerId selectedMarker;
   int _markerIdCounter = 1;
 
-  double _scale;
-  AnimationController _controllerAnimation;
-
   bool loading = true;
 
   @override
   void initState() {
     super.initState();
-
-    _controllerAnimation = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 200),
-      lowerBound: 0.0,
-      upperBound: 0.1,
-    )..addListener(() {
-        setState(() {});
-      });
   }
 
   //When clicked function is performed on a marker
@@ -99,6 +89,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         //       .copyWith(iconParam: BitmapDescriptor.defaultMarker);
         //   markers[selectedMarker] = resetOld;
         // }
+
         selectedMarker = markerId;
         // final Marker newMarker = tappedMarker.copyWith(
         //   iconParam: BitmapDescriptor.defaultMarkerWithHue(
@@ -120,12 +111,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   // }
 
   void _add(double userlat, double userlong) {
-    final int markerCount = markers.length;
-
-    if (markerCount == 12) {
-      return;
-    }
-
     final String markerIdVal = 'marker_id_$_markerIdCounter';
     _markerIdCounter++;
     final MarkerId markerId = MarkerId(markerIdVal);
@@ -154,6 +139,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     );
 
     setState(() {
+      _markers.add(marker);
       markers[markerId] = marker;
     });
   }
@@ -212,91 +198,116 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         MapType.values[(_mapType.index + 1) % MapType.values.length];
 
     return Padding(
-        padding: EdgeInsets.fromLTRB(12, 70, 0, 0),
-        child: Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-                alignment: Alignment.centerRight,
-                width: 37,
-                height: 37,
-                color: Colors.white.withOpacity(0.7),
-                child: IconButton(
-                  color: Colors.black54,
-                  icon: Icon(Icons.map),
-                  onPressed: () {
-                    setState(() {
-                      _mapType = nextType;
-                      print("test map");
-                    });
-                  },
-                ))));
-  }
-
-  Widget _search() {
-    return GestureDetector(
-      onTapDown: _onTapDown,
-      onTapUp: _onTapUp,
-      onTap: () async {
-        markers.clear();
-        circles.clear();
-        polylines.clear();
-        searchNearby();
-        if (setDataSource.length <= 0) {
-          showToast(
-              "Selecteer minimaal 1 databron. Gebruik de filter rechtsboven in",
-              gravity: Toast.CENTER,
-              duration: Toast.LENGTH_LONG);
-        } else {
-          showToast("Data wordt ingeladen",
-              gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
-        }
-      },
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Transform.scale(
-            scale: _scale,
-            child: _animatedButtonUI,
+      padding: EdgeInsets.fromLTRB(12, 70, 0, 0),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Material(
+              color: Colors.white.withOpacity(0.7), // button color
+              child: InkWell(
+                splashColor: Colors.blue[600], // splash color
+                onTap: () {
+                  setState(() {
+                    _mapType = nextType;
+                    print("test map");
+                  });
+                }, // button pressed
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.map), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _onTapDown(TapDownDetails details) {
-    _controllerAnimation.forward();
+  Widget _search() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Material(
+              color: Colors.white.withOpacity(0.7), // button color
+              child: InkWell(
+                splashColor: Colors.blue[600], // splash color
+                onTap: () {
+                  setState(() {
+                    places.clear();
+                    markers.clear();
+                    circles.clear();
+                    polylines.clear();
+                  });
+                  searchNearby();
+
+                  if (setDataSource.length <= 0) {
+                    showToast(
+                        "Selecteer minimaal 1 databron. Gebruik de filter rechtsboven in",
+                        gravity: Toast.CENTER,
+                        duration: Toast.LENGTH_LONG);
+                  } else {
+                    showToast("Data wordt ingeladen",
+                        gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.search), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  void _onTapUp(TapUpDetails details) {
-    _controllerAnimation.reverse();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
-  @override
-  void dispose() {
-    _controllerAnimation.dispose();
-    super.dispose();
-  }
-
-// Color _color = Colors.white.withOpacity(0.7);
-// BorderRadiusGeometry _borderRadius = BorderRadius.circular(8);
   Widget _addMarker(double lat, double long) {
     return Padding(
-        padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
-        child: Align(
-            alignment: Alignment.topRight,
-            child: Container(
-                alignment: Alignment.centerRight,
-                width: 37,
-                height: 37,
-                color: Colors.white.withOpacity(0.7),
-                child: IconButton(
-                  color: Colors.black54,
-                  icon: Icon(Icons.add),
-                  onPressed: () async {
-                    _add(lat, long);
-                  },
-                ))));
+      padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Material(
+              color: Colors.white.withOpacity(0.7), // button color
+              child: InkWell(
+                splashColor: Colors.blue[600], // splash color
+                onTap: () {
+                  _add(lat, long);
+                }, // button pressed
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.add), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _addPolyLine() {
@@ -304,22 +315,63 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       padding: EdgeInsets.fromLTRB(0, 190, 12, 0),
       child: Align(
         alignment: Alignment.topRight,
-        child: Container(
-          alignment: Alignment.centerRight,
-          width: 37,
-          height: 37,
-          color: Colors.white.withOpacity(0.7),
-          child: IconButton(
-            color: Colors.black54,
-            icon: Icon(Icons.linear_scale),
-            onPressed: () async {
-              //      loadPolyline();
-//_add();
-            },
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Material(
+              color: Colors.white.withOpacity(0.7), // button color
+              child: InkWell(
+                splashColor: Colors.blue[600], // splash color
+                onTap: () {
+                    showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialogFilter(
+                      switchValueisSap: isSap,
+                      valueChangedisSap: (value) {
+                        isSap = value;
+                      },
+                      switchValueisSigma: isSigma,
+                      valueChangedisSigma: (value) {
+                        isSigma = value;
+                      },
+                      switchValueisUST02: isUST02,
+                      valueChangedisUST02: (value) {
+                        isUST02 = value;
+                      },
+                    );
+                  },
+                );
+                }, // button pressed
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    getIcon(setDataSource.length), // icon
+                    // Text("Call"), // text
+
+                    
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Icon getIcon(int selector) {
+    if (selector <= 0) {
+      return Icon(Icons.filter);
+    } else if (selector == 1) {
+      return Icon(Icons.filter_1);
+    } else if (selector == 2) {
+      return Icon(Icons.filter_2);
+    } else if (selector == 3) {
+      return Icon(Icons.filter_3);
+    } else {
+      return Icon(Icons.filter_9_plus);
+    }     
   }
 
   List<LatLng> pointsRed = <LatLng>[];
@@ -513,7 +565,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   //var userLocation;
   @override
   Widget build(BuildContext context) {
-    _scale = 1 - _controllerAnimation.value;
     //print(_loading);
     //print(currentLocation.latitude);
     // if (_loading) {
@@ -677,13 +728,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     });
   }
 
-  Widget get _animatedButtonUI => Container(
-        height: 37,
-        width: 37,
-        color: Colors.white.withOpacity(0.7),
-        child: Center(child: Icon(Icons.search)),
-      );
-
   void showToast(String msg, {int duration, int gravity}) {
     Toast.show(msg, context, duration: duration, gravity: gravity);
   }
@@ -711,27 +755,25 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   /// Markers loading flag
   bool _areMarkersLoading = true;
 
-  /// Url image used on normal markers
-  final String _markerImageUrl =
-      'https://img.icons8.com/office/80/000000/marker.png';
+  /// Url image used on normal markers sap (yellow)
+  final String _markerImageUrlSap =
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/sap.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+  /// Url image used on cluster markers (red)
+  final String _markerImageUrlSigma =
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/sigma.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+  /// Url image used on cluster markers (blue)
+  final String _markerImageUrlMeetTrein =
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/meet-trein.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+  /// Url image used on cluster markers (cluster itself)
+  final String _clusterImageUrl =
+      "https://spobberstorageaccount.dfs.core.windows.net/marker/place-marker.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D";
 
   /// Url image used on cluster markers
-  final String _clusterImageUrl =
+  final String _clusterImageUrl2 =
       'https://img.icons8.com/officel/80/000000/place-marker.png';
-
-  /// Example marker coordinates
-  // final List<LatLng> _markerLocations = [
-  //   LatLng(41.147125, -8.611249),
-  //   LatLng(41.145599, -8.610691),
-  //   LatLng(41.145645, -8.614761),
-  //   LatLng(41.146775, -8.614913),
-  //   LatLng(41.146982, -8.615682),
-  //   LatLng(41.140558, -8.611530),
-  //   LatLng(41.138393, -8.608642),
-  //   LatLng(41.137860, -8.609211),
-  //   LatLng(41.138344, -8.611236),
-  //   LatLng(41.139813, -8.609381),
-  // ];
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
   void _initMarkers() async {
@@ -740,11 +782,10 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     markers.clear();
 
     for (PlaceResponse markerLocation in places) {
-      if (markerLocation.previewImageUri == null ||
-          markerLocation.previewImageUri == "" ||
-          markerLocation.previewImageUri == "about:blank") {
+      //if there is no image found and
+      if (markerLocation.source == "SAP") {
         final BitmapDescriptor markerImage =
-            await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
+            await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
 
         markers.add(
           MapMarker(
@@ -752,16 +793,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             equipment: markerLocation.id.toString(),
             secretId: markerLocation.secretId,
             objectUri: markerLocation.objectUri,
-            onTapFunction: test,
+            onTapFunction: openMarkerInfo,
             position:
                 new LatLng(markerLocation.latitude, markerLocation.longitude),
             icon: markerImage,
           ),
         );
-      } else {
+      } else if (markerLocation.source == "SIGMA") {
         final BitmapDescriptor markerImage2 =
-            await MapHelper.getMarkerImageFromUrl(
-                markerLocation.previewImageUri);
+            await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
 
         markers.add(
           MapMarker(
@@ -769,10 +809,26 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             secretId: markerLocation.secretId,
             equipment: markerLocation.id.toString(),
             objectUri: markerLocation.objectUri,
-            onTapFunction: test,
+            onTapFunction: openMarkerInfo,
             position:
                 new LatLng(markerLocation.latitude, markerLocation.longitude),
             icon: markerImage2,
+          ),
+        );
+      } else {
+        final BitmapDescriptor markerImage3 =
+            await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+
+        markers.add(
+          MapMarker(
+            id: places.indexOf(markerLocation).toString(),
+            secretId: markerLocation.secretId,
+            equipment: markerLocation.id.toString(),
+            objectUri: markerLocation.objectUri,
+            onTapFunction: openMarkerInfo,
+            position:
+                new LatLng(markerLocation.latitude, markerLocation.longitude),
+            icon: markerImage3,
           ),
         );
       }
@@ -788,7 +844,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     _updateMarkers();
   }
 
-  test() {
+  openMarkerInfo() {
     print("HALO test function activated");
     Navigator.push(
       context,

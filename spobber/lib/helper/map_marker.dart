@@ -2,7 +2,7 @@ import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
-import 'package:spobber/data/global_variable.dart' as prefix0;
+import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/marker_information/marker_template.dart';
 import 'package:spobber/data/global_variable.dart';
 
@@ -51,21 +51,16 @@ class MapMarker extends Clusterable {
         ),
         icon: icon,
         onTap: () {
-          selectMarker(equipment, secretId, objectUri);
+          //   selectMarker(equipment, secretId, objectUri);
+          currentSelectedMarkerID = equipment;
+          currentSelectedMarkerSecretID = secretId;
+          currentSelectedMarkerObjectUri = objectUri;
         },
-        infoWindow: InfoWindow(
-          title: secretId,
-          onTap: onTapFunction,
-        ),
+        infoWindow: isCluster
+            ? null
+            : InfoWindow(
+                title: secretId,
+                onTap: onTapFunction,
+              ),
       );
-
-  void selectMarker(String equipment, String secretId, String objectUri) {
-    currentSelectedMarkerID = equipment;
-    currentSelectedMarkerSecretID = secretId;
-    currentSelectedMarkerObjectUri = objectUri;
-    
-    print(currentSelectedMarkerID);
-    print(currentSelectedMarkerSecretID);
-    print(objectUri);
-  }
 }

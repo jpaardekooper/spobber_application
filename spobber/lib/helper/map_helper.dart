@@ -85,7 +85,7 @@ class MapHelper {
     return Fluster<MapMarker>(
       minZoom: minZoom,
       maxZoom: maxZoom,
-      radius: 150,
+      radius: 300,
       extent: 2048,
       nodeSize: 64,
       points: markers,
@@ -98,8 +98,8 @@ class MapHelper {
         id: cluster.id.toString(),
         secretId: null,
         position: LatLng(lat, lng),
-       // icon: clusterImage,
-        icon: BitmapDescriptor.fromAsset('assets/cluster.png'),
+        icon: clusterImage,
+       // icon: BitmapDescriptor.fromAsset('assets/cluster.png'),
         isCluster: true,
         clusterId: cluster.id,
         pointsSize: cluster.pointsSize,
@@ -123,7 +123,7 @@ class MapHelper {
     if (clusterManager == null) return [];
 
     return clusterManager
-        .clusters([-180, -85, 180, 85], currentZoom.toInt())
+        .clusters([-400, -170, 400, 170], currentZoom.toInt())
         .map((cluster) => cluster.toMarker())
         .toList();
   }
