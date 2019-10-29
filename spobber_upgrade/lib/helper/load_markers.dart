@@ -13,16 +13,13 @@ class LoadMarkers {
   final double northLongitude;
   final double bottomLongitude;
 
-
   LoadMarkers(
       {@required this.northLatitude,
       @required this.northLongitude,
       @required this.bottomLatitude,
       @required this.bottomLongitude});
 
-  Future<bool> searchNearby(String objectype) async {     
-   
-    
+  Future<bool> searchNearby(String objectype) async {
     String url = "https://spobber.azurewebsites.net/api/objects/?nlat=$northLatitude&blat=$bottomLatitude&nlon=$northLongitude&blon=$bottomLongitude&source=";
 
     for (int i = 0; i < setDataSource.length; i++) {
@@ -35,8 +32,7 @@ class LoadMarkers {
       // final data = json.decode(response.body);
       places = (json.decode(response.body) as List)
           .map((data) => new PlaceResponse().fromJson(data))
-          .toList();   
-    
+          .toList();
     } else {
       print("url is niet gevonden");
       //throw Exception('An error occurred getting places nearby');

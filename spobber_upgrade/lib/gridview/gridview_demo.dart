@@ -53,9 +53,9 @@ class GridViewDemoState extends State<GridViewDemo> {
         builder: (BuildContext context) => GridDetails(
             curAlbum: album,
             imageProvider: NetworkImage(album.uri),
-             minScale: 0.2,
-             maxScale: 1.1,
-             initialScale: 0.1,
+            minScale: 0.2,
+            maxScale: 1.1,
+            //  initialScale: 0.1,
             ),
       ),
     );

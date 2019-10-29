@@ -15,10 +15,15 @@ List<String> setObjectType = new List<String>();
 List<String> setDataSource = new List<String>();
 
 int lastSelectedindex;
-
+//all markers
 List<PlaceResponse> places = new List<PlaceResponse>();
+
+//single marker
+List<PlaceResponse> singleMarker = new List<PlaceResponse>();
 List<MarkerDetail> markerDetailandInformation = new List<MarkerDetail>();
 
 String currentSelectedMarkerID;
 String currentSelectedMarkerSecretID;
 String currentSelectedMarkerObjectUri;
+
+  String singleMarkerObject = "";

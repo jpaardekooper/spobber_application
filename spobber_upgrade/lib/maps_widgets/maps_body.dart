@@ -348,6 +348,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   children: <Widget>[
                     getIcon(setDataSource.length), // icon
                     // Text("Call"), // text
+                    
                   ],
                 ),
               ),
@@ -361,6 +362,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   Icon getIcon(int selector) {
     if (selector <= 0) {
       return Icon(Icons.filter);
+     
     } else if (selector == 1) {
       return Icon(Icons.filter_1);
     } else if (selector == 2) {
@@ -540,7 +542,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
           // } else {
           //   print("Do nothing");
           // }
-        },
+        },    
+        mapToolbarEnabled: false,
         onCameraMove: (position) => _updateMarkers(position.zoom),
         mapType: _mapType,
         initialCameraPosition: _myLocation,
