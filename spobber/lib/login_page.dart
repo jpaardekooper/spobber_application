@@ -12,20 +12,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    final logo = Hero(
-      tag: 'hero',
-      child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 48.0,
-        child: Image.asset('assets/result_data.png'),
-      ),
-    );
+    // final logo = Hero(
+    //   tag: 'hero',
+    //   child: CircleAvatar(
+    //     backgroundColor: Colors.transparent,
+    //     radius: 48.0,
+    //     child: Image.asset('assets/result_data.png'),
+    //   ),
+    // );
 
     final email = TextFormField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       initialValue: 'TestGebruiker@example.com',
       decoration: InputDecoration(
+        fillColor: Colors.white,
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -51,34 +52,51 @@ class _LoginPageState extends State<LoginPage> {
         ),
         onPressed: () {
           Navigator.of(context).pushReplacementNamed(GoogleMapsApp.tag);
-          showToast("Maps wordt ingeladen", gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+          showToast("Maps wordt ingeladen",
+              gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
         },
         padding: EdgeInsets.all(12),
-        color: Color.fromRGBO(0, 73, 144, 1),
-        child: Text('Log In', style: TextStyle(color: Colors.white)),
+        color: Colors.grey[400],
+        child: Text('Log In', style: TextStyle(color: Colors.black)),
       ),
     );
 
     final forgotLabel = FlatButton(
       child: Text(
         'Forgot password?',
-        style: TextStyle(color: Colors.black54),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {},
     );
 
+ 
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:  Color.fromRGBO(0, 73, 144, 1),
       body: Center(
         child: ListView(
           shrinkWrap: true,
           padding: EdgeInsets.only(left: 24.0, right: 24.0),
           children: <Widget>[
-            logo,
+            //  logo,
             SizedBox(height: 48.0),
-            email,
+            Container(
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                 borderRadius: BorderRadius.circular(24),
+              ),             
+              child: email,
+            ),
             SizedBox(height: 8.0),
-            password,
+             Container(
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                 borderRadius: BorderRadius.circular(24),
+              ),
+             
+              child: password,
+            ),
+            
             SizedBox(height: 24.0),
             loginButton,
             forgotLabel
@@ -91,5 +109,4 @@ class _LoginPageState extends State<LoginPage> {
   void showToast(String msg, {int duration, int gravity}) {
     Toast.show(msg, context, duration: duration, gravity: gravity);
   }
-
 }

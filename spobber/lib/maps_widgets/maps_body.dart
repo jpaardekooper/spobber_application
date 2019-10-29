@@ -245,17 +245,17 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                 onTap: () {
                   setState(() {
                     places.clear();
-                  //  markers.clear();
+                    //  markers.clear();
                     _markers.clear();
                     circles.clear();
                     polylines.clear();
                   });
-                  searchNearby();
 
                   if (setDataSource.length <= 0) {
                     showToast("Selecteer minimaal één databron.",
                         gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
                   } else {
+                    searchNearby();
                     showToast("Data wordt ingeladen",
                         gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
                   }
@@ -548,8 +548,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         myLocationButtonEnabled: true,
         myLocationEnabled: true,
         markers: _markers,
-        
-        
+
         // markers: Set<Marker>.of(markers.values),
         // circles: Set<Circle>.of(circles.values),
         // polylines: Set<Polyline>.of(polylines.values),
@@ -609,12 +608,12 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             return;
           } else {
             print("${userLocation.latitude}, ${userLocation.longitude} ");
-       
+
             //           print("u pressed me");
             showModalBottomSheet<void>(
               context: context,
               builder: (BuildContext context) {
-                return BottomSheetSwitch(                
+                return BottomSheetSwitch(
                   //places: places,
                   latitude: userLocation.longitude,
                   longitude: userLocation.longitude,

@@ -40,13 +40,59 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
         appBar: AppBar(
           centerTitle: true,
           // iconTheme: IconThemeData(color: Colors.white),
-          elevation: 0,
+          elevation: 10,
           // backgroundColor: Colors.blue,
           // centerTitle: false,
-          title: Text(
-            'Filteren op: ' + keyword,
-            //textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 16),
+          title: Container(
+             width: 200,
+                height: 25,
+            decoration: new BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Center(
+              child: Text(
+                "Gefilterd op: $keyword",
+                style: TextStyle(fontSize: 14.0, color: Colors.black),
+              ),
+            ),
+            // child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   mainAxisSize: MainAxisSize.max,
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: <Widget>[
+            //     new Text(
+            //       "Gefilterd op",
+            //       style: TextStyle(fontSize: 12.0),
+            //     ),
+            //     new Text(
+            //       keyword,
+            //       style: TextStyle(fontSize: 20.0),
+            //     )
+            //   ],
+            // ),
+          ),
+          bottom: PreferredSize(
+            child: Container(
+              alignment: Alignment.center,
+              color: Theme.of(context).primaryColor,
+              constraints: BoxConstraints.expand(height: 50),
+              child: Container(
+                width: 200,
+                height: 25,
+                decoration: new BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Center(
+                  child: Text(
+                    "Gefilterd op: $keyword",
+                    style: TextStyle(fontSize: 14.0),
+                  ),
+                ),
+              ),
+            ),
+            preferredSize: Size(50, 25),
           ),
           actions: <Widget>[
             Builder(

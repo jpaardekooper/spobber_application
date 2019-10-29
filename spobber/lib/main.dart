@@ -30,6 +30,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:spobber/maps_widgets/maps_header.dart';
 
 
@@ -48,19 +49,21 @@ class MyApp extends StatelessWidget {
     LoginPage.tag: (context) => LoginPage(),
   //  HomePage.tag: (context) => HomePage(),
     GoogleMapsApp.tag: (context) => GoogleMapsApp(),
+    
   };
 
 
 
   @override
   Widget build(BuildContext context) {
+    //SystemChrome.setEnabledSystemUIOverlays ([SystemUiOverlay.top]);
     return  MaterialApp(
       title: 'Spobber',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // Define the default brightness and colors.
         brightness: Brightness.light,
-        primaryColor: Colors.lightBlue[800],
+        primaryColor:  Color.fromRGBO(0, 73, 144, 1),
         accentColor: Colors.blue[600],
 
         // Define the default font family.
@@ -70,8 +73,7 @@ class MyApp extends StatelessWidget {
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
           headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),         
         ),
       ),
       home: SplashScreen(),
