@@ -22,7 +22,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
 
   //
   final String uploadEndPoint =
-      'http://spobber.azurewebsites.net/api/uploadimage/';
+      'http://spobber.azurewebsites.net/api/image/upload/';
 
   Future<File> file;
   String status = '';
