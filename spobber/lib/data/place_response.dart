@@ -29,23 +29,29 @@
  */
 import 'package:flutter/material.dart';
 
-import 'result.dart';
-
 class PlaceResponse {
-  // final List<String> htmlAttributions;
-  // final List<Result> results;
-  // final String status;
-  // final String nextPageToken;
-
+  final String secretId;
   final int id;
   final String type;
+  final String placement;
   final double latitude;
   final double longitude;
-  final int status;
-  final String preview_image_uri;
-  final String object_uri;
+  final String source;
+  final String previewImageUri;
+  final String objectUri;
 
-  PlaceResponse({this.id, this.type, this.latitude, this.longitude, this.status, this.preview_image_uri, this.object_uri});
+  PlaceResponse({
+    this.secretId,
+    this.id,
+    this.type,
+    this.placement,
+    this.latitude,
+    this.longitude,
+    this.source,
+    this.previewImageUri,
+    this.objectUri,
+  });
+  //PlaceResponse({this.id, this.type, this.latitude, this.longitude, this.status, this.preview_image_uri, this.object_uri});
 
   PlaceResponse fromJson(Map<String, dynamic> json) {
     return PlaceResponse(
@@ -53,14 +59,14 @@ class PlaceResponse {
         // nextPageToken: json['next_page_token'],
         // results: parseResults(json['results']),
         // status: json['status']);
+        secretId: json['secret_Id'],
         id: json['id'],
-        type: json['type'],
+        type: json['type'],      
+        placement: json['placement'],
         latitude: json['latitude'],
-        longitude: json['longitude'],
-        status: json['status'],
-        preview_image_uri: json['preview_image_uri'],
-        object_uri: json['object_uri'],
-    );
+        longitude: json['longitude'],    
+        source: json['source'],
+        previewImageUri: json['preview_image_uri'],
+        objectUri: json['object_uri']);
   }
-
 }

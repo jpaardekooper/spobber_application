@@ -1,18 +1,18 @@
 PODS:
-  - camera (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
-  - geolocator (5.1.3):
+  - flutter_image_compress (0.0.1):
     - Flutter
-  - google_api_availability (2.0.1):
-    - Flutter
+    - Mantle
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - google_maps_flutter (0.0.1):
     - Flutter
     - GoogleMaps
-  - GoogleMaps (2.7.0):
-    - GoogleMaps/Maps (= 2.7.0)
-  - GoogleMaps/Base (2.7.0)
-  - GoogleMaps/Maps (2.7.0):
+  - GoogleMaps (3.5.0):
+    - GoogleMaps/Maps (= 3.5.0)
+  - GoogleMaps/Base (3.5.0)
+  - GoogleMaps/Maps (3.5.0):
     - GoogleMaps/Base
   - image_picker (0.0.1):
     - Flutter
@@ -20,36 +20,39 @@ PODS:
     - Flutter
   - location_permissions (2.0.2):
     - Flutter
+  - Mantle (2.1.0):
+    - Mantle/extobjc (= 2.1.0)
+  - Mantle/extobjc (2.1.0)
   - path_provider (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
+  - sqflite (0.0.1):
+    - Flutter
+    - FMDB (~> 2.7.2)
 
 DEPENDENCIES:
-  - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
-  - geolocator (from `.symlinks/plugins/geolocator/ios`)
-  - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
+  - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - location (from `.symlinks/plugins/location/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
+    - FMDB
     - GoogleMaps
+    - Mantle
 
 EXTERNAL SOURCES:
-  camera:
-    :path: ".symlinks/plugins/camera/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
-  geolocator:
-    :path: ".symlinks/plugins/geolocator/ios"
-  google_api_availability:
-    :path: ".symlinks/plugins/google_api_availability/ios"
+  flutter_image_compress:
+    :path: ".symlinks/plugins/flutter_image_compress/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   image_picker:
@@ -62,19 +65,22 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
-  camera: d56ad165545ae5a0ffb892376033760a969c68c8
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  geolocator: 2d5da6891d865c0f1b4f851683eed890dd9c8bc1
-  google_api_availability: 163b30f802e6148c67f092aa4501c90ddd8eec8d
+  flutter_image_compress: f69d0e0e078ce52b4810695593bc861ee319ae7d
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_maps_flutter: 78a52114c898b42ea647919679a4c58b70abe876
-  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
   image_picker: 16e5fec1fbc87fd3b297c53e4048521eaf17cd06
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   location_permissions: 67cfaff583afbb027a9f9248196f4b79c40f3cdc
-  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
+  Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
+  path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
+  sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
 

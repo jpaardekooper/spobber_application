@@ -27,56 +27,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+
 import 'package:flutter/material.dart';
-import 'places_search_map.dart';
-import 'search_filter.dart';
+import 'package:flutter/services.dart';
+import 'package:spobber/maps_widgets/maps_header.dart';
 
 
-void main() => runApp(GoogleMapsSampleApp());
+import 'login_page.dart';
+import 'splashscreen.dart';
 
-class GoogleMapsSampleApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _GoogleMapSampleApp();
-  }
-}
 
-class _GoogleMapSampleApp extends State<GoogleMapsSampleApp>{
-  static String keyword = "Es-las";
+// void main() => runApp(GoogleMapsSampleApp());
 
-  void updateKeyWord(String newKeyword) {
-    print(newKeyword);
-    setState(() {
-      keyword = newKeyword;  
-    });
-  }
 
-  
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  final routes = <String, WidgetBuilder>{
+    LoginPage.tag: (context) => LoginPage(),
+  //  HomePage.tag: (context) => HomePage(),
+    GoogleMapsApp.tag: (context) => GoogleMapsApp(),
+    
+  };
+
+
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    //SystemChrome.setEnabledSystemUIOverlays ([SystemUiOverlay.top]);
+    return  MaterialApp(
       title: 'Spobber',
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: Text('Filteren op: ' + keyword, textAlign: TextAlign.center,) ,
-          actions: <Widget>[
-            Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                    icon: Icon(Icons.filter_list),
-                    tooltip: 'Filter Search',
-                    onPressed: () {
-                      Scaffold.of(context).openEndDrawer();                      
-                    });
-              },
-            ),
-          ],
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // Define the default brightness and colors.
+        brightness: Brightness.light,
+        primaryColor:  Color.fromRGBO(0, 73, 144, 1),
+        accentColor: Colors.blue[600],
+
+        // Define the default font family.
+        fontFamily: 'Montserrat',
+
+        // Define the default TextTheme. Use this to specify the default
+        // text styling for headlines, titles, bodies of text, and more.
+        textTheme: TextTheme(
+          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),         
         ),
-        body: PlacesSearchMapSample(keyword),
-        endDrawer: SearchFilter(updateKeyWord),
       ),
+      home: SplashScreen(),
+      routes: routes,
     );
   }
 }
+
