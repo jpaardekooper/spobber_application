@@ -32,57 +32,6 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
     });
   }
 
-  // final searchMarker = TextFormField(
-  //   textAlign: TextAlign.center,
-  //   keyboardType: TextInputType.number,
-  //   autofocus: false,
-  //   initialValue: '',
-  //   decoration: InputDecoration(
-  //     fillColor: Colors.black,
-  //     hintText: 'equipment',
-  //     contentPadding: EdgeInsets.fromLTRB(12, 5, 12, 5),
-  //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
-  //   ),
-
-  // );
-
-  // Widget searchMarker() {
-  //   return new TextFormField(
-  //     decoration: InputDecoration(
-  //       // icon: Icon(Icons.check_box_outline_blank),
-  //       fillColor: Colors.black,
-  //       hintText: 'equipment',
-  //       contentPadding: EdgeInsets.fromLTRB(12, 5, 12, 5),
-  //       //  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
-  //     ),
-  //     controller: TextEditingController(text: ''),
-  //     onSaved: (value) {
-  //       setState(() {
-  //         singleMarkerObject = value;
-  //       });
-  //     },
-  //   );
-  // }
-
-// TextFormField(
-//           enabled: false,
-//           controller: TextEditingController(
-//               text: markerDetailandInformation[0].year.toString()),
-//           decoration: InputDecoration(
-//               labelText: "bron datum:",
-//               hintText: 'bron datum',
-//               icon: Icon(Icons.date_range)),
-//           validator: (value) {
-//             if (value.isEmpty) {
-//               return 'Please enter a datum';
-//             }
-//           },
-//           onSaved: (value) {
-//             setState(() {
-//               age = value;
-//             });
-//           },
-//         ))
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -90,6 +39,8 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
     return StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomPadding: false,
         key: _scaffoldKey,
         // title: 'Spobber',
         // home: Scaffold(
@@ -346,24 +297,26 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     print(url);
                     final response = await http.get(url);
                     fillMarkerList(response).then((value) {
-                      print(singleMarker[0].type.runtimeType);
-                      print(singleMarker[0].objectUri.runtimeType);
-                      print(singleMarker[0].id.runtimeType);
-                      print(singleMarker[0].secretId.runtimeType);
                       if (value) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MarkerTemplate(
-                              type: singleMarker[0].type,
-                              objectUri: singleMarker[0].objectUri,
-                              id: singleMarker[0].id,
-                              secretId: singleMarker[0].secretId,
+                        if (singleMarker.first.id == 0) {
+                          print("leeg");
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MarkerTemplate(
+                                type: singleMarker[0].type,
+                                objectUri: singleMarker[0].objectUri,
+                                id: singleMarker[0].id,
+                                secretId: singleMarker[0].secretId,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+
+                          print("niet leeg");
+                        }
                       } else {
-                        print("fuck off");
+                        print("error handling url");
                       }
                     });
                     // Process data.
@@ -383,13 +336,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   Future<bool> fillMarkerList(http.Response response) async {
     setState(() {
-     singleMarker.clear(); 
+      singleMarker.clear();
     });
     if (response.statusCode == 200) {
       // final data = json.decode(response.body);
       singleMarker = (json.decode(response.body) as List)
           .map((data) => new PlaceResponse().fromJson(data))
           .toList();
+
       return true;
     } else {
       print("url is niet gevonden");

@@ -575,6 +575,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     var userLocation = Provider.of<UserLocation>(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: userLocation == null
           ? Center(child: CircularProgressIndicator())
           : Stack(
