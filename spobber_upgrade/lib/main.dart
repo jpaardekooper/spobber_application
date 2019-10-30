@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
           title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),         
         ),
       ),
-      home: SplashScreen(),
+      home: LoginPage(),
       routes: routes,
     );
   }
