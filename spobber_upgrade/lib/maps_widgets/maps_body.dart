@@ -172,7 +172,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   void searchNearby() async {
     setState(() {
       places.clear();
-      _markers.clear();
+      _markers.clear(); 
+      markers.clear();
     });
     final GoogleMapController controller = await _controller.future;
     final LatLngBounds visibleRegion = await controller.getVisibleRegion();
@@ -869,16 +870,17 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
 
     if (updatedZoom != null) {
-      _currentZoom = updatedZoom;
-    }
-
+      _currentZoom = updatedZoom;   
+    }  
     setState(() {
       _areMarkersLoading = true;
+     
     });
 
     _markers
       ..clear()
       ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+
 
     setState(() {
       _areMarkersLoading = false;

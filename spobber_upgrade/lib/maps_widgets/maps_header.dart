@@ -1,18 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:spobber/data/place_response.dart';
-import 'package:spobber/marker_information/marker_template.dart';
+
 import 'maps_body.dart';
 import 'search_filter.dart';
-import 'package:http/http.dart' as http;
-import '../data/global_variable.dart';
-
 import '../helper/location_services.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
-import '../data/place_response.dart';
+import 'single_marker.dart';
 
 class GoogleMapsApp extends StatefulWidget {
   static String tag = 'Maps';
@@ -33,6 +26,8 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +54,7 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(right: 32),
+                  padding: EdgeInsets.only(right: 50),
                   child: Container(
                     width: 180,
                     height: 25,
@@ -84,7 +79,7 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
                 alignment: Alignment.center,
                 color: Theme.of(context).primaryColor,
                 constraints: BoxConstraints.expand(height: 50),
-                child: MyStatefulWidget()),
+                child: SingleMarker()),
             preferredSize: Size(50, 25),
           ),
 
@@ -237,118 +232,3 @@ Widget _buildDrawer(context) {
   );
 }
 
-// Define a custom Form widget.
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
-
-  @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: 180,
-            height: 25,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Center(
-              child: TextFormField(
-                decoration: InputDecoration(
-                  // icon: Icon(Icons.check_box_outline_blank),
-                  fillColor: Colors.black,
-                  hintText: 'equipment',
-                  contentPadding: EdgeInsets.fromLTRB(12, 5, 12, 5),
-                  //  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    singleMarkerObject = value;
-                  }
-                  //    return null;
-                },
-              ),
-            ),
-          ),
-          SizedBox.fromSize(
-            size: Size(24, 24), // buton width and height
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                splashColor: Colors.blue[600], // splash color
-                onTap: () async {
-                  if (_formKey.currentState.validate()) {
-                    print(singleMarkerObject);
-                    String url =
-                        "https://spobber.azurewebsites.net/api/objects/$singleMarkerObject";
-                    print(url);
-                    final response = await http.get(url);
-                    fillMarkerList(response).then((value) {
-                      if (value) {
-                        if (singleMarker.first.id == 0) {
-                          print("leeg");
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MarkerTemplate(
-                                type: singleMarker[0].type,
-                                objectUri: singleMarker[0].objectUri,
-                                id: singleMarker[0].id,
-                                secretId: singleMarker[0].secretId,
-                              ),
-                            ),
-                          );
-
-                          print("niet leeg");
-                        }
-                      } else {
-                        print("error handling url");
-                      }
-                    });
-                    // Process data.
-                  }
-                }, // button pressed
-                child: Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<bool> fillMarkerList(http.Response response) async {
-    setState(() {
-      singleMarker.clear();
-    });
-    if (response.statusCode == 200) {
-      // final data = json.decode(response.body);
-      singleMarker = (json.decode(response.body) as List)
-          .map((data) => new PlaceResponse().fromJson(data))
-          .toList();
-
-      return true;
-    } else {
-      print("url is niet gevonden");
-      //throw Exception('An error occurred getting places nearby');
-      return false;
-    }
-  }
-}

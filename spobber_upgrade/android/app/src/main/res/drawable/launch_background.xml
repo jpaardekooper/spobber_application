@@ -9,9 +9,9 @@
             android:gravity="center"
             android:src="@mipmap/spobber_logo" />
     </item>
-     <item android:top="350dp">
+     <!-- <item android:top="350dp">
         <bitmap
             android:gravity="center"
             android:src="@mipmap/spobber_text"/>
-    </item>
+    </item> -->
 </layer-list>

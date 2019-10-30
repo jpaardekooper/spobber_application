@@ -85,9 +85,9 @@ class MapHelper {
     return Fluster<MapMarker>(
       minZoom: minZoom,
       maxZoom: maxZoom,
-      radius: 300,
+      radius: 100,
       extent: 2048,
-      nodeSize: 64,
+      nodeSize: 32,
       points: markers,
       createCluster: (
         BaseCluster cluster,
@@ -120,11 +120,13 @@ class MapHelper {
   ) {
     assert(currentZoom != null);
 
-    if (clusterManager == null) return [];
+    if (clusterManager == null) return [];    
 
     return clusterManager
-        .clusters([-400, -170, 400, 170], currentZoom.toInt())
+        .clusters([-90, -85, 90, 85], currentZoom.toInt())
         .map((cluster) => cluster.toMarker())
         .toList();
+
+    
   }
 }
