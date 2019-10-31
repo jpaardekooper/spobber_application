@@ -28,57 +28,40 @@
  * THE SOFTWARE.
  */
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:spobber/maps_widgets/maps_header.dart';
-
-
-import 'login_page.dart';
-import 'splashscreen.dart';
-
+import 'login/login_page.dart';
 
 // void main() => runApp(GoogleMapsSampleApp());
 
-
-
-void main() => runApp(MyApp());
+void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(new MyApp());
+  });
+}
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     LoginPage.tag: (context) => LoginPage(),
-  //  HomePage.tag: (context) => HomePage(),
+    //  HomePage.tag: (context) => HomePage(),
     GoogleMapsApp.tag: (context) => GoogleMapsApp(),
-    
   };
-
-
 
   @override
   Widget build(BuildContext context) {
     //SystemChrome.setEnabledSystemUIOverlays ([SystemUiOverlay.top]);
-    return  MaterialApp(
+    return MaterialApp(
       title: 'Spobber',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // Define the default brightness and colors.
-        brightness: Brightness.light,
-        primaryColor:  Color.fromRGBO(0, 73, 144, 1),
-        accentColor: Colors.blue[600],
-
-        // Define the default font family.
-        fontFamily: 'Montserrat',
-
-        // Define the default TextTheme. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
-        textTheme: TextTheme(
-          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),         
-        ),
-      ),
+      theme: new ThemeData(
+          hintColor: Color(0xFFC0F0E8),
+          primaryColor: Color(0xFF004990),
+          fontFamily: "Montserrat",
+          canvasColor: Colors.transparent),
       home: LoginPage(),
       routes: routes,
     );
   }
 }
-

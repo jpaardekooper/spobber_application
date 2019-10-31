@@ -27,8 +27,6 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-
-
   @override
   Widget build(BuildContext context) {
     return StreamProvider<UserLocation>(
@@ -42,20 +40,34 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
         appBar: AppBar(
           centerTitle: true,
           // iconTheme: IconThemeData(color: Colors.white),
-          elevation: 10,
+          elevation: 4,
           // backgroundColor: Colors.blue,
           // centerTitle: false,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              // Box decoration takes a gradient
+              gradient: LinearGradient(
+                // Where the linear gradient begins and ends
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                // Add one stop for each color. Stops should increase from 0 to 1
+                stops: [0.1, 0.9],
+                colors: [
+                  // Colors are easy thanks to Flutter's Colors class.
+                  Color(0xff004990),
+                  Color(0xff0066C6),
+                ],
+              ),
+            ),
+          ),
           title: Container(
             alignment: Alignment.center,
-            color: Theme.of(context).primaryColor,
-            constraints: BoxConstraints.expand(height: 50),
+            // color: Theme.of(context).primaryColor,           
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 50),
-                  child: Container(
+                Container(
                     width: 180,
                     height: 25,
                     decoration: new BoxDecoration(
@@ -70,17 +82,19 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
                       ),
                     ),
                   ),
-                ),
+               
               ],
             ),
           ),
           bottom: PreferredSize(
             child: Container(
-                alignment: Alignment.center,
-                color: Theme.of(context).primaryColor,
-                constraints: BoxConstraints.expand(height: 50),
-                child: SingleMarker()),
-            preferredSize: Size(50, 25),
+              padding: EdgeInsets.only(left: 50, bottom: 20),
+              alignment: Alignment.center,
+              // color: Theme.of(context).primaryColor,
+           //   constraints: BoxConstraints.expand(height: 50),
+              child: SingleMarker(),        
+            ),
+            preferredSize: Size(50, 50),
           ),
 
           actions: <Widget>[
@@ -124,8 +138,8 @@ Widget _buildDrawer(context) {
                     constraints: BoxConstraints(
                       minWidth: 44,
                       minHeight: 44,
-                      maxWidth: 64,
-                      maxHeight: 64,
+                      maxWidth: 44,
+                      maxHeight: 44,
                     ),
                     child: Image.asset('assets/ic_launcher.png'),
                   )),
@@ -231,4 +245,3 @@ Widget _buildDrawer(context) {
     ),
   );
 }
-

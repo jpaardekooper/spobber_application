@@ -27,8 +27,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import 'dart:io';
-import 'package:spobber/data/global_variable.dart' as prefix0;
+import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/data/place_response.dart';
 
 import '../data/global_variable.dart';
@@ -623,6 +622,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   latitude: userLocation.longitude,
                   longitude: userLocation.longitude,
                   gotoLocation: gotoLocation,
+                  
                 );
               },
             );
@@ -637,7 +637,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
               IconButton(icon: Icon(Icons.menu), onPressed: () {}),
               Padding(
                 padding: EdgeInsets.only(left: 5),
-                child: text(places.length),
+                child: bottomApptext(),
               ),
             ],
           ),
@@ -647,12 +647,12 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   }
   // }
 
-  Widget text(int value) {
+  Widget bottomApptext() {
     Text text;
-    if (value <= 0) {
+    if (places.length <= 0) {
       text = Text("Er zijn geen objecten gevonden klik op zoeken");
     } else {
-      text = Text("Er zijn $value objecten gevonden");
+      text = Text("Er zijn ${places.length.toString()} objecten gevonden");
     }
     return text;
   }

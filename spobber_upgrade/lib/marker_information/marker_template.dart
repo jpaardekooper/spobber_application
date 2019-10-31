@@ -21,12 +21,37 @@ class MarkerTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(id.toString() + " " + secretId );
+    print(id.toString() + " " + secretId);
     return DefaultTabController(
       length: 3,
-      child: Scaffold(        
-        appBar: AppBar(   
-          bottom: TabBar(
+      child: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              // Box decoration takes a gradient
+              gradient: LinearGradient(
+                // Where the linear gradient begins and ends
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                // Add one stop for each color. Stops should increase from 0 to 1
+                stops: [0.1, 0.9],
+                colors: [
+                  // Colors are easy thanks to Flutter's Colors class.
+                  Color(0xff004990),
+                  Color(0xff0066C6),
+                ],
+              ),
+            ),
+          ),
+          bottom:
+           TabBar(
+            
+            unselectedLabelColor: Colors.grey[400],
+            indicatorColor: Colors.red[400],
+            //indicatorSize: TabBarIndicatorSize.label,
+            indicatorWeight: 3,
+            //labelColor: Colors.white,
+
             tabs: [
               Tab(
                 icon: Icon(Icons.info),
@@ -42,13 +67,13 @@ class MarkerTemplate extends StatelessWidget {
           title: Text(type),
         ),
         body: Container(
-          //color: Colors.lightBlue[800],
+          color: Colors.white,
           child: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
+          //  physics: NeverScrollableScrollPhysics(),
             children: [
               MarkerInfo(id: id.toString(), objectUri: objectUri),
-              GridViewDemo(id:id.toString(), secretId: secretId),
-           //   MarkerImage(id: id, secretId: secretId),
+              GridViewDemo(id: id.toString(), secretId: secretId),
+              //   MarkerImage(id: id, secretId: secretId),
               MarkerHistory(),
             ],
           ),

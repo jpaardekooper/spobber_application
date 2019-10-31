@@ -151,6 +151,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
         title: Text("Voeg een foto toe"),
       ),
       body: Container(
+         color: Colors.white,
         padding: EdgeInsets.all(30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

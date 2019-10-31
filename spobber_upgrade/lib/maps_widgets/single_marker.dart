@@ -46,7 +46,9 @@ class _SingleMarkerState extends State<SingleMarker> {
                   // icon: Icon(Icons.check_box_outline_blank),
                   fillColor: Colors.black,
                   hintText: 'Equipment',
+                  hintStyle: TextStyle(color: Colors.grey),
                   contentPadding: EdgeInsets.fromLTRB(12, 12, 12, 5),
+                   border: InputBorder.none,
                   //  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
                 ),
                 validator: (value) {
