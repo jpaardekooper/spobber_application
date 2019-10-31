@@ -64,10 +64,10 @@ class PlacesSearchMapSample extends StatefulWidget {
 typedef Marker MarkerUpdateAction(Marker marker);
 
 class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
-    with SingleTickerProviderStateMixin {
+    {
   bool currentWidget = true;
 
-  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  //Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   MarkerId selectedMarker;
   int _markerIdCounter = 1;
 
@@ -79,26 +79,26 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   }
 
   //When clicked function is performed on a marker
-  void _onMarkerTapped(MarkerId markerId) {
-    final Marker tappedMarker = markers[markerId];
-    if (tappedMarker != null) {
-      setState(() {
-        // if (markers.containsKey(selectedMarker)) {
-        //   final Marker resetOld = markers[selectedMarker]
-        //       .copyWith(iconParam: BitmapDescriptor.defaultMarker);
-        //   markers[selectedMarker] = resetOld;
-        // }
+  // void _onMarkerTapped(MarkerId markerId) {
+  //   final Marker tappedMarker = markers[markerId];
+  //   if (tappedMarker != null) {
+  //     setState(() {
+  //       // if (markers.containsKey(selectedMarker)) {
+  //       //   final Marker resetOld = markers[selectedMarker]
+  //       //       .copyWith(iconParam: BitmapDescriptor.defaultMarker);
+  //       //   markers[selectedMarker] = resetOld;
+  //       // }
 
-        selectedMarker = markerId;
-        // final Marker newMarker = tappedMarker.copyWith(
-        //   iconParam: BitmapDescriptor.defaultMarkerWithHue(
-        //     BitmapDescriptor.hueGreen,
-        //   ),
-        // );
-        // markers[markerId] = newMarker;
-      });
-    }
-  }
+  //       selectedMarker = markerId;
+  //       // final Marker newMarker = tappedMarker.copyWith(
+  //       //   iconParam: BitmapDescriptor.defaultMarkerWithHue(
+  //       //     BitmapDescriptor.hueGreen,
+  //       //   ),
+  //       // );
+  //       // markers[markerId] = newMarker;
+  //     });
+  //   }
+  // }
 
   //   void _onNewMarkerTapped(MarkerId markerId) {
   //   final Marker tappedMarker = markers[markerId];
@@ -139,14 +139,14 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
     setState(() {
       _markers.add(marker);
-      markers[markerId] = marker;
+    //  markers[markerId] = marker;
     });
   }
 
   static double latitude = 52.051968;
   static double longitude = 4.5121536;
 
-  List<Marker> markers2 = <Marker>[];
+  //List<Marker> markers2 = <Marker>[];
 
   bool searching = true;
   String keyword;
@@ -170,9 +170,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
   void searchNearby() async {
     setState(() {
-      places.clear();
+      places.clear();      
       _markers.clear(); 
-      markers.clear();
+    //  markers.clear();
     });
     final GoogleMapController controller = await _controller.future;
     final LatLngBounds visibleRegion = await controller.getVisibleRegion();
@@ -212,6 +212,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                 onTap: () {
                   setState(() {
                     _mapType = nextType;
+                    
                     print("test map");
                   });
                 }, // button pressed
@@ -247,8 +248,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                     places.clear();
                     //  markers.clear();
                     _markers.clear();
-                    circles.clear();
-                    polylines.clear();
+                    // circles.clear();
+                    // polylines.clear();
                   });
 
                   if (setDataSource.length <= 0) {
@@ -310,7 +311,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     );
   }
 
-  Widget _addPolyLine() {
+  Widget _changeSourceFilter() {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 190, 12, 0),
       child: Align(
@@ -372,162 +373,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     } else {
       return Icon(Icons.filter_9_plus);
     }
-  }
-
-  List<LatLng> pointsRed = <LatLng>[];
-  List<LatLng> pointsOrange = <LatLng>[];
-  List<LatLng> pointsGreen = <LatLng>[];
-  List<LatLng> pointsAll = <LatLng>[];
-
-  Future loadPolyline() async {
-    polylines.clear();
-    pointsAll.clear();
-    pointsOrange.clear();
-    pointsGreen.clear();
-    pointsRed.clear();
-
-    // List<UpperObject> objects;
-    String uri =
-        "https://spobberapi20190919041857.azurewebsites.net/api/measure/?nlat=90&blat=-90&nlon=90&blon=-90";
-
-    print(uri);
-
-    final response = await http.get(Uri.encodeFull(uri));
-    if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      UpperObject upperObject = new UpperObject.fromJson(jsonResponse);
-      print(upperObject.content.length);
-
-      print(upperObject.id.toString());
-      print(upperObject.content[6].latitude.toString());
-
-      for (int i = 0; i < upperObject.content.length; i++) {
-        print(upperObject.content[i].latitude);
-        pointsAll.add(_createLatLng(
-            upperObject.content[i].latitude, upperObject.content[i].longitude));
-
-        if (upperObject.content[i].value < 1600) {
-          pointsRed.add(_createLatLng(upperObject.content[i].latitude,
-              upperObject.content[i].longitude));
-        } else if (upperObject.content[i].value < 1800 &&
-            upperObject.content[i].value >= 1600) {
-          pointsOrange.add(_createLatLng(upperObject.content[i].latitude,
-              upperObject.content[i].longitude));
-        } else if (upperObject.content[i].value >= 1800) {
-          pointsGreen.add(_createLatLng(upperObject.content[i].latitude,
-              upperObject.content[i].longitude));
-        }
-      }
-      final String polylineIdVal = 'polyline_id_ALL';
-      final PolylineId polylineId = PolylineId(polylineIdVal);
-
-      final Polyline polylineAll = Polyline(
-        polylineId: polylineId,
-        consumeTapEvents: true,
-        color: Colors.blue,
-        width: 5,
-        points: pointsAll,
-        zIndex: 0,
-        onTap: () {
-          _onPolylineTapped(polylineId);
-        },
-      );
-
-      setState(() {
-        polylines[polylineId] = polylineAll;
-      });
-
-      final String polylineIdValRed = 'polyline_id_Red';
-      final PolylineId polylineIdRed = PolylineId(polylineIdValRed);
-
-      final Polyline polylineRed = Polyline(
-          polylineId: polylineIdRed,
-          consumeTapEvents: false,
-          color: Colors.red,
-          width: 4,
-          points: pointsRed,
-          zIndex: 1);
-
-      setState(() {
-        polylines[polylineIdRed] = polylineRed;
-      });
-
-      final String polylineIdValOrange = 'polyline_id_Orange';
-      final PolylineId polylineIdOrange = PolylineId(polylineIdValOrange);
-
-      final Polyline polylineOrange = Polyline(
-          polylineId: polylineIdOrange,
-          consumeTapEvents: false,
-          color: Colors.orange,
-          width: 4,
-          points: pointsOrange,
-          zIndex: 2);
-
-      setState(() {
-        polylines[polylineIdOrange] = polylineOrange;
-      });
-
-      final String polylineIdValGreen = 'polyline_id_Green';
-      final PolylineId polylineIdGreen = PolylineId(polylineIdValGreen);
-
-      final Polyline polylineGreen = Polyline(
-          polylineId: polylineIdGreen,
-          consumeTapEvents: false,
-          color: Colors.green,
-          width: 4,
-          points: pointsGreen,
-          zIndex: 3);
-
-      setState(() {
-        polylines[polylineIdGreen] = polylineGreen;
-      });
-    }
-  }
-
-  LatLng _createLatLng(double lat, double lng) {
-    return LatLng(lat, lng);
-  }
-
-  // void _handleResponse() {
-  //   for (int i = 0; i < places.length; i++) {
-  //     MarkerId markerId = MarkerId(places[i].id.toString());
-  //     Marker marker = Marker(
-  //       anchor: Platform.isAndroid ? Offset(0.0, 1.0) : Offset(0.0, 2.0),
-  //       //rotation: 100,
-  //       markerId: MarkerId(places[i].id.toString()),
-  //       // icon: BitmapDescriptor.fromAsset('assets/marker.png'),
-  //       icon: Platform.isAndroid
-  //           ? BitmapDescriptor.fromAsset('assets/android/marker_yellow.png')
-  //           : BitmapDescriptor.fromAsset('assets/marker_yellow.png'),
-  //       position: LatLng(places[i].latitude, places[i].longitude),
-  //       infoWindow: InfoWindow(
-  //           title: places[i].id.toString(),
-  //           snippet: "equipment: " + places[i].id.toString(),
-  //           onTap: () {
-  //             Navigator.push(
-  //               context,
-  //               MaterialPageRoute(
-  //                 builder: (context) => MarkerTemplate(
-  //                   type: places[i].type.toString(),
-  //                   objectUri: places[i].objectUri.toString(),
-  //                   id: places[i].id.toString(),
-  //                   secretId: places[i].secretId.toString(),
-  //                 ),
-  //               ),
-  //             );
-  //           }),
-  //       onTap: () {
-  //         _onMarkerTapped(markerId);
-  //       },
-  //     );
-
-  //     setState(() {
-  //       markers[markerId] = marker;
-  //     });
-  //   }
-  // }
-
-//widget building
+  }  
 
   Widget _buildGoogleMap(BuildContext context) {
     return Container(
@@ -559,10 +405,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     );
   }
 
-  static LatLngBounds _visibleRegion = LatLngBounds(
-    southwest: LatLng(0, 0),
-    northeast: LatLng(0, 0),
-  );
+  static LatLngBounds _visibleRegion;
 
   //var userLocation;
   @override
@@ -576,7 +419,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: userLocation == null
+      body: Container(color: Colors.white, child: userLocation == null
           ? Center(child: CircularProgressIndicator())
           : Stack(
               children: <Widget>[
@@ -584,7 +427,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                 _mapTypeCycler(),
                 _search(),
                 _addMarker(userLocation.latitude, userLocation.longitude),
-                _addPolyLine(),
+                _changeSourceFilter(),
                 // Map markers loading indicator
                 if (_areMarkersLoading)
                   Padding(
@@ -605,13 +448,13 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                     ),
                   ),
               ],
-            ),
+            ),),
       bottomNavigationBar: GestureDetector(
         onTap: () {
           if (places.length <= 0) {
             return;
           } else {
-            print("${userLocation.latitude}, ${userLocation.longitude} ");
+            print("Locatie van het drukken ${userLocation.latitude}, ${userLocation.longitude} ");
 
             //           print("u pressed me");
             showModalBottomSheet<void>(
@@ -619,7 +462,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
               builder: (BuildContext context) {
                 return BottomSheetSwitch(
                   //places: places,
-                  latitude: userLocation.longitude,
+                  latitude: userLocation.latitude,
                   longitude: userLocation.longitude,
                   gotoLocation: gotoLocation,
                   
@@ -634,7 +477,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: <Widget>[
-              IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+              IconButton(icon: places.length <= 0 ? Icon(Icons.not_listed_location) : Icon(Icons.touch_app), onPressed: () {}),
               Padding(
                 padding: EdgeInsets.only(left: 5),
                 child: bottomApptext(),
@@ -666,70 +509,19 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
       // bearing: 45.0,
     )));
 
-    _add2(lat, long);
+    //_add(lat, long);
   }
 
-  Map<CircleId, Circle> circles = <CircleId, Circle>{};
-  int _circleIdCounter = 1;
-  CircleId selectedCircle;
+  // _addMarkerOnScreen(double lat, double long){
+  //   MarkerId lookingId;
+  //   Marker lookingAt = new Marker(
+  //     markerId: lookingId,
+  //     position: LatLng(lat,long)
+  //     );
 
-  void _onCircleTapped(CircleId circleId) {
-    setState(() {
-      selectedCircle = circleId;
-      _remove();
-    });
-  }
+  // }
 
-  void _remove() {
-    setState(() {
-      circles.clear();
-      if (circles.containsKey(selectedCircle)) {
-        circles.remove(selectedCircle);
-      }
-      selectedCircle = null;
-    });
-  }
-
-  void _add2(double lat, double long) {
-    circles.clear();
-    final int circleCount = circles.length;
-
-    if (circleCount == 12) {
-      return;
-    }
-
-    final String circleIdVal = 'circle_id_$_circleIdCounter';
-    _circleIdCounter++;
-    final CircleId circleId = CircleId(circleIdVal);
-
-    final Circle circle = Circle(
-      circleId: circleId,
-      consumeTapEvents: true,
-      strokeColor: Colors.red,
-      fillColor: Colors.red[100].withOpacity(0.1),
-      strokeWidth: 2,
-      center: LatLng(lat, long),
-      radius: 2,
-      onTap: () {
-        _onCircleTapped(circleId);
-      },
-    );
-
-    setState(() {
-      circles[circleId] = circle;
-    });
-  }
-
-  Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
-
-  PolylineId selectedPolyline;
-
-  void _onPolylineTapped(PolylineId polylineId) {
-    setState(() {
-      selectedPolyline = polylineId;
-    });
-  }
-
+  
   void showToast(String msg, {int duration, int gravity}) {
     Toast.show(msg, context, duration: duration, gravity: gravity);
   }
@@ -791,7 +583,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
         markers.add(
           MapMarker(
-            id: places.indexOf(markerLocation).toString(),
+            id: places.indexOf(markerLocation),
             equipment: markerLocation.id.toString(),
             secretId: markerLocation.secretId,
             objectUri: markerLocation.objectUri,
@@ -808,7 +600,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
         markers.add(
           MapMarker(
-            id: places.indexOf(markerLocation).toString(),
+            id: places.indexOf(markerLocation),
             secretId: markerLocation.secretId,
             equipment: markerLocation.id.toString(),
             objectUri: markerLocation.objectUri,
@@ -825,7 +617,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
         markers.add(
           MapMarker(
-            id: places.indexOf(markerLocation).toString(),
+            id: places.indexOf(markerLocation),
             secretId: markerLocation.secretId,
             equipment: markerLocation.id.toString(),
             objectUri: markerLocation.objectUri,

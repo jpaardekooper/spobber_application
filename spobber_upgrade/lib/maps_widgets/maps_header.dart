@@ -77,8 +77,8 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 10, top: 6),
                       child: Text(
-                        "Gefilterd op: $keyword",
-                        style: TextStyle(fontSize: 14.0, color: Colors.black),
+                        "U zoekt op: $keyword",
+                        style: TextStyle(fontSize: 15.0, color: Colors.black),
                       ),
                     ),
                   ),
@@ -122,7 +122,7 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
 Widget _buildDrawer(context) {
   return Drawer(
     // column holds all the widgets in the drawer
-    child: Column(
+    child: Container(color: Colors.white,child: Column(
       children: <Widget>[
         Expanded(
           // ListView contains a group of widgets that scroll inside the drawer
@@ -236,12 +236,12 @@ Widget _buildDrawer(context) {
                     ListTile(
                         //leading: Icon(Icons.help),
                         title: Text(
-                      'Versie 2.0.3-5-2',
+                      'Versie 2.0.4',
                       style: TextStyle(fontWeight: FontWeight.w200),
                     ))
                   ],
                 ))))
       ],
     ),
-  );
+  ),);
 }

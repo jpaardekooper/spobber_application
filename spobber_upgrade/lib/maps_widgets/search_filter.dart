@@ -43,6 +43,7 @@ class _SearchFilter extends State<SearchFilter> {
     return Drawer(
       child: Scaffold(
         appBar: AppBar(
+         
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -55,7 +56,7 @@ class _SearchFilter extends State<SearchFilter> {
           ),
           title: Text('Selecteer een object', style: TextStyle(fontSize: 14)),
         ),
-        body: ListView(
+        body:Container(color: Colors.white,child:  ListView(
           children: <Widget>[
             ListTile(
               selected: _selectedPosition == 0,
@@ -118,7 +119,7 @@ class _SearchFilter extends State<SearchFilter> {
           ],
         ),
       ),
-    );
+    ),);
   }
 
   Widget _getIcon(int value) {

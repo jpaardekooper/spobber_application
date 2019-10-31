@@ -43,15 +43,12 @@ class MarkerTemplate extends StatelessWidget {
               ),
             ),
           ),
-          bottom:
-           TabBar(
-            
-            unselectedLabelColor: Colors.grey[400],
-            indicatorColor: Colors.red[400],
+          bottom: TabBar(
+            unselectedLabelColor: Colors.white60,
+            indicatorColor: Colors.white,
             //indicatorSize: TabBarIndicatorSize.label,
             indicatorWeight: 3,
             //labelColor: Colors.white,
-
             tabs: [
               Tab(
                 icon: Icon(Icons.info),
@@ -69,7 +66,7 @@ class MarkerTemplate extends StatelessWidget {
         body: Container(
           color: Colors.white,
           child: TabBarView(
-          //  physics: NeverScrollableScrollPhysics(),
+            //  physics: NeverScrollableScrollPhysics(),
             children: [
               MarkerInfo(id: id.toString(), objectUri: objectUri),
               GridViewDemo(id: id.toString(), secretId: secretId),

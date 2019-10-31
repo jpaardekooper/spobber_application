@@ -95,7 +95,7 @@ class MapHelper {
         double lat,
       ) =>
           MapMarker(
-        id: cluster.id.toString(),
+        id: int.parse(cluster.id.toString()),
         secretId: null,
         position: LatLng(lat, lng),
         icon: clusterImage,

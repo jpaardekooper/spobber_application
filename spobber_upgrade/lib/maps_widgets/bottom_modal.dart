@@ -29,219 +29,12 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   int prevPage;
 
-
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
+    _pageController = PageController(initialPage: 0, viewportFraction: 0.8)
       ..addListener(_onScroll);
   }
-
-  // _onSelected(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //     //  lastSelectedindex = _selectedIndex;
-  //   });
-  // }
-
-  // Widget _returnImage(int index) {
-  //   print(places[index].previewImageUri.toString());
-  //   if (_lengthOfPlaces < 0) {
-  //     print("ik kom bij de niet gevulde data");
-  //     return  Image(
-  //         fit: BoxFit.fitHeight,
-  //         image: AssetImage("assets/marker_yellow.png"),
-  //       );
-      
-  //   } else {
-  //     print("ik kom bij de gevulde data");
-  //     return Image(
-  //           fit: BoxFit.fitHeight,
-  //           image: NetworkImage(places[index].previewImageUri.toString()),
-  //     );
-  //   }
-  // }
-
-  // Widget _buildContainer() {
-  //   return Align(
-  //       alignment: Alignment.bottomCenter,
-  //       child: Container(
-  //         color: Colors.white,
-  //         padding: EdgeInsets.symmetric(vertical: 15.0),
-  //         height: 175.0,
-  //         //  child:  ListView(scrollDirection: Axis.horizontal, children: formWidget),
-  //         child: ListView.builder(
-  //             scrollDirection: Axis.horizontal,
-  //             itemCount: places.length,
-  //             itemBuilder: (context, index) => GestureDetector(
-  //                   onTap: () {
-  //                     _onSelected(index);
-  //                     widget.gotoLocation(
-  //                         places[index].latitude, places[index].longitude);
-
-  //                     //   Navigator.pop(context);
-  //                     // _onMarkerTapped(places[index].);
-  //                   },
-  //                   // child: Container(
-  //                   //   width: MediaQuery.of(context).size.width * 0.6,
-  //                   //   child: Card(
-  //                   //     color: _selectedIndex != null && _selectedIndex == index
-  //                   //         ? Colors.red
-  //                   //         : Colors.white,
-  //                   //     child: Container(
-  //                   //       child: Center(
-  //                   //           child: Text(
-  //                   //         places[index].id.toString(),
-  //                   //         style: TextStyle(color: Colors.white, fontSize: 36.0),
-  //                   //       )),
-  //                   //     ),
-  //                   child: Padding(
-  //                       padding: EdgeInsets.all(8),
-  //                       child: Container(
-  //                         color: Colors.white,
-  //                         child: FittedBox(
-  //                           child: Container(
-  //                               decoration: BoxDecoration(
-  //                                 color: Colors.white,
-  //                                 border: Border.all(
-  //                                   width: 5,
-  //                                   color: _selectedIndex == index
-  //                                       ? Colors.blue[800]
-  //                                       : Color.fromRGBO(255, 255, 255, 1),
-  //                                 ),
-  //                                 boxShadow: [
-  //                                   BoxShadow(
-  //                                     blurRadius: 8.0,
-  //                                     color: Colors.black.withOpacity(.5),
-  //                                     //     offset: Offset(3.0, 4.0),
-  //                                   ),
-  //                                 ],
-  //                               ),
-
-  //                               //elevation: 14.0,
-
-  //                               //  borderRadius: BorderRadius.circular(5.0),
-  //                               // shadowColor: Color(0x802196F3),
-  //                               child: Row(
-  //                                 mainAxisAlignment:
-  //                                     MainAxisAlignment.spaceBetween,
-  //                                 children: <Widget>[
-  //                                   Container(
-  //                                       width: 100,
-  //                                       height: 150,
-  //                                       child: ClipRRect(
-  //                                         borderRadius:
-  //                                             new BorderRadius.circular(5.0),
-  //                                         child: Image(
-  //                                             fit: BoxFit.fitHeight,
-  //                                             image: places[index]
-  //                                                         .previewImageUri
-  //                                                         .toString() !=
-  //                                                     null
-  //                                                 ? new NetworkImage(
-  //                                                     places[index]
-  //                                                         .previewImageUri
-  //                                                         .toString())
-  //                                                 : new AssetImage(
-  //                                                     "assets/no_image.png")),
-  //                                       )),
-  //                                   Container(
-  //                                     child: Padding(
-  //                                       padding: const EdgeInsets.all(15.0),
-  //                                       child: myDetailsContainer1(index),
-  //                                     ),
-  //                                   ),
-  //                                 ],
-  //                               )),
-  //                         ),
-  //                       )),
-  //                 )),
-  //       ));
-  // }
-
-  // //  }
-
-  // Widget myDetailsContainer1(int index) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       // Padding(
-  //       //   padding: const EdgeInsets.all(15.0),
-  //       //   child:
-  //       Container(
-  //           child: Text(
-  //         places[index].source,
-  //         style: TextStyle(
-  //             color: Colors.blue,
-  //             fontSize: 20.0,
-  //             fontWeight: FontWeight.normal),
-  //       )),
-  //       Container(
-  //           child: Text(
-  //         places[index].type,
-  //         style: TextStyle(
-  //             color: Colors.blue,
-  //             fontSize: 20.0,
-  //             fontWeight: FontWeight.normal),
-  //       )),
-  //       //   Divider(),
-  //       SizedBox(height: 5.0),
-  //       Container(
-  //         child: Text("Equipment: \t" + places[index].id.toString(),
-  //             style: TextStyle(
-  //               fontSize: 18.0,
-  //             )),
-  //       ),
-  //       Container(
-  //         child: Text(
-  //           places[index].placement,
-  //           style: TextStyle(
-  //             fontSize: 18.0,
-  //           ),
-  //         ),
-  //       ),
-    
-
-  //       SizedBox(height: 5.0),
-  //       Container(
-  //           child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               children: <Widget>[
-  //             Container(
-  //                 child: Text(
-  //               "Afstand ",
-  //               style: TextStyle(
-  //                 color: Colors.black54,
-  //                 fontSize: 18.0,
-  //               ),
-  //             )),
-  //             Container(
-  //                 child: Text(
-  //               calculateDistance(
-  //                     widget.latitude,
-  //                     widget.longitude,
-  //                     places[index].latitude,
-  //                     places[index].latitude,
-  //                   ) +
-  //                   " km",
-  //               style: TextStyle(
-  //                 color: Colors.black54,
-  //                 fontSize: 18.0,
-  //               ),
-  //             )),
-  //           ])),
-  //       //SizedBox(height: 5.0),
-  //       // Container(
-  //       //     child: Text(
-  //       //   "Id: " + id,
-  //       //   style: TextStyle(
-  //       //       color: Colors.black54,
-  //       //       fontSize: 18.0,
-  //       //       fontWeight: FontWeight.bold),
-  //       // )),
-  //     ],
-  //   );
-  // }
 
   String calculateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
@@ -256,26 +49,9 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   child: CupertinoSwitch(
-    //     activeColor: Colors.red,
-    //       value: _switchValue,
-    //       onChanged: (bool value) {
-    //         setState(() {
-    //           _switchValue = value;
-    //           widget.valueChanged(value);
-    //         });
-    //       }),
-    // );
-    // return Column(
-    //   mainAxisSize: MainAxisSize.min,
-    //   crossAxisAlignment: CrossAxisAlignment.stretch,
-    //   children: <Widget>[_buildContainer()],
-    // );
     return Container(
       height: 200.0,
-      //color: Color(0xFF0E3311).withOpacity(0.5),
-      color: Theme.of(context).canvasColor ,
+      color: Theme.of(context).canvasColor,
       width: MediaQuery.of(context).size.width,
       child: PageView.builder(
         controller: _pageController,
@@ -345,29 +121,28 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                             color: Colors.white),
                         child: Row(children: [
                           Container(
-                              height: 90.0,
-                              width: 90.0,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10.0),
-                                      topLeft: Radius.circular(10.0)),
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/ic_launcher.png"),
-                                      fit: BoxFit.cover))),
+                            height: 90.0,
+                            width: 90.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(10.0),
+                                  topLeft: Radius.circular(10.0)),
+                              image: getCorrectPhoto(index),
+                            ),
+                          ),
                           SizedBox(width: 5.0),
                           Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  places[index].type,
+                                  "Type: " + places[index].type,
                                   style: TextStyle(
                                       fontSize: 12.5,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  places[index].id.toString(),
+                                  "Equipment: " + places[index].id.toString(),
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w600),
@@ -375,7 +150,22 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                                 Container(
                                   width: 170.0,
                                   child: Text(
-                                    places[index].placement,
+                                    "Plaatsing: " + places[index].placement,
+                                    style: TextStyle(
+                                        fontSize: 11.0,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                ),
+                                Container(
+                                  width: 170.0,
+                                  child: Text(
+                                    "Afstand: " +
+                                        calculateDistance(
+                                            widget.latitude,
+                                            widget.longitude,
+                                            places[index].latitude,
+                                            places[index].longitude) +
+                                        " meter",
                                     style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w300),
@@ -385,5 +175,21 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                         ]))))
           ])),
     );
+  }
+
+  getCorrectPhoto(int index) {
+    if (places[index].source == "SAP") {
+      return DecorationImage(
+          image: AssetImage("assets/marker_yellow.png"), fit: BoxFit.none);
+    } else if (places[index].source == "SIGMA") {
+      return DecorationImage(
+          image: AssetImage("assets/marker_red.png"), fit: BoxFit.none);
+    } else if (places[index].source == "UST02"){
+      return DecorationImage(
+          image: AssetImage("assets/marker_blue.png"), fit: BoxFit.none);
+    }
+    else{
+      print("geen marker gevonden");
+    }
   }
 }

@@ -13,7 +13,7 @@ import 'package:spobber/data/global_variable.dart';
 /// [InfoWindow] to your marker here, then you can use the [toMarker] method to convert
 /// this to a proper [Marker] that the [GoogleMap] can read.
 class MapMarker extends Clusterable {
-  final String id;
+  final int id;
   final String secretId;
   final LatLng position;
   final BitmapDescriptor icon;
@@ -28,7 +28,7 @@ class MapMarker extends Clusterable {
     @required this.icon,
     @required this.secretId,
     @required this.equipment,
-    this.placement,    
+    this.placement,
     this.onTapFunction,
     this.objectUri,
     isCluster = false,
@@ -36,7 +36,7 @@ class MapMarker extends Clusterable {
     pointsSize,
     childMarkerId,
   }) : super(
-          markerId: id,
+          markerId: id.toString(),
           latitude: position.latitude,
           longitude: position.longitude,
           isCluster: isCluster,
@@ -46,7 +46,7 @@ class MapMarker extends Clusterable {
         );
 
   Marker toMarker() => Marker(
-        markerId: MarkerId(id),
+        markerId: MarkerId(id.toString()),
         position: LatLng(
           position.latitude,
           position.longitude,
@@ -58,11 +58,11 @@ class MapMarker extends Clusterable {
           currentSelectedMarkerSecretID = secretId;
           currentSelectedMarkerObjectUri = objectUri;
         },
-     //   consumeTapEvents: true,
+        //   consumeTapEvents: true,
         infoWindow: isCluster
             ? null
             : InfoWindow(
-                title: "Equipment: $equipment",
+                title: equipment.startsWith("0") ? "Er is geen equipment_id gevonden" : "Equipment: $equipment",
                 snippet: "Plaatsing: $placement",
                 onTap: onTapFunction,
               ),
