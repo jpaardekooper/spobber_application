@@ -28,6 +28,7 @@
  * THE SOFTWARE.
  */
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:spobber/maps_widgets/maps_header.dart';
@@ -37,7 +38,9 @@ import 'package:appcenter/appcenter.dart';
 import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:appcenter_crashes/appcenter_crashes.dart';
 
-var app_secret = "f912231d-88c7-49ff-b670-f3a75c8b8c9d";
+
+final ios = debugDefaultTargetPlatformOverride == TargetPlatform.iOS;
+var app_secret = ios ? "f912231d-88c7-49ff-b670-f3a75c8b8c9d" : "f37d89bc-13d6-4ca5-b280-e8cb375eb3cb";
 
 void main() async {
   
