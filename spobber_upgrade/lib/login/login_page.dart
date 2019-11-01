@@ -17,101 +17,9 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   String _displayName;
-  bool _obsecure = false;
+    bool _obsecure = false;
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   // final logo = Hero(
-  //   //   tag: 'hero',
-  //   //   child: CircleAvatar(
-  //   //     backgroundColor: Colors.transparent,
-  //   //     radius: 48.0,
-  //   //     child: Image.asset('assets/result_data.png'),
-  //   //   ),
-  //   // );
 
-  //   final email = TextFormField(
-  //     keyboardType: TextInputType.emailAddress,
-  //     autofocus: false,
-  //     initialValue: 'TestGebruiker@example.com',
-  //     decoration: InputDecoration(
-  //       fillColor: Colors.white,
-  //       hintText: 'Email',
-  //       contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-  //       border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-  //     ),
-  //   );
-
-  //   final password = TextFormField(
-  //     autofocus: false,
-  //     initialValue: 'some password',
-  //     obscureText: true,
-  //     decoration: InputDecoration(
-  //       hintText: 'Password',
-  //       contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-  //       border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-  //     ),
-  //   );
-
-  //   final loginButton = Padding(
-  //     padding: EdgeInsets.symmetric(vertical: 16.0),
-  //     child: RaisedButton(
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(24),
-  //       ),
-  //       onPressed: () {
-  //         Navigator.of(context).pushReplacementNamed(GoogleMapsApp.tag);
-  //         showToast("Maps wordt ingeladen",
-  //             gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-  //       },
-  //       padding: EdgeInsets.all(12),
-  //       color: Colors.grey[400],
-  //       child: Text('Log In', style: TextStyle(color: Colors.black)),
-  //     ),
-  //   );
-
-  //   final forgotLabel = FlatButton(
-  //     child: Text(
-  //       'Forgot password?',
-  //       style: TextStyle(color: Colors.white),
-  //     ),
-  //     onPressed: () {},
-  //   );
-
-  //   return Scaffold(
-  //     backgroundColor:  Color.fromRGBO(0, 73, 144, 1),
-  //     body: Center(
-  //       child: ListView(
-  //         shrinkWrap: true,
-  //         padding: EdgeInsets.only(left: 24.0, right: 24.0),
-  //         children: <Widget>[
-  //           //  logo,
-  //           SizedBox(height: 48.0),
-  //           Container(
-  //             decoration: new BoxDecoration(
-  //               color: Colors.white,
-  //                borderRadius: BorderRadius.circular(24),
-  //             ),
-  //             child: email,
-  //           ),
-  //           SizedBox(height: 8.0),
-  //            Container(
-  //             decoration: new BoxDecoration(
-  //               color: Colors.white,
-  //                borderRadius: BorderRadius.circular(24),
-  //             ),
-
-  //             child: password,
-  //           ),
-
-  //           SizedBox(height: 24.0),
-  //           loginButton,
-  //           forgotLabel
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     Color primary = Theme.of(context).primaryColor;
@@ -149,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                     )),
               ),
               Positioned(
-                width: MediaQuery.of(context).size.width * 0.15,
+                width: MediaQuery.of(context).size.width * 0.13,
                 height: MediaQuery.of(context).size.width * 0.15,
                 bottom: MediaQuery.of(context).size.height * 0.046,
                 right: MediaQuery.of(context).size.width * 0.22,
@@ -159,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Positioned(
-                width: MediaQuery.of(context).size.width * 0.08,
+                width: MediaQuery.of(context).size.width * 0.07,
                 height: MediaQuery.of(context).size.width * 0.08,
                 bottom: 0,
                 right: MediaQuery.of(context).size.width * 0.32,
@@ -178,13 +86,15 @@ class _LoginPageState extends State<LoginPage> {
     Widget _input(Icon icon, String hint, TextEditingController controller,
         bool obsecure) {
       return Container(
+     
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextField(
           controller: controller,
           obscureText: obsecure,
           style: TextStyle(
-            fontSize: 20,            
+            fontSize: 18,            
           ),
+                  
           decoration: InputDecoration(
               hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Theme.of(context).primaryColor,),
               hintText: hint,
@@ -288,8 +198,8 @@ class _LoginPageState extends State<LoginPage> {
                         )
                       ],
                     ),
-                    height: 50,
-                    width: 50,
+                    height: 40,
+                    width: 40,
                   ),
                   SingleChildScrollView(
                     child: Column(
@@ -348,7 +258,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Container(
                             child: _button("LOGIN", Colors.white, primary,
                                 primary, Colors.white, _loginUser),
-                            height: 50,
+                            height: 40,
                             width: MediaQuery.of(context).size.width,
                           ),
                         ),
@@ -402,8 +312,8 @@ class _LoginPageState extends State<LoginPage> {
                         )
                       ],
                     ),
-                    height: 50,
-                    width: 50,
+                    height: 40,
+                    width: 40,
                   ),
                   SingleChildScrollView(
                     child: Column(children: <Widget>[
@@ -486,7 +396,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Container(
                           child: _button("REGISTER", Colors.white, primary,
                               primary, Colors.white, _registerUser),
-                          height: 50,
+                          height: 40,
                           width: MediaQuery.of(context).size.width,
                         ),
                       ),
@@ -517,7 +427,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Container(
                 child: _button("LOGIN", primary, Colors.white, Colors.white,
                     primary, _loginSheet),
-                height: 50,
+                height: 40,
               ),
               padding: EdgeInsets.only(top: 80, left: 20, right: 20),
             ),
@@ -544,7 +454,7 @@ class _LoginPageState extends State<LoginPage> {
                     _registerSheet();
                   },
                 ),
-                height: 50,
+                height: 40,
               ),
               padding: EdgeInsets.only(top: 10, left: 20, right: 20),
             ),
