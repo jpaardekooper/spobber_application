@@ -451,7 +451,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             ),),
       bottomNavigationBar: GestureDetector(
         onTap: () {
-          if (places.length <= 0) {
+          if (places.length <= 0 || places.length > 30) {
             return;
           } else {
             print("Locatie van het drukken ${userLocation.latitude}, ${userLocation.longitude} ");
