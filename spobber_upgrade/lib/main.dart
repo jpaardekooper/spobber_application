@@ -33,9 +33,16 @@ import 'package:flutter/services.dart';
 import 'package:spobber/maps_widgets/maps_header.dart';
 import 'login/login_page.dart';
 
-// void main() => runApp(GoogleMapsSampleApp());
+import 'package:appcenter/appcenter.dart';
+import 'package:appcenter_analytics/appcenter_analytics.dart';
+import 'package:appcenter_crashes/appcenter_crashes.dart';
 
-void main() {
+var app_secret = "f912231d-88c7-49ff-b670-f3a75c8b8c9d";
+
+void main() async {
+  
+  await AppCenter.start(app_secret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
+  await AppCenter.setEnabled(true);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(new MyApp());
