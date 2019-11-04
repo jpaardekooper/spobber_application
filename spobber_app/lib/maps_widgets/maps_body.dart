@@ -168,7 +168,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
   Widget _mapTypeCycler() {
     final MapType nextType =
-        MapType.values[(_mapType.index + 1) % MapType.values.length];
+        MapType.values[_mapType.index == 2 ? 1 : 2];
 
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 70, 0, 0),

@@ -3,6 +3,7 @@ import 'package:spobber_app/maps_widgets/maps_header.dart';
 import 'package:toast/toast.dart';
 import 'clipper.dart';
 
+
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
   @override
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                     height: 154,
                     child: Align(
-                      child: Image.asset('assets/result_data.png'),
+                      child: Image.asset("assets/result_data.png"),
                     )),
               ),
               Positioned(
@@ -153,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
       _emailController.clear();
       _passwordController.clear();
 
-      Navigator.popAndPushNamed(context, GoogleMapsApp.tag);
+      Navigator.pushReplacementNamed(context, GoogleMapsApp.tag);
 
     }
 
