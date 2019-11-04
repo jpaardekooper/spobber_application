@@ -178,12 +178,10 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
             child: Material(
               color: Colors.white.withOpacity(0.7), // button color
               child: InkWell(
-                splashColor: Colors.blue[600], // splash color
+                splashColor: const Color(0xff004990), // splash color
                 onTap: () {
                   setState(() {
                     _mapType = nextType;
-
-                    print("test map");
                   });
                 }, // button pressed
                 child: Column(
@@ -212,7 +210,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
             child: Material(
               color: Colors.white.withOpacity(0.7), // button color
               child: InkWell(
-                splashColor: Colors.blue[600], // splash color
+                splashColor: const Color(0xff004990),
                 onTap: () {
                   setState(() {
                     places.clear();
@@ -262,7 +260,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
             child: Material(
               color: Colors.white.withOpacity(0.7), // button color
               child: InkWell(
-                splashColor: Colors.blue[600], // splash color
+               splashColor: const Color(0xff004990),
                 onTap: () {
                   _add(lat, long);
                 }, // button pressed
@@ -292,7 +290,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
             child: Material(
               color: Colors.white.withOpacity(0.7), // button color
               child: InkWell(
-                splashColor: Colors.blue[600], // splash color
+                splashColor: const Color(0xff004990),
                 onTap: () {
                   showDialog<void>(
                     context: context,
@@ -665,9 +663,12 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     }
     // Here you can write your code
 
-    // setState(() {
-    //   _areMarkersLoading = true;
-    // });
+    setState(() {
+      _areMarkersLoading = true;
+    });
+
+
+ 
 
     if (_mayILoadMarkers) {
       print("HALOOO " + _mayILoadMarkers.toString());
@@ -679,18 +680,21 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         _mayILoadMarkers = false;
       });
       Future.delayed(const Duration(seconds: 2), () {
-// Here you can write your code
-
         setState(() {
           _mayILoadMarkers = true;
         });
       });
+
     } else {
       return;
     }
 
-    // setState(() {
-    //   _areMarkersLoading = false;
-    // });
+    setState(() {
+      _areMarkersLoading = false;
+    });
+    
+    
   }
+
+  
 }

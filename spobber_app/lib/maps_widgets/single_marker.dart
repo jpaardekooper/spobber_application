@@ -35,19 +35,20 @@ class _SingleMarkerState extends State<SingleMarker> {
         children: <Widget>[
           Container(
             width: 180,
-            height: 25,
+            height: 30,
             decoration: new BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(24),
             ),
-            child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(left: 10),
               child: TextFormField(
                 decoration: InputDecoration(
                   // icon: Icon(Icons.check_box_outline_blank),
                   fillColor: Colors.black,
                   hintText: 'Equipment',
                   hintStyle: TextStyle(color: Colors.grey),
-                  contentPadding: EdgeInsets.only(left: 10, bottom: 10),
+                  //contentPadding: EdgeInsets.only(bottom: 10),
                    border: InputBorder.none,
                   //  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
                 ),

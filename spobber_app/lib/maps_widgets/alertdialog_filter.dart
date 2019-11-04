@@ -39,87 +39,113 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("Selecteer databronnen"),
-      titleTextStyle: TextStyle(fontSize: 18, color: Colors.black),
-      contentPadding: EdgeInsets.all(0.0),
-      content: Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          // Box decoration takes a gradient
+          gradient: LinearGradient(
+            // Where the linear gradient begins and ends
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            // Add one stop for each color. Stops should increase from 0 to 1
+            stops: [0.1, 0.5, 0.8, 0.9],
+            colors: [
+              // Colors are easy thanks to Flutter's Colors class.
+              Color(0xff0066C6),
+              Color(0xff0066C6),
+              Color(0xff004990),
+              Color(0xff004990),
+            ],
+          ),
+        ),
+        height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        // height: MediaQuery.of(context).size.height / 3 ,
-        padding: MediaQuery.of(context).viewInsets +
-            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          // crossAxisAlignment: CrossAxisAlignment.end,
-          // mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SwitchListTile(
-                title: const Text('SAP'),
-                value: _switchValueSap,
-                onChanged: (bool value) {
-                  setState(() {
-                    _switchValueSap = value;
-                    widget.valueChangedisSap(value);
-                    if (value == true) {
-                      setDataSource.add("SAP");
-                    } else {
-                      setDataSource.remove("SAP");
-                    }
-                  });
-                },
-                secondary: const Icon(Icons.tram)),
-            SwitchListTile(
-                title: const Text('SIGMA'),
-                value: _switchValueSigma,
-                onChanged: (bool value) {
-                  setState(() {
-                    _switchValueSigma = value;
-                    widget.valueChangedisSigma(value);
+        child: AlertDialog(
+          title: Text("Selecteer databronnen"),
+          titleTextStyle: TextStyle(fontSize: 18, color: Colors.black),
+          contentPadding: EdgeInsets.all(0.0),
+          content: Container(
+            width: MediaQuery.of(context).size.width,
+            // height: MediaQuery.of(context).size.height / 3 ,
+            padding: MediaQuery.of(context).viewInsets +
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              // crossAxisAlignment: CrossAxisAlignment.end,
+              // mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SwitchListTile(
+                    title: const Text('SAP'),
+                    value: _switchValueSap,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _switchValueSap = value;
+                        widget.valueChangedisSap(value);
+                        if (value == true) {
+                          setDataSource.add("SAP");
+                        } else {
+                          setDataSource.remove("SAP");
+                        }
+                      });
+                    },
+                    secondary: const Icon(Icons.tram)),
+                SwitchListTile(
+                    title: const Text('SIGMA'),
+                    value: _switchValueSigma,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _switchValueSigma = value;
+                        widget.valueChangedisSigma(value);
 
-                    if (value == true) {
-                      setDataSource.add("SIGMA");
-                    } else {
-                      print("De value van SIGMA is $value");
-                      setDataSource.remove("SIGMA");
-                    }
-                  });
-                },
-                secondary: const Icon(Icons.tram)),
-            SwitchListTile(
-                title: const Text('UST02 meettrein'),
-                value: _switchValueUST02,
-                onChanged: (bool value) {
-                  setState(() {
-                    _switchValueUST02 = value;
-                    widget.valueChangedisUST02(value);
-                    if (value == true) {
-                      setDataSource.add("UST02");
-                    } else {
-                      setDataSource.remove("UST02");
-                    }
-                  });
-                },
-                secondary: const Icon(Icons.tram)),
-            // SwitchListTile(
-            //     title: const Text('Videoschouwtrein'),
-            //     value: isVideo,
+                        if (value == true) {
+                          setDataSource.add("SIGMA");
+                        } else {
+                          print("De value van SIGMA is $value");
+                          setDataSource.remove("SIGMA");
+                        }
+                      });
+                    },
+                    secondary: const Icon(Icons.tram)),
+                SwitchListTile(
+                    title: const Text('UST02 meettrein'),
+                    value: _switchValueUST02,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _switchValueUST02 = value;
+                        widget.valueChangedisUST02(value);
+                        if (value == true) {
+                          setDataSource.add("UST02");
+                        } else {
+                          setDataSource.remove("UST02");
+                        }
+                      });
+                    },
+                    secondary: const Icon(Icons.tram)),
+                // SwitchListTile(
+                //     title: const Text('Videoschouwtrein'),
+                //     value: isVideo,
+                //     onChanged: (bool value) {
+                //       setState(() {
+                //         isVideo = value;
+                //       });
+                //     },
+                //     secondary: const Icon(Icons.tram)),
+              ],
+            ),
+
+            //  CupertinoSwitch(
+            //     value: _switchValueVideo,
             //     onChanged: (bool value) {
             //       setState(() {
-            //         isVideo = value;
+            // _switchValueVideo = value;
+            // widget.valueChangedisVideo(value);
             //       });
-            //     },
-            //     secondary: const Icon(Icons.tram)),
-          ],
+            //     }),
+          ),
         ),
-
-        //  CupertinoSwitch(
-        //     value: _switchValueVideo,
-        //     onChanged: (bool value) {
-        //       setState(() {
-        // _switchValueVideo = value;
-        // widget.valueChangedisVideo(value);
-        //       });
-        //     }),
       ),
     );
   }
