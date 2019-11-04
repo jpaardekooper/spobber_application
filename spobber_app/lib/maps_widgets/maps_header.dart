@@ -7,17 +7,16 @@ import '../helper/location_services.dart';
 import 'package:provider/provider.dart';
 import 'single_marker.dart';
 
-// class GoogleMapsApp extends StatefulWidget {
-//   static String tag = 'Maps';
-//   @override
-//   State<StatefulWidget> createState() {
-//     return _GoogleMapsApp();
-//   }
-// }
+class GoogleMapsApp extends StatefulWidget {
+  static String tag = 'Maps';
+  @override
+  State<StatefulWidget> createState() {
+    return _GoogleMapsApp();
+  }
+}
 
-class GoogleMapsApp extends StatelessWidget {
+class _GoogleMapsApp extends State<GoogleMapsApp> {
   static String keyword = "Es-las";
-   static String tag = 'Maps';
 
   void updateKeyWord(String newKeyword) {
     print(newKeyword);
@@ -142,7 +141,7 @@ Widget _buildDrawer(context) {
                       maxWidth: 44,
                       maxHeight: 44,
                     ),
-                    child: Image.asset('assets/ic_launcher.png'),
+                    child: Image.asset('assets/ic_launcher.jpg'),
                   )),
               Divider(),
 

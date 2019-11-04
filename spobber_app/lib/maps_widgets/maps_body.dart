@@ -1,4 +1,3 @@
-
 import 'package:spobber_app/data/global_variable.dart';
 import 'package:spobber_app/data/place_response.dart';
 
@@ -35,8 +34,7 @@ class PlacesSearchMapSample extends StatefulWidget {
 
 typedef Marker MarkerUpdateAction(Marker marker);
 
-class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
-    {
+class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   bool currentWidget = true;
 
   //Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
@@ -111,7 +109,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
     setState(() {
       _markers.add(marker);
-    //  markers[markerId] = marker;
+      //  markers[markerId] = marker;
     });
   }
 
@@ -140,14 +138,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
 // }
 
-  void searchNearby() async {
+  Future<void> searchNearby() async {
     setState(() {
-      places.clear();      
-      _markers.clear(); 
-    //  markers.clear();
+      places.clear();
+      _markers.clear();
+      //  markers.clear();
     });
     final GoogleMapController controller = await _controller.future;
     final LatLngBounds visibleRegion = await controller.getVisibleRegion();
+
     setState(() {
       _visibleRegion = visibleRegion;
       print("setting visible region: $visibleRegion");
@@ -167,8 +166,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   MapType _mapType = MapType.satellite;
 
   Widget _mapTypeCycler() {
-    final MapType nextType =
-        MapType.values[_mapType.index == 2 ? 1 : 2];
+    final MapType nextType = MapType.values[_mapType.index == 2 ? 1 : 2];
 
     return Padding(
       padding: EdgeInsets.fromLTRB(12, 70, 0, 0),
@@ -184,7 +182,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                 onTap: () {
                   setState(() {
                     _mapType = nextType;
-                    
+
                     print("test map");
                   });
                 }, // button pressed
@@ -321,7 +319,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   children: <Widget>[
                     getIcon(setDataSource.length), // icon
                     // Text("Call"), // text
-                    
                   ],
                 ),
               ),
@@ -335,7 +332,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   Icon getIcon(int selector) {
     if (selector <= 0) {
       return Icon(Icons.filter);
-     
     } else if (selector == 1) {
       return Icon(Icons.filter_1);
     } else if (selector == 2) {
@@ -345,38 +341,45 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
     } else {
       return Icon(Icons.filter_9_plus);
     }
-  }  
+  }
 
   Widget _buildGoogleMap(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: GoogleMap(
-        onMapCreated: (GoogleMapController controller) {
-          // _setStyle(controller);
-          _controller.complete(controller);
-          // if (controller == null) {
-          //   _controller.complete(controller);
-          // } else {
-          //   print("Do nothing");
-          // }
-        },    
-        mapToolbarEnabled: false,
-        onCameraMove: (position) => _updateMarkers(position.zoom),
-        //onCameraIdle: _updateMarkers,
-        mapType: _mapType,
-        initialCameraPosition: _myLocation,
-        compassEnabled: true,
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        markers: _markers,
+    return GestureDetector(
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: GoogleMap(
+          onMapCreated: (GoogleMapController controller) {
+            // _setStyle(controller);
+            _controller.complete(controller);
+            // if (controller == null) {
+            //   _controller.complete(controller);
+            // } else {
+            //   print("Do nothing");
+            // }
+          },
+          mapToolbarEnabled: false,
+          onCameraMove: (position) => _updateMarkers(position.zoom),
+          //onCameraIdle: _updateMarkers,
+          mapType: _mapType,
+          initialCameraPosition: _myLocation,
+          compassEnabled: true,
+          myLocationButtonEnabled: true,
+          myLocationEnabled: true,
+          markers: _markers,
 
-        // markers: Set<Marker>.of(markers.values),
-        // circles: Set<Circle>.of(circles.values),
-        // polylines: Set<Polyline>.of(polylines.values),
+          // markers: Set<Marker>.of(markers.values),
+          // circles: Set<Circle>.of(circles.values),
+          // polylines: Set<Polyline>.of(polylines.values),
+        ),
       ),
     );
   }
+
+  // Future _mapIdleSubscription() async{
+
+  // }
+  Stream _mapIdleSubscription;
 
   static LatLngBounds _visibleRegion;
 
@@ -392,44 +395,63 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(color: Colors.white, child: userLocation == null
-          ? Center(child: CircularProgressIndicator())
-          : Stack(
-              children: <Widget>[
-                _buildGoogleMap(context),
-                _mapTypeCycler(),
-                _search(),
-                _addMarker(userLocation.latitude, userLocation.longitude),
-                _changeSourceFilter(),
-                // Map markers loading indicator
-                if (_areMarkersLoading)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Card(
-                        elevation: 2,
-                        color: Colors.grey.withOpacity(0.9),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text(
-                            'Loading',
-                            style: TextStyle(color: Colors.white),
+      body: Container(
+        color: Colors.white,
+        child: userLocation == null
+            ? Center(child: CircularProgressIndicator())
+            : Stack(
+                children: <Widget>[
+                  _buildGoogleMap(context),
+                  _mapTypeCycler(),
+                  _search(),
+                  _addMarker(userLocation.latitude, userLocation.longitude),
+                  _changeSourceFilter(),
+                  // Map markers loading indicator
+                  _areMarkersLoading
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Card(
+                              elevation: 2,
+                              color: Colors.grey.withOpacity(0.9),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Text(
+                                  'Loading',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Card(
+                              elevation: 2,
+                              color: Colors.grey.withOpacity(0.9),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Text(
+                                  'not loading',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),),
+                ],
+              ),
+      ),
       bottomNavigationBar: GestureDetector(
         onTap: () {
           if (places.length <= 0 || places.length > 30) {
             return;
           } else {
-            print("Locatie van het drukken ${userLocation.latitude}, ${userLocation.longitude} ");
-
-            //           print("u pressed me");
+            print(
+                "Locatie van het drukken ${userLocation.latitude}, ${userLocation.longitude} ");
             showModalBottomSheet<void>(
               context: context,
               builder: (BuildContext context) {
@@ -438,7 +460,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
                   latitude: userLocation.latitude,
                   longitude: userLocation.longitude,
                   gotoLocation: gotoLocation,
-                  
                 );
               },
             );
@@ -450,7 +471,11 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: <Widget>[
-              IconButton(icon: places.length <= 0 ? Icon(Icons.not_listed_location) : Icon(Icons.touch_app), onPressed: () {}),
+              IconButton(
+                  icon: places.length <= 0
+                      ? Icon(Icons.not_listed_location)
+                      : Icon(Icons.touch_app),
+                  onPressed: () {}),
               Padding(
                 padding: EdgeInsets.only(left: 5),
                 child: bottomApptext(),
@@ -494,7 +519,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
   // }
 
-  
   void showToast(String msg, {int duration, int gravity}) {
     Toast.show(msg, context, duration: duration, gravity: gravity);
   }
@@ -508,7 +532,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
   final int _minClusterZoom = 0;
 
   /// Maximum zoom at which the markers will cluster
-  final int _maxClusterZoom = 19;
+  final int _maxClusterZoom = 18;
 
   /// [Fluster] instance used to manage the clusters
   Fluster<MapMarker> _clusterManager;
@@ -627,36 +651,46 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
         ),
       ),
     );
-
-    
   }
 
-  double _currentZooming;
+  bool _mayILoadMarkers = true;
 
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
-  void _updateZoom([double updatedZoom]) {  
-    setState(() {
-      _currentZooming = updatedZoom;
-    });
-  }
-
-    /// Gets the markers and clusters to be displayed on the map for the current zoom level and
-  /// updates state.
   void _updateMarkers([double updatedZoom]) {
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
-    if (updatedZoom != null) {
-      _currentZoom = updatedZoom;   
-    }  
-    setState(() {
-      _areMarkersLoading = true;     
-    });
-    _markers
-      ..clear()
-      ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
 
-    setState(() {
-      _areMarkersLoading = false;
-    });
+    if (updatedZoom != null) {
+      _currentZoom = updatedZoom;
+    }
+    // Here you can write your code
+
+    // setState(() {
+    //   _areMarkersLoading = true;
+    // });
+
+    if (_mayILoadMarkers) {
+      print("HALOOO " + _mayILoadMarkers.toString());
+      _markers
+        ..clear()
+        ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+
+      setState(() {
+        _mayILoadMarkers = false;
+      });
+      Future.delayed(const Duration(seconds: 2), () {
+// Here you can write your code
+
+        setState(() {
+          _mayILoadMarkers = true;
+        });
+      });
+    } else {
+      return;
+    }
+
+    // setState(() {
+    //   _areMarkersLoading = false;
+    // });
   }
 }
