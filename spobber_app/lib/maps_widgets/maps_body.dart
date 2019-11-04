@@ -362,8 +362,8 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
           // }
         },    
         mapToolbarEnabled: false,
-        onCameraMove: (position) => _updateZoom(position.zoom),
-        onCameraIdle: _updateMarkers,
+        onCameraMove: (position) => _updateMarkers(position.zoom),
+        //onCameraIdle: _updateMarkers,
         mapType: _mapType,
         initialCameraPosition: _myLocation,
         compassEnabled: true,
@@ -643,10 +643,10 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample>
 
     /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
-  void _updateMarkers() {
-    if (_clusterManager == null || _currentZooming == _currentZoom) return;
-    if (_currentZooming != null) {
-      _currentZoom = _currentZooming;   
+  void _updateMarkers([double updatedZoom]) {
+    if (_clusterManager == null || updatedZoom == _currentZoom) return;
+    if (updatedZoom != null) {
+      _currentZoom = updatedZoom;   
     }  
     setState(() {
       _areMarkersLoading = true;     

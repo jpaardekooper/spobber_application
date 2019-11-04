@@ -47,7 +47,7 @@ class _SingleMarkerState extends State<SingleMarker> {
                   fillColor: Colors.black,
                   hintText: 'Equipment',
                   hintStyle: TextStyle(color: Colors.grey),
-                  contentPadding: EdgeInsets.only(left: 10, bottom: 5),
+                  contentPadding: EdgeInsets.only(left: 10, bottom: 10),
                    border: InputBorder.none,
                   //  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
                 ),
