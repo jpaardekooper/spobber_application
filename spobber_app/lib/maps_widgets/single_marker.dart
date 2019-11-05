@@ -58,6 +58,7 @@ class _SingleMarkerState extends State<SingleMarker> {
                     return;
                   } else {
                     singleMarkerObject = value;
+                    return;
                   }
                   //    return null;
                 },

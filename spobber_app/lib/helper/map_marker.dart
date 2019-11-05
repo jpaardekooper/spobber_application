@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:spobber_app/data/global_variable.dart';
-import 'package:spobber_app/marker_information/marker_template.dart';
-import 'package:spobber_app/data/global_variable.dart';
 
 /// [Fluster] can only handle markers that conform to the [Clusterable] abstract class.
 ///
