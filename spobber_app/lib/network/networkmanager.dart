@@ -136,3 +136,24 @@ Future<List<Album>> loadImages(String secretId) async {
     return new List<Album>();
   }
 }
+
+Future<bool> register(String username, String password) async {
+  Map data = {
+    "username": username,
+    "password": password,
+  };
+  HttpClientRequest request = await _preparePostPackage(_spobberEndpoint + "authentication/register", data);
+  HttpClientResponse response = await request.close();
+  if(response.statusCode == 200){
+    return true;
+  }
+  else{
+    response = await request.close();
+    if(response.statusCode == 200){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+}
