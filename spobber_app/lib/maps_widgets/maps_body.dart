@@ -358,7 +358,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
           },
           mapToolbarEnabled: false,
           onCameraMove: (position) => _updateMarkers(position.zoom),
-          //onCameraIdle: _updateMarkers,
+          onCameraIdle: test,
           mapType: _mapType,
           initialCameraPosition: _myLocation,
           compassEnabled: true,
@@ -374,6 +374,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     );
   }
 
+  test(){
+ print("cAMERA STAAT aSTILL");
+}
   // Future _mapIdleSubscription() async{
 
   // }
