@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:spobber_app/data/global_variable.dart';
 import '../data/place_response.dart';
-import 'package:spobber_app/network/networkmanager.dart'
+import 'package:spobber_app/network/networkmanager.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
