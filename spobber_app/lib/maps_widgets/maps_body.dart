@@ -4,13 +4,13 @@ import 'package:spobber_app/data/place_response.dart';
 import '../data/global_variable.dart';
 import 'dart:async';
 import 'dart:ui';
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../marker_information/marker_template.dart';
 import 'bottom_modal.dart';
-import '../data/upper_object.dart';
+
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 import '../helper/location_services.dart';
@@ -23,8 +23,8 @@ import 'package:spobber_app/helper/map_marker.dart';
 import 'package:spobber_app/maps_widgets/alertdialog_filter.dart';
 
 class PlacesSearchMapSample extends StatefulWidget {
-  final String keyword;
-  PlacesSearchMapSample(this.keyword);
+
+  PlacesSearchMapSample();
 
   @override
   State<PlacesSearchMapSample> createState() {
@@ -157,7 +157,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
       bottomLatitude: _visibleRegion.southwest.latitude,
       bottomLongitude: _visibleRegion.southwest.longitude,
     );
-    loadmarkers.searchNearby(widget.keyword).then((value) {
+    loadmarkers.searchNearby().then((value) {
       //   _handleResponse();
       _initMarkers();
     });
@@ -550,15 +550,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   /// Url image used on normal markers sap (yellow)
   final String _markerImageUrlSap =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/sap.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
   /// Url image used on cluster markers (red)
   final String _markerImageUrlSigma =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/sigma.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/SIGMA.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
   /// Url image used on cluster markers (blue)
   final String _markerImageUrlMeetTrein =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/meet-trein.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
   /// Url image used on cluster markers (cluster itself)
   final String _clusterImageUrl =

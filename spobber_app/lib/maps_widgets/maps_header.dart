@@ -141,7 +141,7 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
           ],
         ),
         drawer: _buildDrawer(context),
-        body: PlacesSearchMapSample(searchObject),
+        body: PlacesSearchMapSample(),
         //  endDrawer: SearchFilter(updateKeyWord),
         //    endDrawer: ObjectFilter(),
         //     ),
