@@ -44,6 +44,7 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
         Navigator.pop(context);
       },
       child: Container(
+
         decoration: BoxDecoration(
           // Box decoration takes a gradient
           gradient: LinearGradient(
