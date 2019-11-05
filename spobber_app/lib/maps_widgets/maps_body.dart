@@ -700,6 +700,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   bool _mayILoadMarkers = true;
 
+
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
   void _updateMarkers([double updatedZoom]) {
@@ -712,15 +713,15 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
     if (_mayILoadMarkers) {
       //  print("HALOOO " + _mayILoadMarkers.toString());
-      _markers
-        ..clear()
-        ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
-
       setState(() {
         _areMarkersLoading = true;
         _mayILoadMarkers = false;
       });
-      Future.delayed(const Duration(seconds: 2), () {
+      _markers
+        ..clear()
+        ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+
+      Future.delayed(const Duration(seconds: 3), () {
         setState(() {
           _mayILoadMarkers = true;
           _areMarkersLoading = false;
