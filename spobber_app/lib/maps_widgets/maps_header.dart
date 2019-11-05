@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'single_marker.dart';
 import 'object_filter.dart';
 import '../data/global_variable.dart';
+import '../data/my_flutter_app_icons.dart';
 
 class GoogleMapsApp extends StatefulWidget {
   static String tag = 'Maps';
@@ -79,7 +80,7 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
                     height: 30,
                     decoration: new BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(left: 10, top: 8),
@@ -91,7 +92,7 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 10),
+                  padding: EdgeInsets.only(left: 10,  top: 5),
                   child: SizedBox.fromSize(
                     size: Size(30, 30), // buton width and height
                     child: Material(
@@ -106,8 +107,8 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
                           );
                         }, // button pressed
                         child: Icon(
-                          Icons.search,
-                          color: Colors.white,
+                         MyFilter.filter,
+                          color: Colors.white,                  
                         ),
                       ),
                     ),
@@ -126,19 +127,6 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
             ),
             preferredSize: Size(50, 50),
           ),
-
-          actions: <Widget>[
-            Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                    icon: Icon(Icons.filter_list),
-                    tooltip: 'Filter Search',
-                    onPressed: () {
-                      Scaffold.of(context).openEndDrawer();
-                    });
-              },
-            ),
-          ],
         ),
         drawer: _buildDrawer(context),
         body: PlacesSearchMapSample(),

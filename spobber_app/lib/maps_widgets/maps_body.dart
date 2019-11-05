@@ -23,7 +23,6 @@ import 'package:spobber_app/helper/map_marker.dart';
 import 'package:spobber_app/maps_widgets/alertdialog_filter.dart';
 
 class PlacesSearchMapSample extends StatefulWidget {
-
   PlacesSearchMapSample();
 
   @override
@@ -175,8 +174,12 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         child: SizedBox.fromSize(
           size: Size(37, 37), // button width and height
           child: ClipRect(
-            child: Material(
-              color: Colors.white.withOpacity(0.7), // button color
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              // button color
               child: InkWell(
                 splashColor: const Color(0xff004990), // splash color
                 onTap: () {
@@ -206,10 +209,12 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         alignment: Alignment.topRight,
         child: SizedBox.fromSize(
           size: Size(37, 37), // button width and height
-          child: ClipRect(            
-            child: Material(
-              color: Colors.white.withOpacity(0.7), // button color
-              
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: InkWell(
                 splashColor: const Color(0xff004990),
                 onTap: () {
@@ -223,11 +228,11 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
                   if (setDataSource.length <= 0) {
                     showToast("Selecteer minimaal één databron.",
-                        gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+                        gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
                   } else {
                     searchNearby();
                     showToast("Data wordt ingeladen",
-                        gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                        gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
                   }
                 },
                 child: Column(
@@ -258,10 +263,13 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         child: SizedBox.fromSize(
           size: Size(37, 37), // button width and height
           child: ClipRect(
-            child: Material(
-              color: Colors.white.withOpacity(0.7), // button color
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(5),
+              ), // button color
               child: InkWell(
-               splashColor: const Color(0xff004990),
+                splashColor: const Color(0xff004990),
                 onTap: () {
                   _add(lat, long);
                 }, // button pressed
@@ -288,8 +296,11 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         child: SizedBox.fromSize(
           size: Size(37, 37), // button width and height
           child: ClipRect(
-            child: Material(
-              color: Colors.white.withOpacity(0.7), // button color
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: InkWell(
                 splashColor: const Color(0xff004990),
                 onTap: () {
@@ -359,7 +370,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
           },
           mapToolbarEnabled: false,
           onCameraMove: (position) => _updateMarkers(position.zoom),
-          onCameraIdle: test,
+          // onCameraIdle: _onCameraIdle,
           mapType: _mapType,
           initialCameraPosition: _myLocation,
           compassEnabled: true,
@@ -375,14 +386,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     );
   }
 
-  test(){
- print("cAMERA STAAT aSTILL");
-}
   // Future _mapIdleSubscription() async{
 
   // }
-  Stream _mapIdleSubscription;
-
   static LatLngBounds _visibleRegion;
 
   //var userLocation;
@@ -420,7 +426,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                               child: Padding(
                                 padding: const EdgeInsets.all(4),
                                 child: Text(
-                                  'Loading',
+                                  'Er wordt geclusterd',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -431,17 +437,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                             alignment: Alignment.topCenter,
-                            child: Card(
-                              elevation: 2,
-                              color: Colors.grey.withOpacity(0.9),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: Text(
-                                  'not loading',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
                           ),
                         ),
                 ],
@@ -502,14 +497,40 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
   Future<void> gotoLocation(double lat, double long) async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      target: LatLng(lat, long),
-      zoom: 20,
-      // tilt: 50.0,
-      // bearing: 45.0,
-    )));
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(lat, long),
+          zoom: 21,
+          // tilt: 50.0,
+          // bearing: 45.0,
+        ),
+      ),
+    );
+    _showLocationMarker(lat, long);
 
     //_add(lat, long);
+  }
+
+  Marker lastmarker;
+  Marker currentMarker;
+
+  void _showLocationMarker(double lat, double long) {
+    final String markerIdVal = 'marker_id_$_markerIdCounter';
+    _markerIdCounter++;
+    final MarkerId markerId = MarkerId(markerIdVal);
+
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: LatLng(lat, long),
+    );
+
+    setState(() {
+      _markers.remove(lastmarker);
+      currentMarker = marker;
+      lastmarker = currentMarker;
+      _markers.add(currentMarker);
+    });
   }
 
   // _addMarkerOnScreen(double lat, double long){
@@ -546,7 +567,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
   bool _isMapLoading = true;
 
   /// Markers loading flag
-  bool _areMarkersLoading = true;
+  bool _areMarkersLoading = false;
 
   /// Url image used on normal markers sap (yellow)
   final String _markerImageUrlSap =
@@ -655,6 +676,28 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     );
   }
 
+// double updatedZoomToCal;
+
+//   void _onCameraIdle() {
+//     print(_currentZoom);
+//     print(updatedZoomToCal);
+//     if (places.length > 0 && _currentZoom != updatedZoomToCal) {
+
+  // setState(() {
+  //   _areMarkersLoading = true;
+  // });
+//       _markers
+//         ..clear()
+//         ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+
+//       Future.delayed(const Duration(seconds: 1), () {
+//         setState(() {
+//           _areMarkersLoading = false;
+//         });
+//       });
+//     }
+//   }
+
   bool _mayILoadMarkers = true;
 
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
@@ -665,40 +708,26 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
     if (updatedZoom != null) {
       _currentZoom = updatedZoom;
     }
-    // Here you can write your code
-
-    setState(() {
-      _areMarkersLoading = true;
-    });
-
-
- 
+    print(_mayILoadMarkers);
 
     if (_mayILoadMarkers) {
-      print("HALOOO " + _mayILoadMarkers.toString());
+      //  print("HALOOO " + _mayILoadMarkers.toString());
       _markers
         ..clear()
         ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
 
       setState(() {
+        _areMarkersLoading = true;
         _mayILoadMarkers = false;
       });
       Future.delayed(const Duration(seconds: 2), () {
         setState(() {
           _mayILoadMarkers = true;
+          _areMarkersLoading = false;
         });
       });
-
     } else {
       return;
     }
-
-    setState(() {
-      _areMarkersLoading = false;
-    });
-    
-    
   }
-
-  
 }
