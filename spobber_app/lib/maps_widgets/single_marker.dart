@@ -43,12 +43,13 @@ class _SingleMarkerState extends State<SingleMarker> {
             child: Padding(
               padding: EdgeInsets.only(left: 10),
               child: TextFormField(
+                keyboardType: TextInputType.number,                
                 decoration: InputDecoration(
                   // icon: Icon(Icons.check_box_outline_blank),
                   fillColor: Colors.black,
                   hintText: 'Equipment',
                   hintStyle: TextStyle(color: Colors.grey),
-                  //contentPadding: EdgeInsets.only(bottom: 10),
+                  contentPadding: EdgeInsets.only(top: 6),
                    border: InputBorder.none,
                   //  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
                 ),

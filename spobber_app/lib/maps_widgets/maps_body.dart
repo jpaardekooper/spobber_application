@@ -206,9 +206,10 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
         alignment: Alignment.topRight,
         child: SizedBox.fromSize(
           size: Size(37, 37), // button width and height
-          child: ClipRect(
+          child: ClipRect(            
             child: Material(
               color: Colors.white.withOpacity(0.7), // button color
+              
               child: InkWell(
                 splashColor: const Color(0xff004990),
                 onTap: () {
