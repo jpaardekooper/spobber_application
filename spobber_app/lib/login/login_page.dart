@@ -100,14 +100,14 @@ class _LoginPageState extends State<LoginPage> {
               hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Theme.of(context).primaryColor,),
               hintText: hint,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(
                   color: Theme.of(context).primaryColor,
                   width: 2,
                 ),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(
                   color: Theme.of(context).primaryColor,
                   width: 3,
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0.0,
         color: fillColor,
         shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(30.0)),
+            borderRadius: new BorderRadius.circular(5.0)),
         child: Text(
           text,
           style: TextStyle(
@@ -184,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         Positioned(
                           left: 10,
-                          top: 10,
+                          top: 5,
                           child: IconButton(
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             icon: Icon(
                               Icons.close,
-                              size: 30.0,
+                              size: 25.0,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
@@ -443,7 +443,7 @@ class _LoginPageState extends State<LoginPage> {
                   highlightColor: Theme.of(context).primaryColor,
                   color: Theme.of(context).primaryColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
+                    borderRadius: new BorderRadius.circular(5.0),
                   ),
                   child: Text(
                     "REGISTER",
@@ -465,7 +465,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: ClipPath(
                   child: Container(
                     color: Colors.white,
-                    height: 300,
+                    height: 200,
                   ),
                   clipper: BottomWaveClipper(),
                 ),

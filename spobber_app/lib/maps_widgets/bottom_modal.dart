@@ -92,101 +92,110 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         );
       },
       child: InkWell(
-          onTap: () {
-            // moveCamera();
-          },
-          child: Stack(children: [
+        onTap: () {
+          // moveCamera();
+        },
+        child: Stack(
+          children: [
             Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 20.0,
+                ),
+                height: 125.0,
+                width: 275.0,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black87,
+                        offset: Offset(0.0, 4.0),
+                        blurRadius: 10.0,
+                      ),
+                    ]),
                 child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 20.0,
-                    ),
-                    height: 125.0,
-                    width: 275.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            offset: Offset(0.0, 4.0),
-                            blurRadius: 10.0,
-                          ),
-                        ]),
-                    child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 90.0,
+                        width: 90.0,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.white),
-                        child: Row(children: [
-                          Container(
-                            height: 90.0,
-                            width: 90.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(10.0),
-                                  topLeft: Radius.circular(10.0)),
-                              image: getCorrectPhoto(index),
-                            ),
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10.0),
+                              topLeft: Radius.circular(10.0)),
+                          image: getCorrectPhoto(index),
+                        ),
+                      ),
+                      SizedBox(width: 5.0),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Type: " + places[index].type,
+                            style: TextStyle(
+                                fontSize: 12.5, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(width: 5.0),
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Type: " + places[index].type,
-                                  style: TextStyle(
-                                      fontSize: 12.5,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
+                          places[index].id != 0
+                              ? Text(
                                   "Equipment: " + places[index].id.toString(),
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w600),
-                                ),
-                                Container(
-                                  width: 170.0,
-                                  child: Text(
-                                    "Plaatsing: " + places[index].placement,
-                                    style: TextStyle(
-                                        fontSize: 11.0,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                ),
-                                Container(
-                                  width: 170.0,
-                                  child: Text(
-                                    "Afstand: " +
-                                        calculateDistance(
-                                            widget.latitude,
-                                            widget.longitude,
-                                            places[index].latitude,
-                                            places[index].longitude) +
-                                        " meter",
-                                    style: TextStyle(
-                                        fontSize: 11.0,
-                                        fontWeight: FontWeight.w300),
-                                  ),
                                 )
-                              ])
-                        ]))))
-          ])),
+                              : Text(
+                                  "Bron: " + places[index].source,
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                          places[index].placement != ""
+                              ? Text(
+                                  "Plaatsing: " + places[index].placement,
+                                  style: TextStyle(
+                                      fontSize: 11.0,
+                                      fontWeight: FontWeight.w300),
+                                )
+                              : Text(""),
+                          Text(
+                            "Afstand: " +
+                                calculateDistance(
+                                    widget.latitude,
+                                    widget.longitude,
+                                    places[index].latitude,
+                                    places[index].longitude) +
+                                " meter",
+                            style: TextStyle(
+                                fontSize: 11.0, fontWeight: FontWeight.w300),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   getCorrectPhoto(int index) {
     if (places[index].source == "SAP") {
       return DecorationImage(
-          image: AssetImage("assets/marker_yellow.png"), fit: BoxFit.none);
+          image: AssetImage("assets/SAP.png"), fit: BoxFit.none);
     } else if (places[index].source == "SIGMA") {
       return DecorationImage(
-          image: AssetImage("assets/marker_red.png"), fit: BoxFit.none);
-    } else if (places[index].source == "UST02"){
+          image: AssetImage("assets/UST02.png"), fit: BoxFit.none);
+    } else if (places[index].source == "UST02") {
       return DecorationImage(
-          image: AssetImage("assets/marker_blue.png"), fit: BoxFit.none);
-    }
-    else{
+          image: AssetImage("assets/SIGMA.png"), fit: BoxFit.none);
+    } else {
       print("geen marker gevonden");
     }
   }

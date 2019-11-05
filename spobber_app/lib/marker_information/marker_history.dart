@@ -11,12 +11,6 @@ class MarkerHistory extends StatefulWidget {
 class _MarkerHistoryState extends State<MarkerHistory>
     with AutomaticKeepAliveClientMixin<MarkerHistory> {
   @override
-  void dispose() {
-    print("Disposing second route");
-    super.dispose();
-  }
-
-  @override
   bool get wantKeepAlive => true;
 
   var list = List();
@@ -59,5 +53,11 @@ class _MarkerHistoryState extends State<MarkerHistory>
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    print("Disposing second route");
+    super.dispose();
   }
 }

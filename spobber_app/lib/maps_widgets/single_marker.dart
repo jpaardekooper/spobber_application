@@ -33,24 +33,24 @@ class _SingleMarkerState extends State<SingleMarker> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            width: 180,
-            height: 30,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 10),
+          Padding(
+            padding: EdgeInsets.only(left: 5, top: 8),
+            child: Container(
+              width: 180,
+              height: 30,
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: TextFormField(
-                keyboardType: TextInputType.number,                
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   // icon: Icon(Icons.check_box_outline_blank),
                   fillColor: Colors.black,
                   hintText: 'Equipment',
                   hintStyle: TextStyle(color: Colors.grey),
-                  contentPadding: EdgeInsets.only(top: 6),
-                   border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(left: 10, top: 5),
+                  border: InputBorder.none,
                   //  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
                 ),
                 validator: (value) {
@@ -66,54 +66,54 @@ class _SingleMarkerState extends State<SingleMarker> {
             ),
           ),
           Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: SizedBox.fromSize(
-            size: Size(30, 30), // buton width and height
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                splashColor: Colors.blue[600], // splash color
-                onTap: () async {
-                  if (_formKey.currentState.validate()) {
-                    print(singleMarkerObject);
-                    String url =
-                        "https://spobber.azurewebsites.net/api/objects/$singleMarkerObject";
-                    print(url);
-                    final response = await http.get(url);
-                    fillMarkerList(response).then((value) {
-                      if (value) {
-                        if (singleMarker.first.id == 0) {
-                          showToast("Geen geldige equipment gevonden",
-                              gravity: Toast.BOTTOM,
-                              duration: Toast.LENGTH_LONG);
-                        } else {
-                          showToast(
-                              "Object id: $singleMarkerObject wordt geladen",
-                              gravity: Toast.BOTTOM,
-                              duration: Toast.LENGTH_SHORT);
+            padding: EdgeInsets.only(left: 10),
+            child: SizedBox.fromSize(
+              size: Size(30, 30), // buton width and height
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  splashColor: Colors.blue[600], // splash color
+                  onTap: () async {
+                    if (_formKey.currentState.validate()) {
+                      print(singleMarkerObject);
+                      String url =
+                          "https://spobber.azurewebsites.net/api/objects/$singleMarkerObject";
+                      print(url);
+                      final response = await http.get(url);
+                      fillMarkerList(response).then((value) {
+                        if (value) {
+                          if (singleMarker.first.id == 0) {
+                            showToast("Geen geldige equipment gevonden",
+                                gravity: Toast.BOTTOM,
+                                duration: Toast.LENGTH_LONG);
+                          } else {
+                            showToast(
+                                "Object id: $singleMarkerObject wordt geladen",
+                                gravity: Toast.BOTTOM,
+                                duration: Toast.LENGTH_SHORT);
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MarkerTemplate(
-                                type: singleMarker[0].type,
-                                objectUri: singleMarker[0].objectUri,
-                                id: singleMarker[0].id,
-                                secretId: singleMarker[0].secretId,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MarkerTemplate(
+                                  type: singleMarker[0].type,
+                                  objectUri: singleMarker[0].objectUri,
+                                  id: singleMarker[0].id,
+                                  secretId: singleMarker[0].secretId,
+                                ),
                               ),
-                            ),
-                          );
+                            );
 
-                          print("niet leeg");
+                            print("niet leeg");
+                          }
+                        } else {
+                          print("error handling url");
                         }
-                      } else {
-                        print("error handling url");
-                      }
-                    });
-                    // Process data.
-                  }
-                }, // button pressed
-                child: Icon(
+                      });
+                      // Process data.
+                    }
+                  }, // button pressed
+                  child: Icon(
                     Icons.search,
                     color: Colors.white,
                   ),
