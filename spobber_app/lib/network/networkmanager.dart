@@ -64,7 +64,7 @@ Future<HttpClientRequest> _prepareGetPackage(String endpoint, Map data) async {
   return request;
 }
 
-Future<HttpClientResponse> uploadImage(String fileName, String base64Image) async {
+Future<HttpClientResponse> uploadImage(String fileName, String base64Image, String secretId) async {
   if (!await _ping()) {
     return null;
   }
@@ -74,7 +74,7 @@ Future<HttpClientResponse> uploadImage(String fileName, String base64Image) asyn
     "image": base64Image,
   };
   HttpClientRequest request =
-      await _preparePostPackage(_spobberEndpoint + "image/upload", data);
+      await _preparePostPackage(_spobberEndpoint + "image/upload/" + secretId, data);
   HttpClientResponse response = await request.close();
   return response;
 }
