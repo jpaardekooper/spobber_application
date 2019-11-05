@@ -1,4 +1,3 @@
-import "package:flutter/material.dart";
 import 'package:spobber_app/data/place_response.dart';
 import 'package:spobber_app/data/marker_detail.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
