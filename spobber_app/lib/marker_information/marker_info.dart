@@ -155,6 +155,9 @@ class _MarkerInfoState extends State<MarkerInfo>
         if (value.isEmpty) {
           return 'equipment';
         }
+        else{
+          return '';
+        }
       },
       onSaved: (value) {
         setState(() {
@@ -174,6 +177,9 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
+        }
+        else{
+          return '';
         }
       },
       onSaved: (value) {
@@ -196,6 +202,9 @@ class _MarkerInfoState extends State<MarkerInfo>
         if (value.isEmpty) {
           return 'vul een de juiste type in';
         }
+        else{
+          return '';
+        }
       },
       onSaved: (value) {
         setState(() {
@@ -216,6 +225,9 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
+        }
+        else{
+          return '';
         }
       },
       onSaved: (value) {
@@ -238,6 +250,9 @@ class _MarkerInfoState extends State<MarkerInfo>
         if (value.isEmpty) {
           return 'vul een de juiste type in';
         }
+        else{
+          return '';
+        }
       },
       onSaved: (value) {
         setState(() {
@@ -258,6 +273,9 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
+        }
+        else{
+          return '';
         }
       },
       onSaved: (value) {
@@ -280,6 +298,9 @@ class _MarkerInfoState extends State<MarkerInfo>
         if (value.isEmpty) {
           return 'vul een de juiste type in';
         }
+        else{
+          return '';
+        }
       },
       onSaved: (value) {
         setState(() {
@@ -300,6 +321,9 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
+        }
+        else{
+          return '';
         }
       },
       onSaved: (value) {
@@ -322,6 +346,9 @@ class _MarkerInfoState extends State<MarkerInfo>
         if (value.isEmpty) {
           return 'vul een de juiste type in';
         }
+        else{
+          return '';
+        }
       },
       onSaved: (value) {
         setState(() {
@@ -342,6 +369,9 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
+        }
+        else{
+          return '';
         }
       },
       onSaved: (value) {
@@ -364,6 +394,9 @@ class _MarkerInfoState extends State<MarkerInfo>
         if (value.isEmpty) {
           return 'vul een de juiste type in';
         }
+        else{
+          return '';
+        }
       },
       onSaved: (value) {
         setState(() {
@@ -384,6 +417,9 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
+        }
+        else{
+          return '';
         }
       },
       onSaved: (value) {
@@ -477,6 +513,9 @@ class _MarkerInfoState extends State<MarkerInfo>
             if (value.isEmpty) {
               return 'Please enter a datum';
             }
+            else{
+              return '';
+            }
           },
           onSaved: (value) {
             setState(() {
@@ -507,6 +546,7 @@ class _MarkerInfoState extends State<MarkerInfo>
             setState(() {
               status = "Error: Het uploaden is niet gelukt";
             });
+            return null;
           }
         },
         child: Text('Opslaan'),
