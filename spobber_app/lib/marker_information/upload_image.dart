@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:spobber_app/network/networkmanager.dart';
 
 class TakePictureScreen extends StatefulWidget {
   final String id;
@@ -15,12 +16,6 @@ class TakePictureScreen extends StatefulWidget {
 }
 
 class _TakePictureScreen extends State<TakePictureScreen> {
-  String correctUrl;
-
-  //
-  final String uploadEndPoint =
-      'http://spobber.azurewebsites.net/api/image/upload/';
-
   Future<File> file;
   String status = '';
   String base64Image;
@@ -62,21 +57,12 @@ class _TakePictureScreen extends State<TakePictureScreen> {
   } 
 
   upload(String fileN) async {
-    correctUrl = uploadEndPoint + widget.secretId;
     String base64Image = base64Encode(
         (await testCompressAndGetFile(new File(fileN), fileN))
             .readAsBytesSync());
     String fileName = fileN.split("/").last;
-    HttpClient provider = new HttpClient();
-    HttpClientRequest request = await provider.postUrl(Uri.parse(correctUrl));
-    print(correctUrl);
-    request.headers.set('content-type', 'application/json');
-    Map data = {
-      "filename": fileName,
-      "image": base64Image,
-    };
-    request.add(utf8.encode(json.encode(data)));
-    HttpClientResponse response = await request.close();
+    
+    HttpClientResponse response = await uploadImage(fileName, base64Image, widget.secretId);
 
     if (response.statusCode == 200) {
       setState(() {

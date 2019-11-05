@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:spobber_app/data/global_variable.dart';
 import '../data/place_response.dart';
+import 'package:spobber_app/network/networkmanager.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,23 +22,7 @@ class LoadMarkers {
 
   Future<bool> searchNearby(String objectype) async {
     String url = "https://spobber.azurewebsites.net/api/objects/?nlat=$northLatitude&blat=$bottomLatitude&nlon=$northLongitude&blon=$bottomLongitude&source=";
-
-    for (int i = 0; i < setDataSource.length; i++) {
-      url += setDataSource[i] + ",";
-    }
-    print(url);
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      // final data = json.decode(response.body);
-      places = (json.decode(response.body) as List)
-          .map((data) => new PlaceResponse().fromJson(data))
-          .toList();
-    } else {
-      print("url is niet gevonden");
-      //throw Exception('An error occurred getting places nearby');
-    }
-
+    places = await loadMarkers(setDataSource, url);
     return true;
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:spobber_app/maps_widgets/maps_header.dart';
 import 'package:toast/toast.dart';
 import 'clipper.dart';
-
+import 'package:spobber_app/network/networkmanager.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -148,14 +148,15 @@ class _LoginPageState extends State<LoginPage> {
 
     //login and register fuctions
 
-    void _loginUser() {
+    void _loginUser() async {
       _email = _emailController.text;
       _password = _passwordController.text;
       _emailController.clear();
       _passwordController.clear();
-
-      Navigator.pushReplacementNamed(context, GoogleMapsApp.tag);
-
+      
+      if(await login(_email, _password)){
+        Navigator.pushReplacementNamed(context, GoogleMapsApp.tag);
+      }
     }
 
     void _registerUser() {
