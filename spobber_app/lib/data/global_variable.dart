@@ -30,3 +30,5 @@ String currentSelectedMarkerObjectUri;
 String singleMarkerObject = "";
 
 MarkerId makeSelectedMarkerbigger;
+
+String searchObject = "";

@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'maps_body.dart';
-import 'search_filter.dart';
 import '../helper/location_services.dart';
 import 'package:provider/provider.dart';
 import 'single_marker.dart';
+import 'object_filter.dart';
+import '../data/global_variable.dart';
 
 class GoogleMapsApp extends StatefulWidget {
   static String tag = 'Maps';
@@ -16,14 +17,14 @@ class GoogleMapsApp extends StatefulWidget {
 }
 
 class _GoogleMapsApp extends State<GoogleMapsApp> {
-  static String keyword = "Es-las";
+  //static String keyword = "Es-las";
 
-  void updateKeyWord(String newKeyword) {
-    print(newKeyword);
-    // setState(() {
-    keyword = newKeyword;
-    //  });
-  }
+  // void updateKeyWord(String newKeyword) {
+  //   print(newKeyword);
+  //   // setState(() {
+  //   keyword = newKeyword;
+  //   //  });
+  // }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -54,7 +55,6 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
                 stops: [0.5, 0.9],
                 colors: [
                   // Colors are easy thanks to Flutter's Colors class.
-
                   Color(0xff0066C6),
                   Color(0xff004990),
                 ],
@@ -62,24 +62,54 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
             ),
           ),
           title: Container(
-            alignment: Alignment.center,
             // color: Theme.of(context).primaryColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  width: 180,
-                  height: 30,
-                  decoration: new BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(24),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ObjectFilter()),
+                    );
+                  },
+                  child: Container(
+                    width: 180,
+                    height: 30,
+                    decoration: new BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10, top: 8),
+                      child: Text(
+                        "U zoekt op: $searchObject",
+                        style: TextStyle(fontSize: 15.0, color: Colors.black),
+                      ),
+                    ),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10, top: 8),
-                    child: Text(
-                      "U zoekt op: $keyword",
-                      style: TextStyle(fontSize: 15.0, color: Colors.black),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: SizedBox.fromSize(
+                    size: Size(30, 30), // buton width and height
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Colors.blue[600], // splash color
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ObjectFilter()),
+                          );
+                        }, // button pressed
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -111,8 +141,9 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
           ],
         ),
         drawer: _buildDrawer(context),
-        body: PlacesSearchMapSample(keyword),
-        endDrawer: SearchFilter(updateKeyWord),
+        body: PlacesSearchMapSample(searchObject),
+        //  endDrawer: SearchFilter(updateKeyWord),
+        //    endDrawer: ObjectFilter(),
         //     ),
       ),
     );
