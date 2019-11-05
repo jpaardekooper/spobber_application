@@ -154,9 +154,9 @@ class _LoginPageState extends State<LoginPage> {
       _emailController.clear();
       _passwordController.clear();
       
-      if(await login(_email, _password)){
+     // if(await login(_email, _password)){
         Navigator.pushReplacementNamed(context, GoogleMapsApp.tag);
-      }
+   //   }
     }
 
     void _registerUser() {

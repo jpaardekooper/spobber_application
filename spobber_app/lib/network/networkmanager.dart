@@ -12,6 +12,7 @@ String _password;
 String _token;
 
 Future<bool> _ping() async {
+  return true;
   HttpClient provider = new HttpClient();
   HttpClientRequest request =
       await provider.postUrl(Uri.parse(_spobberEndpoint + "ping"));
@@ -109,7 +110,7 @@ Future<List<PlaceResponse>> loadMarkers(List<String> dataSources, String url) as
   for (int i = 0; i < dataSources.length; i++) {
     url += dataSources[i] + ",";
   }
-
+  print(url);
   Response response = await get(url);
 
   if (response.statusCode == 200) {
