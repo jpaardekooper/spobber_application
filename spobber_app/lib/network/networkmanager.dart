@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:spobber_app/network/loginmodel.dart';
+import '../data/place_response.dart';
+import 'package:spobber_app/gridview/album.dart';
 
 String _spobberEndpoint = "http://spobber.azurewebsites.net/api/";
 
@@ -11,7 +13,8 @@ String _token;
 
 Future<bool> _ping() async {
   HttpClient provider = new HttpClient();
-  HttpClientRequest request = await provider.postUrl(Uri.parse(_spobberEndpoint + "ping"));
+  HttpClientRequest request =
+      await provider.postUrl(Uri.parse(_spobberEndpoint + "ping"));
   request.headers.set('content-type', 'application/json');
   Map data = {
     "username": _username,
@@ -19,34 +22,31 @@ Future<bool> _ping() async {
   };
   request.add(utf8.encode(json.encode(data)));
   HttpClientResponse response = await request.close();
-  if(response.statusCode == 200){
+  if (response.statusCode == 200) {
     return true;
-  }
-  else{
-    if(await _login()){
+  } else {
+    if (await _login()) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 }
 
-Future<bool> _login() async{
+Future<bool> _login() async {
   Map data = {
     "username": _username,
     "password": _password,
   };
-  HttpClientRequest request = await _prepareGetPackage(_spobberEndpoint + "authentication", data);
+  HttpClientRequest request =
+      await _prepareGetPackage(_spobberEndpoint + "authentication", data);
   HttpClientResponse response = await request.close();
-  if(response.statusCode == 200){
+  if (response.statusCode == 200) {
     return true;
-  }
-  else{
+  } else {
     return false;
   }
 }
-
 
 Future<HttpClientRequest> _preparePostPackage(String endpoint, Map data) async {
   HttpClient provider = new HttpClient();
@@ -64,9 +64,8 @@ Future<HttpClientRequest> _prepareGetPackage(String endpoint, Map data) async {
   return request;
 }
 
-
 Future<HttpClientResponse> uploadImage(String fileName, String base64Image) async {
-  if(!await _ping()){
+  if (!await _ping()) {
     return null;
   }
 
@@ -74,32 +73,66 @@ Future<HttpClientResponse> uploadImage(String fileName, String base64Image) asyn
     "filename": fileName,
     "image": base64Image,
   };
-  HttpClientRequest request = await _preparePostPackage(_spobberEndpoint + "image/upload", data);
+  HttpClientRequest request =
+      await _preparePostPackage(_spobberEndpoint + "image/upload", data);
   HttpClientResponse response = await request.close();
   return response;
 }
 
-Future<bool> login(String username, String password) async{
+Future<bool> login(String username, String password) async {
   Map<String, String> data = {
     "username": _username,
     "password": _password,
   };
-  Response response = await get(_spobberEndpoint + "authentication", headers: data);
-  if(response.statusCode == 200){
+  Response response =
+      await get(_spobberEndpoint + "authentication", headers: data);
+  if (response.statusCode == 200) {
     LoginModel model = json.decode(response.body);
     _token = model.token;
     return true;
-  }
-  else{
+  } else {
     response = await get(_spobberEndpoint + "authentication", headers: data);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       LoginModel model = json.decode(response.body);
       _token = model.token;
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 }
 
+Future<List<PlaceResponse>> loadMarkers(List<String> dataSources, String url) async {
+  if(!await _ping()){
+    return new List<PlaceResponse>();
+  }
+  for (int i = 0; i < dataSources.length; i++) {
+    url += dataSources[i] + ",";
+  }
+
+  Response response = await get(url);
+
+  if (response.statusCode == 200) {
+    return (json.decode(response.body) as List)
+        .map((data) => new PlaceResponse().fromJson(data))
+        .toList();
+  } else {
+    return new List<PlaceResponse>();
+  }
+}
+
+Future<List<Album>> loadImages(String secretId) async {
+  if (!await _ping()) {
+    return new List<Album>();
+  }
+  try {
+    final response = await get(_spobberEndpoint + "images/" + secretId);
+    if (response.statusCode == 200) {
+      return json.decode(response.body).cast<Map<String, dynamic>>();
+    } else {
+      return new List<Album>();
+    }
+  } catch (e) {
+    return new List<Album>();
+  }
+}
