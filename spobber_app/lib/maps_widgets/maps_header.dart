@@ -5,9 +5,7 @@ import 'maps_body.dart';
 import '../helper/location_services.dart';
 import 'package:provider/provider.dart';
 import 'single_marker.dart';
-import 'object_filter.dart';
-import '../data/global_variable.dart';
-import '../data/my_flutter_app_icons.dart';
+import 'single_object.dart';
 
 class GoogleMapsApp extends StatefulWidget {
   static String tag = 'Maps';
@@ -39,95 +37,52 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
         key: _scaffoldKey,
         // title: 'Spobber',
         // home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          // iconTheme: IconThemeData(color: Colors.white),
-          elevation: 4,
-          // backgroundColor: Colors.blue,
-          // centerTitle: false,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              // Box decoration takes a gradient
-              gradient: LinearGradient(
-                // Where the linear gradient begins and ends
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                // Add one stop for each color. Stops should increase from 0 to 1
-                stops: [0.5, 0.9],
-                colors: [
-                  // Colors are easy thanks to Flutter's Colors class.
-                  Color(0xff0066C6),
-                  Color(0xff004990),
-                ],
-              ),
-            ),
-          ),
-          title: Container(
-            // color: Theme.of(context).primaryColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ObjectFilter()),
-                    );
-                  },
-                  child: Container(
-                    width: 180,
-                    height: 30,
-                    decoration: new BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10, top: 8),
-                      child: Text(
-                        "U zoekt op: $searchObject",
-                        style: TextStyle(fontSize: 15.0, color: Colors.black),
-                      ),
-                    ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(100),
+          child: AppBar(
+            centerTitle: true,
+            // iconTheme: IconThemeData(color: Colors.white),
+            elevation: 4,
+            // backgroundColor: Colors.blue,
+            // centerTitle: false,
+            flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  // Box decoration takes a gradient
+                  gradient: LinearGradient(
+                    // Where the linear gradient begins and ends
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    // Add one stop for each color. Stops should increase from 0 to 1
+                    stops: [0.5, 0.9],
+                    colors: [
+                      // Colors are easy thanks to Flutter's Colors class.
+                      Color(0xff0066C6),
+                      Color(0xff004990),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10,  top: 5),
-                  child: SizedBox.fromSize(
-                    size: Size(30, 30), // buton width and height
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        splashColor: Colors.blue[600], // splash color
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ObjectFilter()),
-                          );
-                        }, // button pressed
-                        child: Icon(
-                         MyFilter.filter,
-                          color: Colors.white,                  
-                        ),
-                      ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SingleObject(),
+                      ],
                     ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          bottom: PreferredSize(
-            child: Container(
-              padding: EdgeInsets.only(left: 50, bottom: 20),
-              alignment: Alignment.center,
-              // color: Theme.of(context).primaryColor,
-              //   constraints: BoxConstraints.expand(height: 50),
-              child: SingleMarker(),
-            ),
-            preferredSize: Size(50, 50),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[SingleMarker()],
+                    ),
+                    // SingleObject(),
+                    // SingleMarker()
+                  ],
+                )),
           ),
         ),
+  
         drawer: _buildDrawer(context),
         body: PlacesSearchMapSample(),
         //  endDrawer: SearchFilter(updateKeyWord),
