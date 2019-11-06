@@ -34,6 +34,7 @@ class _SingleMarkerState extends State<SingleMarker> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
+            
             margin: EdgeInsetsDirectional.only(top: 15),
               width: 180,
               height: 30,
@@ -41,6 +42,7 @@ class _SingleMarkerState extends State<SingleMarker> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5),
               ),
+              child: Padding(padding: EdgeInsets.only(left: 10, top: 12), 
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -63,7 +65,7 @@ class _SingleMarkerState extends State<SingleMarker> {
                 },
               ),
             ),
-          
+          ),
           Padding(
             padding: EdgeInsets.only(left: 10, top: 10),
             child: SizedBox.fromSize(
