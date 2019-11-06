@@ -55,7 +55,7 @@ namespace SpobberApi.Statics
                 foreach (User user in _users.Where(x => DateTime.Now - x.LastUpdate > TimeSpan.FromMinutes(5)))
                 {
                     user.Dispose();
-                    DatabaseManager.RevokeUserSession(user.Username);
+                    DatabaseManager.RevokeUserSession(user.Username, user.Token);
                 }
             }
         }

@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 
 using SpobberApi.Statics;
-using SpobberApi.Models;
+using SpobberApi.Models.Authentication;
 
 namespace SpobberApi.Controllers
 {

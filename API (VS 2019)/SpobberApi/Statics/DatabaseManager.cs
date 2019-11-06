@@ -10,7 +10,7 @@ namespace SpobberApi.Statics
     public static class DatabaseManager
     {
         private static SqlConnectionStringBuilder connectionString;
-        private static int _clusterMax = 3000;
+        private static int _clusterMax = 2000;
 
         public static void Initialize()
         {
@@ -370,6 +370,14 @@ namespace SpobberApi.Statics
             return 0;
         }
 
+        public static DateTime SafeGetDateTime(this SqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetDateTime(colIndex);
+            return DateTime.Now;
+        }
+
+        #region Authentication
         public static bool IsAuthorizedUser(string username, string password)
         { 
             using(SqlConnection _connection = new SqlConnection(connectionString.ConnectionString))
@@ -391,48 +399,51 @@ namespace SpobberApi.Statics
                 _connection.Open();
 
                 SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"UPDATE dbo.user SET token = '{token}', session_valid = true WHERE username = '{username}'";
+                command.CommandText = $"UPDATE dbo.session SET token = '{token}', session_start = CURRENT_TIMESTAMP WHERE user_id = (SELECT user_id FROM dbo.app_user WHERE username = '{username}');";
 
                 command.ExecuteNonQuery();
             }
         }
 
-        public static void RevokeUserSession(string username)
+        public static void RevokeUserSession(string username, string token)
         {
             using(SqlConnection _connection = new SqlConnection(connectionString.ConnectionString))
             {
                 _connection.Open();
 
                 SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"UPDATE dbo.user SET session_valid = 0 WHERE username = '{username}'";
+                command.CommandText = $"UPDATE dbo.session SET session_end = CURRENT_TIMESTAMP WHERE user_id = (SELECT user_id FROM dbo.app_user WHERE username = '{username}') && session_key = '{token}';";
 
                 command.ExecuteNonQuery();
             }
         }
 
-        public static bool CheckToken(string username, string token)
+        public static Tuple<string, DateTime, DateTime> CheckToken(string username, string token)
         {
             using(SqlConnection _connection = new SqlConnection(connectionString.ConnectionString))
             {
                 _connection.Open();
                 SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"SELECT * FROM dbo.user WHERE username = '{username}' AND token = '{token}'";
+                command.CommandText = $"SELECT session_key, session_start, session_end FROM dbo.session JOIN dbo.app_user ON session.user_id = user.user_id WHERE username = '{username}', session_key = '{token}';";
 
-                if (command.ExecuteNonQuery() == 1)
-                    return true;
-                else
-                    return false;
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        return new Tuple<string, DateTime, DateTime>(reader.GetString(0), reader.GetDateTime(1), reader.SafeGetDateTime(2));
+                    else
+                        return new Tuple<string, DateTime, DateTime>("NF", DateTime.Now, DateTime.Now);
+                }
             }
         }
 
-        public static bool RegisterUser(string username, string password)
+        public static bool RegisterUser(string email, string username, string password)
         {
             using (SqlConnection _connection = new SqlConnection(connectionString.ConnectionString))
             {
                 _connection.Open();
 
                 SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"INSERT INTO dbo.user (username, password) VALUES ('{username}', '{password}');";
+                command.CommandText = $"INSERT INTO dbo.user (email, username, password, created_date) VALUES ('{email}', '{username}', '{password}', CURRENT_TIMESTAMP);";
 
                 if (command.ExecuteNonQuery() == 1)
                     return true;
@@ -440,5 +451,6 @@ namespace SpobberApi.Statics
                     return false;
             }
         }
+        #endregion
     }
 }

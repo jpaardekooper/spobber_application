@@ -358,6 +358,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Authentication\UserRegistration.cs" />
     <Compile Include="Models\Images\Comment.cs" />
     <Compile Include="Models\Objects\MapMeasurePoint.cs" />
     <Compile Include="Models\Objects\MapRequest.cs" />

@@ -8,20 +8,20 @@ namespace SpobberApi.Controllers
 {
     public class ObjectsController : ApiController
     {
-        [HttpGet]
+        [HttpGet, BasicAuthentication]
         public IHttpActionResult GetShortRailObject([FromUri] ObjectRequest objectRequest)
         {
-            return Ok(DatabaseManager.GetShortRailObjects(objectRequest, objectRequest.Source.Split(','), false));
+            return Ok(DatabaseManager.GetShortRailObjects(objectRequest, objectRequest.Source.Split(','), true));
         }
 
         [Route("api/objects/{id}")]
-        [HttpGet]
+        [HttpGet, BasicAuthentication]
         public IHttpActionResult GetRailObjectWithSecret(string id)
         {
             return Ok(new RailObject[] { DatabaseManager.GetRailObject(id) });
         }
 
-        [HttpGet, Route("api/objects/{id:int}")]
+        [HttpGet, Route("api/objects/{id:int}"), BasicAuthentication]
         public IHttpActionResult GetRailObjectsWithId(int id)
         {
             return Ok(new ShortRailObject[] { DatabaseManager.GetShortRailObject(id) });

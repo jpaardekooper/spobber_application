@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-using SpobberApi.Models;
+using SpobberApi.Models.Authentication;
 using SpobberApi.Statics;
 
 namespace SpobberApi.Controllers
@@ -22,9 +22,9 @@ namespace SpobberApi.Controllers
         }
 
         [HttpPost, Route("api/authentication/register")]
-        public HttpResponseMessage PostRegister([FromBody] UserLogin register)
+        public HttpResponseMessage PostRegister([FromBody] UserRegistration register)
         {
-            if (DatabaseManager.RegisterUser(register.Username, register.Password))
+            if (DatabaseManager.RegisterUser(register.Email, register.Username, register.Password))
                 return new HttpResponseMessage(HttpStatusCode.OK);
             else
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);

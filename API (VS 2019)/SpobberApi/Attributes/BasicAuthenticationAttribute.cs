@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using System.Collections.Generic;
 
 using SpobberApi.Statics;
 
@@ -16,7 +17,8 @@ namespace SpobberApi.Attributes
         {
             try
             {
-                if (actionContext.Request.Headers.Authorization != null)
+                if (actionContext.Request.Headers.TryGetValues("username", out IEnumerable<string> username) 
+                    && actionContext.Request.Headers.TryGetValues("password", out IEnumerable<string> password))
                 {
                     var authToken = actionContext.Request.Headers.Authorization.Parameter;
                     var decoAuthToken = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(authToken));
