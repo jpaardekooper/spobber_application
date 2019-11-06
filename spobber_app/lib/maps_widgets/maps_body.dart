@@ -370,7 +370,7 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
           },
           mapToolbarEnabled: false,
           onCameraMove: (position) => _updateMarkers(position.zoom),
-          // onCameraIdle: _onCameraIdle,
+          onCameraIdle: loadMarkerNow,
           mapType: _mapType,
           initialCameraPosition: _myLocation,
           compassEnabled: true,
@@ -698,8 +698,24 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 //     }
 //   }
 
-  bool _mayILoadMarkers = true;
+  //bool _mayILoadMarkers = true;
 
+  double lastzoom;
+
+  void loadMarkerNow() {
+
+    if (_currentZoom == lastzoom) {
+      lastzoom = _currentZoom;
+
+      return;
+    } else {
+      //  print("HALOOO " + _mayILoadMarkers.toString());
+      lastzoom = _currentZoom;
+      _markers
+        ..clear()
+        ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+    }
+  }
 
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
@@ -708,27 +724,6 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
 
     if (updatedZoom != null) {
       _currentZoom = updatedZoom;
-    }
-    print(_mayILoadMarkers);
-
-    if (_mayILoadMarkers) {
-      //  print("HALOOO " + _mayILoadMarkers.toString());
-      setState(() {
-        _areMarkersLoading = true;
-        _mayILoadMarkers = false;
-      });
-      _markers
-        ..clear()
-        ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
-
-      Future.delayed(const Duration(seconds: 3), () {
-        setState(() {
-          _mayILoadMarkers = true;
-          _areMarkersLoading = false;
-        });
-      });
-    } else {
-      return;
     }
   }
 }
