@@ -110,8 +110,11 @@ Future<List<PlaceResponse>> loadMarkers(List<String> dataSources, String url) as
   for (int i = 0; i < dataSources.length; i++) {
     url += dataSources[i] + ",";
   }
-  print(url);
-  Response response = await get(url);
+  Map<String, String> data = {
+    "username": _username,
+    "token": _token
+  };
+  Response response = await get(url, headers: data);
 
   if (response.statusCode == 200) {
     return (json.decode(response.body) as List)
@@ -127,7 +130,11 @@ Future<List<Album>> loadImages(String secretId) async {
     return new List<Album>();
   }
   try {
-    final response = await get(_spobberEndpoint + "images/" + secretId);
+    Map<String, String> data = {
+      "username" : _username,
+      "token": _token
+    };
+    final response = await get(_spobberEndpoint + "images/" + secretId, headers: data);
     if (response.statusCode == 200) {
       return json.decode(response.body).cast<Map<String, dynamic>>();
     } else {
