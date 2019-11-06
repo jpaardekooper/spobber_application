@@ -33,9 +33,8 @@ class _SingleMarkerState extends State<SingleMarker> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 5, top: 8),
-            child: Container(
+          Container(
+            margin: EdgeInsetsDirectional.only(top: 15),
               width: 180,
               height: 30,
               decoration: new BoxDecoration(
@@ -49,7 +48,7 @@ class _SingleMarkerState extends State<SingleMarker> {
                   fillColor: Colors.black,
                   hintText: 'Equipment',
                   hintStyle: TextStyle(color: Colors.grey),
-                  contentPadding: EdgeInsets.only(left: 10, top: 5),
+                   //contentPadding: EdgeInsets.only(left: 10, top:0, bottom: 0, right:0),
                   border: InputBorder.none,
                   //  border: OutlineInputBorder(borderRadius: BorderRadius.circular(24.0)),
                 ),
@@ -64,9 +63,9 @@ class _SingleMarkerState extends State<SingleMarker> {
                 },
               ),
             ),
-          ),
+          
           Padding(
-            padding: EdgeInsets.only(left: 10),
+            padding: EdgeInsets.only(left: 10, top: 10),
             child: SizedBox.fromSize(
               size: Size(30, 30), // buton width and height
               child: Material(

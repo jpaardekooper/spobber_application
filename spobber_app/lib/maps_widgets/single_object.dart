@@ -28,6 +28,9 @@ class _SingleObject extends State<SingleObject> {
           child: Container(
             width: 180,
             height: 30,
+            margin: EdgeInsets.only(
+              top: 20
+            ),
             decoration: new BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5),
@@ -42,7 +45,7 @@ class _SingleObject extends State<SingleObject> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 10, top: 5),
+          padding: EdgeInsets.only(left: 10, top: 25),
           child: SizedBox.fromSize(
             size: Size(30, 30), // buton width and height
             child: Material(
