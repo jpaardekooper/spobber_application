@@ -17,7 +17,7 @@ class LoadMarkers {
       @required this.bottomLongitude});
 
   Future<bool> searchNearby() async {
-    String url = "https://spobber.azurewebsites.net/api/objects/?nlat=$northLatitude&blat=$bottomLatitude&nlon=$northLongitude&blon=$bottomLongitude&source=";
+    String url = "https://spobber.azurewebsites.net/api/test/objects/?nlat=$northLatitude&blat=$bottomLatitude&nlon=$northLongitude&blon=$bottomLongitude&source=";
     places = await loadMarkers(setDataSource, url);
     return true;
   }
