@@ -43,8 +43,10 @@ Future<bool> _login() async {
       await _prepareGetPackage(_spobberEndpoint + "authentication", data);
   HttpClientResponse response = await request.close();
   if (response.statusCode == 200) {
+    print("Succesfully logged in.");
     return true;
   } else {
+    print("Error logging in.");
     return false;
   }
 }
@@ -82,8 +84,8 @@ Future<HttpClientResponse> uploadImage(String fileName, String base64Image, Stri
 
 Future<bool> login(String username, String password) async {
   Map<String, String> data = {
-    "username": _username,
-    "password": _password,
+    "username": username ?? "",
+    "password": password ?? "",
   };
   Response response =
       await get(_spobberEndpoint + "authentication", headers: data);
@@ -96,8 +98,10 @@ Future<bool> login(String username, String password) async {
     if (response.statusCode == 200) {
       LoginModel model = json.decode(response.body);
       _token = model.token;
+      print("Succesfully logged in.");
       return true;
     } else {
+      print("Failed to log in.");
       return false;
     }
   }
@@ -111,8 +115,8 @@ Future<List<PlaceResponse>> loadMarkers(List<String> dataSources, String url) as
     url += dataSources[i] + ",";
   }
   Map<String, String> data = {
-    "username": _username,
-    "token": _token
+    "username": _username ?? "",
+    "token": _token ?? ""
   };
   Response response = await get(url, headers: data);
 

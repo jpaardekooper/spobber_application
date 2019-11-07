@@ -18,8 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   String _displayName;
-    bool _obsecure = false;
-
+  bool _obsecure = false;
 
   @override
   Widget build(BuildContext context) {
@@ -87,17 +86,19 @@ class _LoginPageState extends State<LoginPage> {
     Widget _input(Icon icon, String hint, TextEditingController controller,
         bool obsecure) {
       return Container(
-     
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextField(
           controller: controller,
           obscureText: obsecure,
           style: TextStyle(
-            fontSize: 18,            
+            fontSize: 18,
           ),
-                  
           decoration: InputDecoration(
-              hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Theme.of(context).primaryColor,),
+              hintStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Theme.of(context).primaryColor,
+              ),
               hintText: hint,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
@@ -153,10 +154,15 @@ class _LoginPageState extends State<LoginPage> {
       _password = _passwordController.text;
       _emailController.clear();
       _passwordController.clear();
-      
-     // if(await login(_email, _password)){
-        Navigator.pushReplacementNamed(context, GoogleMapsApp.tag);
-   //   }
+
+      await login(_email, _password).then((value) {
+        if(value){
+          Navigator.pushReplacementNamed(context, GoogleMapsApp.tag);
+        }
+        else{
+          Toast.show("Error logging in.", context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        }
+      },);
     }
 
     void _registerUser() {
@@ -338,7 +344,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             Positioned(
                               child: Container(
-                               // padding: EdgeInsets.only(bottom: 25, right: 40),
+                                // padding: EdgeInsets.only(bottom: 25, right: 40),
                                 child: Text(
                                   "REGISTER",
                                   style: TextStyle(
