@@ -50,7 +50,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
     return Container(
       height: 200.0,
       color: Theme.of(context).canvasColor,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width - 10,
       child: PageView.builder(
         controller: _pageController,
         itemCount: places.length,

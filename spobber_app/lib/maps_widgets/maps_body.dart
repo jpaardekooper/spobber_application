@@ -473,10 +473,9 @@ class _PlacesSearchMapSample extends State<PlacesSearchMapSample> {
                       ? Icon(Icons.not_listed_location)
                       : Icon(Icons.touch_app),
                   onPressed: () {}),
-              Padding(
-                padding: EdgeInsets.only(left: 5),
-                child: bottomApptext(),
-              ),
+          
+               bottomApptext(),
+              
             ],
           ),
         ),
