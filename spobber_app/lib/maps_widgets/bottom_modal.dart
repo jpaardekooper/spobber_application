@@ -191,10 +191,10 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
           image: AssetImage("assets/SAP.png"), fit: BoxFit.none);
     } else if (places[index].source == "SIGMA") {
       return DecorationImage(
-          image: AssetImage("assets/UST02.png"), fit: BoxFit.none);
+          image: AssetImage("assets/SIGMA.png"), fit: BoxFit.none);
     } else if (places[index].source == "UST02") {
       return DecorationImage(
-          image: AssetImage("assets/SIGMA.png"), fit: BoxFit.none);
+          image: AssetImage("assets/UST02.png"), fit: BoxFit.none);
     } else {
       print("geen marker gevonden");
     }
