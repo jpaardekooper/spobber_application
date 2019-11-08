@@ -126,17 +126,18 @@ Future<List<PlaceResponse>> loadMarkers(List<String> dataSources, String url) as
 }
 
 Future<List<Album>> loadImages(String secretId) async {
-  if (!await _ping()) {
-    return new List<Album>();
-  }
+  // if (!await _ping()) {
+  //   return new List<Album>();
+  // }
   try {
     Map<String, String> data = {
       "username" : _username,
       "token": _token
     };
-    final response = await get(_spobberEndpoint + "images/" + secretId, headers: data);
+    final response = await get(_spobberEndpoint + "image/" + secretId, headers: data);
     if (response.statusCode == 200) {
-      return json.decode(response.body).cast<Map<String, dynamic>>();
+      final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
+      return parsed.map<Album>((json) => Album.fromJson(json)).toList();
     } else {
       return new List<Album>();
     }
