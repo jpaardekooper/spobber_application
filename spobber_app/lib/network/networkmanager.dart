@@ -185,3 +185,23 @@ Future<List<ObjectComment>> loadComments(String secretId) async {
     return new List<ObjectComment>();
   }
 }
+
+Future<bool> addComment(String secretId, String content) async {
+  if(!await _ping()){
+    return false;
+  }
+  Map<String, String> data = {
+    "username": _username,
+    "token": _token,
+    "content": content
+  };
+  HttpClientRequest request = await _preparePostPackage(_spobberEndpoint + "comments/" + secretId, data);
+  HttpClientResponse response = await request.close();
+  
+  if(response.statusCode == 200){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
