@@ -291,7 +291,7 @@ namespace SpobberApi.Statics
 
                 //Get image from window_file_name
                 SqlCommand windowFileNameCommand = _connection.CreateCommand();
-                windowFileNameCommand.CommandText = $"SELECT window_file_name FROM dbo.object WHERE id = '{id}';";
+                windowFileNameCommand.CommandText = $"SELECT window_file_name FROM dbo.ust02 WHERE ust02_id = '{id}';";
 
                 string scalarValue = (string)windowFileNameCommand.ExecuteScalar() ?? "";
                 if (scalarValue != "")
