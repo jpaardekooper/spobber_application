@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'maps_body.dart';
+//import 'maps_body.dart';
 import '../helper/location_services.dart';
 import 'package:provider/provider.dart';
+import 'DrawerView.dart';
+import 'maps_view.dart';
 import 'single_marker.dart';
 import 'single_object.dart';
 
@@ -82,9 +84,11 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
                 )),
           ),
         ),
-  
-        drawer: _buildDrawer(context),
-        body: PlacesSearchMapSample(),
+
+        drawer: DrawerView(),
+        //_buildDrawer(context),
+        body: MyLocationView(),
+        //PlacesSearchMapSample(),
         //  endDrawer: SearchFilter(updateKeyWord),
         //    endDrawer: ObjectFilter(),
         //     ),
@@ -195,29 +199,31 @@ Widget _buildDrawer(context) {
           ),
           // This container holds the align
           Container(
-              // This align moves the children to the bottom
-              child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  // This container holds all the children that will be aligned
-                  // on the bottom and should not scroll with the above ListView
-                  child: Container(
-                      child: Column(
-                    children: <Widget>[
-                      Divider(),
-                      ListTile(
-                          leading: Icon(Icons.settings),
-                          title: Text('Settings')),
-                      ListTile(
-                          leading: Icon(Icons.help),
-                          title: Text('Help and Feedback')),
-                      ListTile(
-                          //leading: Icon(Icons.help),
-                          title: Text(
-                        'Versie 2.0.4',
-                        style: TextStyle(fontWeight: FontWeight.w200),
-                      ))
-                    ],
-                  ))))
+            // This align moves the children to the bottom
+            child: Align(
+              alignment: FractionalOffset.bottomCenter,
+              // This container holds all the children that will be aligned
+              // on the bottom and should not scroll with the above ListView
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Divider(),
+                    ListTile(
+                        leading: Icon(Icons.settings), title: Text('Settings')),
+                    ListTile(
+                        leading: Icon(Icons.help),
+                        title: Text('Help and Feedback')),
+                    ListTile(
+                        //leading: Icon(Icons.help),
+                        title: Text(
+                      'Versie 2.0.4',
+                      style: TextStyle(fontWeight: FontWeight.w200),
+                    ))
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     ),
