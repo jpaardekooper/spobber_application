@@ -138,7 +138,7 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
                       "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
                   additionalOptions: {
                     'accessToken':
-                        'pk.eyJ1IjoiaG91c3NlbXRuIiwiYSI6ImNqc3hvOG82NTA0Ym00YnI1dW40M2hjMjAifQ.VlQl6uacopBKX__qg6cf3w',
+                        'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
                     'id': 'mapbox.streets',
                   },
                 ),
