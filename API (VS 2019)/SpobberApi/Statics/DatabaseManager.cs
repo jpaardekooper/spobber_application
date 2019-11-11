@@ -12,6 +12,54 @@ namespace SpobberApi.Statics
         private static SqlConnectionStringBuilder connectionString;
         private static int _clusterMax = 2000;
 
+        private enum Sources
+        {
+            SAP,
+            SIGMA,
+            UST02
+        }
+
+        private static Dictionary<string, int> SAP = new Dictionary<string, int>()
+        {
+            { "secret-id", 0 },
+            { "equipment", 1 },
+            { "description", 2 },
+            { "status", 3 },
+            { "latitude", 4 },
+            { "longitude", 5 },
+            { "user_status_equi", 6 },
+            { "parent_equi_kind", 7 },
+            { "datacollection", 8 },
+            { "placement", 9 },
+            { "year", 10 },
+            { "type_eslas", 11 },
+            { "rating", 12 }
+        };
+
+        private static Dictionary<string, int> SIGMA = new Dictionary<string, int>()
+        {
+            { "secret-id", 0 },
+            { "latitude", 1 },
+            { "longitude", 2 },
+            { "idtxt2", 3 },
+            { "year", 4 },
+            { "rating", 5 }
+        };
+
+        private static Dictionary<string, int> UST02 = new Dictionary<string, int>()
+        {
+            { "secret-id", 0 },
+            { "pic_file_name", 1 },
+            { "window_file_name", 2 },
+            { "run_nr", 3 },
+            { "track", 4 },
+            { "track_version", 5},
+            { "latitude", 6 },
+            { "longitude", 7 },
+            { "year", 8 },
+            { "rating", 9 }
+        };
+
         public static void Initialize()
         {
             connectionString = new SqlConnectionStringBuilder()
@@ -59,37 +107,65 @@ namespace SpobberApi.Statics
                 List<ShortRailObject> result = new List<ShortRailObject>();
                 SqlCommand command = _connection.CreateCommand();
 
-                command.CommandText = $"SELECT equipment, id, placement, latitude, longitude, source FROM dbo.object " +
-                    $"WHERE latitude BETWEEN {request.BLat} AND {request.NLat} " +
-                    $"AND longitude BETWEEN {request.BLon} AND {request.NLon} " +
-                    $"AND (";
-
                 for (int i = 0; i < dataSources.Length; i++)
                 {
-                    if (i == dataSources.Length - 1)
-                        command.CommandText += $" source = '{dataSources[i]}')";
-                    else
-                        command.CommandText += $" source = '{dataSources[i]}' OR ";
-                }
-
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    int clusterCount = 0;
-                    if (cluster)
-                        while (clusterCount < _clusterMax && reader.Read())
-                        {
-                            result.Add(new ShortRailObject(reader.GetInt32(0), reader.GetGuid(1).ToString(), "ES-Las", reader.GetString(2), reader.GetDouble(3), reader.GetDouble(4), reader.GetString(5)));
-                            clusterCount++;
-                        }
-                    else
+                    Enum.TryParse<Sources>(dataSources[i], out Sources source);
+                    switch (source)
                     {
-                        while (reader.Read())
+                        case Sources.SAP:
+                            command.CommandText = "SELECT equipment, sap_id, placement, latitude, longitude FROM dbo.sap";
+                            break;
+                        case Sources.SIGMA:
+                            command.CommandText = "SELECT sigma_id, latitude, longitude FROM dbo.sigma";
+                            break;
+                        case Sources.UST02:
+                            command.CommandText = "SELECT ust02_id, latitude, longitude FROM dbo.ust02";
+                            break;
+                    }
+                    command.CommandText +=
+                    $" WHERE latitude BETWEEN {request.BLat} AND {request.NLat} " +
+                    $"AND longitude BETWEEN {request.BLon} AND {request.NLon}";
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        int clusterCount = 0;
+                        if (cluster)
+                            while (clusterCount < _clusterMax / dataSources.Length && reader.Read())
+                            {
+                                switch (source)
+                                {
+                                    case Sources.SAP:
+                                        result.Add(new ShortRailObject(reader.GetInt32(0), reader.GetGuid(1).ToString(), "ES-LAS", reader.GetString(2), reader.GetDouble(3), reader.GetDouble(4), dataSources[i].ToUpper()));
+                                        break;
+                                    case Sources.SIGMA:
+                                        result.Add(new ShortRailObject(0, reader.GetGuid(0).ToString(), "ES-LAS", "", reader.GetDouble(1), reader.GetDouble(2), dataSources[i].ToUpper()));
+                                        break;
+                                    case Sources.UST02:
+                                        result.Add(new ShortRailObject(0, reader.GetGuid(0).ToString(), "ES-LAS", "", reader.GetDouble(1), reader.GetDouble(2), dataSources[i].ToUpper()));
+                                        break;
+                                }
+                                clusterCount++;
+                            }
+                        else
                         {
-                            result.Add(new ShortRailObject(reader.GetInt32(0), reader.GetGuid(1).ToString(), "ES-Las", reader.GetString(2), reader.GetDouble(3), reader.GetDouble(4), reader.GetString(5)));
-                            clusterCount++;
+                            while (reader.Read())
+                            {
+                                switch (source)
+                                {
+                                    case Sources.SAP:
+                                        result.Add(new ShortRailObject(reader.GetInt32(0), reader.GetGuid(1).ToString(), "ES-LAS", reader.GetString(2), reader.GetDouble(3), reader.GetDouble(4), dataSources[i].ToUpper()));
+                                        break;
+                                    case Sources.SIGMA:
+                                        result.Add(new ShortRailObject(0, reader.GetGuid(0).ToString(), "ES-LAS", "", reader.GetDouble(1), reader.GetDouble(2), dataSources[i].ToUpper()));
+                                        break;
+                                    case Sources.UST02:
+                                        result.Add(new ShortRailObject(0, reader.GetGuid(0).ToString(), "ES-LAS", "", reader.GetDouble(1), reader.GetDouble(2), dataSources[i].ToUpper()));
+                                        break;
+                                }
+                                clusterCount++;
+                            }
                         }
                     }
-
                 }
                 return result.ToArray();
             }
@@ -125,40 +201,15 @@ namespace SpobberApi.Statics
                 _connection.Open();
 
                 SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"SELECT * FROM dbo.object " +
-                    $"WHERE id = '{id}';";
+                string source = GetSource(id).ToLower();
+                command.CommandText = $"SELECT * FROM dbo.{source} " +
+                    $"WHERE {source}_id = '{id}';";
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
-                    {
-                        returnObject = new RailObject
-                            (
-                            reader.GetInt32(2),
-                            id,
-                            reader.SafeGetString(1),
-
-                            reader.SafeGetString(3),
-                            reader.SafeGetString(4),
-                            reader.SafeGetString(5),
-                            reader.SafeGetString(6),
-                            reader.SafeGetString(7),
-                            reader.SafeGetString(8),
-
-                            (float)reader.GetDouble(10),
-                            (float)reader.GetDouble(11),
-
-                            reader.SafeGetString(12),
-                            reader.SafeGetString(14),
-                            reader.SafeGetString(15),
-                            reader.SafeGetString(16),
-                            reader.GetInt32(17),
-                            new string[] { }
-                            );
-                    }
+                        returnObject =  reader.GetRailobject(GetSource(id));
                     else
-                    {
                         return new RailObject();
-                    }
                 }
             }
             returnObject.AssignImages(GetImages(id));
@@ -211,6 +262,24 @@ namespace SpobberApi.Statics
             }
             returnObject.AssignImages(GetImages(returnObject.Secret_ID));
             return returnObject;
+        }
+
+        public static string GetSource(string id)
+        {
+            using(SqlConnection _connection = new SqlConnection(connectionString.ConnectionString))
+            {
+                _connection.Open();
+                SqlCommand command = _connection.CreateCommand();
+                command.CommandText = $"SELECT * FROM dbo.sap WHERE sap_id = '{id}'";
+                if (command.ExecuteScalar() != null)
+                    return "SAP";
+
+                command.CommandText = $"SELECT * FROM dbo.sigma WHERE sigma_id = '{id}'";
+                if (command.ExecuteScalar() != null)
+                    return "SIGMA";
+                else
+                    return "UST02";
+            }
         }
 
         public static string[] GetImages(string id)
@@ -368,6 +437,80 @@ namespace SpobberApi.Statics
             if (!reader.IsDBNull(colIndex))
                 return reader.GetInt32(colIndex);
             return 0;
+        }
+
+        public static int SafeGetInt16(this SqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetInt16(colIndex);
+            return 0;
+        }
+
+        public static RailObject GetRailobject( this SqlDataReader reader, string source)
+        {
+            Enum.TryParse(source, out Sources dataSource);
+            switch (dataSource)
+            {
+                case Sources.SAP:
+                    return new RailObject(
+                        reader.SafeGetInt(SAP["equipment"]),
+                        reader.GetGuid(SAP["secret-id"]).ToString(),
+                        "ES-LAS",
+                        reader.SafeGetString(SAP["description"]),
+                        reader.SafeGetString(SAP["status"]),
+                        reader.SafeGetString(SAP["user_status_equi"]),
+                        reader.SafeGetString(SAP["parent_equi_kind"]),
+                        reader.SafeGetString(SAP["datacollection"]),
+                        reader.SafeGetString(SAP["placement"]),
+                        reader.GetDouble(SAP["latitude"]),
+                        reader.GetDouble(SAP["longitude"]),
+                        "",
+                        "",
+                        "",
+                        source,
+                        reader.SafeGetInt16(SAP["year"]),
+                        new string[] { });
+                case Sources.SIGMA:
+                    return new RailObject(
+                        0,
+                        reader.GetGuid(SIGMA["secret-id"]).ToString(),
+                        "ES-LAS",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        reader.GetDouble(SIGMA["latitude"]),
+                        reader.GetDouble(SIGMA["longitude"]),
+                        "",
+                        "",
+                        "",
+                        source,
+                        reader.SafeGetInt16(SIGMA["year"]),
+                        new string[] { });
+                case Sources.UST02:
+                    return new RailObject(
+                        0,
+                        reader.GetGuid(UST02["secret-id"]).ToString(),
+                        "ES-LAS",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        reader.GetDouble(UST02["latitude"]),
+                        reader.GetDouble(UST02["longitude"]),
+                        reader.SafeGetString(UST02["pic_file_name"]),
+                        reader.GetInt64(UST02["run_nr"]).ToString(),
+                        reader.GetInt32(UST02["track_version"]).ToString(),
+                        source,
+                        reader.SafeGetInt16(UST02["year"]),
+                        new string[] { });
+                default:
+                    return new RailObject();
+            }
         }
 
         public static DateTime SafeGetDateTime(this SqlDataReader reader, int colIndex)
