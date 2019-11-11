@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Collections.Generic;
+using System.Linq;
 
 using SpobberApi.Statics;
 
@@ -17,15 +18,13 @@ namespace SpobberApi.Attributes
         {
             try
             {
-                if (actionContext.Request.Headers.TryGetValues("username", out IEnumerable<string> username) 
-                    && actionContext.Request.Headers.TryGetValues("password", out IEnumerable<string> password))
+                if (actionContext.Request.Headers.TryGetValues("username", out IEnumerable<string> username))
                 {
-                    var authToken = actionContext.Request.Headers.Authorization.Parameter;
-                    var decoAuthToken = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(authToken));
-                    var UserNameAndPassword = decoAuthToken.Split(':');
+                    actionContext.Request.Headers.TryGetValues("token", out IEnumerable<string> tokenC);
+                    string token = tokenC.First() ?? string.Empty;
 
-                    if (DatabaseManager.IsAuthorizedUser(UserNameAndPassword[0], UserNameAndPassword[1]))
-                        Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(UserNameAndPassword[0]), null);
+                    if (token != string.Empty && DatabaseManager.IsAuthorizedUser(username.First(), token))
+                        Users.RefreshUser(username.First(), token);
                     else
                         actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }

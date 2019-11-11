@@ -13,8 +13,13 @@ namespace SpobberApi.Controllers
     public class AuthenticationController : ApiController
     {
         [HttpGet, Route("api/authentication")]
-        public object GetLoginToken([FromBody] UserLogin login)
+        public object GetLoginToken()
         {
+            if (!ActionContext.Request.Headers.TryGetValues("username", out IEnumerable<string> username) ||
+                !ActionContext.Request.Headers.TryGetValues("password", out IEnumerable<string> password))
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+
+            UserLogin login = new UserLogin { Username = username.First(), Password = password.First() };
             if(DatabaseManager.IsAuthorizedUser(login.Username, login.Password))
                 return new ReturnToken(login.Username, Users.AddUser(login.Username));
             else

@@ -8,30 +8,46 @@ namespace SpobberApi.Controllers
 {
     public class ObjectsController : ApiController
     {
-        [HttpGet, BasicAuthentication]
+        #region Production
+        [HttpGet]
         public IHttpActionResult GetShortRailObject([FromUri] ObjectRequest objectRequest)
         {
             return Ok(DatabaseManager.GetShortRailObjects(objectRequest, objectRequest.Source.Split(','), true));
         }
 
         [Route("api/objects/{id}")]
-        [HttpGet, BasicAuthentication]
+        [HttpGet]
         public IHttpActionResult GetRailObjectWithSecret(string id)
         {
             return Ok(new RailObject[] { DatabaseManager.GetRailObject(id) });
         }
 
-        [HttpGet, Route("api/objects/{id:int}"), BasicAuthentication]
+        [HttpGet, Route("api/objects/{id:int}")]
         public IHttpActionResult GetRailObjectsWithId(int id)
         {
             return Ok(new ShortRailObject[] { DatabaseManager.GetShortRailObject(id) });
         }
+        #endregion
 
-        /*[Route("api/objects")]
-        [HttpPost]
-        public void PostRailObject([FromBody] RailObject railObject)
+        #region Testing
+        [HttpGet, BasicAuthentication, Route("api/test/objects")]
+        public IHttpActionResult GetShortRailObjectTest([FromUri] ObjectRequest objectRequest)
         {
-            DatabaseManager.UpdateRailObject(railObject);
-        }*/
+            return Ok(DatabaseManager.GetShortRailObjects(objectRequest, objectRequest.Source.Split(','), true));
+        }
+
+        [Route("api/test/objects/{id}")]
+        [HttpGet, BasicAuthentication]
+        public IHttpActionResult GetRailObjectWithSecretTest(string id)
+        {
+            return Ok(new RailObject[] { DatabaseManager.GetRailObject(id) });
+        }
+
+        [HttpGet, Route("api/test/objects/{id:int}"), BasicAuthentication]
+        public IHttpActionResult GetRailObjectsWithIdTest(int id)
+        {
+            return Ok(new ShortRailObject[] { DatabaseManager.GetShortRailObject(id) });
+        }
+        #endregion
     }
 }

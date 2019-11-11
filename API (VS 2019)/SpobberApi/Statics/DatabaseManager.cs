@@ -382,10 +382,12 @@ namespace SpobberApi.Statics
         { 
             using(SqlConnection _connection = new SqlConnection(connectionString.ConnectionString))
             {
-                SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"SELECT * FROM dbo.user WHERE username = '{username}', password = '{password}'";
+                _connection.Open();
 
-                if (command.ExecuteNonQuery() == 1)
+                SqlCommand command = _connection.CreateCommand();
+                command.CommandText = $"SELECT username FROM dbo.app_user WHERE username = '{username}' AND password = '{password}'";
+
+                if ((string)command.ExecuteScalar() == username)
                     return true;
                 else
                     return false;
@@ -399,7 +401,7 @@ namespace SpobberApi.Statics
                 _connection.Open();
 
                 SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"UPDATE dbo.session SET token = '{token}', session_start = CURRENT_TIMESTAMP WHERE user_id = (SELECT user_id FROM dbo.app_user WHERE username = '{username}');";
+                command.CommandText = $"INSERT INTO dbo.session (user_id, session_key, session_start) VALUES((SELECT user_id FROM dbo.app_user WHERE username = '{username}'), '{token}', CURRENT_TIMESTAMP)";
 
                 command.ExecuteNonQuery();
             }
