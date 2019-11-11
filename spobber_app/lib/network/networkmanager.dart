@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:spobber_app/network/loginmodel.dart';
+import 'package:spobber_app/network/commentmodel.dart';
 import '../data/place_response.dart';
-import 'package:spobber_app/gridview/album.dart';
 
 String _spobberEndpoint = "http://spobber.azurewebsites.net/api/";
 
@@ -125,27 +125,6 @@ Future<List<PlaceResponse>> loadMarkers(List<String> dataSources, String url) as
   }
 }
 
-Future<List<Album>> loadImages(String secretId) async {
-  // if (!await _ping()) {
-  //   return new List<Album>();
-  // }
-  try {
-    Map<String, String> data = {
-      "username" : _username,
-      "token": _token
-    };
-    final response = await get(_spobberEndpoint + "image/" + secretId, headers: data);
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-      return parsed.map<Album>((json) => Album.fromJson(json)).toList();
-    } else {
-      return new List<Album>();
-    }
-  } catch (e) {
-    return new List<Album>();
-  }
-}
-
 Future<bool> register(String email, String username, String password) async {
   Map data = {
     "email": email,
@@ -165,5 +144,22 @@ Future<bool> register(String email, String username, String password) async {
     else{
       return false;
     }
+  }
+}
+
+Future<List<ObjectComment>> loadComments(String secretId) async {
+  if(!await _ping()){
+    return new List<ObjectComment>();
+  }
+  Map<String, String> data = {
+    "username": _username,
+    "token": _token
+  };
+  Response response = await get(_spobberEndpoint + "comments/" + secretId, headers: data);
+  if(response.statusCode == 200){
+    return (json.decode(response.body) as List);
+  }
+  else{
+    return new List<ObjectComment>();
   }
 }
