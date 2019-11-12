@@ -26,6 +26,8 @@ class _LoginPageState extends State<LoginPage> {
     Color primary = Theme.of(context).primaryColor;
     void initState() {
       super.initState();
+
+      
     }
 
     //GO logo widget

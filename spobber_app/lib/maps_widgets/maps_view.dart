@@ -270,107 +270,107 @@ class MyLocationViewState extends State<MyLocationView>
   @override
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);
-    print(userLocation.latitude);
-    print(userLocation.longitude);
-    lat = userLocation.latitude;
-    long = userLocation.longitude;
 
     Widget _loadBuild() {
       ///[Position Found Render Marker]
       // if (userLocation.latitude != 0.0) {
-      return Expanded(
-        child: new FlutterMap(
-          mapController: mapController,
-          options: new MapOptions(
-            center: new LatLng(lat, long),
-            zoom: _inZoom,
+      if (userLocation != null) {
+        lat = userLocation.latitude;
+        long = userLocation.longitude;
+        print(lat.toString() + " " + long.toString());
+        return Expanded(
+          child: new FlutterMap(
+            mapController: mapController,
+            options: new MapOptions(
+                center: new LatLng(lat, long),
+                zoom: _inZoom,
+                maxZoom: 20,
+                minZoom: 8),
+            layers: [
+              new TileLayerOptions(
+                urlTemplate: "https://api.tiles.mapbox.com/v4/"
+                    "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                additionalOptions: {
+                  'accessToken':
+                      'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
+                  'id': 'mapbox.streets',
+                },
+              ),
+              new MarkerLayerOptions(
+                markers: [
+                  //new Marker(
+                  //   width: 50.0,
+                  //   height: 50.0,
+                  //   point: new LatLng(lat, long),
+                  //   builder: (ctx) => new Container(
+                  //     child: placeName == null
+                  //         ? Container(child: Text("test"))
+                  //         : Text(
+                  //             "$placeName",
+                  //             style: TextStyle(
+                  //               fontSize: 18.0,
+                  //               fontWeight: FontWeight.w600,
+                  //               color: Colors.blue[700],
+                  //               backgroundColor:
+                  //                   Colors.blueAccent.withOpacity(0.2),
+                  //             ),
+                  //           ),
+                  //   ),
+                  // ),
+                  new Marker(
+                    width: 50.0,
+                    height: 50.0,
+                    point: new LatLng(lat, long),
+                    builder: (ctx) => new Container(
+                      child: Column(
+                        children: <Widget>[
+                          IconButton(
+                              icon: Icon(
+                                Icons.adjust,
+                                color: Colors.blue,
+                              ),
+                              onPressed: null),
+                        ],
+                      ),
+                      decoration: new BoxDecoration(
+                        borderRadius: new BorderRadius.circular(100.0),
+                        color: Colors.blue[100].withOpacity(0.7),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          layers: [
-            new TileLayerOptions(
-              urlTemplate: "https://api.tiles.mapbox.com/v4/"
-                  "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
-              additionalOptions: {
-                'accessToken':
-                    'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
-                'id': 'mapbox.streets',
-              },
-            ),
-            new MarkerLayerOptions(
-              markers: [
-                new Marker(
-                  width: 200.0,
-                  height: 110.0,
-                  point:
-                      new LatLng(userLocation.latitude, userLocation.longitude),
-                  builder: (ctx) => new Container(
-                    child: placeName == null
-                        ? Container()
-                        : Text(
-                            "$placeName",
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.blue[700],
-                              backgroundColor:
-                                  Colors.blueAccent.withOpacity(0.2),
-                            ),
-                          ),
-                  ),
-                ),
-                new Marker(
-                  width: 50.0,
-                  height: 50.0,
-                  point:
-                      new LatLng(userLocation.latitude, userLocation.longitude),
-                  builder: (ctx) => new Container(
-                    child: Column(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(
-                              Icons.adjust,
-                              color: Colors.blue,
-                            ),
-                            onPressed: null),
-                      ],
-                    ),
-                    decoration: new BoxDecoration(
-                      borderRadius: new BorderRadius.circular(100.0),
-                      color: Colors.blue[100].withOpacity(0.7),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-      // }
-      // else {
-      //   setState(() {
-      //     icons[0] = Icons.gps_not_fixed;
-      //   });
+        );
+      } else {
+        setState(() {
+          icons[0] = Icons.gps_not_fixed;
+        });
 
-      //   ///[Position Not Found/Not Found yet]
-      //   return Expanded(
-      //     child: new FlutterMap(
-      //       mapController: mapController,
-      //       options: new MapOptions(
-      //         zoom: _outZoom,
-      //       ),
-      //       layers: [
-      //         new TileLayerOptions(
-      //           urlTemplate: "https://api.tiles.mapbox.com/v4/"
-      //               "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
-      //           additionalOptions: {
-      //             'accessToken':
-      //                 'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
-      //             'id': 'mapbox.streets',
-      //           },
-      //         ),
-      //       ],
-      //     ),
-      //   );
-      // }
+        ///[Position Not Found/Not Found yet]
+        return Expanded(
+          child: new FlutterMap(
+            mapController: mapController,
+            options: new MapOptions(
+                zoom: _outZoom,
+                center: new LatLng(52.0787361, 4.4017707),
+                maxZoom: 20,
+                minZoom: 8),
+            layers: [
+              new TileLayerOptions(
+                urlTemplate: "https://api.tiles.mapbox.com/v4/"
+                    "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                additionalOptions: {
+                  'accessToken':
+                      'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
+                  'id': 'mapbox.streets',
+                },
+              ),
+            ],
+          ),
+        );
+      }
     }
 
     ///Float Action Button Background Color
@@ -388,9 +388,7 @@ class MyLocationViewState extends State<MyLocationView>
     return Scaffold(
       key: mykey,
       body: Column(
-        children: <Widget>[
-          userLocation == null ? Center(child: CircularProgressIndicator()) : _loadBuild()
-        ],
+        children: <Widget>[_loadBuild()],
       ),
 
       ///floatingActionButtons
@@ -419,17 +417,13 @@ class MyLocationViewState extends State<MyLocationView>
                     /// if Camera not locked
                     if (isMoving == false) {
                       /// if position not null [LatLng]
-                      if (userLocation.latitude != null &&
-                          userLocation.longitude != null) {
+                      if (lat != null && long != null) {
                         setState(() {
                           ///change icon to lockedCamera
                           icons[index] = Icons.gps_fixed;
                           isMoving = true;
                         });
-                        mapController.move(
-                            LatLng(
-                                userLocation.latitude, userLocation.longitude),
-                            _inZoom);
+                        mapController.move(LatLng(lat, long), _inZoom);
                         _showSnackBar("Camera Lock Enabled!");
                       } else {
                         _showSnackBar("Couldn't get your Position!");
