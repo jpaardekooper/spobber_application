@@ -11,12 +11,11 @@ class SingleObject extends StatefulWidget {
   }
 }
 
-
 class _SingleObject extends State<SingleObject> {
   @override
   Widget build(BuildContext context) {
     return Row(
- mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         GestureDetector(
           onTap: () {
@@ -28,19 +27,22 @@ class _SingleObject extends State<SingleObject> {
           child: Container(
             width: 180,
             height: 30,
-            margin: EdgeInsets.only(
-              top: 20
-            ),
+            margin: EdgeInsets.only(top: 20),
             decoration: new BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5),
             ),
             child: Padding(
               padding: EdgeInsets.only(left: 10, top: 8),
-              child: Text(
-                "U zoekt op: $searchObject",
-                style: TextStyle(fontSize: 15.0, color: Colors.black),
-              ),
+              child: searchObject == null
+                  ? Text(
+                      "Zoeken naar...",
+                      style: TextStyle(fontSize: 15.0, color: Colors.black),
+                    )
+                  : Text(
+                      "$searchObject",
+                      style: TextStyle(fontSize: 12.0, color: Colors.black),
+                    ),
             ),
           ),
         ),

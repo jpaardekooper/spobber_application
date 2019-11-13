@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import '../fix/bottom_sheet_fix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'DrawerView.dart';
+import 'history_view.dart';
 import 'FavoriteLocationDropDownView.dart';
 
 // ignore: must_be_immutable
@@ -186,7 +186,7 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
             onPressed: () => Navigator.pop(context, false),
           ),
         ),
-        drawer: DrawerView(),
+        drawer: HistoryView(),
         body: _searchedLocation(this.lat, this.long),
         floatingActionButton: FloatingActionButton.extended(
           heroTag: "btn1",

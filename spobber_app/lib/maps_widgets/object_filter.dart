@@ -72,7 +72,16 @@ class _ObjectFilter extends State<ObjectFilter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("Gekozen object is $searchObject"),
+        title: searchObject == null
+                  ? Text(
+                      "Zoeken naar...",
+                      style: TextStyle(fontSize: 15.0),
+                    )
+                  : Text(
+                      "$searchObject",
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+            
       ),
       body: new Container(
         color: Colors.white,

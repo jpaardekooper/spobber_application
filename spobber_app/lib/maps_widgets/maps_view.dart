@@ -62,9 +62,10 @@ class MyLocationViewState extends State<MyLocationView>
   double long;
   double _outZoom = 10.0;
   double _inZoom = 15.0;
+
   MapController mapController = new MapController();
   final favoritePlaceController = TextEditingController();
-  String placeName;
+  //String placeName;
 
   /// Is camera Position Lock is enabled default false
   bool isMoving = false;
@@ -100,6 +101,7 @@ class MyLocationViewState extends State<MyLocationView>
   ///=========================================[initState]=============================================
 
   initState() {
+
     super.initState();
     // if (user == null || lat == null) {
     //   ///checks GPS then call localize
@@ -262,6 +264,189 @@ class MyLocationViewState extends State<MyLocationView>
     );
   }
 
+  Widget _search() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: InkWell(
+                splashColor: const Color(0xff004990),
+                onTap: () {
+                  setState(() {
+                    places.clear();
+                    //  markers.clear();
+                    // _markers.clear();
+                    // circles.clear();
+                    // polylines.clear();
+                  });
+
+                  if (setDataSource.length <= 0) {
+                    showToast("Selecteer minimaal één databron.",
+                        gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+                  } else {
+                    //   searchNearby();
+                    showToast("Data wordt ingeladen",
+                        gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+                  }
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.search), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showToast(String msg, {int duration, int gravity}) {
+    Toast.show(msg, context, duration: duration, gravity: gravity);
+  }
+
+  //   Future<void> searchNearby() async {
+  //   setState(() {
+  //    // places.clear();
+  //   //  _markers.clear();
+  //     //  markers.clear();
+  //   });
+
+  //   LoadMarkers loadmarkers = LoadMarkers(
+  //     northLatitude: _controller.northeast.latitude,
+  //     northLongitude: _visibleRegion.northeast.longitude,
+  //     bottomLatitude: _visibleRegion.southwest.latitude,
+  //     bottomLongitude: _visibleRegion.southwest.longitude,
+  //   );
+  //   loadmarkers.searchNearby().then((value) {
+  //     //   _handleResponse();
+  //     _initMarkers();
+  //   });
+  // }
+
+  Widget _changeSourceFilter() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: InkWell(
+                splashColor: const Color(0xff004990),
+                onTap: () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialogFilter(
+                        switchValueisSap: isSap,
+                        valueChangedisSap: (value) {
+                          isSap = value;
+                        },
+                        switchValueisSigma: isSigma,
+                        valueChangedisSigma: (value) {
+                          isSigma = value;
+                        },
+                        switchValueisUST02: isUST02,
+                        valueChangedisUST02: (value) {
+                          isUST02 = value;
+                        },
+                      );
+                    },
+                  );
+                }, // button pressed
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    getIcon(setDataSource.length), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Icon getIcon(int selector) {
+    if (selector <= 0) {
+      return Icon(Icons.filter);
+    } else if (selector == 1) {
+      return Icon(Icons.filter_1);
+    } else if (selector == 2) {
+      return Icon(Icons.filter_2);
+    } else if (selector == 3) {
+      return Icon(Icons.filter_3);
+    } else {
+      return Icon(Icons.filter_9_plus);
+    }
+  }
+
+  List<String> _mapType = ['mapbox.streets', 'mapbox.satellite'];
+  String mapType = 'mapbox.streets';
+
+  Widget _mapTypeCycler(String type) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(12, 10, 0, 0),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              // button color
+              child: InkWell(
+                splashColor: const Color(0xff004990), // splash color
+                onTap: () {
+                  if (type == _mapType[0]) {
+                    setState(() {
+                      mapType = _mapType[1];
+                    });
+                  } else {
+                    setState(() {
+                      mapType = _mapType[0];
+                    });
+                  }
+                }, // button pressed
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.map), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
   ///to show a snackBar after copy
   final GlobalKey<ScaffoldState> mykey = new GlobalKey<ScaffoldState>();
 
@@ -278,14 +463,17 @@ class MyLocationViewState extends State<MyLocationView>
         lat = userLocation.latitude;
         long = userLocation.longitude;
         print(lat.toString() + " " + long.toString());
-        return Expanded(
+        return Container(
           child: new FlutterMap(
             mapController: mapController,
             options: new MapOptions(
-                center: new LatLng(lat, long),
-                zoom: _inZoom,
-                maxZoom: 20,
-                minZoom: 8),
+              center: new LatLng(lat, long),
+              zoom: _inZoom,
+              maxZoom: 20,
+              minZoom: 8,
+              swPanBoundary: LatLng(50.74753, 2.992192),
+              nePanBoundary: LatLng(54.01786, 7.230455),
+            ),
             layers: [
               new TileLayerOptions(
                 urlTemplate: "https://api.tiles.mapbox.com/v4/"
@@ -293,30 +481,11 @@ class MyLocationViewState extends State<MyLocationView>
                 additionalOptions: {
                   'accessToken':
                       'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
-                  'id': 'mapbox.streets',
+                  'id': '$mapType',
                 },
               ),
               new MarkerLayerOptions(
                 markers: [
-                  //new Marker(
-                  //   width: 50.0,
-                  //   height: 50.0,
-                  //   point: new LatLng(lat, long),
-                  //   builder: (ctx) => new Container(
-                  //     child: placeName == null
-                  //         ? Container(child: Text("test"))
-                  //         : Text(
-                  //             "$placeName",
-                  //             style: TextStyle(
-                  //               fontSize: 18.0,
-                  //               fontWeight: FontWeight.w600,
-                  //               color: Colors.blue[700],
-                  //               backgroundColor:
-                  //                   Colors.blueAccent.withOpacity(0.2),
-                  //             ),
-                  //           ),
-                  //   ),
-                  // ),
                   new Marker(
                     width: 50.0,
                     height: 50.0,
@@ -340,6 +509,7 @@ class MyLocationViewState extends State<MyLocationView>
                   ),
                 ],
               ),
+         
             ],
           ),
         );
@@ -349,14 +519,17 @@ class MyLocationViewState extends State<MyLocationView>
         });
 
         ///[Position Not Found/Not Found yet]
-        return Expanded(
+        return Container(
           child: new FlutterMap(
             mapController: mapController,
             options: new MapOptions(
-                zoom: _outZoom,
-                center: new LatLng(52.0787361, 4.4017707),
-                maxZoom: 20,
-                minZoom: 8),
+              zoom: _outZoom,
+              center: new LatLng(52.0787361, 4.4017707),
+              maxZoom: 20,
+              minZoom: 8,
+              swPanBoundary: LatLng(50.74753, 2.992192),
+              nePanBoundary: LatLng(54.01786, 7.230455),
+            ),
             layers: [
               new TileLayerOptions(
                 urlTemplate: "https://api.tiles.mapbox.com/v4/"
@@ -364,7 +537,7 @@ class MyLocationViewState extends State<MyLocationView>
                 additionalOptions: {
                   'accessToken':
                       'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
-                  'id': 'mapbox.streets',
+                  'id': '$mapType',
                 },
               ),
             ],
@@ -387,8 +560,13 @@ class MyLocationViewState extends State<MyLocationView>
     /// returned build
     return Scaffold(
       key: mykey,
-      body: Column(
-        children: <Widget>[_loadBuild()],
+      body: Stack(
+        children: <Widget>[
+          _loadBuild(),
+          _search(),
+          _changeSourceFilter(),
+          _mapTypeCycler(mapType),
+        ],
       ),
 
       ///floatingActionButtons

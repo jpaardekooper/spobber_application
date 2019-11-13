@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
     LoginScreen.routeName: (context) => LoginScreen(),
   //  DashboardScreen.routeName: (context) => DashboardScreen(),
     //  HomePage.tag: (context) => HomePage(),
-    GoogleMapsApp.tag: (context) => GoogleMapsApp(),
+    TabsViewMaps.tag: (context) => TabsViewMaps(),
   };
 
   @override
@@ -87,8 +87,8 @@ class MyApp extends StatelessWidget {
       //     ),
       theme: ThemeData(
         // brightness: Brightness.dark,
-       primaryColor: Color(0xFF5786ed),
-        accentColor: Color(0xFF5786ed),
+       primaryColor: Color(0xFF004990),
+        accentColor: Color(0xFF004990),
         cursorColor: Color(0xFF5786ed),
         // fontFamily: 'SourceSansPro',
         textTheme: TextTheme(
@@ -96,7 +96,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'OpenSans',
             fontSize: 45.0,
             // fontWeight: FontWeight.w400,
-            color:Color(0xFFF0F1F1),
+            color:Color(0xFF5786ed),
           ),
           button: TextStyle(
             // OpenSans is similar to NotoSans but the uppercases look a bit better IMO

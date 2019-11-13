@@ -4,14 +4,14 @@ import 'SearchFavoriteView.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
-class DrawerView extends StatefulWidget {
+class HistoryView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return DrawerViewState();
+    return HistoryViewState();
   }
 }
 
-class DrawerViewState extends State<DrawerView> {
+class HistoryViewState extends State<HistoryView> {
   //return a specific value order of index : [0]=>lat,[1]=>long,[2]=>ImageUrl
   String _getPrefData(String values, int index) {
     List<String> _spliteArr = values.split(",");
@@ -98,23 +98,11 @@ class DrawerViewState extends State<DrawerView> {
 //     ],
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return Container(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            child: Text(
-              'Spobber',
-              style: TextStyle(fontSize: 40.0, color: Colors.black),
-            ),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/no_image.png'),
-                fit: BoxFit.contain,
-              ),
-              color: Colors.white,
-            ),
-          ),
+         
           //refresh button
           //  ListTile(
           //   title: Text("Refresh"),
@@ -203,5 +191,11 @@ class DrawerViewState extends State<DrawerView> {
         ],
       ),
     );
+  }
+
+  
+   void dispose() {
+    // Clean up the controller when the Widget is disposed
+    super.dispose();
   }
 }

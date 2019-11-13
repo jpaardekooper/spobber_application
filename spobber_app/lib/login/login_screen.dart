@@ -161,7 +161,7 @@ class LoginScreen extends StatelessWidget {
       },
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => GoogleMapsApp(),
+          builder: (context) => TabsViewMaps(),
         ));
       },
       onRecoverPassword: (name) {

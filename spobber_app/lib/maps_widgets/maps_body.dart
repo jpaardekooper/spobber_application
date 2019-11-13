@@ -202,53 +202,53 @@
 //     );
 //   }
 
-//   Widget _search() {
-//     return Padding(
-//       padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
-//       child: Align(
-//         alignment: Alignment.topRight,
-//         child: SizedBox.fromSize(
-//           size: Size(37, 37), // button width and height
-//           child: ClipRect(
-//             child: Container(
-//               decoration: new BoxDecoration(
-//                 color: Colors.white.withOpacity(0.7),
-//                 borderRadius: BorderRadius.circular(5),
-//               ),
-//               child: InkWell(
-//                 splashColor: const Color(0xff004990),
-//                 onTap: () {
-//                   setState(() {
-//                     places.clear();
-//                     //  markers.clear();
-//                     _markers.clear();
-//                     // circles.clear();
-//                     // polylines.clear();
-//                   });
+// Widget _search() {
+//   return Padding(
+//     padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+//     child: Align(
+//       alignment: Alignment.topRight,
+//       child: SizedBox.fromSize(
+//         size: Size(37, 37), // button width and height
+//         child: ClipRect(
+//           child: Container(
+//             decoration: new BoxDecoration(
+//               color: Colors.white.withOpacity(0.7),
+//               borderRadius: BorderRadius.circular(5),
+//             ),
+//             child: InkWell(
+//               splashColor: const Color(0xff004990),
+//               onTap: () {
+//                 setState(() {
+//                   places.clear();
+//                   //  markers.clear();
+//                   _markers.clear();
+//                   // circles.clear();
+//                   // polylines.clear();
+//                 });
 
-//                   if (setDataSource.length <= 0) {
-//                     showToast("Selecteer minimaal één databron.",
-//                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-//                   } else {
-//                     searchNearby();
-//                     showToast("Data wordt ingeladen",
-//                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
-//                   }
-//                 },
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: <Widget>[
-//                     Icon(Icons.search), // icon
-//                     // Text("Call"), // text
-//                   ],
-//                 ),
+//                 if (setDataSource.length <= 0) {
+//                   showToast("Selecteer minimaal één databron.",
+//                       gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+//                 } else {
+//                   searchNearby();
+//                   showToast("Data wordt ingeladen",
+//                       gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+//                 }
+//               },
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: <Widget>[
+//                   Icon(Icons.search), // icon
+//                   // Text("Call"), // text
+//                 ],
 //               ),
 //             ),
 //           ),
 //         ),
 //       ),
-//     );
-//   }
+//     ),
+//   );
+// }
 
 //   // @override
 //   // void dispose() {
