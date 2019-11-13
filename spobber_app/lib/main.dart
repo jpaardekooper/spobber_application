@@ -32,7 +32,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:spobber_app/maps_widgets/maps_header.dart';
-import 'login/login_page.dart';
+//import 'login/login_page.dart';
+
+//import 'login/dashboard_screen.dart';
+import 'login/login_screen.dart';
+//import 'login/transition_route_observer.dart';
 
 // import 'package:appcenter/appcenter.dart';
 // import 'package:appcenter_analytics/appcenter_analytics.dart';
@@ -63,7 +67,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
-    LoginPage.tag: (context) => LoginPage(),
+    LoginScreen.routeName: (context) => LoginScreen(),
+  //  DashboardScreen.routeName: (context) => DashboardScreen(),
     //  HomePage.tag: (context) => HomePage(),
     GoogleMapsApp.tag: (context) => GoogleMapsApp(),
   };
@@ -74,13 +79,49 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Spobber',
       debugShowCheckedModeBanner: false,
-      theme: new ThemeData(
-          hintColor: Color(0xFFC0F0E8),
-          primaryColor: Color(0xFF004990),
-          fontFamily: "Montserrat",
-        //  canvasColor: Colors.transparent
+      // theme: new ThemeData(
+      //     hintColor: Color(0xFFC0F0E8),
+      //     primaryColor: Color(0xFF004990),
+      //     fontFamily: "Montserrat",
+      //   //  canvasColor: Colors.transparent
+      //     ),
+      theme: ThemeData(
+        // brightness: Brightness.dark,
+       primaryColor: Color(0xFF5786ed),
+        accentColor: Color(0xFF5786ed),
+        cursorColor: Color(0xFF5786ed),
+        // fontFamily: 'SourceSansPro',
+        textTheme: TextTheme(
+          display2: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 45.0,
+            // fontWeight: FontWeight.w400,
+            color:Color(0xFFF0F1F1),
           ),
-      home: LoginPage(),
+          button: TextStyle(
+            // OpenSans is similar to NotoSans but the uppercases look a bit better IMO
+            fontFamily: 'OpenSans',
+          ),
+          caption: TextStyle(
+            fontFamily: 'NotoSans',
+            fontSize: 12.0,
+            fontWeight: FontWeight.normal,
+            color: Colors.deepPurple[300],
+          ),
+          display4: TextStyle(fontFamily: 'Quicksand'),
+          display3: TextStyle(fontFamily: 'Quicksand'),
+          display1: TextStyle(fontFamily: 'Quicksand'),
+          headline: TextStyle(fontFamily: 'NotoSans'),
+          title: TextStyle(fontFamily: 'NotoSans'),
+          subhead: TextStyle(fontFamily: 'NotoSans'),
+          body2: TextStyle(fontFamily: 'NotoSans'),
+          body1: TextStyle(fontFamily: 'NotoSans'),
+          subtitle: TextStyle(fontFamily: 'NotoSans'),
+          overline: TextStyle(fontFamily: 'NotoSans'),
+        ),
+      ),
+      home: LoginScreen(),
+   //   navigatorObservers: [TransitionRouteObserver()],
       routes: routes,
     );
   }
