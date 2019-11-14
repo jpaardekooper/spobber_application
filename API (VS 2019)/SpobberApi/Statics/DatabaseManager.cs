@@ -77,11 +77,12 @@ namespace SpobberApi.Statics
             {
                 _connection.Open();
                 string returnValue = string.Empty;
+
                 SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"INSERT INTO dbo.user_image (id, type, image_extension, year) " +
+                command.CommandText = $"INSERT INTO dbo.added_image (ust02_id, image_extension, year) " +
                     $"OUTPUT Inserted.image_id " +
                     $"VALUES ('{objectId}', " +
-                    $"(SELECT type FROM dbo.object WHERE id = '{objectId}'), '{imageExtension}', {DateTime.Now.Year});";
+                    $"'{imageExtension}', {DateTime.Now.Year});";
 
                 returnValue = ((Guid)command.ExecuteScalar()).ToString();
                 return returnValue;
@@ -109,7 +110,7 @@ namespace SpobberApi.Statics
 
                 for (int i = 0; i < dataSources.Length; i++)
                 {
-                    Enum.TryParse<Sources>(dataSources[i], out Sources source);
+                    Enum.TryParse(dataSources[i], out Sources source);
                     switch (source)
                     {
                         case Sources.SAP:
@@ -216,54 +217,6 @@ namespace SpobberApi.Statics
             return returnObject;
         }
 
-        public static RailObject GetRailObject(int id)
-        {
-            RailObject returnObject;
-            using (SqlConnection _connection = new SqlConnection(connectionString.ConnectionString))
-            {
-                _connection.Open();
-
-                SqlCommand command = _connection.CreateCommand();
-                command.CommandText = $"SELECT * FROM dbo.object " +
-                    $"WHERE equipment = {id};";
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        returnObject = new RailObject
-                            (
-                            id,
-                            reader.GetGuid(0).ToString(),
-                            reader.SafeGetString(1),
-
-                            reader.SafeGetString(3),
-                            reader.SafeGetString(4),
-                            reader.SafeGetString(5),
-                            reader.SafeGetString(6),
-                            reader.SafeGetString(7),
-                            reader.SafeGetString(8),
-
-                            (float)reader.GetDouble(10),
-                            (float)reader.GetDouble(11),
-
-                            reader.SafeGetString(12),
-                            reader.SafeGetString(14),
-                            reader.SafeGetString(15),
-                            reader.SafeGetString(16),
-                            reader.GetInt32(17),
-                            new string[] { }
-                            );
-                    }
-                    else
-                    {
-                        return new RailObject();
-                    }
-                }
-            }
-            returnObject.AssignImages(GetImages(returnObject.Secret_ID));
-            return returnObject;
-        }
-
         public static string GetSource(string id)
         {
             using(SqlConnection _connection = new SqlConnection(connectionString.ConnectionString))
@@ -321,46 +274,37 @@ namespace SpobberApi.Statics
                 _connection.Open();
                 List<ObjectImage> images = new List<ObjectImage>();
 
-                //Get image from window_file_name
-                SqlCommand windowFileNameCommand = _connection.CreateCommand();
-                windowFileNameCommand.CommandText = $"SELECT window_file_name, year, pic_file_name FROM dbo.object WHERE id = '{id}';";
-
-                using(SqlDataReader reader = windowFileNameCommand.ExecuteReader())
+                if (GetSource(id) == "UST02")
                 {
-                    reader.Read();
-                    if (reader.SafeGetString(0) != null && reader.SafeGetString(0) != string.Empty)
-                        images.Add(new ObjectImage(reader.GetInt32(1), reader.SafeGetString(0), reader.SafeGetString(0).Split('.')[0], reader.SafeGetString(0).Split('.').Last()));
-                    if (reader.SafeGetString(2) != null && reader.SafeGetString(2) != string.Empty)
+                    //Get image from window_file_name
+                    SqlCommand windowFileNameCommand = _connection.CreateCommand();
+                    windowFileNameCommand.CommandText = $"SELECT window_file_name, year, pic_file_name FROM dbo.ust02 WHERE ust02_id = '{id}';";
+
+                    using (SqlDataReader reader = windowFileNameCommand.ExecuteReader())
                     {
-                        string[] splitFileName = reader.SafeGetString(0).Split('_');
-                        Array.Resize(ref splitFileName, splitFileName.Length - 3);
-                        images.Add(new ObjectImage(reader.GetInt32(1), string.Join("_", splitFileName) + '_' + reader.SafeGetString(2), reader.SafeGetString(2).Split('.')[0], reader.SafeGetString(2).Split('.').Last()));
+                        reader.Read();
+                        if (reader.SafeGetString(0) != null && reader.SafeGetString(0) != string.Empty)
+                            images.Add(new ObjectImage(reader.GetInt16(1), reader.SafeGetString(0), reader.SafeGetString(0).Split('.')[0], reader.SafeGetString(0).Split('.').Last()));
+                        if (reader.SafeGetString(2) != null && reader.SafeGetString(2) != string.Empty)
+                        {
+                            string[] splitFileName = reader.SafeGetString(0).Split('_');
+                            Array.Resize(ref splitFileName, splitFileName.Length - 3);
+                            images.Add(new ObjectImage(reader.GetInt16(1), string.Join("_", splitFileName) + '_' + reader.SafeGetString(2), reader.SafeGetString(2).Split('.')[0], reader.SafeGetString(2).Split('.').Last()));
+                        }
+                    }
+
+                    //Get images from user_image
+                    SqlCommand userImageCommand = _connection.CreateCommand();
+                    userImageCommand.CommandText = $"SELECT image_id, image_extension, year FROM dbo.added_image WHERE ust02_id = '{id}';";
+                    using (SqlDataReader reader = userImageCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            if (reader.GetGuid(0).ToString() != null && reader.GetGuid(0).ToString() != string.Empty)
+                                images.Add(new ObjectImage(reader.GetInt16(2), reader.GetGuid(0).ToString() + "." + reader.SafeGetString(1), reader.GetGuid(0).ToString(), reader.SafeGetString(1)));
                     }
                 }
-
-                //Get images from user_image
-                SqlCommand userImageCommand = _connection.CreateCommand();
-                userImageCommand.CommandText = $"SELECT image_id, image_extension, year FROM dbo.user_image WHERE id = '{id}';";
-                using (SqlDataReader reader = userImageCommand.ExecuteReader())
-                {
-                    while (reader.Read())
-                        if (reader.GetGuid(0).ToString() != null && reader.GetGuid(0).ToString() != string.Empty)
-                            images.Add(new ObjectImage(reader.SafeGetInt(2), reader.GetGuid(0).ToString() + "." + reader.SafeGetString(1), reader.GetGuid(0).ToString(), reader.SafeGetString(1)));
-                }
-
                 return images.ToArray();
             }
-        }
-
-        public static void UpdateRailObject(RailObject railObject)
-        {
-            //_connection.Open();
-            //SqlCommand command = _connection.CreateCommand();
-            //command.CommandText = "UPDATE dbo.object " +
-            //    $"SET status = {railObject.status} " +
-            //    $"WHERE Indication_nr = {railObject.id};";
-            //command.ExecuteNonQuery();
-            //_connection.Close();
         }
 
         public static MeasureCollection GetMeasureCollection(MapRequest request)
