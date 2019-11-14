@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong/latlong.dart';
@@ -310,15 +311,8 @@ class MyLocationViewState extends State<MyLocationView>
 
   Future<void> searchNearby() async {
     setState(() {
-      print(places.length);
-      print(markers.length);
-      print("kom ik hier");
       places.clear();
       markers.clear();
-      // circles.clear();
-      // polylines.clear();
-      print(places.length);
-      print(markers.length);
     });
 
     LoadMarkers loadmarkers = LoadMarkers(
@@ -331,6 +325,8 @@ class MyLocationViewState extends State<MyLocationView>
       _initMarkers();
     });
   }
+
+  String testExample;
 
   void _initMarkers() async {
     for (PlaceResponse markerLocation in places) {
@@ -348,7 +344,17 @@ class MyLocationViewState extends State<MyLocationView>
                 color: Colors.yellow,
               ),
               onPressed: () {
-                print("u pressed me");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MarkerTemplate(
+                      type: markerLocation.type,
+                      objectUri: markerLocation.objectUri,
+                      id: markerLocation.id,
+                      secretId: markerLocation.secretId,
+                    ),
+                  ),
+                );
               },
             ),
           ),
@@ -367,7 +373,17 @@ class MyLocationViewState extends State<MyLocationView>
                 color: Colors.red,
               ),
               onPressed: () {
-                print("u pressed me");
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MarkerTemplate(
+                      type: markerLocation.type,
+                      objectUri: markerLocation.objectUri,
+                      id: markerLocation.id,
+                      secretId: markerLocation.secretId,
+                    ),
+                  ),
+                );
               },
             ),
           ),
@@ -386,7 +402,17 @@ class MyLocationViewState extends State<MyLocationView>
                 color: Colors.blue,
               ),
               onPressed: () {
-                print("u pressed me");
+                 Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MarkerTemplate(
+                      type: markerLocation.type,
+                      objectUri: markerLocation.objectUri,
+                      id: markerLocation.id,
+                      secretId: markerLocation.secretId,
+                    ),
+                  ),
+                );
               },
             ),
           ),
@@ -532,7 +558,7 @@ class MyLocationViewState extends State<MyLocationView>
             options: new MapOptions(
               center: new LatLng(lat, long),
               zoom: _inZoom,
-              maxZoom: 21,
+              maxZoom: 23,
               minZoom: 8,
               swPanBoundary: LatLng(50.74753, 2.992192),
               nePanBoundary: LatLng(54.01786, 7.230455),
@@ -576,24 +602,39 @@ class MyLocationViewState extends State<MyLocationView>
                 ],
               ),
               MarkerClusterLayerOptions(
-                maxClusterRadius: 130,
+                
+                maxClusterRadius: 80,
+                zoomToBoundsOnClick: true,
+                centerMarkerOnClick: true,              
+           showPolygon: false,
+         //  spiderfySpiralDistanceMultiplier: 500,
+                
                 size: Size(40, 40),
                 anchor: AnchorPos.align(AnchorAlign.center),
                 fitBoundsOptions: FitBoundsOptions(
-                  padding: EdgeInsets.all(50),
+                  padding: EdgeInsets.all(8),
                 ),
-                markers: markers,
-                polygonOptions: PolygonOptions(
-                    borderColor: Colors.blueAccent,
-                    color: Colors.black12,
-                    borderStrokeWidth: 3),
+                markers: markers,               
                 builder: (context, markers) {
-                  return FloatingActionButton(
-                    heroTag: Text("test"),
-                    child: Text(markers.length.toString()),
-                    onPressed: () {
-                      print("cluster marker");
-                    },
+                  return Container(
+                    width: 50, height: 50,
+                    decoration: new BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    // heroTag: Text("test"),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          markers.length.toString(),
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                    ),
+                    // onPressed: () {
+                    //   print("cluster marker");
+                    // },
                   );
                 },
               ),

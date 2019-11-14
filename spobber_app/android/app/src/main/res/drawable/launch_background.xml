@@ -7,6 +7,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/ic_launcher2" />
+            android:src="@mipmap/spobber" />
     </item>
 </layer-list>

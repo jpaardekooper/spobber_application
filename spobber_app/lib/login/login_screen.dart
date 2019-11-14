@@ -58,14 +58,14 @@ class LoginScreen extends StatelessWidget {
       //   recoverPasswordSuccess: 'Password rescued successfully',
       // ),
       theme: LoginTheme(
-        // primaryColor: Colors.teal,
+        // primaryColor: Theme.of(context).hoverColor,
         // accentColor: Colors.yellow,
         // errorColor: Colors.deepOrange,
-        // titleStyle: TextStyle(
-        //   color: Colors.greenAccent,
-        //   fontFamily: 'Quicksand',
-        //   letterSpacing: 4,
-        // ),
+        titleStyle: TextStyle(
+          color: Colors.white,
+          //fontFamily: 'Arial',
+          //  letterSpacing: 1,
+        ),
         // beforeHeroFontSize: 50,
         // afterHeroFontSize: 20,
         // bodyStyle: TextStyle(
@@ -136,7 +136,7 @@ class LoginScreen extends StatelessWidget {
         // if (!value.contains('@') || !value.endsWith('.com')) {
         //   return "Email must contain '@' and end with '.com'";
         // }
-        if (!value.contains('@') ) {
+        if (!value.contains('@')) {
           return "Email must contain '@' ";
         }
         return null;
