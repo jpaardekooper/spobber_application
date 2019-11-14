@@ -26,16 +26,14 @@ class MapsView extends StatefulWidget {
   }
 }
 
-class MapsViewState extends State<MapsView>
-    with TickerProviderStateMixin {
+class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
   ///=========================================[Declare]=============================================
   /// Controller for FloatActionButtons
   AnimationController _controller;
 
   /// Icons List For FloatActionButtons
   List<IconData> icons = [
-    Icons.gps_fixed,
-    Icons.favorite,
+    Icons.gps_fixed,  
     Icons.content_copy,
   ];
 
@@ -55,7 +53,6 @@ class MapsViewState extends State<MapsView>
 
   /// Is camera Position Lock is enabled default false
   bool isMoving = false;
-
 
   ///=========================================[initState]=============================================
 
@@ -565,7 +562,7 @@ class MapsViewState extends State<MapsView>
                   'accessToken':
                       'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
                   'id': '$mapType',
-                },
+                },              
               ),
               new MarkerLayerOptions(
                 markers: [
@@ -579,7 +576,7 @@ class MapsViewState extends State<MapsView>
                           IconButton(
                               icon: Icon(
                                 Icons.adjust,
-                                color: Colors.blue,
+                                color: Theme.of(context).primaryColor,
                               ),
                               onPressed: null),
                         ],
@@ -706,7 +703,7 @@ class MapsViewState extends State<MapsView>
                 backgroundColor: backgroundColor,
                 mini: false,
                 child: new Icon(icons[index],
-                    color: index != 1 ? foregroundColor : Colors.red),
+                    color: index != 1 ? foregroundColor : foregroundColor),
                 onPressed: () {
                   ///onPress LockCamera button
                   if (index == 0) {
@@ -734,7 +731,7 @@ class MapsViewState extends State<MapsView>
                     }
 
                     ///OnPress Favorite Button
-                  } 
+                  }
                   // else if (index == 1) {
                   //   // Calling bottom sheet Widget
                   //   showModalBottomSheetApp(
