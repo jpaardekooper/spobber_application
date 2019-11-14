@@ -1,6 +1,6 @@
 import 'package:spobber_app/data/place_response.dart';
 import 'package:spobber_app/data/marker_detail.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 //variable that needs to be checked in order to get data from the API
 bool isSap = false;
@@ -28,6 +28,6 @@ String currentSelectedMarkerObjectUri;
 
 String singleMarkerObject = "";
 
-MarkerId makeSelectedMarkerbigger;
+//MarkerId makeSelectedMarkerbigger;
 
 String searchObject = "";

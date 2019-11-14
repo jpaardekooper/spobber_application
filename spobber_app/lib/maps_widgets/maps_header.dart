@@ -6,6 +6,7 @@ import '../helper/location_services.dart';
 import 'package:provider/provider.dart';
 import 'single_marker.dart';
 import 'single_object.dart';
+import 'AzureMaps.dart';
 
 class GoogleMapsApp extends StatefulWidget {
   static String tag = 'Maps';
@@ -29,9 +30,11 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<UserLocation>(
-      builder: (context) => LocationService().locationStream,
-      child: Scaffold(
+    return 
+    // StreamProvider<UserLocation>(
+    //   builder: (context) => LocationService().locationStream,
+      // child:
+       Scaffold(
         resizeToAvoidBottomInset: false,
         // resizeToAvoidBottomPadding: false,
         key: _scaffoldKey,
@@ -84,11 +87,12 @@ class _GoogleMapsApp extends State<GoogleMapsApp> {
         ),
   
         drawer: _buildDrawer(context),
-        body: PlacesSearchMapSample(),
+     //   body: PlacesSearchMapSample(),
+     body: AnimatedMapControllerPage(),
         //  endDrawer: SearchFilter(updateKeyWord),
         //    endDrawer: ObjectFilter(),
         //     ),
-      ),
+ //     ),
     );
   }
 }
