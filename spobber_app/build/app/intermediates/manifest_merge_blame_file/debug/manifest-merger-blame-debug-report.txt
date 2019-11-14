@@ -1,0 +1,139 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.spobber_app"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="16"
+9        android:targetSdkVersion="28" />
+10    <!--
+11         Flutter needs it to communicate with the running application
+12         to allow setting breakpoints, to provide hot reload, etc.
+13    -->
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:8:5-66
+14-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:8:22-64
+15    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+15-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:9:5-78
+15-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:9:22-76
+16    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+16-->[:location] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
+16-->[:location] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-78
+17    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+17-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-80
+17-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-77
+18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Include required permissions for Google Maps API to run. -->
+18-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-81
+18-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-78
+19    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+19-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:23:5-79
+19-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:23:22-76
+20
+21    <uses-feature
+21-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:26:5-28:35
+22        android:glEsVersion="0x00020000"
+22-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:27:9-41
+23        android:required="true" />
+23-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:28:9-32
+24
+25    <application
+25-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:10:5-36:19
+26        android:name="io.flutter.app.FlutterApplication"
+26-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:11:9-57
+27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+27-->[androidx.core:core:1.0.2] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\fecc98e05c7ccd4a0eedf7cff343a233\core-1.0.2\AndroidManifest.xml:22:18-86
+28        android:debuggable="true"
+29        android:icon="@mipmap/ic_launcher"
+29-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:13:9-43
+30        android:label="spobber_app" >
+30-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:12:9-36
+31        <meta-data
+31-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:14:9-16:71
+32            android:name="com.google.android.geo.API_KEY"
+32-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:15:13-58
+33            android:value="AIzaSyB-lQhSEggPBYQlqxxtie9otYVzU53X6is" />
+33-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:16:13-68
+34
+35        <activity
+35-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:17:9-35:20
+36            android:name="com.example.spobber_app.MainActivity"
+36-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:18:13-41
+37            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+37-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:21:13-163
+38            android:hardwareAccelerated="true"
+38-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:22:13-47
+39            android:launchMode="singleTop"
+39-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:19:13-43
+40            android:theme="@style/LaunchTheme"
+40-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:20:13-47
+41            android:windowSoftInputMode="adjustResize" >
+41-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:23:13-55
+42
+43            <!--
+44                 This keeps the window background of the activity showing
+45                 until Flutter renders its first frame. It can be removed if
+46                 there is no splash screen (such as the default splash screen
+47                 defined in @style/LaunchTheme).
+48            -->
+49            <meta-data
+49-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:28:13-30:40
+50                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
+50-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:29:16-81
+51                android:value="true" />
+51-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:30:17-37
+52
+53            <intent-filter>
+53-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:31:13-34:29
+54                <action android:name="android.intent.action.MAIN" />
+54-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:32:17-68
+54-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:32:25-66
+55
+56                <category android:name="android.intent.category.LAUNCHER" />
+56-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:33:17-76
+56-->C:\Users\dvddv\Documents\spobber_application\spobber_app\android\app\src\main\AndroidManifest.xml:33:27-74
+57            </intent-filter>
+58        </activity>
+59
+60        <provider
+60-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
+61            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+61-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-82
+62            android:authorities="com.example.spobber_app.flutter.image_provider"
+62-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-74
+63            android:exported="false"
+63-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+64            android:grantUriPermissions="true" >
+64-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-47
+65            <meta-data
+65-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
+66                android:name="android.support.FILE_PROVIDER_PATHS"
+66-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
+67                android:resource="@xml/flutter_image_picker_file_paths" />
+67-->[:image_picker] C:\Users\dvddv\Documents\spobber_application\spobber_app\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
+68        </provider> <!-- Needs to be explicitly declared on P+ -->
+69        <uses-library
+69-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:33:9-35:40
+70            android:name="org.apache.http.legacy"
+70-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:34:13-50
+71            android:required="false" />
+71-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:35:13-37
+72
+73        <activity
+73-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\5ac9ad6f13ea0190a3570ea7a43d9f59\play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
+74            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+74-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\5ac9ad6f13ea0190a3570ea7a43d9f59\play-services-base-17.0.0\AndroidManifest.xml:24:13-79
+75            android:exported="false"
+75-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\5ac9ad6f13ea0190a3570ea7a43d9f59\play-services-base-17.0.0\AndroidManifest.xml:25:13-37
+76            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+76-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\5ac9ad6f13ea0190a3570ea7a43d9f59\play-services-base-17.0.0\AndroidManifest.xml:26:13-72
+77
+78        <meta-data
+78-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\73c11bc6a4785daf2ff349d44c6c9803\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
+79            android:name="com.google.android.gms.version"
+79-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\73c11bc6a4785daf2ff349d44c6c9803\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
+80            android:value="@integer/google_play_services_version" />
+80-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\dvddv\.gradle\caches\transforms-2\files-2.1\73c11bc6a4785daf2ff349d44c6c9803\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
+81    </application>
+82
+83</manifest>
