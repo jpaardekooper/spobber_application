@@ -1,48 +1,32 @@
+import 'dart:async';
+import "dart:math" as math;
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong/latlong.dart';
-//import 'package:geolocator/geolocator.dart';
 import 'package:flutter/services.dart';
-import '../fix/bottom_sheet_fix.dart';
-// import 'package:localizer/libraries/globals.dart';
-// import 'package:localizer/models/WeatherData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import '../libraries/globals.dart' as globals;
-import "dart:math" as math;
-// import 'dart:convert';
-// import 'package:app_settings/app_settings.dart';
-// import 'package:permission_handler/permission_handler.dart';
-
-// import 'FavoriteLocationDropDownView.dart';
 import 'package:spobber_app/data/global_variable.dart';
 import 'package:spobber_app/data/place_response.dart';
-
-import 'dart:async';
-import 'dart:ui';
-
 import '../marker_information/marker_template.dart';
-import 'FavoriteLocationDropDownView.dart';
 import 'bottom_modal.dart';
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 import '../helper/location_services.dart';
 import 'package:spobber_app/helper/load_markers.dart';
-import 'package:spobber_app/helper/map_helper.dart';
-import 'package:spobber_app/helper/map_marker.dart';
 import 'package:spobber_app/maps_widgets/alertdialog_filter.dart';
 
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 
-class MyLocationView extends StatefulWidget {
+class MapsView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return MyLocationViewState();
+    return MapsViewState();
   }
 }
 
-class MyLocationViewState extends State<MyLocationView>
+class MapsViewState extends State<MapsView>
     with TickerProviderStateMixin {
   ///=========================================[Declare]=============================================
   /// Controller for FloatActionButtons
@@ -72,33 +56,6 @@ class MyLocationViewState extends State<MyLocationView>
   /// Is camera Position Lock is enabled default false
   bool isMoving = false;
 
-  // /// Show a Alert Dialog
-  // void _showDialog(String body) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           title: Text("Location Permission"),
-  //           content: Text(body),
-  //           actions: <Widget>[
-  //             FlatButton(
-  //               child: Text("Close"),
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //             FlatButton(
-  //               child: Text("Settings"),
-  //               onPressed: () {
-  //                 AppSettings.openLocationSettings();
-
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
 
   ///=========================================[initState]=============================================
 

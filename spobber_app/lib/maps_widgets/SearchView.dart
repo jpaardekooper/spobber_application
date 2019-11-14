@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'SearchFavoriteView.dart';
-import 'FavoriteLocationDropDownView.dart';
+import 'SearchSingleMarker.dart';
+import 'SingleDropDown.dart';
 
 import 'dart:convert';
 
@@ -45,7 +45,7 @@ class _SearchViewState extends State<SearchView> {
         ',' +
         long.toString() +
         ',' +
-        FavoriteLocationDropDown.currentImage.toString();
+        SingleDropDown.currentImage.toString();
     print('Place Name $placeName => $placePosition Captured.');
     await prefs.setString(
       '$placeName',
@@ -82,7 +82,7 @@ class _SearchViewState extends State<SearchView> {
             ),
           ),
         ),
-        Container(child: FavoriteLocationDropDown()),
+        Container(child: SingleDropDown()),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -112,7 +112,7 @@ class _SearchViewState extends State<SearchView> {
 
   _searchedLocation(double lat, double long) {
     if ((lat == 0.00 || long == 0.00) &&
-        SearchFavoriteView.isFavorite == false) {
+        SearchSingleMarker.isFavorite == false) {
       Column(
         children: <Widget>[
           _searchView = Container(
@@ -210,10 +210,10 @@ class _SearchViewState extends State<SearchView> {
         ],
       );
     } else {
-      if (SearchFavoriteView.isFavorite == true) {
-        lat = SearchFavoriteView.favoriteLat;
-        long = SearchFavoriteView.favoriteLong;
-        SearchFavoriteView.isFavorite = false;
+      if (SearchSingleMarker.isFavorite == true) {
+        lat = SearchSingleMarker.favoriteLat;
+        long = SearchSingleMarker.favoriteLong;
+        SearchSingleMarker.isFavorite = false;
       }
       _searchView = Scaffold(
         resizeToAvoidBottomPadding: true,

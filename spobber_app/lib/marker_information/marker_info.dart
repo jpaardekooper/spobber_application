@@ -37,8 +37,8 @@ class _MarkerInfoState extends State<MarkerInfo>
   String position;
   String objectType;
   String phpEndPoint = "";
-  int _selectedStatus = 0;
-  int _selectedType = 0;
+  // int _selectedStatus = 0;
+  // int _selectedType = 0;
 
   List<DropdownMenuItem<int>> statusList = [];
 
@@ -154,8 +154,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'equipment';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -166,7 +165,6 @@ class _MarkerInfoState extends State<MarkerInfo>
       },
     ));
 
-   
     //getName information 2
     formWidget.add(new TextFormField(
       enabled: false,
@@ -177,8 +175,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -201,8 +198,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -225,8 +221,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -249,8 +244,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -273,8 +267,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -297,8 +290,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -321,8 +313,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -345,8 +336,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -369,8 +359,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -393,8 +382,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -417,8 +405,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       validator: (value) {
         if (value.isEmpty) {
           return 'vul een de juiste type in';
-        }
-        else{
+        } else {
           return '';
         }
       },
@@ -428,8 +415,6 @@ class _MarkerInfoState extends State<MarkerInfo>
         });
       },
     ));
-
-  
 
     // formWidget.add(new Container(
     //   width: 300,
@@ -512,8 +497,7 @@ class _MarkerInfoState extends State<MarkerInfo>
           validator: (value) {
             if (value.isEmpty) {
               return 'Please enter a datum';
-            }
-            else{
+            } else {
               return '';
             }
           },
@@ -591,9 +575,9 @@ class _MarkerInfoState extends State<MarkerInfo>
 
   @override
   void initState() {
-      print("lOADING LIST");
-     _loadList();
-  
+    print("lOADING LIST");
+    _loadList();
+
     super.initState();
   }
 
@@ -607,12 +591,14 @@ class _MarkerInfoState extends State<MarkerInfo>
       return Center(child: CircularProgressIndicator());
     } else {
       return Container(
-          child: Form(
-              key: _formKey,
-              child: new ListView(
-                padding: EdgeInsets.all(20.0),
-                children: getFormWidget(),
-              )));
+        child: Form(
+          key: _formKey,
+          child: new ListView(
+            padding: EdgeInsets.all(20.0),
+            children: getFormWidget(),
+          ),
+        ),
+      );
     }
 
     // }

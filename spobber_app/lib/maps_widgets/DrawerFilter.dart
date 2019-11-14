@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import '../data/global_variable.dart';
 
 //Represents the Homepage widget
-class ObjectFilter extends StatefulWidget {
+class DrawerFilter extends StatefulWidget {
   //`createState()` will create the mutable state for this widget at
   //a given location in the tree.
   @override
-  _ObjectFilter createState() => _ObjectFilter();
+  _DrawerFilter createState() => _DrawerFilter();
 }
 
 //Our Home state, the logic and internal state for a StatefulWidget.
-class _ObjectFilter extends State<ObjectFilter> {
+class _DrawerFilter extends State<DrawerFilter> {
   //A controller for an editable text field.
   //Whenever the user modifies a text field with an associated
   //TextEditingController, the text field updates value and the
@@ -49,7 +49,7 @@ class _ObjectFilter extends State<ObjectFilter> {
     _nebulae.sort();
   }
 
-  _ObjectFilter() {
+  _DrawerFilter() {
     //Register a closure to be called when the object changes.
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {

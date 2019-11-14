@@ -4,11 +4,10 @@ import 'package:latlong/latlong.dart';
 import 'package:spobber_app/marker_information/marker_template.dart';
 import '../fix/bottom_sheet_fix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'history_view.dart';
-import 'FavoriteLocationDropDownView.dart';
+import 'SingleDropDown.dart';
 
 // ignore: must_be_immutable
-class SearchFavoriteView extends StatefulWidget {
+class SearchSingleMarker extends StatefulWidget {
   double lat = 0.00;
   double long = 0.00;
   static double favoriteLat;
@@ -18,21 +17,21 @@ class SearchFavoriteView extends StatefulWidget {
   static String locationImage;
 
   @override
-  _SearchFavoriteViewState createState() => _SearchFavoriteViewState(lat, long);
+  _SearchSingleMarkerState createState() => _SearchSingleMarkerState(lat, long);
 }
 
-class _SearchFavoriteViewState extends State<SearchFavoriteView> {
+class _SearchSingleMarkerState extends State<SearchSingleMarker> {
   //changes after declaring the desired location
   Widget _searchView;
   double lat;
   double long;
-  String placeName = SearchFavoriteView.favoritePlaceName;
+  String placeName = SearchSingleMarker.favoritePlaceName;
   String placePosition = "";
   final myController = TextEditingController();
   final favoritePlaceController = TextEditingController();
 
   // Constructor
-  _SearchFavoriteViewState(double long, double lat) {
+  _SearchSingleMarkerState(double long, double lat) {
     this.lat = lat;
     this.long = long;
   }
@@ -47,7 +46,7 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
         ',' +
         long.toString() +
         ',' +
-        FavoriteLocationDropDown.currentImage.toString();
+        SingleDropDown.currentImage.toString();
     print('Place Name $placeName => $placePosition Captured.');
     await prefs.setString(
       '$placeName',
@@ -96,7 +95,7 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
             ),
           ),
         ),
-        Container(child: FavoriteLocationDropDown()),
+        Container(child: SingleDropDown()),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -108,8 +107,8 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
                 child: Text("Save"),
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    _favoritePlaces(placeName, SearchFavoriteView.favoriteLat,
-                        SearchFavoriteView.favoriteLong);
+                    _favoritePlaces(placeName, SearchSingleMarker.favoriteLat,
+                        SearchSingleMarker.favoriteLong);
                     Navigator.pop(context);
                   }
                 },
@@ -122,10 +121,10 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
   }
 
   _searchedLocation(double lat, double long) {
-    if (SearchFavoriteView.isFavorite == true) {
-      lat = SearchFavoriteView.favoriteLat;
-      long = SearchFavoriteView.favoriteLong;
-      SearchFavoriteView.isFavorite = false;
+    if (SearchSingleMarker.isFavorite == true) {
+      lat = SearchSingleMarker.favoriteLat;
+      long = SearchSingleMarker.favoriteLong;
+      SearchSingleMarker.isFavorite = false;
       _searchView = Column(
         children: <Widget>[
           Expanded(
@@ -154,7 +153,7 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
                       builder: (ctx) => new Container(
                         child: FlatButton(
                             child:
-                                Image.asset(SearchFavoriteView.locationImage),
+                                Image.asset(SearchSingleMarker.locationImage),
                             onPressed: () {
                               Navigator.push(
                                   context,

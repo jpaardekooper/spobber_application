@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class FavoriteLocationDropDown extends StatefulWidget {
-  FavoriteLocationDropDown({Key key}) : super(key: key);
+class SingleDropDown extends StatefulWidget {
+  SingleDropDown({Key key}) : super(key: key);
   static String currentImage;
 
   @override
-  createState() => FavoriteLocationDropDownState();
+  createState() => _SingleDropDown();
 }
 
-class FavoriteLocationDropDownState extends State<FavoriteLocationDropDown> {
+class _SingleDropDown extends State<SingleDropDown> {
   final Map<String, String> favoriteLocationImage = {
     "SAP": "assets/SAP.png",
     "SIGMA": "assets/SIGMA.png",
@@ -25,7 +25,7 @@ class FavoriteLocationDropDownState extends State<FavoriteLocationDropDown> {
   @override
   void initState() {
     _dropDownMenuItems = getDropDownMenuItems();
-    FavoriteLocationDropDown.currentImage = _dropDownMenuItems[0].value;
+    SingleDropDown.currentImage = _dropDownMenuItems[0].value;
     super.initState();
   }
 
@@ -70,7 +70,7 @@ class FavoriteLocationDropDownState extends State<FavoriteLocationDropDown> {
           //new Container(),
           DropdownButtonHideUnderline(
             child: new DropdownButton(
-              value: FavoriteLocationDropDown.currentImage,
+              value: SingleDropDown.currentImage,
               items: _dropDownMenuItems,
               onChanged: changedDropDownItem,
               iconSize: 30.0,
@@ -83,7 +83,7 @@ class FavoriteLocationDropDownState extends State<FavoriteLocationDropDown> {
 
   void changedDropDownItem(String selectedCity) {
     setState(() {
-      FavoriteLocationDropDown.currentImage = selectedCity;
+      SingleDropDown.currentImage = selectedCity;
     });
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'SearchFavoriteView.dart';
+import 'SearchSingleMarker.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
@@ -42,18 +42,18 @@ class HistoryViewState extends State<HistoryView> {
                   onTap: () {
                     List<String> splitArr =
                         prefs.get(key).toString().split(",");
-                    SearchFavoriteView.favoriteLat =
+                    SearchSingleMarker.favoriteLat =
                         double.tryParse(splitArr[0]);
-                    SearchFavoriteView.favoriteLong =
+                    SearchSingleMarker.favoriteLong =
                         double.tryParse(splitArr[1]);
-                    SearchFavoriteView.locationImage = splitArr[2];
+                    SearchSingleMarker.locationImage = splitArr[2];
                     print(splitArr[2]);
-                    SearchFavoriteView.favoritePlaceName = key;
-                    SearchFavoriteView.isFavorite = true;
+                    SearchSingleMarker.favoritePlaceName = key;
+                    SearchSingleMarker.isFavorite = true;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SearchFavoriteView()),
+                          builder: (context) => SearchSingleMarker()),
                     );
                   },
                 ),

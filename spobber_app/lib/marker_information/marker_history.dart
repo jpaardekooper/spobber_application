@@ -1,7 +1,4 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class MarkerHistory extends StatefulWidget {
   @override
@@ -10,54 +7,66 @@ class MarkerHistory extends StatefulWidget {
 
 class _MarkerHistoryState extends State<MarkerHistory>
     with AutomaticKeepAliveClientMixin<MarkerHistory> {
-  @override
-  bool get wantKeepAlive => true;
-
-  var list = List();
-
-  _loadList() async {
-    final response =
-        await http.get("https://jsonplaceholder.typicode.com/posts/");
-    if (response.statusCode == 200) {
-      await new Future.delayed(const Duration(seconds: 1));
-      if (mounted) {
-        setState(() {
-          list = json.decode(response.body) as List;
-        });
-      }
-    } else {
-      throw Exception('Failed to load posts');
-    }
-  }
-
-  @override
-  void initState() {
-    _loadList();
-    super.initState();
-  }
+  final List<ListItem> items = List<ListItem>.generate(
+    1000,
+    (i) => i % 6 == 0
+        ? HeadingItem("Heading $i")
+        : MessageItem("Sender $i", "Message body $i"),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: list.length,
-      itemBuilder: (BuildContext context, int index) {
-        final data = list[index];
-        return ListTile(
-          contentPadding: EdgeInsets.all(10.0),
-          title: Text(data['title']),
-          subtitle: Text(
-            data['body'],
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      },
+    return Container(
+      child: ListView.builder(
+        // Let the ListView know how many items it needs to build.
+        itemCount: items.length,
+        // Provide a builder function. This is where the magic happens.
+        // Convert each item into a widget based on the type of item it is.
+        itemBuilder: (context, index) {
+          final item = items[index];
+
+          if (item is HeadingItem) {
+            return ListTile(
+              title: Text(
+                item.heading,
+                style: Theme.of(context).textTheme.headline,
+              ),
+            );
+          } else if (item is MessageItem) {
+            return ListTile(
+              title: Text(item.sender),
+              subtitle: Text(item.body),
+            );
+          }
+        },
+      ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
     print("Disposing second route");
     super.dispose();
   }
+}
+
+// The base class for the different types of items the list can contain.
+abstract class ListItem {}
+
+// A ListItem that contains data to display a heading.
+class HeadingItem implements ListItem {
+  final String heading;
+
+  HeadingItem(this.heading);
+}
+
+// A ListItem that contains data to display a message.
+class MessageItem implements ListItem {
+  final String sender;
+  final String body;
+
+  MessageItem(this.sender, this.body);
 }

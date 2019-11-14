@@ -7,7 +7,7 @@ import 'history_view.dart';
 import 'maps_view.dart';
 import 'ErrorView.dart';
 import 'SearchView.dart';
-import 'object_filter.dart';
+import 'DrawerFilter.dart';
 
 class TabsViewMaps extends StatefulWidget {
   static String tag = 'tabs';
@@ -71,13 +71,13 @@ class _TabsState extends State<TabsViewMaps> {
                 ),
               ]),
             ),
-            drawer:  ObjectFilter(),          
+            drawer:  DrawerFilter(),          
             body: TabBarView(
               //disable tabs scroll
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
                 // HomeView(),
-                MyLocationView(),
+                MapsView(),
                 SearchView(),
                 HistoryView(),
               ],
