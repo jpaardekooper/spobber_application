@@ -179,14 +179,14 @@ namespace SpobberApi.Statics
                 List<ShortRailObject> result = new List<ShortRailObject>();
                 SqlCommand command = _connection.CreateCommand();
 
-                command.CommandText = $"SELECT equipment, id, placement, latitude, longitude, source FROM dbo.object " +
+                command.CommandText = $"SELECT equipment, sap_id, placement, latitude, longitude FROM dbo.sap " +
                     $"WHERE equipment = {id};";
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        return new ShortRailObject(reader.GetInt32(0), reader.GetGuid(1).ToString(), "ES-Las", reader.GetString(2), reader.GetDouble(3), reader.GetDouble(4), reader.GetString(5));
+                        return new ShortRailObject(reader.GetInt32(0), reader.GetGuid(1).ToString(), "ES-Las", reader.GetString(2), reader.GetDouble(3), reader.GetDouble(4), "SAP");
                     }
                 }
                 return new ShortRailObject();
@@ -302,7 +302,7 @@ namespace SpobberApi.Statics
 
                 //Get images from user_image
                 SqlCommand userImageCommand = _connection.CreateCommand();
-                userImageCommand.CommandText = $"SELECT image_id, image_extension FROM dbo.user_image WHERE id = '{id}';";
+                userImageCommand.CommandText = $"SELECT image_id, image_extension FROM dbo.added_image WHERE ust02_id = '{id}';";
                 using (SqlDataReader reader = userImageCommand.ExecuteReader())
                 {
                     while (reader.Read())
