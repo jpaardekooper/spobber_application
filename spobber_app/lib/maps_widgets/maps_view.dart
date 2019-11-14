@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong/latlong.dart';
 //import 'package:geolocator/geolocator.dart';
 import 'package:flutter/services.dart';
@@ -101,7 +102,6 @@ class MyLocationViewState extends State<MyLocationView>
   ///=========================================[initState]=============================================
 
   initState() {
-
     super.initState();
     // if (user == null || lat == null) {
     //   ///checks GPS then call localize
@@ -280,19 +280,11 @@ class MyLocationViewState extends State<MyLocationView>
               child: InkWell(
                 splashColor: const Color(0xff004990),
                 onTap: () {
-                  setState(() {
-                    places.clear();
-                    //  markers.clear();
-                    // _markers.clear();
-                    // circles.clear();
-                    // polylines.clear();
-                  });
-
                   if (setDataSource.length <= 0) {
                     showToast("Selecteer minimaal één databron.",
                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
                   } else {
-                    //   searchNearby();
+                    searchNearby();
                     showToast("Data wordt ingeladen",
                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
                   }
@@ -316,24 +308,95 @@ class MyLocationViewState extends State<MyLocationView>
     Toast.show(msg, context, duration: duration, gravity: gravity);
   }
 
-  //   Future<void> searchNearby() async {
-  //   setState(() {
-  //    // places.clear();
-  //   //  _markers.clear();
-  //     //  markers.clear();
-  //   });
+  Future<void> searchNearby() async {
+    setState(() {
+      print(places.length);
+      print(markers.length);
+      print("kom ik hier");
+      places.clear();
+      markers.clear();
+      // circles.clear();
+      // polylines.clear();
+      print(places.length);
+      print(markers.length);
+    });
 
-  //   LoadMarkers loadmarkers = LoadMarkers(
-  //     northLatitude: _controller.northeast.latitude,
-  //     northLongitude: _visibleRegion.northeast.longitude,
-  //     bottomLatitude: _visibleRegion.southwest.latitude,
-  //     bottomLongitude: _visibleRegion.southwest.longitude,
-  //   );
-  //   loadmarkers.searchNearby().then((value) {
-  //     //   _handleResponse();
-  //     _initMarkers();
-  //   });
-  // }
+    LoadMarkers loadmarkers = LoadMarkers(
+        northLatitude: mapController.bounds.north,
+        northLongitude: mapController.bounds.east,
+        bottomLatitude: mapController.bounds.south,
+        bottomLongitude: mapController.bounds.west);
+    loadmarkers.searchNearby().then((value) {
+      //   _handleResponse();
+      _initMarkers();
+    });
+  }
+
+  void _initMarkers() async {
+    for (PlaceResponse markerLocation in places) {
+      //if there is no image found and
+      if (markerLocation.source == "SAP") {
+        markers.add(
+          Marker(
+            anchorPos: AnchorPos.align(AnchorAlign.center),
+            width: 30,
+            height: 30,
+            point: LatLng(markerLocation.latitude, markerLocation.longitude),
+            builder: (ctx) => IconButton(
+              icon: Icon(
+                Icons.close,
+                color: Colors.yellow,
+              ),
+              onPressed: () {
+                print("u pressed me");
+              },
+            ),
+          ),
+        );
+      }
+      if (markerLocation.source == "SIGMA") {
+        markers.add(
+          Marker(
+            anchorPos: AnchorPos.align(AnchorAlign.center),
+            width: 30,
+            height: 30,
+            point: LatLng(markerLocation.latitude, markerLocation.longitude),
+            builder: (ctx) => IconButton(
+              icon: Icon(
+                Icons.close,
+                color: Colors.red,
+              ),
+              onPressed: () {
+                print("u pressed me");
+              },
+            ),
+          ),
+        );
+      }
+      if (markerLocation.source == "UST02") {
+        markers.add(
+          Marker(
+            anchorPos: AnchorPos.align(AnchorAlign.center),
+            width: 30,
+            height: 30,
+            point: LatLng(markerLocation.latitude, markerLocation.longitude),
+            builder: (ctx) => IconButton(
+              icon: Icon(
+                Icons.close,
+                color: Colors.blue,
+              ),
+              onPressed: () {
+                print("u pressed me");
+              },
+            ),
+          ),
+        );
+      }
+    }
+    setState(() {
+      markers = markers = List.from(markers);
+    });
+  }
 
   Widget _changeSourceFilter() {
     return Padding(
@@ -445,7 +508,7 @@ class MyLocationViewState extends State<MyLocationView>
     );
   }
 
-
+  List<Marker> markers = [];
 
   ///to show a snackBar after copy
   final GlobalKey<ScaffoldState> mykey = new GlobalKey<ScaffoldState>();
@@ -469,10 +532,13 @@ class MyLocationViewState extends State<MyLocationView>
             options: new MapOptions(
               center: new LatLng(lat, long),
               zoom: _inZoom,
-              maxZoom: 20,
+              maxZoom: 21,
               minZoom: 8,
               swPanBoundary: LatLng(50.74753, 2.992192),
               nePanBoundary: LatLng(54.01786, 7.230455),
+              plugins: [
+                MarkerClusterPlugin(),
+              ],
             ),
             layers: [
               new TileLayerOptions(
@@ -509,7 +575,28 @@ class MyLocationViewState extends State<MyLocationView>
                   ),
                 ],
               ),
-         
+              MarkerClusterLayerOptions(
+                maxClusterRadius: 130,
+                size: Size(40, 40),
+                anchor: AnchorPos.align(AnchorAlign.center),
+                fitBoundsOptions: FitBoundsOptions(
+                  padding: EdgeInsets.all(50),
+                ),
+                markers: markers,
+                polygonOptions: PolygonOptions(
+                    borderColor: Colors.blueAccent,
+                    color: Colors.black12,
+                    borderStrokeWidth: 3),
+                builder: (context, markers) {
+                  return FloatingActionButton(
+                    heroTag: Text("test"),
+                    child: Text(markers.length.toString()),
+                    onPressed: () {
+                      print("cluster marker");
+                    },
+                  );
+                },
+              ),
             ],
           ),
         );

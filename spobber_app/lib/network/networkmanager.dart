@@ -110,10 +110,12 @@ Future<List<PlaceResponse>> loadMarkers(List<String> dataSources, String url) as
   for (int i = 0; i < dataSources.length; i++) {
     url += dataSources[i] + ",";
   }
+   print(url);
   Map<String, String> data = {
     "username": _username,
     "token": _token
   };
+ 
   Response response = await get(url, headers: data);
 
   if (response.statusCode == 200) {
