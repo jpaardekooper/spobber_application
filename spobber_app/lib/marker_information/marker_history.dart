@@ -6,7 +6,7 @@ class MarkerHistory extends StatefulWidget {
 }
 
 class _MarkerHistoryState extends State<MarkerHistory>
-    with AutomaticKeepAliveClientMixin<MarkerHistory> {
+   {
   final List<ListItem> items = List<ListItem>.generate(
     1000,
     (i) => i % 6 == 0
@@ -38,13 +38,11 @@ class _MarkerHistoryState extends State<MarkerHistory>
               subtitle: Text(item.body),
             );
           }
+          else return CircularProgressIndicator();
         },
       ),
     );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
+  }  
 
   @override
   void dispose() {

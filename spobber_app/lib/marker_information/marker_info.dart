@@ -586,7 +586,7 @@ class _MarkerInfoState extends State<MarkerInfo>
     // loadStatusList();
     // loadTypeList();
 
-    if (markerDetailandInformation.length <= 0) {
+    if (markerDetailandInformation.isEmpty) {
       print(markerDetailandInformation.length);
       return Center(child: CircularProgressIndicator());
     } else {
