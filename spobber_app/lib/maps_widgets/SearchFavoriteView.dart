@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:spobber_app/marker_information/marker_template.dart';
 import '../fix/bottom_sheet_fix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'history_view.dart';
@@ -16,7 +17,6 @@ class SearchFavoriteView extends StatefulWidget {
   static String favoritePlaceName = "Favorite Place";
   static String locationImage;
 
-
   @override
   _SearchFavoriteViewState createState() => _SearchFavoriteViewState(lat, long);
 }
@@ -24,20 +24,19 @@ class SearchFavoriteView extends StatefulWidget {
 class _SearchFavoriteViewState extends State<SearchFavoriteView> {
   //changes after declaring the desired location
   Widget _searchView;
-  double lat ;
-  double long ;
+  double lat;
+  double long;
   String placeName = SearchFavoriteView.favoritePlaceName;
   String placePosition = "";
   final myController = TextEditingController();
   final favoritePlaceController = TextEditingController();
-
 
   // Constructor
   _SearchFavoriteViewState(double long, double lat) {
     this.lat = lat;
     this.long = long;
   }
-  _favoritePlaces(String oldPlaceName,double lat ,double long) async {
+  _favoritePlaces(String oldPlaceName, double lat, double long) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     /// get the favorite position then added to prefs
@@ -54,14 +53,15 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
       '$placeName',
       '$placePosition',
     );
-    if(oldPlaceName!=placeName) {
+    if (oldPlaceName != placeName) {
       ///remove old record
-      prefs.remove( oldPlaceName );
+      prefs.remove(oldPlaceName);
     }
   }
+
   //declaring Bottom sheet widget
   Widget buildSheetLogin(BuildContext context) {
-    favoritePlaceController.text=placeName;
+    favoritePlaceController.text = placeName;
     return new Container(
       child: Wrap(children: <Widget>[
         Container(
@@ -71,24 +71,26 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
             key: _formKey,
             child: TextFormField(
               controller: favoritePlaceController,
-              validator: (String val){
-                if(val.length==0){
+              validator: (String val) {
+                if (val.length == 0) {
                   return 'Empty Name';
                 }
-                return null ;
+                return null;
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black)),
+
                 /// focused border color (erasing theme default color [teal])
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     borderSide: BorderSide(color: Colors.black)),
-                      /// Display Old PlaceName Value
-                     labelText: "$placeName",
+
+                /// Display Old PlaceName Value
+                labelText: "$placeName",
                 prefixIcon: Icon(
                   Icons.save_alt,
-                  color: Colors.teal,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
@@ -101,15 +103,15 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: RaisedButton(
-                color: Colors.teal,
+                color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
                 child: Text("Save"),
                 onPressed: () {
-    if (_formKey.currentState.validate()) {
-      _favoritePlaces( placeName, SearchFavoriteView.favoriteLat,
-          SearchFavoriteView.favoriteLong );
-      Navigator.pop( context );
-    }
+                  if (_formKey.currentState.validate()) {
+                    _favoritePlaces(placeName, SearchFavoriteView.favoriteLat,
+                        SearchFavoriteView.favoriteLong);
+                    Navigator.pop(context);
+                  }
                 },
               ),
             ),
@@ -118,6 +120,7 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
       ]),
     );
   }
+
   _searchedLocation(double lat, double long) {
     if (SearchFavoriteView.isFavorite == true) {
       lat = SearchFavoriteView.favoriteLat;
@@ -149,15 +152,27 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
                       height: 60.0,
                       point: new LatLng(lat, long),
                       builder: (ctx) => new Container(
-
                         child: FlatButton(
-                            child: Image.asset(
-                                SearchFavoriteView.locationImage ),
-                            onPressed: null ),
+                            child:
+                                Image.asset(SearchFavoriteView.locationImage),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MarkerTemplate(
+                                      type: "type",
+                                      objectUri: "https://spobber.azurewebsites.net/api/objects/$placeName",
+                                      id: placeName.toString(),
+                                      secretId: placeName.toString(),
+                                    ),
+                                  ),
+                                );
+                            }),
                         /* decoration: new BoxDecoration(
                             borderRadius: new BorderRadius.circular(100.0),
                             color: Colors.blue[100].withOpacity(0.7),
-                          )*/ ),
+                          )*/
+                      ),
                     ),
                   ],
                 ),
@@ -169,24 +184,22 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
     }
     return _searchView;
   }
+
   final _formKey = GlobalKey<FormState>();
   @override
-
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      theme: new ThemeData(primarySwatch: Colors.teal),
-      title: 'Home',
-      home: Scaffold(
+    return  Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,        
         appBar: AppBar(
           automaticallyImplyLeading: true,
           centerTitle: true,
-          title: Text(placeName),
+          title: Text("Marker $placeName"),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context, false),
           ),
         ),
-        drawer: HistoryView(),
+        //  drawer: HistoryView(),
         body: _searchedLocation(this.lat, this.long),
         floatingActionButton: FloatingActionButton.extended(
           heroTag: "btn1",
@@ -202,7 +215,7 @@ class _SearchFavoriteViewState extends State<SearchFavoriteView> {
           icon: Icon(Icons.edit),
           label: Text("Edit"),
         ),
-      ),
-    );
+      );
+    
   }
 }

@@ -124,10 +124,10 @@ class MyLocationViewState extends State<MyLocationView>
     _controller.dispose();
   }
 
-  _moveCamera() {
-    isMoving = true;
-    mapController.move(LatLng(lat, long), _inZoom);
-    icons[0] = Icons.gps_fixed;
+  _moveCamera(double lati, double longi) {
+    //   isMoving = true;
+    mapController.move(LatLng(lati, longi), 24);
+    // icons[0] = Icons.gps_fixed;
   }
 
   // String positionName() {
@@ -195,18 +195,34 @@ class MyLocationViewState extends State<MyLocationView>
   //   });
   // }
 
-  _favoritePlaces() async {
+  _favoritePlaces(double lat, double long, String id, String source) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    var imageData;
+    print(source);
+    if (source == "SAP") {
+      imageData = "assets/SAP.png";
+    } else if (source == "SIGMA") {
+      imageData = "assets/SIGMA.png";
+      print(imageData);
+    } else if (source == "UST02") {
+      imageData = "assets/UST02.png";
+    } else {
+      return;
+    }
+    print(imageData);
 
     /// get the favorite position then added to prefs
-    var placeName = favoritePlaceController.text;
+    //var placeName = favoritePlaceController.text;
+    var placeName = id;
 
     ///convert position to string and concat it
     var placePosition = lat.toString() +
         ',' +
         long.toString() +
         ',' +
-        FavoriteLocationDropDown.currentImage.toString();
+        //FavoriteLocationDropDown.currentImage.toString();
+        imageData;
+
     print('Place Name $placeName => $placePosition Captured.');
     await prefs.setString(
       '$placeName',
@@ -216,54 +232,54 @@ class MyLocationViewState extends State<MyLocationView>
   }
 
   //declaring Bottom sheet widget
-  Widget buildSheetLogin(BuildContext context) {
-    return new Container(
-      color: Colors.white,
-      child: Wrap(children: <Widget>[
-        Container(
-          padding: new EdgeInsets.only(left: 10.0, top: 10.0),
-          width: MediaQuery.of(context).size.width / 1.7,
-          child: TextFormField(
-            controller: favoritePlaceController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
+  // Widget buildSheetLogin(BuildContext context) {
+  //   return new Container(
+  //     color: Colors.white,
+  //     child: Wrap(children: <Widget>[
+  //       Container(
+  //         padding: new EdgeInsets.only(left: 10.0, top: 10.0),
+  //         width: MediaQuery.of(context).size.width / 1.7,
+  //         child: TextFormField(
+  //           controller: favoritePlaceController,
+  //           decoration: InputDecoration(
+  //             border: OutlineInputBorder(
+  //               borderSide: BorderSide(color: Colors.black),
+  //             ),
 
-              /// focused border color (erasing theme default color [teal])
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: Colors.black)),
-              labelText: "Place name",
-              hintText: "Enter Place Name",
-              prefixIcon: Icon(
-                Icons.save_alt,
-                color: Colors.teal,
-              ),
-            ),
-          ),
-        ),
-        Container(child: FavoriteLocationDropDown()),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: RaisedButton(
-                color: Colors.teal,
-                textColor: Colors.white,
-                child: Text("Save"),
-                onPressed: () {
-                  _favoritePlaces();
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
-        ),
-      ]),
-    );
-  }
+  //             /// focused border color (erasing theme default color [teal])
+  //             focusedBorder: OutlineInputBorder(
+  //                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
+  //                 borderSide: BorderSide(color: Colors.black)),
+  //             labelText: "Place name",
+  //             hintText: "Enter Place Name",
+  //             prefixIcon: Icon(
+  //               Icons.save_alt,
+  //               color: Colors.teal,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //       Container(child: FavoriteLocationDropDown()),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.end,
+  //         children: <Widget>[
+  //           Padding(
+  //             padding: const EdgeInsets.only(right: 8.0),
+  //             child: RaisedButton(
+  //               color: Colors.teal,
+  //               textColor: Colors.white,
+  //               child: Text("Save"),
+  //               onPressed: () {
+  //                 // _favoritePlaces();
+  //                 Navigator.pop(context);
+  //               },
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ]),
+  //   );
+  // }
 
   Widget _search() {
     return Padding(
@@ -344,13 +360,19 @@ class MyLocationViewState extends State<MyLocationView>
                 color: Colors.yellow,
               ),
               onPressed: () {
+                _favoritePlaces(
+                    markerLocation.latitude,
+                    markerLocation.longitude,
+                    markerLocation.id.toString(),
+                    markerLocation.source);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => MarkerTemplate(
                       type: markerLocation.type,
                       objectUri: markerLocation.objectUri,
-                      id: markerLocation.id,
+                      id: markerLocation.id.toString(),
                       secretId: markerLocation.secretId,
                     ),
                   ),
@@ -373,13 +395,19 @@ class MyLocationViewState extends State<MyLocationView>
                 color: Colors.red,
               ),
               onPressed: () {
-                  Navigator.push(
+                _favoritePlaces(
+                    markerLocation.latitude,
+                    markerLocation.longitude,
+                    markerLocation.id.toString(),
+                    markerLocation.source);
+
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => MarkerTemplate(
                       type: markerLocation.type,
                       objectUri: markerLocation.objectUri,
-                      id: markerLocation.id,
+                      id: markerLocation.id.toString(),
                       secretId: markerLocation.secretId,
                     ),
                   ),
@@ -402,13 +430,19 @@ class MyLocationViewState extends State<MyLocationView>
                 color: Colors.blue,
               ),
               onPressed: () {
-                 Navigator.push(
+                _favoritePlaces(
+                    markerLocation.latitude,
+                    markerLocation.longitude,
+                    markerLocation.id.toString(),
+                    markerLocation.source);
+
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => MarkerTemplate(
                       type: markerLocation.type,
                       objectUri: markerLocation.objectUri,
-                      id: markerLocation.id,
+                      id: markerLocation.id.toString(),
                       secretId: markerLocation.secretId,
                     ),
                   ),
@@ -602,19 +636,18 @@ class MyLocationViewState extends State<MyLocationView>
                 ],
               ),
               MarkerClusterLayerOptions(
-                
                 maxClusterRadius: 80,
                 zoomToBoundsOnClick: true,
-                centerMarkerOnClick: true,              
-           showPolygon: false,
-         //  spiderfySpiralDistanceMultiplier: 500,
-                
+                centerMarkerOnClick: true,
+                showPolygon: false,
+                //  spiderfySpiralDistanceMultiplier: 500,
+
                 size: Size(40, 40),
                 anchor: AnchorPos.align(AnchorAlign.center),
                 fitBoundsOptions: FitBoundsOptions(
                   padding: EdgeInsets.all(8),
                 ),
-                markers: markers,               
+                markers: markers,
                 builder: (context, markers) {
                   return Container(
                     width: 50, height: 50,
@@ -732,7 +765,7 @@ class MyLocationViewState extends State<MyLocationView>
                         mapController.move(LatLng(lat, long), _inZoom);
                         _showSnackBar("Camera Lock Enabled!");
                       } else {
-                        _showSnackBar("Couldn't get your Position!");
+                        _showSnackBar("Locatie kon niet worden vastgesteld!");
                       }
                     } else {
                       setState(() {
@@ -744,17 +777,18 @@ class MyLocationViewState extends State<MyLocationView>
                     }
 
                     ///OnPress Favorite Button
-                  } else if (index == 1) {
-                    // Calling bottom sheet Widget
-                    showModalBottomSheetApp(
-                        context: context,
-                        builder: (builder) {
-                          return buildSheetLogin(context);
-                        });
-                  }
+                  } 
+                  // else if (index == 1) {
+                  //   // Calling bottom sheet Widget
+                  //   showModalBottomSheetApp(
+                  //       context: context,
+                  //       builder: (builder) {
+                  //         return buildSheetLogin(context);
+                  //       });
+                  // }
 
                   ///OnPress CopyPosition button
-                  else if (index == 2) {
+                  else if (index == 1) {
                     ///Copy Current Position
                     Clipboard.setData(new ClipboardData(text: "$lat,$long"));
                     _showSnackBar("Location Copied!");
@@ -790,6 +824,56 @@ class MyLocationViewState extends State<MyLocationView>
             ),
           ),
       ),
+      bottomNavigationBar: GestureDetector(
+        onTap: () {
+          if (places.length <= 0 || places.length > 30) {
+            return;
+          } else {
+            print(
+                "Locatie van het drukken ${userLocation.latitude}, ${userLocation.longitude} ");
+            showBottomSheet<void>(
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (BuildContext context) {
+                return BottomSheetSwitch(
+                  //places: places,
+                  latitude: userLocation.latitude,
+                  longitude: userLocation.longitude,
+                  gotoLocation: _moveCamera,
+                );
+              },
+            );
+          }
+        },
+        child: BottomAppBar(
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            children: <Widget>[
+              IconButton(
+                  icon: places.length <= 0 || places.length > 30
+                      ? Icon(Icons.not_listed_location)
+                      : Icon(Icons.touch_app),
+                  onPressed: () {}),
+              bottomApptext(),
+            ],
+          ),
+        ),
+      ),
     );
+  }
+
+  Widget bottomApptext() {
+    Text text;
+    if (places.length <= 0) {
+      text = Text("Er zijn geen objecten gevonden klik op zoeken");
+    } else {
+      text = Text(
+        "Er zijn ${places.length.toString()} objecten gevonden",
+        textAlign: TextAlign.center,
+      );
+    }
+    return text;
   }
 }

@@ -442,44 +442,44 @@
 //                 ],
 //               ),
 //       ),
-//       bottomNavigationBar: GestureDetector(
-//         onTap: () {
-//           if (places.length <= 0 || places.length > 30) {
-//             return;
-//           } else {
-//             print(
-//                 "Locatie van het drukken ${userLocation.latitude}, ${userLocation.longitude} ");
-//             showModalBottomSheet<void>(
-//               context: context,
-//               builder: (BuildContext context) {
-//                 return BottomSheetSwitch(
-//                   //places: places,
-//                   latitude: userLocation.latitude,
-//                   longitude: userLocation.longitude,
-//                   gotoLocation: gotoLocation,
-//                 );
-//               },
-//             );
-//           }
-//         },
-//         child: BottomAppBar(
-//           child: new Row(
-//             mainAxisSize: MainAxisSize.max,
-//             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // bottomNavigationBar: GestureDetector(
+      //   onTap: () {
+      //     if (places.length <= 0 || places.length > 30) {
+      //       return;
+      //     } else {
+      //       print(
+      //           "Locatie van het drukken ${userLocation.latitude}, ${userLocation.longitude} ");
+      //       showModalBottomSheet<void>(
+      //         context: context,
+      //         builder: (BuildContext context) {
+      //           return BottomSheetSwitch(
+      //             //places: places,
+      //             latitude: userLocation.latitude,
+      //             longitude: userLocation.longitude,
+      //             gotoLocation: gotoLocation,
+      //           );
+      //         },
+      //       );
+      //     }
+      //   },
+      //   child: BottomAppBar(
+      //     child: new Row(
+      //       mainAxisSize: MainAxisSize.max,
+      //       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-//             children: <Widget>[
-//               IconButton(
-//                   icon: places.length <= 0
-//                       ? Icon(Icons.not_listed_location)
-//                       : Icon(Icons.touch_app),
-//                   onPressed: () {}),
+      //       children: <Widget>[
+      //         IconButton(
+      //             icon: places.length <= 0
+      //                 ? Icon(Icons.not_listed_location)
+      //                 : Icon(Icons.touch_app),
+      //             onPressed: () {}),
           
-//                bottomApptext(),
+      //          bottomApptext(),
               
-//             ],
-//           ),
-//         ),
-//       ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
 //     );
 //   }
 //   // }

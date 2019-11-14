@@ -5,7 +5,7 @@ import '../gridview/gridview_demo.dart';
 
 class MarkerTemplate extends StatelessWidget {
   final String type;
-  final int id;
+  final String id;
   final String secretId;
   final String objectUri;
 

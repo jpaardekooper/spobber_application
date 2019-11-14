@@ -119,7 +119,7 @@ class HistoryViewState extends State<HistoryView> {
               color: Colors.redAccent,
               size: 32,
             ),
-            title: Text("Delete All "),
+            title: Text("Verwijder geschiedenis"),
             onTap: () {
               showDialog(
                   context: context,

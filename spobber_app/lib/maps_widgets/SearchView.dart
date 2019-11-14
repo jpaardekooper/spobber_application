@@ -64,6 +64,7 @@ class _SearchViewState extends State<SearchView> {
           padding: new EdgeInsets.only(left: 10.0, top: 10.0),
           width: MediaQuery.of(context).size.width / 1.7,
           child: TextFormField(
+             keyboardType: TextInputType.number,
             controller: favoritePlaceController,
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -127,6 +128,7 @@ class _SearchViewState extends State<SearchView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   TextFormField(
+                     keyboardType: TextInputType.number,
                     cursorColor: Colors.black,
                     controller: myController,
                     decoration: InputDecoration(
@@ -145,7 +147,7 @@ class _SearchViewState extends State<SearchView> {
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                           borderSide: BorderSide(color: Colors.black)),
                       errorText: _empty ? 'Invalid Position' : null,
-                      hintText: 'Enter Latitude,Longitude',
+                      hintText: 'Enter Latitude,Longitude or ID',
                       hintStyle: TextStyle(fontSize: 20.0, color: Colors.grey),
                     ),
                     style: TextStyle(fontSize: 20.00, color: Colors.black),
@@ -250,7 +252,7 @@ class _SearchViewState extends State<SearchView> {
                                     builder: (context) => MarkerTemplate(
                                       type: singleMarker[0].type,
                                       objectUri: singleMarker[0].objectUri,
-                                      id: singleMarker[0].id,
+                                      id: singleMarker[0].id.toString(),
                                       secretId: singleMarker[0].secretId,
                                     ),
                                   ),

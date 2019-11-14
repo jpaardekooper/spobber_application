@@ -10,6 +10,9 @@ class FavoriteLocationDropDown extends StatefulWidget {
 
 class FavoriteLocationDropDownState extends State<FavoriteLocationDropDown> {
   final Map<String, String> favoriteLocationImage = {
+    "SAP": "assets/SAP.png",
+    "SIGMA": "assets/SIGMA.png",
+    "UST02": "assets/UST02.png",
     "House": "assets/images/house.png",
     "Store": "assets/images/store.png",
     "Hotel": "assets/images/hotel.png",
