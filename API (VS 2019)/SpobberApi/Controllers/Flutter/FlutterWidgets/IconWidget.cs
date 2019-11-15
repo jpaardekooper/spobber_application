@@ -11,7 +11,7 @@ namespace SpobberApi.Controllers.Flutter.FlutterWidgets
         public string Color { get; set; } = "#A9A9A9";
 
         public string SemanticLabel { get; set; } = string.Empty;
-        public double Size { get; set; } = 1.0;
+        public double Size { get; set; } = 50.0;
 
         public TextDirections TextDirection { get; set; } = TextDirections.LTR;
 

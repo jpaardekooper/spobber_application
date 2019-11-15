@@ -21,7 +21,7 @@ namespace SpobberApi.Controllers.Flutter
 
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(parser.ParseObject(FlutterParser.ContainerTypes.COLUMN))
+                Content = new StringContent(parser.ParseObject(FlutterParser.ContainerTypes.LISTVIEW))
             };
             return response;
         }

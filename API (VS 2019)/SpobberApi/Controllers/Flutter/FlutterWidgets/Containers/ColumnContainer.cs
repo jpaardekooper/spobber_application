@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SpobberApi.Controllers.Flutter.FlutterWidgets
 {
-    public class Column : Container
+    public class ColumnContainer : Container
     {
         public CrossAxisAlignments CrossAxisAlignment { get; set; } = CrossAxisAlignments.STRETCH;
 

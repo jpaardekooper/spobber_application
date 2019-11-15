@@ -28,15 +28,19 @@ namespace SpobberApi.Controllers.Flutter
             switch (containerType)
             {
                 case ContainerTypes.COLUMN:
-                    container = new Column();
+                    container = new ColumnContainer();
                     break;
                 case ContainerTypes.ROW:
-                    container = new Row();
+                    container = new RowContainer();
+                    break;
+                case ContainerTypes.LISTVIEW:
+                    container = new ListViewContainer();
                     break;
                 default:
-                    container = new Column();
+                    container = new ListViewContainer();
                     break;
             }
+            
             PropertyInfo[] properties = objectType.GetProperties();
             foreach (PropertyInfo property in properties)
             {
@@ -46,13 +50,10 @@ namespace SpobberApi.Controllers.Flutter
                     switch (name)
                     {
                         case "String":
-                            Row row = new Row();
-                            row.Children.Add(new IconWidget());
-                            row.Children.Add(new TextWidget((string)property.GetValue(parseObject)));
-                            container.Children.Add(row);
+                            container.Children.Add(new CardWidget(new ListTileWidget("content_paste", property.Name, property.GetValue(parseObject).ToString())));
                             break;
                         case "Int32":
-                            container.Children.Add(new TextWidget(property.GetValue(parseObject).ToString()));
+                            container.Children.Add(new CardWidget(new ListTileWidget("content_paste", property.Name, property.GetValue(parseObject).ToString())));
                             break;
                     }
                 }
@@ -63,8 +64,9 @@ namespace SpobberApi.Controllers.Flutter
 
         public enum ContainerTypes
         {
-            COLUMN  =   0,
-            ROW     =   1
+            COLUMN      =   0,
+            ROW         =   1,
+            LISTVIEW    =   2
         }
     }
 }

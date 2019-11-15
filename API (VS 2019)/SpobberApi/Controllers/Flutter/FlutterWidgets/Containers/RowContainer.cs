@@ -1,6 +1,6 @@
 ﻿namespace SpobberApi.Controllers.Flutter.FlutterWidgets
 {
-    public class Row : Container
+    public class RowContainer : Container
     {
         public CrossAxisAlignments CrossAxisAlignment { get; set; } = CrossAxisAlignments.CENTER;
 

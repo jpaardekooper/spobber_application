@@ -353,10 +353,13 @@
     <Compile Include="Controllers\Flutter\FlutterController.cs" />
     <Compile Include="Controllers\Flutter\FlutterParser.cs" />
     <Compile Include="Controllers\Flutter\FlutterWidgets\Base\Container.cs" />
-    <Compile Include="Controllers\Flutter\FlutterWidgets\Containers\Column.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\CardWidget.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\Containers\ColumnContainer.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\Containers\ListViewContainer.cs" />
     <Compile Include="Controllers\Flutter\FlutterWidgets\IconWidget.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\ListTileWidget.cs" />
     <Compile Include="Controllers\Flutter\FlutterWidgets\RaisedButtonWidget.cs" />
-    <Compile Include="Controllers\Flutter\FlutterWidgets\Containers\Row.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\Containers\RowContainer.cs" />
     <Compile Include="Controllers\Flutter\FlutterWidgets\TextWidget.cs" />
     <Compile Include="Controllers\Flutter\FlutterWidgets\Base\Widget.cs" />
     <Compile Include="Controllers\Flutter\FlutterWidgets\WidgetEnums.cs" />
@@ -387,10 +390,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\spobber - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\spobber - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\SpobberApi - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\SpobberApi20190919041857 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\spobberdevelopment - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

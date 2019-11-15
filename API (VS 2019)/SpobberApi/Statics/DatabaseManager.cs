@@ -78,11 +78,14 @@ namespace SpobberApi.Statics
                 _connection.Open();
                 string returnValue = string.Empty;
 
+                if (GetSource(objectId) != "UST02")
+                    return string.Empty;
+
                 SqlCommand command = _connection.CreateCommand();
                 command.CommandText = $"INSERT INTO dbo.added_image (ust02_id, image_extension, year) " +
                     $"OUTPUT Inserted.image_id " +
                     $"VALUES ('{objectId}', " +
-                    $"'{imageExtension}', {DateTime.Now.Year});";
+                    $"'{imageExtension}', {Convert.ToInt16(DateTime.Now.Year)});";
 
                 returnValue = ((Guid)command.ExecuteScalar()).ToString();
                 return returnValue;

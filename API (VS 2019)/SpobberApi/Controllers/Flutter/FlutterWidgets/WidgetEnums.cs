@@ -64,4 +64,10 @@ namespace SpobberApi.Controllers.Flutter.FlutterWidgets
         DOWN = 0,
         UP = 1
     }
+
+    public enum Axises
+    {
+        VERTICAL,
+        HORIZONTAL
+    }
 }
