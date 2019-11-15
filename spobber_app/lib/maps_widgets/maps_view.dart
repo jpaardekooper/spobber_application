@@ -33,7 +33,7 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
 
   /// Icons List For FloatActionButtons
   List<IconData> icons = [
-    Icons.gps_fixed,  
+    Icons.gps_not_fixed,  
     Icons.content_copy,
   ];
 
@@ -562,8 +562,14 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
                   'accessToken':
                       'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
                   'id': '$mapType',
-                },              
+                  
+                }, 
+                keepBuffer: 10000,   
+               // placeholderImage: NetworkImage('https://www.google.com/maps?q=google+maps+api&um=1&ie=UTF-8&sa=X&ved=0ahUKEwiP96WDxezlAhVKblAKHTXCBzcQ_AUIEigB')    
+               tileProvider: CachedNetworkTileProvider(),
+               placeholderImage: NetworkImage('https://miro.medium.com/max/4064/1*qYUvh-EtES8dtgKiBRiLsA.png')      
               ),
+              
               new MarkerLayerOptions(
                 markers: [
                   new Marker(
