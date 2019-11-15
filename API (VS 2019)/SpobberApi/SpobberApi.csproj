@@ -350,6 +350,16 @@
     <Compile Include="Attributes\BasicAuthenticationAttribute.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\Flutter\FlutterController.cs" />
+    <Compile Include="Controllers\Flutter\FlutterParser.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\Base\Container.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\Containers\Column.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\IconWidget.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\RaisedButtonWidget.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\Containers\Row.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\TextWidget.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\Base\Widget.cs" />
+    <Compile Include="Controllers\Flutter\FlutterWidgets\WidgetEnums.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\MeasureController.cs" />
     <Compile Include="Controllers\ObjectsController.cs" />
