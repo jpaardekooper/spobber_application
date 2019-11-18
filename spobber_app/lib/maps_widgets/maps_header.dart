@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:spobber_app/tensorflow/tensorflow.dart';
 
 import '../helper/location_services.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,7 @@ class _TabsState extends State<TabsViewMaps> {
         // resizeToAvoidBottomPadding: false,
         key: _scaffoldKey,
         body: DefaultTabController(
-          length: 3,
+          length: 4,
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
@@ -69,6 +70,10 @@ class _TabsState extends State<TabsViewMaps> {
                   height: 70,
                   child: Tab(icon: Icon(Icons.history), text: 'Geschiedenis'),
                 ),
+                new Container(
+                  height: 70,
+                  child: Tab(icon: Icon(Icons.history), text: 'Tensorflow'),
+                ),
               ]),
             ),
             drawer:  DrawerFilter(),          
@@ -80,6 +85,7 @@ class _TabsState extends State<TabsViewMaps> {
                 MapsView(),
                 SearchView(),
                 HistoryView(),
+                TensorFlow(),
               ],
             ),
           ),
