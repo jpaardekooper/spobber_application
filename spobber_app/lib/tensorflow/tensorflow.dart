@@ -55,7 +55,6 @@ class TensorFlowState extends State<TensorFlow> {
         break;
       default:
         await recognizeImage(image);
-      // await recognizeImageBinary(image);
     }
 
     new FileImage(image)
@@ -190,15 +189,7 @@ class TensorFlowState extends State<TensorFlow> {
       imageStd: 255.0,
       numResultsPerClass: 1,
     );
-    // var imageBytes = (await rootBundle.load(image.path)).buffer;
-    // img.Image oriImage = img.decodeJpg(imageBytes.asUint8List());
-    // img.Image resizedImage = img.copyResize(oriImage, 416, 416);
-    // var recognitions = await Tflite.detectObjectOnBinary(
-    //   binary: imageToByteListFloat32(resizedImage, 416, 0.0, 255.0),
-    //   model: "YOLO",
-    //   threshold: 0.3,
-    //   numResultsPerClass: 1,
-    // );
+
     setState(() {
       _recognitions = recognitions;
     });
@@ -210,13 +201,7 @@ class TensorFlowState extends State<TensorFlow> {
       threshold: 0.4,
       numResultsPerClass: 5,
     );
-    // var imageBytes = (await rootBundle.load(image.path)).buffer;
-    // img.Image oriImage = img.decodeJpg(imageBytes.asUint8List());
-    // img.Image resizedImage = img.copyResize(oriImage, 300, 300);
-    // var recognitions = await Tflite.detectObjectOnBinary(
-    //   binary: imageToByteListUint8(resizedImage, 300),
-    //   numResultsPerClass: 1,
-    // );
+
     setState(() {
       _recognitions = recognitions;
     });
