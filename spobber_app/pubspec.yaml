@@ -34,7 +34,6 @@ dependencies:
   flutter_map_marker_cluster: ^0.2.3
   shared_preferences: ^0.5.4+5
   flutter_login: ^1.0.4
-  flutter_cache_manager: ^1.1.3
   tflite: any
   camera: ^0.5.6+3
   path_provider: ^1.4.2
@@ -73,18 +72,6 @@ flutter:
     - assets/result_data.png
     
     # Tensorflow
-    - assets/tensorflow/deeplabv3_257_mv_gpu.tflite
-    - assets/tensorflow/deeplabv3_257_mv_gpu.txt
-
-    - assets/tensorflow/mobilenet_v1_1.0_224.tflite
-    - assets/tensorflow/mobilenet_v1_1.0_224.txt
-
-    - assets/tensorflow/posenet_mv1_075_float_from_checkpoints.tflite
-
-    - assets/tensorflow/ssd_mobilenet.tflite
-    - assets/tensorflow/ssd_mobilenet.txt
-    
-    - assets/tensorflow/yolov2_tiny.tflite
-    - assets/tensorflow/yolov2_tiny.txt
+    - assets/tensorflow/
 
 # flutter pub run flutter_launcher_icons:main -f <your config file name here>
