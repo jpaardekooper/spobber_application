@@ -33,7 +33,7 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
 
   /// Icons List For FloatActionButtons
   List<IconData> icons = [
-    Icons.gps_not_fixed,  
+    Icons.gps_not_fixed,
     Icons.content_copy,
   ];
 
@@ -556,20 +556,17 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
             ),
             layers: [
               new TileLayerOptions(
-                urlTemplate: "https://api.tiles.mapbox.com/v4/"
-                    "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                urlTemplate:
+                    "https://atlas.microsoft.com/map/tile/png?api-version=1&layer=hybrid&style=main&tileSize=256&view=Auto&zoom={z}&x={x}&y={y}&subscription-key={subscriptionKey}",
                 additionalOptions: {
-                  'accessToken':
-                      'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
-                  'id': '$mapType',
-                  
-                }, 
-                keepBuffer: 10000,   
-               // placeholderImage: NetworkImage('https://www.google.com/maps?q=google+maps+api&um=1&ie=UTF-8&sa=X&ved=0ahUKEwiP96WDxezlAhVKblAKHTXCBzcQ_AUIEigB')    
-               tileProvider: CachedNetworkTileProvider(),
-               placeholderImage: NetworkImage('https://miro.medium.com/max/4064/1*qYUvh-EtES8dtgKiBRiLsA.png')      
+                  'subscriptionKey':
+                      't1riNaH3DwAFoz4mWTXc7AR62E3qUsgzWgfZsjY-NsI'
+                          ''
+                },
+                keepBuffer: 10000,
+                // placeholderImage: NetworkImage('https://www.google.com/maps?q=google+maps+api&um=1&ie=UTF-8&sa=X&ved=0ahUKEwiP96WDxezlAhVKblAKHTXCBzcQ_AUIEigB')
+                tileProvider: CachedNetworkTileProvider(),
               ),
-              
               new MarkerLayerOptions(
                 markers: [
                   new Marker(
@@ -600,12 +597,13 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
                 zoomToBoundsOnClick: true,
                 centerMarkerOnClick: true,
                 showPolygon: false,
-                //  spiderfySpiralDistanceMultiplier: 500,
+                spiderfySpiralDistanceMultiplier: 2,
 
                 size: Size(40, 40),
                 anchor: AnchorPos.align(AnchorAlign.center),
                 fitBoundsOptions: FitBoundsOptions(
                   padding: EdgeInsets.all(8),
+                  maxZoom: 20
                 ),
                 markers: markers,
                 builder: (context, markers) {
@@ -616,15 +614,12 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(100),
                     ),
                     // heroTag: Text("test"),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          markers.length.toString(),
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
+                    child: Center(
+                        child: Text(
+                      markers.length.toString(),
+                      style: TextStyle(color: Colors.white),
+                    )),
+
                     // onPressed: () {
                     //   print("cluster marker");
                     // },
@@ -653,12 +648,11 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
             ),
             layers: [
               new TileLayerOptions(
-                urlTemplate: "https://api.tiles.mapbox.com/v4/"
-                    "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                urlTemplate:
+                    "https://atlas.microsoft.com/map/tile/png?api-version=1&layer=basic&style=main&tileSize=256&view=Auto&zoom={z}&x={x}&y={y}&subscription-key={subscriptionKey}",
                 additionalOptions: {
-                  'accessToken':
-                      'pk.eyJ1IjoibG9hc3RoIiwiYSI6ImNrMm5icjVmbzAwZTczbWw5NXhldnNweHoifQ.kD3ajaJptOWa9pbRmbOIrg',
-                  'id': '$mapType',
+                  'subscriptionKey':
+                      't1riNaH3DwAFoz4mWTXc7AR62E3qUsgzWgfZsjY-NsI'
                 },
               ),
             ],
