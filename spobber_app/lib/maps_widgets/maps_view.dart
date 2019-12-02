@@ -546,7 +546,7 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
             options: new MapOptions(
               center: new LatLng(lat, long),
               zoom: _inZoom,
-              maxZoom: 20,
+              maxZoom: 19,
               minZoom: 8,
               swPanBoundary: LatLng(50.74753, 2.992192),
               nePanBoundary: LatLng(54.01786, 7.230455),
@@ -557,11 +557,12 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
             layers: [
               new TileLayerOptions(
                 urlTemplate:
-                    "https://atlas.microsoft.com/map/tile/png?api-version=1&layer=hybrid&style=main&tileSize=256&view=Auto&zoom={z}&x={x}&y={y}&subscription-key={subscriptionKey}",
+                 //   "https://atlas.microsoft.com/map/tile/png?api-version=1&layer=basic&style=main&tileSize=256&view=Auto&zoom={z}&x={x}&y={y}&subscription-key={subscriptionKey}",
+                     "https://atlas.microsoft.com/map/imagery/png?subscription-key={subscriptionKey}&api-version=1.0&style=satellite&zoom={z}&x={x}&y={y}",
                 additionalOptions: {
                   'subscriptionKey':
                       't1riNaH3DwAFoz4mWTXc7AR62E3qUsgzWgfZsjY-NsI'
-                          ''
+                    
                 },
                 keepBuffer: 10000,
                 // placeholderImage: NetworkImage('https://www.google.com/maps?q=google+maps+api&um=1&ie=UTF-8&sa=X&ved=0ahUKEwiP96WDxezlAhVKblAKHTXCBzcQ_AUIEigB')
