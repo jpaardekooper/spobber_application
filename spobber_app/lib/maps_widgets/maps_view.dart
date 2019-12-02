@@ -546,7 +546,7 @@ class MapsViewState extends State<MapsView> with TickerProviderStateMixin {
             options: new MapOptions(
               center: new LatLng(lat, long),
               zoom: _inZoom,
-              maxZoom: 23,
+              maxZoom: 20,
               minZoom: 8,
               swPanBoundary: LatLng(50.74753, 2.992192),
               nePanBoundary: LatLng(54.01786, 7.230455),
