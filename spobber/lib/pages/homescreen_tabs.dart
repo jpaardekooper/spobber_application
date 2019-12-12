@@ -34,37 +34,26 @@ class _TabsState extends State<TabsViewMaps> {
     return 
     StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,
-      child: 
+      child: SafeArea(
+      // appBar: AppBar(
+      //   title: Text("Clustering Example"),
+      // ),
+      child:  
       Scaffold(
-        resizeToAvoidBottomInset: false,
-        // resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,     
         key: _scaffoldKey,
         body: DefaultTabController(
           length: 3,
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text('Spobber'),
+              title: Text('Spobber', style: TextStyle(fontWeight: FontWeight.w700),),
               flexibleSpace: Container(
                 color: Theme.of(context).primaryColor,
-
-                // decoration: BoxDecoration(
-                //   // Box decoration takes a gradient
-                //   gradient: LinearGradient(
-                //     // Where the linear gradient begins and ends
-                //     begin: Alignment.topLeft,
-                //     end: Alignment.bottomRight,
-                //     // Add one stop for each color. Stops should increase from 0 to 1
-                //     stops: [0.5, 0.9],
-                //     colors: [
-                //       // Colors are easy thanks to Flutter's Colors class.
-                //       Color(0xff0066C6),
-                //       Theme.of(context).primaryColor,
-                //     ],
-                //   ),
-                // ),
               ),
-              bottom: TabBar(tabs: <Widget>[
+              bottom: TabBar(
+                indicatorColor: Colors.white,
+                tabs: <Widget>[
                 //Tab(icon: Icon(Icons.home), text: 'Home'),
                 new Container(
                   height: 70,
@@ -91,16 +80,13 @@ class _TabsState extends State<TabsViewMaps> {
               children: <Widget>[
                 // HomeView(),
                 MapView(),
-                MapView(),
-            
-            MapView(),
-            
-            
+                MapView(),            
+                MapView(),  
               ],
             ),
           ),
         ),
-      ), 
+      ),), 
     );
   }
 }

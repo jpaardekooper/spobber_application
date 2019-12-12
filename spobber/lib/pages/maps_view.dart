@@ -64,11 +64,7 @@ class _MapViewState extends State<MapView> {
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);
 
-    return SafeArea(
-      // appBar: AppBar(
-      //   title: Text("Clustering Example"),
-      // ),
-      child: Scaffold(
+    return Scaffold(
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: initialCameraPosition,
@@ -85,7 +81,7 @@ class _MapViewState extends State<MapView> {
             loadDataToMaps();
           },
         ),
-      ),
+      
     );
   }
 
