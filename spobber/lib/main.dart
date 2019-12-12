@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         //  primarySwatch: myColor,
         primaryColor: myColor,
       ),
-      home: Splash(),
+      home: TabsViewMaps(),
     );
   } 
 }

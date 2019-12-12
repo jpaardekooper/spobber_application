@@ -58,9 +58,11 @@ class ClusteringHelper {
 
   //Call when user stop to move or zoom the map
   Future<void> onMapIdle() async {
-  
+    if (list == null) {
+      return;
+    } else {
       updateMap();
-  
+    }
   }
 
   updateMap() {
@@ -149,7 +151,7 @@ class ClusteringHelper {
       List<AggregatedPoints> resultList,
       int level) {
     assert(() {
-      print("input list lenght: " + inputList.length.toString());
+      ///print("input list lenght: " + inputList.length.toString());
       return true;
     }());
 
@@ -179,7 +181,7 @@ class ClusteringHelper {
     List<AggregatedPoints> aggregation = await getAggregatedPoints(zoom);
 
     assert(() {
-      print("aggregation lenght: " + aggregation.length.toString());
+     // print("aggregation lenght: " + aggregation.length.toString());
       return true;
     }());
 

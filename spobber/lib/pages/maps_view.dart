@@ -8,18 +8,21 @@ import 'package:spobber/clustering/splash_bloc.dart';
 import '../clustering/aggregation_setup.dart';
 import '../clustering/clustering_helper.dart';
 import '../clustering/lat_lang_geohash.dart';
-import '../clustering/aggregated_points.dart';
+import 'package:provider/provider.dart';
+import 'package:spobber/network/location_services.dart';
 
-class HomeScreen extends StatefulWidget {
-List<LatLngAndGeohash> list;
+class MapView extends StatefulWidget {
+// List<LatLngAndGeohash> list;
 
-  HomeScreen({Key key, this.list}) : super(key: key);
+//   HomeScreen({this.list}) ;
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _MapViewState createState() => _MapViewState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MapViewState extends State<MapView> {
+  List<LatLngAndGeohash> list = new List<LatLngAndGeohash>();
+
   ClusteringHelper clusteringHelper;
   final CameraPosition initialCameraPosition =
       CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 0.0);
@@ -43,9 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    if (widget.list != null) {
-      initMemoryClustering();
-    }
+    initMemoryClustering();
 
     super.initState();
   }
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // For memory solution
   initMemoryClustering() {
     clusteringHelper = ClusteringHelper.forMemory(
-      list: widget.list,
+      list: list,
       updateMarkers: updateMarkers,
       aggregationSetup: AggregationSetup(markerSize: 150),
     );
@@ -61,29 +62,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Clustering Example"),
-      ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: initialCameraPosition,
-        markers: markers,
-        onCameraMove: (newPosition) =>
-            clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
-        onCameraIdle: clusteringHelper.onMapIdle,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child:
-            widget.list == null ? Icon(Icons.content_cut) : Icon(Icons.update),
-        onPressed: () async {
-          List<LatLngAndGeohash> fakeList =
-                          await SplashBloc().getListOfLatLngAndGeohash(context);
-      
-          clusteringHelper.list = fakeList;
-          clusteringHelper.updateMap();
-        },
+    var userLocation = Provider.of<UserLocation>(context);
+
+    return SafeArea(
+      // appBar: AppBar(
+      //   title: Text("Clustering Example"),
+      // ),
+      child: Scaffold(
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: initialCameraPosition,
+          markers: markers,
+          onCameraMove: (newPosition) =>
+              clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
+          onCameraIdle: clusteringHelper.onMapIdle,
+          myLocationButtonEnabled: true,
+          myLocationEnabled: true,
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.update),
+          onPressed: () {
+            loadDataToMaps();
+          },
+        ),
       ),
     );
+  }
+
+  loadDataToMaps() async {
+    List<LatLngAndGeohash> fakeList =
+        await SplashBloc().getListOfLatLngAndGeohash(context);
+
+    clusteringHelper.list = fakeList;
+    clusteringHelper.updateMap();
   }
 }
