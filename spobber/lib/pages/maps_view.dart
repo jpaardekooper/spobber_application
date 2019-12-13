@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/clustering/splash_bloc.dart';
 import 'package:spobber/data/global_variable.dart';
+import 'package:spobber/data/load_markers.dart';
 import 'package:spobber/pages/widgets/alertdialog_filter.dart';
 import 'package:spobber/pages/widgets/animated_fab.dart';
 import 'package:spobber/pages/widgets/bottom_modal.dart';
@@ -28,7 +29,6 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView>
     with AutomaticKeepAliveClientMixin<MapView> {
-
   @override
   bool get wantKeepAlive => true;
 
@@ -237,22 +237,26 @@ class _MapViewState extends State<MapView>
   @override
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);
-    return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            //creating the google maps app
-            createGoogleMapsMap(),
-            //changing map
-            _mapTypeCycler(),
-            //searching the data source
-            _search(),
-            //filter
-            _changeSourceFilter()
-          ],
-        ),
-        floatingActionButton: FancyFab(test: testthisfunc),
-        bottomNavigationBar: bottomNavigatorInformation(
-            userLocation.latitude, userLocation.longitude));
+    if (userLocation == null) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return Scaffold(
+          body: Stack(
+            children: <Widget>[
+              //creating the google maps app
+              createGoogleMapsMap(),
+              //changing map
+              _mapTypeCycler(),
+              //searching the data source
+              _search(),
+              //filter
+              _changeSourceFilter()
+            ],
+          ),
+          floatingActionButton: FancyFab(test: testthisfunc),
+          bottomNavigationBar: bottomNavigatorInformation(
+              userLocation.latitude, userLocation.longitude));
+    }
   }
 
   void testthisfunc() {
@@ -268,11 +272,11 @@ class _MapViewState extends State<MapView>
   Widget bottomNavigatorInformation(double lat, double long) {
     return GestureDetector(
       onTap: () {
-        if (places.length <= 0 || places.length > 30) {
+        if (clusteringHelper.list.length <= 0 ||
+            clusteringHelper.list.length > 30) {
           return;
         } else {
           print("Locatie van het drukken $lat, $long ");
-
           showBottomSheet<void>(
             context: context,
             backgroundColor: Colors.transparent,
@@ -318,11 +322,38 @@ class _MapViewState extends State<MapView>
     return text;
   }
 
+  LatLngBounds _visibleRegion;
+
   loadDataToMaps() async {
+    clusteringHelper.list.clear();
+    
+    final LatLngBounds visibleRegion =
+        await clusteringHelper.mapController.getVisibleRegion();
+
+    _visibleRegion = visibleRegion;    
+    print("setting visible region: $visibleRegion");
+
+
+    LoadMarkers loadmarkers = LoadMarkers(
+      northLatitude: _visibleRegion.northeast.latitude,
+      northLongitude: _visibleRegion.northeast.longitude,
+      bottomLatitude: _visibleRegion.southwest.latitude,
+      bottomLongitude: _visibleRegion.southwest.longitude,
+    );
+    
+    loadmarkers.searchNearby().then((value) {
+      loadThisDataSet();
+    });
+
+
+  }
+
+  loadThisDataSet() async{
     List<LatLngAndGeohash> fakeList =
         await SplashBloc().getListOfLatLngAndGeohash(context);
 
     clusteringHelper.list = fakeList;
     clusteringHelper.updateMap();
   }
+  
 }
