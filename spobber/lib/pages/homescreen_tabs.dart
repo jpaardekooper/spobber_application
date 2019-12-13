@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:spobber/network/location_services.dart';
 import 'package:provider/provider.dart';
 import 'history_view.dart';
@@ -11,7 +10,6 @@ import 'maps_view.dart';
 import 'widgets/error_view.dart';
 
 import 'widgets/drawer_filter.dart';
-
 
 class TabsViewMaps extends StatefulWidget {
   static String tag = 'tabs';
@@ -25,35 +23,29 @@ class _TabsState extends State<TabsViewMaps> {
     super.initState();
   }
 
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     ErrorWidget.builder = getErrorWidget;
-    return 
-    StreamProvider<UserLocation>(
+    return StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,
-      child: SafeArea(
-      // appBar: AppBar(
-      //   title: Text("Clustering Example"),
-      // ),
-      child:  
-      Scaffold(
-        resizeToAvoidBottomInset: false,     
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         body: DefaultTabController(
           length: 3,
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text('Spobber', style: TextStyle(fontWeight: FontWeight.w700),),
+              title: Text(
+                'Spobber',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
               flexibleSpace: Container(
                 color: Theme.of(context).primaryColor,
               ),
-              bottom: TabBar(
-                indicatorColor: Colors.white,
-                tabs: <Widget>[
+              bottom: TabBar(indicatorColor: Colors.white, tabs: <Widget>[
                 //Tab(icon: Icon(Icons.home), text: 'Home'),
                 new Container(
                   height: 70,
@@ -73,20 +65,20 @@ class _TabsState extends State<TabsViewMaps> {
                 // ),
               ]),
             ),
-            drawer:  DrawerFilter(),          
+            drawer: DrawerFilter(),
             body: TabBarView(
               //disable tabs scroll
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
                 // HomeView(),
                 MapView(),
-                MapView(),            
-                MapView(),  
+                MapView(),
+                MapView(),
               ],
             ),
           ),
         ),
-      ),), 
+      ),
     );
   }
 }

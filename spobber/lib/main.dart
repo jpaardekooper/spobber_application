@@ -39,6 +39,8 @@ class MyApp extends StatelessWidget {
         //Theme color can be found under theme directory
         //  primarySwatch: myColor,
         primaryColor: myColor,
+        accentColor: Color.fromRGBO(51,216,178, 1),  
+              
       ),
       home: TabsViewMaps(),
     );
