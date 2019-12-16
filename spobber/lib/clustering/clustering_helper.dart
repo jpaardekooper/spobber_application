@@ -10,12 +10,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 
 class ClusteringHelper {
+  Function test;
+
   ClusteringHelper.forMemory({
     @required this.list,
     @required this.updateMarkers,
-    this.maxZoomForAggregatePoints = 13.5,
+    this.maxZoomForAggregatePoints = 18.5,
     @required this.aggregationSetup,
     this.bitmapAssetPathForSingleMarker,
+    this.test,
   })  : assert(list != null),
         assert(aggregationSetup != null);
 
@@ -241,12 +244,16 @@ class ClusteringHelper {
             position: p.location,
             infoWindow: InfoWindow(
                 title:
-                    "${p.location.latitude.toStringAsFixed(2)},${p.location.longitude.toStringAsFixed(2)}"),
+                    "${p.location.latitude.toStringAsFixed(2)},${p.location.longitude.toStringAsFixed(2)} and ${p.id}"),
             icon: bitmapAssetPathForSingleMarker != null
                 ? BitmapDescriptor.fromAsset(bitmapAssetPathForSingleMarker)
                 : BitmapDescriptor.defaultMarker,
             onTap: () {
               print("WAZA");
+
+              test(p.type, p.objectUri, p.id, p.secretId);
+
+
             });
       }).toSet();
       updateMarkers(markers);

@@ -22,7 +22,7 @@ class MarkerTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     print(id.toString() + " " + secretId);
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           flexibleSpace: Container(
@@ -49,10 +49,10 @@ class MarkerTemplate extends StatelessWidget {
             indicatorWeight: 3,
             //labelColor: Colors.white,
             tabs: [
-              // Tab(
-              //   icon: Icon(Icons.info),
-              //   text: "Informatie",
-              // ),
+              Tab(
+                icon: Icon(Icons.info),
+                text: "Informatie",
+              ),
               Tab(
                 icon: Icon(Icons.image),
                 text: "Afbeeldingen",
@@ -67,7 +67,7 @@ class MarkerTemplate extends StatelessWidget {
           child: TabBarView(
             //  physics: NeverScrollableScrollPhysics(),
             children: [
-     //         MarkerInfo(id: id.toString(), objectUri: objectUri),
+              MarkerInfo(id: id.toString(), objectUri: objectUri),
               GridViewDemo(id: id.toString(), secretId: secretId),
               //   MarkerImage(id: id, secretId: secretId),
               MarkerHistory(),

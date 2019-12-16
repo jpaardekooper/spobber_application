@@ -18,6 +18,8 @@ import '../clustering/lat_lang_geohash.dart';
 import 'package:provider/provider.dart';
 import 'package:spobber/network/location_services.dart';
 
+import 'marker_information/marker_template.dart';
+
 class MapView extends StatefulWidget {
 // List<LatLngAndGeohash> list;
 
@@ -36,15 +38,16 @@ class _MapViewState extends State<MapView>
 
   ClusteringHelper clusteringHelper;
   final CameraPosition initialCameraPosition =
-      CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 0.0);
-  // CameraPosition(target: LatLng(54.01786, 7.230455), zoom: 10.0);
+  //    CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 0.0);
+  CameraPosition(target: LatLng(52.3667, 4.8945), zoom: 7.0);
 
   Set<Marker> markers = Set();
 
   void _onMapCreated(GoogleMapController mapController) async {
     print("onMapCreated");
     clusteringHelper.mapController = mapController;
-    clusteringHelper.updateMap();
+    clusteringHelper.updateMap(); 
+    
   }
 
   updateMarkers(Set<Marker> markers) {
@@ -65,6 +68,7 @@ class _MapViewState extends State<MapView>
       list: list,
       updateMarkers: updateMarkers,
       aggregationSetup: AggregationSetup(markerSize: 150),
+      test: _moveCamera,
     );
   }
 
@@ -113,18 +117,21 @@ class _MapViewState extends State<MapView>
       onMapCreated: _onMapCreated,
       initialCameraPosition: initialCameraPosition,
       markers: markers,
+      polylines: Set<Polyline>.of(polylines.values),
       onCameraMove: (newPosition) =>
           clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
       onCameraIdle: clusteringHelper.onMapIdle,
       myLocationButtonEnabled: true,
       myLocationEnabled: true,
       mapType: mapType,
-      // cameraTargetBounds: new CameraTargetBounds(
-      //   new LatLngBounds(
-      //     northeast: LatLng(54.01786, 7.230455),
-      //     southwest: LatLng(50.74753, 2.992192),
-      //   ),
-      // ),
+      mapToolbarEnabled: false,  
+      minMaxZoomPreference: MinMaxZoomPreference(7,21),   
+      cameraTargetBounds: new CameraTargetBounds(
+        new LatLngBounds(
+          northeast: LatLng(54.01786, 7.230455),
+          southwest: LatLng(50.74753, 2.992192),
+        ),
+      ),
     );
   }
 
@@ -265,8 +272,38 @@ class _MapViewState extends State<MapView>
     });
   }
 
-  void _moveCamera() {
-    print("printed me move camera");
+  void _moveCamera(String type, String objectUri, String id, String secret) {
+
+     Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MarkerTemplate(
+                      type: type,
+                      objectUri: objectUri,
+                      id: id,
+                      secretId: secret,
+                    ),
+                  ),
+                );
+  }
+
+  void addPolyline() {
+    final String polylineIdVal = 'polyline_id_1';
+    final PolylineId polylineId = PolylineId(polylineIdVal);
+
+    final Polyline polyline = Polyline(
+      polylineId: polylineId,
+      color: Colors.blueGrey,
+      width: 1,
+      points: points,      
+      // onTap: () {
+      //   _onPolylineTapped(polylineId);
+      // },
+    );
+
+    setState(() {
+      polylines[polylineId] = polyline;
+    });
   }
 
   Widget bottomNavigatorInformation(double lat, double long) {
@@ -292,6 +329,7 @@ class _MapViewState extends State<MapView>
         }
       },
       child: BottomAppBar(
+        color: Theme.of(context).primaryColor,
         child: new Row(
           mainAxisSize: MainAxisSize.max,
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -299,8 +337,8 @@ class _MapViewState extends State<MapView>
             IconButton(
                 icon: clusteringHelper.list.length <= 0 ||
                         clusteringHelper.list.length > 30
-                    ? Icon(Icons.not_listed_location)
-                    : Icon(Icons.touch_app),
+                    ? Icon(Icons.not_listed_location, color: Colors.white,)
+                    : Icon(Icons.touch_app, color: Colors.white),
                 onPressed: () {}),
             bottomApptext(),
           ],
@@ -311,12 +349,15 @@ class _MapViewState extends State<MapView>
 
   Widget bottomApptext() {
     Text text;
-    if (clusteringHelper.list.length <= 0) {
-      text = Text("Er zijn geen objecten gevonden klik op zoeken");
-    } else {
+    if (setDataSource.length == 0) {  
+       text = Text("Selecteer een databron", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),);    
+    } 
+    else if(clusteringHelper.list.length <= 0) {  
+       text = Text("Er zijn geen objecten gevonden klik op zoeken", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),);    
+    }     
+    else {
       text = Text(
-        "Er zijn ${clusteringHelper.list.length.toString()} objecten gevonden",
-        textAlign: TextAlign.center,
+        "Er zijn ${clusteringHelper.list.length.toString()} objecten gevonden", style: TextStyle(color: Colors.white),      
       );
     }
     return text;
@@ -326,13 +367,12 @@ class _MapViewState extends State<MapView>
 
   loadDataToMaps() async {
     clusteringHelper.list.clear();
-    
+
     final LatLngBounds visibleRegion =
         await clusteringHelper.mapController.getVisibleRegion();
 
-    _visibleRegion = visibleRegion;    
+    _visibleRegion = visibleRegion;
     print("setting visible region: $visibleRegion");
-
 
     LoadMarkers loadmarkers = LoadMarkers(
       northLatitude: _visibleRegion.northeast.latitude,
@@ -340,20 +380,42 @@ class _MapViewState extends State<MapView>
       bottomLatitude: _visibleRegion.southwest.latitude,
       bottomLongitude: _visibleRegion.southwest.longitude,
     );
-    
+
+    addPolyLines(
+        _visibleRegion.northeast.latitude,
+        _visibleRegion.northeast.longitude,
+        _visibleRegion.southwest.latitude,
+        _visibleRegion.southwest.longitude);
+
+    addPolyline();
     loadmarkers.searchNearby().then((value) {
       loadThisDataSet();
     });
-
-
   }
 
-  loadThisDataSet() async{
+  List<LatLng> points = <LatLng>[];
+
+  Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
+  void addPolyLines(
+      double northlat, double northlong, double southlat, double southlong) {
+    points.clear();
+
+    points.add(_createLatLng(northlat, northlong));
+    points.add(_createLatLng(northlat, southlong));
+    points.add(_createLatLng(southlat, southlong));
+    points.add(_createLatLng(southlat, northlong));
+    points.add(_createLatLng(northlat, northlong));
+  }
+
+  LatLng _createLatLng(double lat, double lng) {
+    return LatLng(lat, lng);
+  }
+
+  loadThisDataSet() async {
     List<LatLngAndGeohash> fakeList =
         await SplashBloc().getListOfLatLngAndGeohash(context);
 
     clusteringHelper.list = fakeList;
     clusteringHelper.updateMap();
   }
-  
 }

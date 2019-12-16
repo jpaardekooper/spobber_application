@@ -30,7 +30,7 @@ class _TabsState extends State<TabsViewMaps> {
     ErrorWidget.builder = getErrorWidget;
     return StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,
-      child: Scaffold(
+      child: Scaffold(        
         resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         body: DefaultTabController(

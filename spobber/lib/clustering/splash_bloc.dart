@@ -10,16 +10,21 @@ class SplashBloc {
       BuildContext context) async {
     print("START GET FAKE DATA");
     try {
-     // final fakeList = await loadDataFromJson(context);
-     // final fakeList = await loadMarkers(dataSources, url);
-
+      // final fakeList = await loadDataFromJson(context);
+      // final fakeList = await loadMarkers(dataSources, url);
 
       List<LatLngAndGeohash> myPoints = List();
       for (int i = 0; i < places.length; i++) {
-        final fakePoint = places[i];
+        //  final fakePoint = places[i];
         final p = LatLngAndGeohash(
-          
-          LatLng(places[i].latitude, places[i].longitude), "test"
+          LatLng(places[i].latitude, places[i].longitude),
+          places[i].id.toString(),
+          places[i].secretId.toString(),
+          places[i].objectUri,
+          places[i].placement,
+          places[i].previewImageUri,
+          places[i].source,
+          places[i].type,
         );
         myPoints.add(p);
       }
@@ -30,10 +35,10 @@ class SplashBloc {
     }
   }
 
-  Future<List<dynamic>> loadDataFromJson(BuildContext context) async {
-    final fakeData = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_point.json');
-    return json.decode(fakeData.toString());
-  }
+  // Future<List<dynamic>> loadDataFromJson(BuildContext context) async {
+  //   final fakeData = await DefaultAssetBundle.of(context)
+  //       .loadString('assets/map_point.json');
+  //   return json.decode(fakeData.toString());
+  // }
 
 }

@@ -9,12 +9,12 @@ class AggregatedPoints {
     this.bitmabAssetName = getBitmapDescriptor();
   }
 
-  AggregatedPoints.fromMap(
-      Map<String, dynamic> map, String dbLatColumn, String dbLongColumn)
-      : count = map['n_marker'],
-        this.location = LatLng(map['lat'], map['long']) {
-    this.bitmabAssetName = getBitmapDescriptor();
-  }
+  // AggregatedPoints.fromMap(
+  //     Map<String, dynamic> map, String dbLatColumn, String dbLongColumn)
+  //     : count = map['n_marker'],
+  //       this.location = LatLng(map['lat'], map['long']) {
+  //   this.bitmabAssetName = getBitmapDescriptor();
+  // }
 
   String getBitmapDescriptor() {
     String bitmapDescriptor;
