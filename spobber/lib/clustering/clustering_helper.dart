@@ -184,13 +184,13 @@ class ClusteringHelper {
     List<AggregatedPoints> aggregation = await getAggregatedPoints(zoom);
 
     assert(() {
-     // print("aggregation lenght: " + aggregation.length.toString());
+       print("aggregation lenght: " + aggregation.length.toString());
       return true;
     }());
 
     final Set<Marker> markers = {};
 
-    for (var i = 0; i < aggregation.length; i++) {
+    for (int i = 0; i < aggregation.length; i++) {
       final a = aggregation[i];
       assert(() {
         print(a.count);
@@ -202,10 +202,12 @@ class ClusteringHelper {
       if (a.count == 1) {
         if (bitmapAssetPathForSingleMarker != null) {
           bitmapDescriptor =
-              BitmapDescriptor.fromAsset(bitmapAssetPathForSingleMarker);
+             BitmapDescriptor.fromAsset("assets/UST02.png");
         } else {
-          bitmapDescriptor = BitmapDescriptor.defaultMarker;
+          bitmapDescriptor = BitmapDescriptor.fromAsset("assets/UST02.png");
         }
+
+     //   return;
       } else {
         // >1
         final Uint8List markerIcon =
@@ -240,20 +242,15 @@ class ClusteringHelper {
       final Set<Marker> markers = listOfPoints.map((p) {
         final MarkerId markerId = MarkerId(p.getId());
         return Marker(
+            //anchor: Offset(0.5, 0.5),
             markerId: markerId,
             position: p.location,
             infoWindow: InfoWindow(
                 title:
                     "${p.location.latitude.toStringAsFixed(2)},${p.location.longitude.toStringAsFixed(2)} and ${p.id}"),
-            icon: bitmapAssetPathForSingleMarker != null
-                ? BitmapDescriptor.fromAsset(bitmapAssetPathForSingleMarker)
-                : BitmapDescriptor.defaultMarker,
+            icon: getIconMarker(p.source),
             onTap: () {
-              print("WAZA");
-
               test(p.type, p.objectUri, p.id, p.secretId);
-
-
             });
       }).toSet();
       updateMarkers(markers);
@@ -262,6 +259,18 @@ class ClusteringHelper {
         print(ex.toString());
         return true;
       }());
+    }
+  }
+
+  getIconMarker(String source) {
+    if (source == "SAP") {
+      return BitmapDescriptor.fromAsset("assets/SAP.png");
+    } else if (source == "SIGMA") {
+      return BitmapDescriptor.fromAsset("assets/SIGMA.png");
+    } else if (source == "UST02") {
+      return BitmapDescriptor.fromAsset("assets/UST02.png");
+    } else {
+     return BitmapDescriptor.fromAsset("assets/SAP.png");
     }
   }
 
@@ -293,7 +302,7 @@ class ClusteringHelper {
   }
 
   MaterialColor getColor(int count) {
-    if (count < aggregationSetup.maxAggregationItems[0]) {
+    if (count <= aggregationSetup.maxAggregationItems[0]) {
       // + 2
       return aggregationSetup.colors[0];
     } else if (count < aggregationSetup.maxAggregationItems[1]) {
