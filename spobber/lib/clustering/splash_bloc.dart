@@ -11,10 +11,10 @@ class SplashBloc {
     print("START GET FAKE DATA");
     try {
       // final fakeList = await loadDataFromJson(context);
-      // final fakeList = await loadMarkers(dataSources, url);
-
+      // final fakeList = await loadMarkers(dataSources, url);     
       List<LatLngAndGeohash> myPoints = List();
       for (int i = 0; i < places.length; i++) {
+       
         //  final fakePoint = places[i];
         final p = LatLngAndGeohash(
           LatLng(places[i].latitude, places[i].longitude),

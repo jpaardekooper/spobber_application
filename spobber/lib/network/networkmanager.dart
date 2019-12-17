@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:spobber/data/global_variable.dart';
 import 'loginmodel.dart';
 import '../data/place_response.dart';
 import 'package:spobber/pages/gridview/album.dart';
@@ -65,7 +66,8 @@ Future<HttpClientRequest> _prepareGetPackage(String endpoint, Map data) async {
   return request;
 }
 
-Future<HttpClientResponse> uploadImage(String fileName, String base64Image, String secretId) async {
+Future<HttpClientResponse> uploadImage(
+    String fileName, String base64Image, String secretId) async {
   if (!await _ping()) {
     return null;
   }
@@ -74,8 +76,8 @@ Future<HttpClientResponse> uploadImage(String fileName, String base64Image, Stri
     "filename": fileName,
     "image": base64Image,
   };
-  HttpClientRequest request =
-      await _preparePostPackage(_spobberEndpoint + "image/upload/" + secretId, data);
+  HttpClientRequest request = await _preparePostPackage(
+      _spobberEndpoint + "image/upload/" + secretId, data);
   HttpClientResponse response = await request.close();
   return response;
 }
@@ -103,22 +105,22 @@ Future<bool> login(String username, String password) async {
   }
 }
 
-Future<List<PlaceResponse>> loadMarkers(List<String> dataSources, String url) async {
-  if(!await _ping()){
+Future<List<PlaceResponse>> loadMarkers(
+    List<String> dataSources, String url) async {
+  if (!await _ping()) {
     return new List<PlaceResponse>();
   }
   for (int i = 0; i < dataSources.length; i++) {
-    url += dataSources[i] + ",";
+    if(i == dataSources.length - 1)
+      url += dataSources[i];
+    else
+      url += dataSources[i]  + ",";
   }
-   print(url);
-  Map<String, String> data = {
-    "username": _username,
-    "token": _token
-  };
- 
-  Response response = await get(url, headers: data);
+  print(url);
+  Map<String, String> data = {"username": _username, "token": _token};
 
-  if (response.statusCode == 200) {
+  Response response = await get(url, headers: data);
+  if (response.statusCode == 200) {  
     return (json.decode(response.body) as List)
         .map((data) => new PlaceResponse().fromJson(data))
         .toList();
@@ -132,11 +134,9 @@ Future<List<Album>> loadImages(String secretId) async {
   //   return new List<Album>();
   // }
   try {
-    Map<String, String> data = {
-      "username" : _username,
-      "token": _token
-    };
-    final response = await get(_spobberEndpoint + "image/" + secretId, headers: data);
+    Map<String, String> data = {"username": _username, "token": _token};
+    final response =
+        await get(_spobberEndpoint + "image/" + secretId, headers: data);
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
       return parsed.map<Album>((json) => Album.fromJson(json)).toList();
@@ -149,22 +149,17 @@ Future<List<Album>> loadImages(String secretId) async {
 }
 
 Future<bool> register(String email, String username, String password) async {
-  Map data = {
-    "email": email,
-    "username": username,
-    "password": password
-  };
-  HttpClientRequest request = await _preparePostPackage(_spobberEndpoint + "authentication/register", data);
+  Map data = {"email": email, "username": username, "password": password};
+  HttpClientRequest request = await _preparePostPackage(
+      _spobberEndpoint + "authentication/register", data);
   HttpClientResponse response = await request.close();
-  if(response.statusCode == 200){
+  if (response.statusCode == 200) {
     return true;
-  }
-  else{
+  } else {
     response = await request.close();
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }

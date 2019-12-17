@@ -57,18 +57,18 @@ class _MapViewState extends State<MapView>
 
   @override
   void initState() {
-    initMemoryClustering();   
+    initMemoryClustering();
     super.initState();
   }
 
   // For memory solution
   initMemoryClustering() {
     clusteringHelper = ClusteringHelper.forMemory(
-      list: list,
-      updateMarkers: updateMarkers,
-      aggregationSetup: AggregationSetup(markerSize: 150),
-      test: _moveCamera,
-    );
+        list: list,
+        updateMarkers: updateMarkers,
+        aggregationSetup: AggregationSetup(markerSize: 150),
+        showMarkerInformation: _showMarkerInformation,
+        goToMarkerLocation: goToMarkerLocation);
   }
 
   MapType mapType = MapType.normal;
@@ -271,7 +271,8 @@ class _MapViewState extends State<MapView>
     });
   }
 
-  void _moveCamera(String type, String objectUri, String id, String secret) {
+  void _showMarkerInformation(
+      String type, String objectUri, String id, String secret) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -320,7 +321,7 @@ class _MapViewState extends State<MapView>
                 //places: places,
                 latitude: lat,
                 longitude: long,
-                gotoLocation: _moveCamera,
+                gotoLocation: goToMarkerLocation,
               );
             },
           );
@@ -372,8 +373,6 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   loadDataToMaps() async {
-    clusteringHelper.list.clear();
-
     final LatLngBounds visibleRegion =
         await clusteringHelper.mapController.getVisibleRegion();
 
@@ -393,8 +392,6 @@ class _MapViewState extends State<MapView>
         _visibleRegion.southwest.latitude,
         _visibleRegion.southwest.longitude);
 
-    addPolyline();
-
     loadmarkers.searchNearby().then((value) {
       loadThisDataSet();
     });
@@ -412,6 +409,8 @@ class _MapViewState extends State<MapView>
     points.add(_createLatLng(southlat, southlong));
     points.add(_createLatLng(southlat, northlong));
     points.add(_createLatLng(northlat, northlong));
+
+    addPolyline();
   }
 
   LatLng _createLatLng(double lat, double lng) {
@@ -424,5 +423,18 @@ class _MapViewState extends State<MapView>
 
     clusteringHelper.list = fakeList;
     clusteringHelper.updateMap();
+  }
+
+  goToMarkerLocation(double lat, double long) {
+    clusteringHelper.mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          //  bearing: 270.0,
+          target: LatLng(lat, long),
+          // tilt: 30.0,
+          zoom: 20.0,
+        ),
+      ),
+    );
   }
 }

@@ -10,7 +10,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 
 class ClusteringHelper {
-  Function test;
+  Function showMarkerInformation;
+  Function goToMarkerLocation;
 
   ClusteringHelper.forMemory({
     @required this.list,
@@ -18,7 +19,8 @@ class ClusteringHelper {
     this.maxZoomForAggregatePoints = 18.5,
     @required this.aggregationSetup,
     this.bitmapAssetPathForSingleMarker,
-    this.test,
+    this.showMarkerInformation,
+    this.goToMarkerLocation,
   })  : assert(list != null),
         assert(aggregationSetup != null);
 
@@ -61,7 +63,7 @@ class ClusteringHelper {
 
   //Call when user stop to move or zoom the map
   Future<void> onMapIdle() async {
-    if (list == null) {
+    if (list == null || _currentZoom >= 19) {
       return;
     } else {
       updateMap();
@@ -174,8 +176,8 @@ class ClusteringHelper {
       longitude += l.location.longitude;
     });
     final count = tmp.length;
-    final a =
-        AggregatedPoints(LatLng(latitude / count, longitude / count), count);
+    final a = AggregatedPoints(
+        LatLng((latitude / count), (longitude / count)), count);
     resultList.add(a);
     return _retrieveAggregatedPoints(newInputList, resultList, level);
   }
@@ -184,7 +186,7 @@ class ClusteringHelper {
     List<AggregatedPoints> aggregation = await getAggregatedPoints(zoom);
 
     assert(() {
-       print("aggregation lenght: " + aggregation.length.toString());
+      print("aggregation lenght: " + aggregation.length.toString());
       return true;
     }());
 
@@ -200,14 +202,13 @@ class ClusteringHelper {
       BitmapDescriptor bitmapDescriptor;
 
       if (a.count == 1) {
-        if (bitmapAssetPathForSingleMarker != null) {
-          bitmapDescriptor =
-             BitmapDescriptor.fromAsset("assets/UST02.png");
-        } else {
-          bitmapDescriptor = BitmapDescriptor.fromAsset("assets/UST02.png");
-        }
+        // if (bitmapAssetPathForSingleMarker != null) {
+        //   bitmapDescriptor = BitmapDescriptor.defaultMarker;
+        // } else {
+        //   bitmapDescriptor = BitmapDescriptor.fromAsset("assets/UST02.png");
+        // }
 
-     //   return;
+        return;
       } else {
         // >1
         final Uint8List markerIcon =
@@ -229,6 +230,7 @@ class ClusteringHelper {
   }
 
   updatePoints(double zoom) async {
+    print("zooming level is $zoom");
     assert(() {
       print("update single points");
       return true;
@@ -246,14 +248,22 @@ class ClusteringHelper {
             markerId: markerId,
             position: p.location,
             infoWindow: InfoWindow(
+                onTap: () {
+                  showMarkerInformation(p.type, p.objectUri, p.id, p.secretId);
+                },
                 title:
                     "${p.location.latitude.toStringAsFixed(2)},${p.location.longitude.toStringAsFixed(2)} and ${p.id}"),
             icon: getIconMarker(p.source),
             onTap: () {
-              test(p.type, p.objectUri, p.id, p.secretId);
+              goToMarkerLocation(p.location.latitude, p.location.longitude);
             });
       }).toSet();
+    
+      print('hier kom je niet update marker');
       updateMarkers(markers);
+      //   if (zoom >= 20) {
+      //   return;
+      // }
     } catch (ex) {
       assert(() {
         print(ex.toString());
@@ -270,7 +280,7 @@ class ClusteringHelper {
     } else if (source == "UST02") {
       return BitmapDescriptor.fromAsset("assets/UST02.png");
     } else {
-     return BitmapDescriptor.fromAsset("assets/SAP.png");
+      return BitmapDescriptor.fromAsset("assets/SAP.png");
     }
   }
 
