@@ -66,7 +66,6 @@ flutter:
   assets:
    - assets/labelmap.txt
    - assets/detect.tflite
-   - assets/map_point.json
    - assets/
    - assets/images/
    - assets/no_image.png

@@ -68,7 +68,14 @@ class _MapViewState extends State<MapView>
         updateMarkers: updateMarkers,
         aggregationSetup: AggregationSetup(markerSize: 150),
         showMarkerInformation: _showMarkerInformation,
-        goToMarkerLocation: goToMarkerLocation);
+        goToMarkerLocation: goToMarkerLocation,
+        zoominglvl: setzoominglvl
+       );
+  }
+
+  setzoominglvl(double zoomi, bool cl){
+    zoom = zoomi;
+    clusteren = cl;
   }
 
   MapType mapType = MapType.normal;
@@ -256,7 +263,8 @@ class _MapViewState extends State<MapView>
               //searching the data source
               _search(),
               //filter
-              _changeSourceFilter()
+              _changeSourceFilter(),    
+              topText()       
             ],
           ),
           floatingActionButton: FancyFab(test: testthisfunc),
@@ -347,6 +355,15 @@ class _MapViewState extends State<MapView>
         ),
       ),
     );
+  }
+
+double zoom;
+bool clusteren;
+
+  Widget topText() {
+    return Align(
+        alignment: Alignment.topCenter,
+        child: Text("zooming lvl is $zoom en mag je clusteren $clusteren"));
   }
 
   Widget bottomApptext() {

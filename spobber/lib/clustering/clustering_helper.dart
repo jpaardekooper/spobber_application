@@ -12,15 +12,17 @@ import 'package:meta/meta.dart';
 class ClusteringHelper {
   Function showMarkerInformation;
   Function goToMarkerLocation;
+  Function zoominglvl;
 
   ClusteringHelper.forMemory({
     @required this.list,
     @required this.updateMarkers,
-    this.maxZoomForAggregatePoints = 18.5,
+    this.maxZoomForAggregatePoints = 18.0,
     @required this.aggregationSetup,
     this.bitmapAssetPathForSingleMarker,
     this.showMarkerInformation,
     this.goToMarkerLocation,
+    this.zoominglvl
   })  : assert(list != null),
         assert(aggregationSetup != null);
 
@@ -63,11 +65,12 @@ class ClusteringHelper {
 
   //Call when user stop to move or zoom the map
   Future<void> onMapIdle() async {
-    if (list == null || _currentZoom >= 19) {
-      return;
-    } else {
+    
+  //  if (list == null || _currentZoom >= 19) {
+  //    return;
+ //   } else {
       updateMap();
-    }
+  //  }
   }
 
   updateMap() {
@@ -229,8 +232,10 @@ class ClusteringHelper {
     updateMarkers(markers);
   }
 
+  bool unclusterMarker = true;
+
   updatePoints(double zoom) async {
-    print("zooming level is $zoom");
+    zoominglvl(zoom, unclusterMarker);
     assert(() {
       print("update single points");
       return true;
@@ -258,9 +263,21 @@ class ClusteringHelper {
               goToMarkerLocation(p.location.latitude, p.location.longitude);
             });
       }).toSet();
-    
+
       print('hier kom je niet update marker');
-      updateMarkers(markers);
+
+      if (unclusterMarker && zoom > 18.5) {
+        updateMarkers(markers);
+        unclusterMarker = false;
+      } else if (zoom <= 18.5) {
+        updateMarkers(markers);
+        unclusterMarker = true;
+      } else {
+      //  updateMarkers(markers);
+      unclusterMarker = false;
+      }
+
+     
       //   if (zoom >= 20) {
       //   return;
       // }
@@ -270,6 +287,8 @@ class ClusteringHelper {
         return true;
       }());
     }
+
+    
   }
 
   getIconMarker(String source) {
