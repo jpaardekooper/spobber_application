@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:spobber/network/location_services.dart';
 import 'package:provider/provider.dart';
+import 'package:spobber/pages/search_view.dart';
 import 'history_view.dart';
 import 'maps_view.dart';
 import 'widgets/error_view.dart';
@@ -72,8 +73,8 @@ class _TabsState extends State<TabsViewMaps> {
               children: <Widget>[
                 // HomeView(),
                 MapView(),
-                MapView(),
-                MapView(),
+                SearchView(),
+                HistoryView(),
               ],
             ),
           ),

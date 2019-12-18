@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'aggregated_points.dart';
 import 'aggregation_setup.dart';
 import 'lat_lang_geohash.dart';
@@ -12,7 +14,6 @@ import 'package:meta/meta.dart';
 class ClusteringHelper {
   Function showMarkerInformation;
   Function goToMarkerLocation;
-  Function zoominglvl;
 
   ClusteringHelper.forMemory({
     @required this.list,
@@ -22,7 +23,6 @@ class ClusteringHelper {
     this.bitmapAssetPathForSingleMarker,
     this.showMarkerInformation,
     this.goToMarkerLocation,
-    this.zoominglvl
   })  : assert(list != null),
         assert(aggregationSetup != null);
 
@@ -65,12 +65,11 @@ class ClusteringHelper {
 
   //Call when user stop to move or zoom the map
   Future<void> onMapIdle() async {
-    
-  //  if (list == null || _currentZoom >= 19) {
-  //    return;
- //   } else {
-      updateMap();
-  //  }
+    //  if (list == null || _currentZoom >= 19) {
+    //    return;
+    //   } else {
+    updateMap();
+    //  }
   }
 
   updateMap() {
@@ -235,7 +234,6 @@ class ClusteringHelper {
   bool unclusterMarker = true;
 
   updatePoints(double zoom) async {
-    zoominglvl(zoom, unclusterMarker);
     assert(() {
       print("update single points");
       return true;
@@ -255,6 +253,8 @@ class ClusteringHelper {
             infoWindow: InfoWindow(
                 onTap: () {
                   showMarkerInformation(p.type, p.objectUri, p.id, p.secretId);
+                  _favoritePlaces(p.location.latitude, p.location.longitude,
+                      p.id, p.source);
                 },
                 title:
                     "${p.location.latitude.toStringAsFixed(2)},${p.location.longitude.toStringAsFixed(2)} and ${p.id}"),
@@ -273,11 +273,10 @@ class ClusteringHelper {
         updateMarkers(markers);
         unclusterMarker = true;
       } else {
-      //  updateMarkers(markers);
-      unclusterMarker = false;
+        //  updateMarkers(markers);
+        unclusterMarker = false;
       }
 
-     
       //   if (zoom >= 20) {
       //   return;
       // }
@@ -287,9 +286,50 @@ class ClusteringHelper {
         return true;
       }());
     }
-
-    
   }
+
+  _favoritePlaces(double lat, double long, String id, String source) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var imageData;
+    print(source);
+    if (source == "SAP") {
+      imageData = "assets/SAP.png";
+    } else if (source == "SIGMA") {
+      imageData = "assets/SIGMA.png";
+      print(imageData);
+    } else if (source == "UST02") {
+      imageData = "assets/UST02.png";
+    } else {
+      return;
+    }
+    print(imageData);
+
+    /// get the favorite position then added to prefs
+    //var placeName = favoritePlaceController.text;
+    var placeName;
+    if (id == "0") {
+      placeName = id + lat.ceilToDouble().toString();
+    } else {
+      placeName = id;
+    }
+
+    ///convert position to string and concat it
+    var placePosition = lat.toString() +
+        ',' +
+        long.toString() +
+        ',' +
+        //FavoriteLocationDropDown.currentImage.toString();
+        imageData;
+
+    print('Place Name $placeName => $placePosition Captured.');
+    await prefs.setString(
+      '$placeName',
+      '$placePosition',
+    );
+    favoritePlaceController.clear();
+  }
+
+  final favoritePlaceController = TextEditingController();
 
   getIconMarker(String source) {
     if (source == "SAP") {
