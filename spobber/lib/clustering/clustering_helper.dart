@@ -317,20 +317,19 @@ class ClusteringHelper {
     var placePosition = lat.toString() +
         ',' +
         long.toString() +
-        ',' +
-        //FavoriteLocationDropDown.currentImage.toString();
-        imageData;
+        ',' +     
+        imageData;   
 
     print('Place Name $placeName => $placePosition Captured.');
     await prefs.setString(
       '$placeName',
-      '$placePosition',
+      '$placePosition',      
     );
     favoritePlaceController.clear();
   }
-
   final favoritePlaceController = TextEditingController();
 
+//get marker for an image this needs to be an UNIT-8 function soon
   getIconMarker(String source) {
     if (source == "SAP") {
       return BitmapDescriptor.fromAsset("assets/SAP.png");

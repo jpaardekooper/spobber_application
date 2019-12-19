@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'widgets/SearchSingleMarker.dart';
+import 'package:spobber/data/global_variable.dart';
+import 'package:spobber/data/place_response.dart';
+import 'package:spobber/pages/widgets/single_marker_with_maps.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
@@ -42,18 +44,26 @@ class HistoryViewState extends State<HistoryView> {
                   onTap: () {
                     List<String> splitArr =
                         prefs.get(key).toString().split(",");
-                    SearchSingleMarker.favoriteLat =
-                        double.tryParse(splitArr[0]);
-                    SearchSingleMarker.favoriteLong =
-                        double.tryParse(splitArr[1]);
-                    SearchSingleMarker.locationImage = splitArr[2];
-                    print(splitArr[2]);
-                    SearchSingleMarker.favoritePlaceName = key;
-                    SearchSingleMarker.isFavorite = true;
+
+                    // SearchSingleMarker.favoriteLat =
+                    //     double.tryParse(splitArr[0]);
+                    // SearchSingleMarker.favoriteLong =
+                    //     double.tryParse(splitArr[1]);
+                    // SearchSingleMarker.locationImage = splitArr[2];
+                    // print(splitArr[2]);
+                    // SearchSingleMarker.favoritePlaceName = key;
+                    // SearchSingleMarker.isFavorite = true;
+                    singleMarker.clear();
+                    singleMarker.add(new PlaceResponse(
+                        id: key,
+                        latitude: double.tryParse(splitArr[0]),
+                        longitude: double.tryParse(splitArr[1]),
+                        objectUri: "",
+                        source: splitArr[2]));
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SearchSingleMarker()),
+                          builder: (context) => SingleMarkerWithMaps()),
                     );
                   },
                 ),
@@ -84,17 +94,6 @@ class HistoryViewState extends State<HistoryView> {
     prefs.clear();
   }
 
-//  child: new Column(
-//     mainAxisSize: MainAxisSize.max,
-//     children: <Widget>[
-//       new Text('Top'),
-//       new Expanded(
-//         child: new Align(
-//           alignment: Alignment.bottomCenter,
-//           child: new Text('Bottom'),
-//         ),
-//       ),
-//     ],
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,14 +101,14 @@ class HistoryViewState extends State<HistoryView> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           //refresh button
-          //  ListTile(
-          //   title: Text("Refresh"),
-          //   onTap: () {
-          //     setState(() {
-          //       getAllPrefs();
-          //     });
-          //   },
-          // ),
+          ListTile(
+            title: Text("Refresh"),
+            onTap: () {
+              setState(() {
+                getAllPrefs();
+              });
+            },
+          ),
 
           ListTile(
             leading: Icon(

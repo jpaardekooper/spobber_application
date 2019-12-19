@@ -30,7 +30,7 @@
 
 class PlaceResponse {
   final String secretId;
-  final int id;
+  final String id;
   final String type;
   final String placement;
   final double latitude;
