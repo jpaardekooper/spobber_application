@@ -69,7 +69,7 @@ class PlaceResponse {
         source: json['source'],
         previewImageUri: json['preview_image_uri'],
         objectUri: json['object_uri'],
-        readableID: json['readable_ID']
+        readableID: json['readable_Id']
         );
   }
 }

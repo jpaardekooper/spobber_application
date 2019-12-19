@@ -14,8 +14,16 @@ class LatLngAndGeohash {
   final String readableID;
   String geohash;
 
-  LatLngAndGeohash(this.location, this.id, this.secretId, this.objectUri,
-      this.placement, this.previewImageUri, this.source, this.type, this.readableID) {
+  LatLngAndGeohash(
+      this.location,
+      this.id,
+      this.secretId,
+      this.objectUri,
+      this.placement,
+      this.previewImageUri,
+      this.source,
+      this.type,
+      this.readableID) {
     geohash = Geohash.encode(location.latitude, location.longitude);
   }
 
@@ -28,7 +36,7 @@ class LatLngAndGeohash {
         source = map['source'],
         previewImageUri = map['previewImageUri'],
         objectUri = map['objectUri'],
-        readableID = map['readable_ID'] {
+        readableID = map['readable_Id'] {
     this.geohash =
         Geohash.encode(this.location.latitude, this.location.longitude);
   }
