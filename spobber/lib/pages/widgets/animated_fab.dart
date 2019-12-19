@@ -32,7 +32,7 @@ class _FancyFabState extends State<FancyFab>
     _animateIcon =
         Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
     _buttonColor = ColorTween(
-      begin: Color.fromRGBO(51,216,178,1),
+      begin: Color.fromRGBO(51, 216, 178, 1),
       end: Color(0xFF1b2932),
     ).animate(CurvedAnimation(
       parent: _animationController,
@@ -77,8 +77,10 @@ class _FancyFabState extends State<FancyFab>
         heroTag: "mapButton",
         onPressed: widget.test,
         tooltip: 'Add',
-        child: Icon(Icons.add, color: Colors.white,),
-        
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -115,7 +117,7 @@ class _FancyFabState extends State<FancyFab>
         child: AnimatedIcon(
           icon: AnimatedIcons.menu_close,
           progress: _animateIcon,
-          color: Colors.white,
+          color: isOpened ? Colors.white : Theme.of(context).primaryColor,
         ),
       ),
     );

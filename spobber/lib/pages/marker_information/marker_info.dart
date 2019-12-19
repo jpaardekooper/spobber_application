@@ -22,11 +22,11 @@ class _MarkerInfoState extends State<MarkerInfo>
   // us to validate the form
   //
   // Note: This is a GlobalKey<FormState>, not a GlobalKey<MyCustomFormState>!
-  // @override
-  // void dispose() {
-  //   print("Disposing second route");
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    print("Disposing second route");
+    super.dispose();
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -140,7 +140,7 @@ class _MarkerInfoState extends State<MarkerInfo>
   }
 
   List<Widget> getFormWidget() {
-    List<Widget> formWidget = new List();
+    List<Widget> formWidget = new List<Widget>();
 
 //getId information 1
     formWidget.add(new TextFormField(
@@ -416,73 +416,7 @@ class _MarkerInfoState extends State<MarkerInfo>
       },
     ));
 
-    // formWidget.add(new Container(
-    //   width: 300,
-    //   margin: const EdgeInsets.only(top: 20.0, left: 40.0),
-    //   child: new Text('Soort'),
-    // ));
-
-    // formWidget.add(new Container(
-    //     margin: const EdgeInsets.only(top: 1.0, left: 40.0),
-    //     child: new DropdownButton(
-    //       elevation: 5,
-    //       style: TextStyle(
-    //           color: Colors.black,
-    //           fontSize: 15,
-    //           decorationStyle: TextDecorationStyle.wavy),
-    //       isDense: true,
-    //       iconSize: 40.0,
-    //       items: typeList,
-    //       value: _selectedType,
-    //       onChanged: (value) {
-    //         setState(() {
-    //           _selectedType = value;
-    //         });
-    //       },
-    //       isExpanded: true,
-    //     )));
-
-    // formWidget.add(new Container(
-    //     margin: const EdgeInsets.only(top: 1.0, left: 40.0),
-    //     child: new DropdownButton(
-    //       elevation: 5,
-    //       style: TextStyle(
-    //           color: Colors.black,
-    //           fontSize: 15,
-    //           decorationStyle: TextDecorationStyle.wavy),
-    //       isDense: true,
-    //       iconSize: 40.0,
-    //       items: statusList,
-    //       value: _selectedStatus,
-    //       onChanged: (value) {
-    //         setState(() {
-    //           _selectedStatus = value;
-    //         });
-    //       },
-    //       isExpanded: true,
-    //     )));
-
-    //getName information
-    // formWidget.add(new TextFormField(
-    //   enabled: false,
-    //   controller: TextEditingController(
-    //       text: "lat: " + widget.imageLat + " long: " + widget.imageLong),
-    //   decoration: InputDecoration(
-    //       labelText: "GPS coordinatie",
-    //       hintText: 'object positie',
-    //       icon: Icon(Icons.gps_fixed)),
-    //   validator: (value) {
-    //     if (value.isEmpty) {
-    //       return 'vul een de juiste coordinaten in';
-    //     }
-    //   },
-    //   onSaved: (value) {
-    //     setState(() {
-    //       position = value;
-    //     });
-    //   },
-    // ));
-
+  
     //getId information
     formWidget.add(Container(
         margin: const EdgeInsets.only(bottom: 60),
@@ -601,8 +535,5 @@ class _MarkerInfoState extends State<MarkerInfo>
       );
     }
 
-    // }
-
-    //  return
   }
 }

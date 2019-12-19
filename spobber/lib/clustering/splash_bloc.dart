@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/global_variable.dart';
 import 'lat_lang_geohash.dart';
-import '../network/networkmanager.dart';
 
 class SplashBloc {
   Future<List<LatLngAndGeohash>> getListOfLatLngAndGeohash(

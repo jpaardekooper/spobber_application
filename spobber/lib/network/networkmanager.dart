@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:spobber/data/global_variable.dart';
 import 'loginmodel.dart';
 import '../data/place_response.dart';
 import 'package:spobber/pages/gridview/album.dart';

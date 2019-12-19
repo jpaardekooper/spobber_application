@@ -1,5 +1,3 @@
-//import 'package:example/fake_point.dart';
-import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -103,7 +101,7 @@ class _MapViewState extends State<MapView>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.map, color: Colors.white, size: 20), // icon
+                    Icon(Icons.map, ), // icon
                     // Text("Call"), // text
                   ],
                 ),
@@ -167,7 +165,7 @@ class _MapViewState extends State<MapView>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.search, color: Colors.white, size: 20), // icon
+                    Icon(Icons.search), // icon
                     // Text("Call"), // text
                   ],
                 ),
@@ -232,7 +230,7 @@ class _MapViewState extends State<MapView>
 
   Icon getIcon(int selector) {
     if (selector <= 0) {
-      return Icon(Icons.filter, color: Colors.white, size: 20);
+      return Icon(Icons.filter);
     } else if (selector == 1) {
       return Icon(Icons.filter_1, color: Colors.white, size: 20);
     } else if (selector == 2) {

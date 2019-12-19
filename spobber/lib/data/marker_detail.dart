@@ -1,5 +1,5 @@
 class MarkerDetail {
-  final int id;
+  final String id;
   final String secretId;
   final String type;
   final String description;

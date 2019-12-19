@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 //import 'package:latlong/latlong.dart';
 import 'package:spobber/clustering/clustering_helper.dart';
 
@@ -7,7 +7,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:spobber/data/place_response.dart';
-import 'package:spobber/pages/marker_information/marker_template.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:spobber/pages/widgets/single_marker_with_maps.dart';
@@ -35,6 +35,8 @@ class _SearchViewState extends State<SearchView> {
   bool _empty = false;
   String placeName = "";
   String placePosition = "";
+
+  bool isButtonDisabled = false;
 
   void dispose() {
     // Clean up the controller when the Widget is disposed
@@ -78,40 +80,52 @@ class _SearchViewState extends State<SearchView> {
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
                 child: Text("Search"),
-                color: Theme.of(context).accentColor,
+                color: isButtonDisabled
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).accentColor,
                 textColor: Colors.white,
-                onPressed: () async {
-                  myController.text.isEmpty ? _empty = true : _empty = false;
+                onPressed: isButtonDisabled
+                    ? null
+                    : () async {
+                        myController.text.isEmpty
+                            ? _empty = true
+                            : _empty = false;
+                        //TexField not empty
+                        if (_empty == false) {
+                          singleMarker.clear();
+                          String url =
+                              "https://spobber.azurewebsites.net/api/objects/${myController.text}";
+                          print(url);
+                          
+                          final response = await http.get(url);
+                          fillMarkerList(response).then((value) {
+                            if (value) {
+                              if (singleMarker.first.id == "0") {
+                                showToast(
+                                    "Geen geldige equipment gevonden", context,
+                                    gravity: Toast.CENTER,
+                                    duration: Toast.LENGTH_LONG);                              
+                              } else {
+                                showToast(
+                                    "Object id: ${myController.text} wordt geladen",
+                                    context,
+                                    gravity: Toast.CENTER,
+                                    duration: Toast.LENGTH_SHORT);
 
-                  //TexField not empty
-                  if (_empty == false) {
-                    singleMarker.clear();
-                    String url =
-                        "https://spobber.azurewebsites.net/api/objects/${myController.text}";
-                    print(url);
-                    final response = await http.get(url);
-                    fillMarkerList(response).then((value) {
-                      if (value) {
-                        if (singleMarker.first.id == 0) {
-                          showToast("Geen geldige equipment gevonden", context,
-                              gravity: Toast.CENTER,
-                              duration: Toast.LENGTH_LONG);
-                        } else {
-                          showToast(
-                              "Object id: ${myController.text} wordt geladen",
-                              context,
-                              gravity: Toast.CENTER,
-                              duration: Toast.LENGTH_SHORT);
-
-                          setState(() {
-                            this.lat = singleMarker[0].latitude;
-                            this.long = singleMarker[0].longitude;
+                                setState(() {                               
+                                  this.lat = singleMarker[0].latitude;
+                                  this.long = singleMarker[0].longitude;
+                                });
+                              }
+                            }
+                            else{
+                              setState(() {
+                                isButtonDisabled = false;
+                              });
+                            }
                           });
                         }
-                      }
-                    });
-                  }
-                },
+                      },
               ),
             ),
           ],

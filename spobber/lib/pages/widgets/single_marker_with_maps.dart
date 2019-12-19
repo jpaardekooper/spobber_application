@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/pages/marker_information/marker_template.dart';
@@ -24,7 +24,7 @@ class _SingleMarkerWithMapsState extends State<SingleMarkerWithMaps> {
     controller = mapController;
   }
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(singleMarker[0].latitude, singleMarker[0].longitude),
     zoom: 15,
   );

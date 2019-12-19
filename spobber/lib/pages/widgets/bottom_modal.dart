@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:spobber/clustering/clustering_helper.dart';
 
 import 'dart:math' show cos, sqrt, asin;
 
@@ -49,17 +48,27 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200.0,
-      color: Colors.transparent,
-      width: MediaQuery.of(context).size.width - 10,
-      child: PageView.builder(
-        controller: _pageController,
-        itemCount: places.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _coffeeShopList(index);
-        },
-      ),
-    );
+        decoration: BoxDecoration(
+          border: Border(          
+            top: BorderSide(
+              //                    <--- top side
+              color: Theme.of(context).accentColor,
+              width: 4.0,
+            ),            
+          ),
+        ),
+        child: Container(
+          height: 125.0,
+          color: Theme.of(context).primaryColor,
+          width: MediaQuery.of(context).size.width,
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: places.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _coffeeShopList(index);
+            },
+          ),
+        ));
   }
 
   void _onScroll() {
