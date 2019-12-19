@@ -73,15 +73,14 @@ class _DrawerFilter extends State<DrawerFilter> {
     return Scaffold(
       appBar: new AppBar(
         title: searchObject == null
-                  ? Text(
-                      "Zoeken naar...",
-                      style: TextStyle(fontSize: 15.0),
-                    )
-                  : Text(
-                      "$searchObject",
-                      style: TextStyle(fontSize: 15.0),
-                    ),
-            
+            ? Text(
+                "Zoeken naar...",
+                style: TextStyle(fontSize: 15.0),
+              )
+            : Text(
+                "$searchObject",
+                style: TextStyle(fontSize: 15.0),
+              ),
       ),
       body: new Container(
         color: Colors.white,

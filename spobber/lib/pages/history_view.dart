@@ -58,7 +58,7 @@ class HistoryViewState extends State<HistoryView> {
                         id: key,
                         latitude: double.tryParse(splitArr[0]),
                         longitude: double.tryParse(splitArr[1]),
-                        objectUri: "",
+                        readableID: key ,
                         source: splitArr[2]));
                     Navigator.push(
                       context,

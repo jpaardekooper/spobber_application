@@ -254,10 +254,10 @@ class ClusteringHelper {
                 onTap: () {
                   showMarkerInformation(p.type, p.objectUri, p.id, p.secretId);
                   _favoritePlaces(p.location.latitude, p.location.longitude,
-                      p.id, p.source);
+                      p.readableID, p.source);
                 },
                 title:
-                    "${p.location.latitude.toStringAsFixed(2)},${p.location.longitude.toStringAsFixed(2)} and ${p.id}"),
+                    "${p.readableID}"),
             icon: getIconMarker(p.source),
             onTap: () {
               goToMarkerLocation(p.location.latitude, p.location.longitude);
@@ -288,7 +288,7 @@ class ClusteringHelper {
     }
   }
 
-  _favoritePlaces(double lat, double long, String id, String source) async {
+  _favoritePlaces(double lat, double long, String readableid, String source) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var imageData;
     print(source);
@@ -306,27 +306,21 @@ class ClusteringHelper {
 
     /// get the favorite position then added to prefs
     //var placeName = favoritePlaceController.text;
-    var placeName;
-    if (id == "0") {
-      placeName = id + lat.ceilToDouble().toString();
-    } else {
-      placeName = id;
-    }
+
+    var placeName = readableid;
 
     ///convert position to string and concat it
-    var placePosition = lat.toString() +
-        ',' +
-        long.toString() +
-        ',' +     
-        imageData;   
+    var placePosition =
+        lat.toString() + ',' + long.toString() + ',' + imageData;
 
     print('Place Name $placeName => $placePosition Captured.');
     await prefs.setString(
       '$placeName',
-      '$placePosition',      
+      '$placePosition',
     );
     favoritePlaceController.clear();
   }
+
   final favoritePlaceController = TextEditingController();
 
 //get marker for an image this needs to be an UNIT-8 function soon

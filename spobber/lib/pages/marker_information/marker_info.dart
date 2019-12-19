@@ -416,6 +416,28 @@ class _MarkerInfoState extends State<MarkerInfo>
       },
     ));
 
+      formWidget.add(new TextFormField(
+      enabled: false,
+      controller: TextEditingController(
+          text: markerDetailandInformation[0].readableID),
+      decoration: InputDecoration(
+          labelText: "readable id",
+          hintText: 'readable id',
+          icon: Icon(Icons.filter)),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'vul een de juiste type in';
+        } else {
+          return '';
+        }
+      },
+      onSaved: (value) {
+        setState(() {
+          objectType = value;
+        });
+      },
+    ));
+
   
     //getId information
     formWidget.add(Container(

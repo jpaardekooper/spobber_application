@@ -23,6 +23,7 @@ class SplashBloc {
           places[i].previewImageUri,
           places[i].source,
           places[i].type,
+          places[i].readableID
         );
         myPoints.add(p);
       }

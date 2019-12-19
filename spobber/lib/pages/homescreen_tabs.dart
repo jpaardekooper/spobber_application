@@ -25,14 +25,13 @@ class _TabsState extends State<TabsViewMaps> {
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  
 
   @override
   Widget build(BuildContext context) {
     ErrorWidget.builder = getErrorWidget;
     return StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,
-      child: Scaffold(        
+      child: Scaffold(
         resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         body: DefaultTabController(

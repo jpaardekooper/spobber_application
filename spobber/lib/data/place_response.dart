@@ -38,6 +38,7 @@ class PlaceResponse {
   final String source;
   final String previewImageUri;
   final String objectUri;
+  final String readableID;
 
   PlaceResponse({
     this.secretId,
@@ -49,6 +50,7 @@ class PlaceResponse {
     this.source,
     this.previewImageUri,
     this.objectUri,
+    this.readableID
   });
   //PlaceResponse({this.id, this.type, this.latitude, this.longitude, this.status, this.preview_image_uri, this.object_uri});
 
@@ -66,6 +68,8 @@ class PlaceResponse {
         longitude: json['longitude'],    
         source: json['source'],
         previewImageUri: json['preview_image_uri'],
-        objectUri: json['object_uri']);
+        objectUri: json['object_uri'],
+        readableID: json['readable_ID']
+        );
   }
 }

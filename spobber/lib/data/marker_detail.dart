@@ -15,6 +15,7 @@ class MarkerDetail {
   final String trackVersion;
   final String source;
   final int year;
+  final String readableID;
  // final String image;
 
   MarkerDetail(
@@ -34,6 +35,7 @@ class MarkerDetail {
       this.trackVersion,
       this.source,
       this.year,
+      this.readableID
       //this.image
       });
 
@@ -54,6 +56,7 @@ class MarkerDetail {
       trackVersion: json['track_version'],
       source: json['source'],
       year: json['year'],
+      readableID: json['readable_ID']
    //   image: json['image'],
     );
   }
