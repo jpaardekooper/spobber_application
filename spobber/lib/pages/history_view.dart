@@ -28,7 +28,7 @@ class HistoryViewState extends State<HistoryView> {
         .getKeys()
         .where((String key) =>
             key != "lib_cached_image_data" &&
-            key != "lib_cached_image_data_last_clean")
+            key != "lib_cached_image_data_last_clean" && key.contains('history'))
         .map<Widget>((key) => Row(children: <Widget>[
               Expanded(
                 child: ListTile(
@@ -36,7 +36,7 @@ class HistoryViewState extends State<HistoryView> {
                     backgroundColor: Colors.white,
                     child: Image.asset(_getPrefData(prefs.get(key), 2)),
                   ),
-                  title: Text(key),
+                  title: Text(key.replaceRange(0, 8, "")),
                   subtitle: Text("" +
                       _getPrefData(prefs.get(key), 0) +
                       ',' +

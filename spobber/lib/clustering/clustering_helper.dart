@@ -408,11 +408,11 @@ class ClusteringHelper {
 
     ///convert position to string and concat it
     var placePosition =
-        lat.toString() + ',' + long.toString() + ',' + imageData;
+        lat.toString() + ',' + long.toString() + ',' + imageData + ',' + source;
 
     print('Place Name $placeName => $placePosition Captured.');
     await prefs.setString(
-      '$placeName',
+      'history+$placeName',
       '$placePosition',
     );
     favoritePlaceController.clear();
