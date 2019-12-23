@@ -105,7 +105,7 @@ class _SingleMarkerWithMapsState extends State<SingleMarkerWithMaps> {
                 MaterialPageRoute(
                   builder: (context) => MarkerTemplate(
                     type: singleMarker[0].type,
-                    objectUri: singleMarker[0].objectUri,
+              //      objectUri: singleMarker[0].objectUri,
                     id: singleMarker[0].id.toString(),
                     secretId: singleMarker[0].secretId,
                   ),

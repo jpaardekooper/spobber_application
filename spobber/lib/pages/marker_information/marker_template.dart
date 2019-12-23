@@ -7,13 +7,13 @@ class MarkerTemplate extends StatelessWidget {
   final String type;
   final String id;
   final String secretId;
-  final String objectUri;
+
 
   // // In the constructor, require a Person
   MarkerTemplate(
       {Key key,
       @required this.type,
-      @required this.objectUri,
+
       this.id,
       this.secretId})
       : super(key: key);
@@ -26,21 +26,22 @@ class MarkerTemplate extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           flexibleSpace: Container(
-            decoration: BoxDecoration(
-              // Box decoration takes a gradient
-              gradient: LinearGradient(
-                // Where the linear gradient begins and ends
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                // Add one stop for each color. Stops should increase from 0 to 1
-                stops: [0.1, 0.9],
-                colors: [
-                  // Colors are easy thanks to Flutter's Colors class.
-                  Color(0xff004990),
-                  Color(0xff0066C6),
-                ],
-              ),
-            ),
+            // decoration: BoxDecoration(
+            //   // Box decoration takes a gradient
+            //   gradient: LinearGradient(
+            //     // Where the linear gradient begins and ends
+            //     begin: Alignment.topRight,
+            //     end: Alignment.bottomLeft,
+            //     // Add one stop for each color. Stops should increase from 0 to 1
+            //     stops: [0.1, 0.9],
+            //     colors: [
+            //       // Colors are easy thanks to Flutter's Colors class.
+            //       Color(0xff004990),
+            //       Color(0xff0066C6),
+            //     ],
+            //   ),
+            // ),
+            color: Theme.of(context).primaryColor
           ),
           bottom: TabBar(
             unselectedLabelColor: Colors.white60,
@@ -67,10 +68,10 @@ class MarkerTemplate extends StatelessWidget {
           child: TabBarView(
             //  physics: NeverScrollableScrollPhysics(),
             children: [
-              MarkerInfo(id: id.toString(), objectUri: objectUri),
+              MarkerInfo(id: id.toString()),
               GridViewDemo(id: id.toString(), secretId: secretId),
               //   MarkerImage(id: id, secretId: secretId),
-              MarkerHistory(),
+              MarkerHistory(secretid: secretId.toString()),
             ],
           ),
         ),

@@ -1,4 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:spobber/pages/tflite/home.dart';
+import 'package:spobber/pages/widgets/page.dart';
 
 class FancyFab extends StatefulWidget {
   final Function() onPressed;
@@ -89,20 +92,35 @@ class _FancyFabState extends State<FancyFab>
     return Container(
       child: FloatingActionButton(
         heroTag: "image",
-        onPressed: null,
+        onPressed: () {
+        
+        },
         tooltip: 'Image',
         child: Icon(Icons.image),
       ),
     );
   }
 
+  List<CameraDescription> cameras;
   Widget inbox() {
     return Container(
       child: FloatingActionButton(
         heroTag: "inbox",
-        onPressed: null,
+        onPressed: () async {
+          try {
+            cameras = await availableCameras();
+          } on CameraException catch (e) {
+            print('Error: $e.code\nError Message: $e.message');
+          }
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => (HomePage(cameras)),
+              ));
+        },
         tooltip: 'Inbox',
-        child: Icon(Icons.inbox),
+        child: Icon(Icons.camera),
       ),
     );
   }

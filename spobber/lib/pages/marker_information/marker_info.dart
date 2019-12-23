@@ -6,10 +6,10 @@ import 'package:spobber/data/marker_detail.dart';
 
 class MarkerInfo extends StatefulWidget {
   final String id;
-  final String objectUri;
+ // final String objectUri;
 
   // In the constructor, require a Person
-  MarkerInfo({@required this.id, @required this.objectUri});
+  MarkerInfo({@required this.id});
   @override
   _MarkerInfoState createState() => _MarkerInfoState();
 }
@@ -465,8 +465,8 @@ class _MarkerInfoState extends State<MarkerInfo>
         )));
 
     formWidget.add(
-      OutlineButton(
-        focusColor: Colors.blue[600],
+      OutlineButton(          
+        focusColor: Colors.orange,
         onPressed: () {
           if (status == '') {
             setState(() {
@@ -498,9 +498,9 @@ class _MarkerInfoState extends State<MarkerInfo>
         status,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Colors.green,
-          fontWeight: FontWeight.w500,
-          fontSize: 20.0,
+          color:status == 'Uploaden is gelukt' ? Colors.green : Colors.red,
+          fontWeight: FontWeight.bold,
+          fontSize: 18.0,
         ),
       ),
     );
@@ -513,7 +513,7 @@ class _MarkerInfoState extends State<MarkerInfo>
   _loadList() async {
     markerDetailandInformation.clear();
 
-    String url = widget.objectUri;
+    String url = widget.id;
     print(url);
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -532,7 +532,7 @@ class _MarkerInfoState extends State<MarkerInfo>
   @override
   void initState() {
     print("lOADING LIST");
-    _loadList();
+   // _loadList();
 
     super.initState();
   }

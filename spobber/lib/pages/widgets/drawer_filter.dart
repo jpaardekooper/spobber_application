@@ -70,19 +70,8 @@ class _DrawerFilter extends State<DrawerFilter> {
 //Build our Home widget
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(
-        title: searchObject == null
-            ? Text(
-                "Zoeken naar...",
-                style: TextStyle(fontSize: 15.0),
-              )
-            : Text(
-                "$searchObject",
-                style: TextStyle(fontSize: 15.0),
-              ),
-      ),
-      body: new Container(
+    return SafeArea(child: Drawer(child:
+      new Container(
         color: Colors.white,
         padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: new Column(
@@ -92,7 +81,7 @@ class _DrawerFilter extends State<DrawerFilter> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   //Create a SearchView

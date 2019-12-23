@@ -140,9 +140,11 @@ class _SearchViewState extends State<SearchView> {
 //    });
     if (response.statusCode == 200) {
       // final data = json.decode(response.body);
-      singleMarker = (json.decode(response.body) as List)
-          .map((data) => new PlaceResponse().fromJson(data))
-          .toList();
+      // singleMarker = (json.decode(response.body) as List)
+      //     .map((data) => new PlaceResponse().fromJson(data))
+      //     .toList();
+
+    //  print(response.body);      
       return true;
     } else {
       print("url is niet gevonden");

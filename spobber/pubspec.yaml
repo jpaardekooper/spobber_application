@@ -33,6 +33,8 @@ dependencies:
   meta: ^1.1.6
   geohash: ^0.2.1
   flutter_launcher_icons: ^0.7.4
+  tflite: ^1.0.4
+  flutter_cache_manager: ^1.1.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,8 +42,13 @@ dependencies:
   #tflite: ^1.0.4
 
 dev_dependencies:
+  flutter_native_splash: ^0.1.9
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  image: assets/splash.png
+  color: "ffffff"
 
 flutter_icons:
   android: true # can specify file name here e.g. "ic_launcher"
@@ -64,10 +71,9 @@ flutter:
   uses-material-design: true
 
   assets:
-   - assets/labelmap.txt
+   - assets/labels.txt
    - assets/detect.tflite
    - assets/
-   - assets/images/
    - assets/no_image.png
    - assets/result_data.png
 

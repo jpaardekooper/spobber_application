@@ -23,6 +23,13 @@ subprojects {
             }
         }
 }
+
+//         configurations.all {
+//     resolutionStrategy {
+//         force 'com.android.support:support-v4:27.1.0'
+//     }
+// }
+// }
     
 }
 
@@ -40,8 +47,6 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(':app')
 }
-
-
 
 task clean(type: Delete) {
     delete rootProject.buildDir

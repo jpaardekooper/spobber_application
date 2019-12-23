@@ -18,6 +18,8 @@ import 'package:spobber/network/location_services.dart';
 
 import 'marker_information/marker_template.dart';
 
+import 'dart:ui';
+
 class MapView extends StatefulWidget {
 // List<LatLngAndGeohash> list;
 
@@ -28,8 +30,8 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView>
- //   with AutomaticKeepAliveClientMixin<MapView> 
-    {
+//   with AutomaticKeepAliveClientMixin<MapView>
+{
   // @override
   // bool get wantKeepAlive => true;
 
@@ -48,30 +50,37 @@ class _MapViewState extends State<MapView>
     clusteringHelper.updateMap();
   }
 
-  updateMarkers(Set<Marker> markers) {
-    setState(() {
-      this.markers = markers;
-    });
+  double lastzoom;
+  updateMarkers(Set<Marker> markers, double zoom) {
+    if (lastzoom != zoom) {
+      lastzoom = zoom;
+
+      setState(() {
+        this.markers = markers;
+      });
+    }
+    else{
+      return;
+    }
   }
 
   @override
   void initState() {
     initMemoryClustering();
+
     super.initState();
   }
 
   // For memory solution
   initMemoryClustering() {
     clusteringHelper = ClusteringHelper.forMemory(
-        list: list,
-        updateMarkers: updateMarkers,
-        aggregationSetup: AggregationSetup(markerSize: 150),
-        showMarkerInformation: _showMarkerInformation,
-        goToMarkerLocation: goToMarkerLocation,     
-       );
+      list: list,
+      updateMarkers: updateMarkers,
+      aggregationSetup: AggregationSetup(markerSize: 150),
+      showMarkerInformation: _showMarkerInformation,
+      goToMarkerLocation: goToMarkerLocation,
+    );
   }
-
-
 
   MapType mapType = MapType.normal;
 
@@ -101,7 +110,9 @@ class _MapViewState extends State<MapView>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.map, ), // icon
+                    Icon(
+                      Icons.map,
+                    ), // icon
                     // Text("Call"), // text
                   ],
                 ),
@@ -258,7 +269,7 @@ class _MapViewState extends State<MapView>
               //searching the data source
               _search(),
               //filter
-              _changeSourceFilter(),             
+              _changeSourceFilter(),
             ],
           ),
           floatingActionButton: FancyFab(test: testthisfunc),
@@ -280,7 +291,7 @@ class _MapViewState extends State<MapView>
       MaterialPageRoute(
         builder: (context) => MarkerTemplate(
           type: type,
-          objectUri: objectUri,
+       //   objectUri: objectUri,
           id: id,
           secretId: secret,
         ),
