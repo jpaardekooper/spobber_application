@@ -30,7 +30,7 @@
 
 class PlaceResponse {
   final String secretId;
-  final String id;
+  final String equipmentId;
   final String type;
   final String placement;
   final double latitude;
@@ -42,7 +42,7 @@ class PlaceResponse {
 
   PlaceResponse({
     this.secretId,
-    this.id,
+    this.equipmentId,
     this.type,
     this.placement,
     this.latitude,
@@ -60,8 +60,8 @@ class PlaceResponse {
         // nextPageToken: json['next_page_token'],
         // results: parseResults(json['results']),
         // status: json['status']);
-        secretId: json['secret_Id'],
-        id: json['id'],
+        secretId: json['secret_id'],
+        equipmentId: json['equipment_id'],
         type: json['type'],      
         placement: json['placement'],
         latitude: json['latitude'],
@@ -69,7 +69,7 @@ class PlaceResponse {
         source: json['source'],
         previewImageUri: json['preview_image_uri'],
         objectUri: json['object_uri'],
-        readableID: json['readable_Id']
+        readableID: json['readable_id']
         );
   }
 }

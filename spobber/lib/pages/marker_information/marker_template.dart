@@ -5,44 +5,38 @@ import '../gridview/gridview_demo.dart';
 
 class MarkerTemplate extends StatelessWidget {
   final String type;
-  final String id;
+  final String readableId;
   final String secretId;
 
-
   // // In the constructor, require a Person
-  MarkerTemplate(
-      {Key key,
-      @required this.type,
-
-      this.id,
-      this.secretId})
+  MarkerTemplate({Key key, @required this.type, this.readableId, this.secretId})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print(id.toString() + " " + secretId);
+    print(readableId.toString() + " " + secretId);
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
+        primary: false,
         appBar: AppBar(
           flexibleSpace: Container(
-            // decoration: BoxDecoration(
-            //   // Box decoration takes a gradient
-            //   gradient: LinearGradient(
-            //     // Where the linear gradient begins and ends
-            //     begin: Alignment.topRight,
-            //     end: Alignment.bottomLeft,
-            //     // Add one stop for each color. Stops should increase from 0 to 1
-            //     stops: [0.1, 0.9],
-            //     colors: [
-            //       // Colors are easy thanks to Flutter's Colors class.
-            //       Color(0xff004990),
-            //       Color(0xff0066C6),
-            //     ],
-            //   ),
-            // ),
-            color: Theme.of(context).primaryColor
-          ),
+              // decoration: BoxDecoration(
+              //   // Box decoration takes a gradient
+              //   gradient: LinearGradient(
+              //     // Where the linear gradient begins and ends
+              //     begin: Alignment.topRight,
+              //     end: Alignment.bottomLeft,
+              //     // Add one stop for each color. Stops should increase from 0 to 1
+              //     stops: [0.1, 0.9],
+              //     colors: [
+              //       // Colors are easy thanks to Flutter's Colors class.
+              //       Color(0xff004990),
+              //       Color(0xff0066C6),
+              //     ],
+              //   ),
+              // ),
+              color: Theme.of(context).primaryColor),
           bottom: TabBar(
             unselectedLabelColor: Colors.white60,
             indicatorColor: Colors.white,
@@ -58,7 +52,7 @@ class MarkerTemplate extends StatelessWidget {
                 icon: Icon(Icons.image),
                 text: "Afbeeldingen",
               ),
-              Tab(icon: Icon(Icons.comment), text: "Commentaar"),
+              //        Tab(icon: Icon(Icons.comment), text: "Commentaar"),
             ],
           ),
           title: Text(type),
@@ -68,10 +62,10 @@ class MarkerTemplate extends StatelessWidget {
           child: TabBarView(
             //  physics: NeverScrollableScrollPhysics(),
             children: [
-              MarkerInfo(id: id.toString()),
-              GridViewDemo(id: id.toString(), secretId: secretId),
-              //   MarkerImage(id: id, secretId: secretId),
+              //     MarkerInfo(id: readableId.toString()),
               MarkerHistory(secretid: secretId.toString()),
+              GridViewDemo(id: readableId.toString(), secretId: secretId),
+              //   MarkerImage(id: id, secretId: secretId),
             ],
           ),
         ),

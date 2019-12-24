@@ -16,7 +16,7 @@ class SplashBloc {
         //  final fakePoint = places[i];
         final p = LatLngAndGeohash(
           LatLng(places[i].latitude, places[i].longitude),
-          places[i].id.toString(),
+          places[i].equipmentId.toString(),
           places[i].secretId.toString(),
           places[i].objectUri,
           places[i].placement,

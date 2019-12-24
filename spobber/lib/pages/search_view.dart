@@ -57,9 +57,9 @@ class _SearchViewState extends State<SearchView> {
               cursorColor: Colors.black,
               controller: myController,
               focusNode: _searchField,
+              
               onFieldSubmitted: (value) {
-                _searchField.unfocus();
-                _searchFunction();
+                _searchField.unfocus();                
               },
               decoration: InputDecoration(
                 fillColor: Colors.white,
@@ -85,12 +85,54 @@ class _SearchViewState extends State<SearchView> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
-                  child: Text("Zoeken"),
-                  color: isButtonDisabled
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).accentColor,
-                  textColor: Colors.white,
-                  onPressed: isButtonDisabled ? null : _searchFunction()),
+                child: Text("Zoeken"),
+                color: isButtonDisabled
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).accentColor,
+                textColor: Colors.white,
+                onPressed: isButtonDisabled
+                    ? null
+                    : () async {
+                        _searchField.unfocus();
+                        myController.text.isEmpty
+                            ? _empty = true
+                            : _empty = false;
+                        //TexField not empty
+                        if (_empty == false) {
+                          singleMarker.clear();
+                          String url =
+                              "https://spobber.azurewebsites.net/api/objects/${myController.text}";
+                          print(url);
+
+                          final response = await http.get(url);
+                          fillMarkerList(response).then((value) {
+                            if (value) {                            
+                                showToast(
+                                    "Object id: ${myController.text} wordt geladen",
+                                    context,
+                                    gravity: Toast.CENTER,
+                                    duration: Toast.LENGTH_SHORT);
+
+                                setState(() {
+                                  this.lat = singleMarker[0].latitude;
+                                  this.long = singleMarker[0].longitude;
+                                });
+                              }else{
+                                  showToast(
+                                    "Geen geldig equipment nummer gevonden",
+                                    context,
+                                    gravity: Toast.CENTER,
+                                    duration: Toast.LENGTH_SHORT);
+                              }
+                            //  else {
+                            //   setState(() {
+                            //     isButtonDisabled = false;
+                            //   });
+                            // }
+                          });
+                        }
+                      },
+              ),
             ),
           ],
         ),
@@ -98,39 +140,6 @@ class _SearchViewState extends State<SearchView> {
     );
   }
 
-  _searchFunction() async {
-    _searchField.unfocus();
-    myController.text.isEmpty ? _empty = true : _empty = false;
-    //TexField not empty
-    if (_empty == false) {
-      singleMarker.clear();
-      String url =
-          "https://spobber.azurewebsites.net/api/objects/${myController.text}";
-      print(url);
-
-      final response = await http.get(url);
-      fillMarkerList(response).then((value) {
-        if (value) {
-          if (singleMarker.first.id == "0") {
-            showToast("Geen geldige equipment gevonden", context,
-                gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
-          } else {
-            showToast("Object id: ${myController.text} wordt geladen", context,
-                gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
-
-            setState(() {
-              this.lat = singleMarker[0].latitude;
-              this.long = singleMarker[0].longitude;
-            });
-          }
-        } else {
-          setState(() {
-            isButtonDisabled = false;
-          });
-        }
-      });
-    }
-  }
 
   final FocusNode _searchField = FocusNode();
 
@@ -140,9 +149,9 @@ class _SearchViewState extends State<SearchView> {
 //    });
     if (response.statusCode == 200) {
       // final data = json.decode(response.body);
-      // singleMarker = (json.decode(response.body) as List)
-      //     .map((data) => new PlaceResponse().fromJson(data))
-      //     .toList();
+      singleMarker = (json.decode(response.body) as List)
+          .map((data) => new PlaceResponse().fromJson(data))
+          .toList();
 
       //  print(response.body);
       return true;

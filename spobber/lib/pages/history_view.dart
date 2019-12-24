@@ -36,9 +36,13 @@ class HistoryViewState extends State<HistoryView> {
                   leading: CircleAvatar(
                     backgroundColor: Colors.white,
                     child: Image.asset(_getPrefData(prefs.get(key), 2)),
+                    radius: 8,
                   ),
-                  title: Text(key.replaceRange(0, 2, "")),
-                  subtitle: Text("" +
+                  title: Text(
+                    "ID: " + key.replaceRange(0, 2, ""),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text("Locatie: " +
                       _getPrefData(prefs.get(key), 0) +
                       ',' +
                       _getPrefData(prefs.get(key), 1)),
@@ -55,11 +59,10 @@ class HistoryViewState extends State<HistoryView> {
                     singleMarker.clear();
                     singleMarker.add(new PlaceResponse(
                         type: splitArr[5],
-                        id: key.replaceRange(0, 2, ""),
                         secretId: splitArr[4],
                         latitude: double.tryParse(splitArr[0]),
                         longitude: double.tryParse(splitArr[1]),
-                        readableID: key.replaceRange(0, 2, ""),                        
+                        readableID: key.replaceRange(0, 2, ""),
                         source: splitArr[3]));
                     Navigator.push(
                       context,
@@ -171,11 +174,11 @@ class HistoryViewState extends State<HistoryView> {
                   );
                 } else if (snapshot.hasError) {
                   return ListTile(
-                    title: Text("Couldn\'t get Favorite Positions"),
+                    title: Text("Couldn\'t get History Positions"),
                   );
                 } else if (!snapshot.hasData)
                   return ListTile(
-                    title: Text("No Favorite Positions Saved"),
+                    title: Text("No Favorite History is Saved"),
                   );
                 else {
                   return Column(children: snapshot.data);

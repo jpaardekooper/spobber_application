@@ -292,7 +292,7 @@ class _MapViewState extends State<MapView>
         builder: (context) => MarkerTemplate(
           type: type,
        //   objectUri: objectUri,
-          id: id,
+          readableId: id,
           secretId: secret,
         ),
       ),

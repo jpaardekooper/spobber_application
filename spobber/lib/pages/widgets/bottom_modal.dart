@@ -150,9 +150,9 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                             style: TextStyle(
                                 fontSize: 12.5, fontWeight: FontWeight.bold),
                           ),
-                          places[index].id != '0'
+                          places[index].equipmentId != '0'
                               ? Text(
-                                  "Equipment: " + places[index].id.toString(),
+                                  "Equipment: " + places[index].equipmentId.toString(),
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w600),

@@ -74,7 +74,7 @@ class _SingleMarkerWithMapsState extends State<SingleMarkerWithMaps> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Marker: ${singleMarker[0].id}"),
+        title: Text("Marker: ${singleMarker[0].readableID}"),
         centerTitle: true,
       ),
       body: Stack(
@@ -95,18 +95,18 @@ class _SingleMarkerWithMapsState extends State<SingleMarkerWithMaps> {
 
   addnewMarker() {
     Marker resultMarker = Marker(
-        markerId: MarkerId(singleMarker[0].id.toString()),
+        markerId: MarkerId(singleMarker[0].readableID.toString()),
         infoWindow: InfoWindow(
-            title: singleMarker[0].id.toString(),            
+            title: singleMarker[0].readableID.toString(),            
             snippet: "lat ${singleMarker[0].latitude}, long ${singleMarker[0].longitude}",
             onTap: () {
+  
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => MarkerTemplate(
-                    type: singleMarker[0].type,
-              //      objectUri: singleMarker[0].objectUri,
-                    id: singleMarker[0].id.toString(),
+                    type: singleMarker[0].type,     
+                    readableId: singleMarker[0].readableID,
                     secretId: singleMarker[0].secretId,
                   ),
                 ),
