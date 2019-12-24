@@ -386,6 +386,8 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   loadDataToMaps() async {
+    clusteringHelper.list.clear();
+
     final LatLngBounds visibleRegion =
         await clusteringHelper.mapController.getVisibleRegion();
 

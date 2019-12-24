@@ -28,7 +28,8 @@ class HistoryViewState extends State<HistoryView> {
         .getKeys()
         .where((String key) =>
             key != "lib_cached_image_data" &&
-            key != "lib_cached_image_data_last_clean" && key.contains('history'))
+            key != "lib_cached_image_data_last_clean" &&
+            key.contains('__'))
         .map<Widget>((key) => Row(children: <Widget>[
               Expanded(
                 child: ListTile(
@@ -36,7 +37,7 @@ class HistoryViewState extends State<HistoryView> {
                     backgroundColor: Colors.white,
                     child: Image.asset(_getPrefData(prefs.get(key), 2)),
                   ),
-                  title: Text(key.replaceRange(0, 8, "")),
+                  title: Text(key.replaceRange(0, 2, "")),
                   subtitle: Text("" +
                       _getPrefData(prefs.get(key), 0) +
                       ',' +
@@ -45,21 +46,21 @@ class HistoryViewState extends State<HistoryView> {
                     List<String> splitArr =
                         prefs.get(key).toString().split(",");
 
-                    // SearchSingleMarker.favoriteLat =
-                    //     double.tryParse(splitArr[0]);
-                    // SearchSingleMarker.favoriteLong =
-                    //     double.tryParse(splitArr[1]);
-                    // SearchSingleMarker.locationImage = splitArr[2];
-                    // print(splitArr[2]);
-                    // SearchSingleMarker.favoritePlaceName = key;
-                    // SearchSingleMarker.isFavorite = true;
+                    ///array 0 is latitude
+                    ///array 1 is longitude
+                    ///array 2 is imageData assets/imagename
+                    ///array 3 is source
+                    ///array 4 is secretid
+                    ///array 5 is type
                     singleMarker.clear();
                     singleMarker.add(new PlaceResponse(
-                        id: key,
+                        type: splitArr[5],
+                        id: key.replaceRange(0, 2, ""),
+                        secretId: splitArr[4],
                         latitude: double.tryParse(splitArr[0]),
                         longitude: double.tryParse(splitArr[1]),
-                        readableID: key ,
-                        source: splitArr[2]));
+                        readableID: key.replaceRange(0, 2, ""),                        
+                        source: splitArr[3]));
                     Navigator.push(
                       context,
                       MaterialPageRoute(

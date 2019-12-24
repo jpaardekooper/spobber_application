@@ -24,7 +24,7 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   //to retrieve position from TextField
   final myController = TextEditingController();
-  final favoritePlaceController = TextEditingController();
+  //final favoritePlaceController = TextEditingController();
 
   ClusteringHelper clusteringHelper;
 
@@ -53,8 +53,14 @@ class _SearchViewState extends State<SearchView> {
           children: <Widget>[
             TextFormField(
               keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
               cursorColor: Colors.black,
               controller: myController,
+              focusNode: _searchField,
+              onFieldSubmitted: (value) {
+                _searchField.unfocus();
+                _searchFunction();
+              },
               decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
@@ -79,60 +85,54 @@ class _SearchViewState extends State<SearchView> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
-                child: Text("Search"),
-                color: isButtonDisabled
-                    ? Theme.of(context).primaryColor
-                    : Theme.of(context).accentColor,
-                textColor: Colors.white,
-                onPressed: isButtonDisabled
-                    ? null
-                    : () async {
-                        myController.text.isEmpty
-                            ? _empty = true
-                            : _empty = false;
-                        //TexField not empty
-                        if (_empty == false) {
-                          singleMarker.clear();
-                          String url =
-                              "https://spobber.azurewebsites.net/api/objects/${myController.text}";
-                          print(url);
-                          
-                          final response = await http.get(url);
-                          fillMarkerList(response).then((value) {
-                            if (value) {
-                              if (singleMarker.first.id == "0") {
-                                showToast(
-                                    "Geen geldige equipment gevonden", context,
-                                    gravity: Toast.CENTER,
-                                    duration: Toast.LENGTH_LONG);                              
-                              } else {
-                                showToast(
-                                    "Object id: ${myController.text} wordt geladen",
-                                    context,
-                                    gravity: Toast.CENTER,
-                                    duration: Toast.LENGTH_SHORT);
-
-                                setState(() {                               
-                                  this.lat = singleMarker[0].latitude;
-                                  this.long = singleMarker[0].longitude;
-                                });
-                              }
-                            }
-                            else{
-                              setState(() {
-                                isButtonDisabled = false;
-                              });
-                            }
-                          });
-                        }
-                      },
-              ),
+                  child: Text("Zoeken"),
+                  color: isButtonDisabled
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).accentColor,
+                  textColor: Colors.white,
+                  onPressed: isButtonDisabled ? null : _searchFunction()),
             ),
           ],
         ),
       ),
     );
   }
+
+  _searchFunction() async {
+    _searchField.unfocus();
+    myController.text.isEmpty ? _empty = true : _empty = false;
+    //TexField not empty
+    if (_empty == false) {
+      singleMarker.clear();
+      String url =
+          "https://spobber.azurewebsites.net/api/objects/${myController.text}";
+      print(url);
+
+      final response = await http.get(url);
+      fillMarkerList(response).then((value) {
+        if (value) {
+          if (singleMarker.first.id == "0") {
+            showToast("Geen geldige equipment gevonden", context,
+                gravity: Toast.CENTER, duration: Toast.LENGTH_LONG);
+          } else {
+            showToast("Object id: ${myController.text} wordt geladen", context,
+                gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+
+            setState(() {
+              this.lat = singleMarker[0].latitude;
+              this.long = singleMarker[0].longitude;
+            });
+          }
+        } else {
+          setState(() {
+            isButtonDisabled = false;
+          });
+        }
+      });
+    }
+  }
+
+  final FocusNode _searchField = FocusNode();
 
   Future<bool> fillMarkerList(http.Response response) async {
     //  setState(() {
@@ -144,7 +144,7 @@ class _SearchViewState extends State<SearchView> {
       //     .map((data) => new PlaceResponse().fromJson(data))
       //     .toList();
 
-    //  print(response.body);      
+      //  print(response.body);
       return true;
     } else {
       print("url is niet gevonden");

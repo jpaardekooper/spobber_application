@@ -97,8 +97,8 @@ class _SingleMarkerWithMapsState extends State<SingleMarkerWithMaps> {
     Marker resultMarker = Marker(
         markerId: MarkerId(singleMarker[0].id.toString()),
         infoWindow: InfoWindow(
-            title: singleMarker[0].id.toString(),
-            snippet: singleMarker[0].secretId.toString(),
+            title: singleMarker[0].id.toString(),            
+            snippet: "lat ${singleMarker[0].latitude}, long ${singleMarker[0].longitude}",
             onTap: () {
               Navigator.push(
                 context,

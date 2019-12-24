@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+     onSelect(testHecto);
     super.initState();
   }
 
@@ -60,20 +61,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(title: Text("test"),),
+    return Scaffold(      
       body: _model == ""
           ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[      
-                  RaisedButton(
-                    child: const Text(testHecto),
-                    onPressed: () => onSelect(testHecto),
-                    
-                  ),
-                ],
-              ),
+              child: CircularProgressIndicator()
             )
           : Stack(
               children: [

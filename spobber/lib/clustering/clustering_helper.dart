@@ -316,7 +316,7 @@ class ClusteringHelper {
                 onTap: () {
                   showMarkerInformation(p.type, p.objectUri, p.id, p.secretId);
                   _favoritePlaces(p.location.latitude, p.location.longitude,
-                      p.readableID, p.source);
+                      p.readableID, p.source, p.secretId, p.type);
                 },
                 title: "ID: ${p.readableID}",
                 snippet:
@@ -387,7 +387,7 @@ class ClusteringHelper {
 
   final favoritePlaceController = TextEditingController();
   _favoritePlaces(
-      double lat, double long, String readableid, String source) async {
+      double lat, double long, String readableid, String source, String secretId, String type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var imageData;
     print(source);
@@ -407,12 +407,18 @@ class ClusteringHelper {
     var placeName = readableid;
 
     ///convert position to string and concat it
+    ///array 0 is latitude
+    ///array 1 is longitude
+    ///array 2 is imageData assets/imagename
+    ///array 3 is source
+    ///array 4 is secretid
+    ///array 5 is type
     var placePosition =
-        lat.toString() + ',' + long.toString() + ',' + imageData + ',' + source;
+        lat.toString() + ',' + long.toString() + ',' + imageData + ',' + source + ',' + secretId + ',' + type;
 
     print('Place Name $placeName => $placePosition Captured.');
     await prefs.setString(
-      'history+$placeName',
+      '__$placeName',
       '$placePosition',
     );
     favoritePlaceController.clear();
