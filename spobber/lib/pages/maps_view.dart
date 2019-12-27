@@ -273,6 +273,7 @@ class _MapViewState extends State<MapView>
             ],
           ),
           floatingActionButton: FancyFab(test: testthisfunc),
+           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           bottomNavigationBar: bottomNavigatorInformation(
               userLocation.latitude, userLocation.longitude));
     }
