@@ -1,3 +1,4 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/place_response.dart';
 import 'package:spobber/data/marker_detail.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -33,4 +34,5 @@ String singleMarkerObject = "";
 
 String searchObject = "";
 
+LatLng mylocation;
 

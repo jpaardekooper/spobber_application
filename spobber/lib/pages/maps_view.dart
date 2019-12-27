@@ -58,8 +58,7 @@ class _MapViewState extends State<MapView>
       setState(() {
         this.markers = markers;
       });
-    }
-    else{
+    } else {
       return;
     }
   }
@@ -256,6 +255,7 @@ class _MapViewState extends State<MapView>
   @override
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);
+    mylocation = LatLng(userLocation.latitude, userLocation.longitude);
     if (userLocation == null) {
       return Center(child: CircularProgressIndicator());
     } else {
@@ -291,7 +291,7 @@ class _MapViewState extends State<MapView>
       MaterialPageRoute(
         builder: (context) => MarkerTemplate(
           type: type,
-       //   objectUri: objectUri,
+          //   objectUri: objectUri,
           readableId: id,
           secretId: secret,
         ),

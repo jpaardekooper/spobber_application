@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:spobber/pages/tflite/home.dart';
 import 'package:spobber/pages/widgets/page.dart';
 
+import 'add_object.dart';
+
 class FancyFab extends StatefulWidget {
   final Function() onPressed;
   final String tooltip;
@@ -77,8 +79,16 @@ class _FancyFabState extends State<FancyFab>
   Widget add() {
     return Container(
       child: FloatingActionButton(
-        heroTag: "mapButton",
-        onPressed: widget.test,
+        heroTag: "newObject",
+        onPressed: () {
+          // widget.test
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => (PlaceMarkerBody()),
+              ));
+        },
         tooltip: 'Add',
         child: Icon(
           Icons.add,
@@ -88,24 +98,11 @@ class _FancyFabState extends State<FancyFab>
     );
   }
 
+  List<CameraDescription> cameras;
   Widget image() {
     return Container(
       child: FloatingActionButton(
         heroTag: "image",
-        onPressed: () {
-        
-        },
-        tooltip: 'Image',
-        child: Icon(Icons.image),
-      ),
-    );
-  }
-
-  List<CameraDescription> cameras;
-  Widget inbox() {
-    return Container(
-      child: FloatingActionButton(
-        heroTag: "inbox",
         onPressed: () async {
           try {
             cameras = await availableCameras();
@@ -119,11 +116,13 @@ class _FancyFabState extends State<FancyFab>
                 builder: (context) => (HomePage(cameras)),
               ));
         },
-        tooltip: 'Inbox',
+        tooltip: 'Image',
         child: Icon(Icons.camera),
       ),
     );
   }
+
+
 
   Widget toggle() {
     return Container(
@@ -149,7 +148,7 @@ class _FancyFabState extends State<FancyFab>
         Transform(
           transform: Matrix4.translationValues(
             0.0,
-            _translateButton.value * 3.0,
+            _translateButton.value * 2.0,
             0.0,
           ),
           child: add(),
@@ -157,19 +156,12 @@ class _FancyFabState extends State<FancyFab>
         Transform(
           transform: Matrix4.translationValues(
             0.0,
-            _translateButton.value * 2.0,
+            _translateButton.value,
             0.0,
           ),
           child: image(),
         ),
-        Transform(
-          transform: Matrix4.translationValues(
-            0.0,
-            _translateButton.value,
-            0.0,
-          ),
-          child: inbox(),
-        ),
+       
         toggle(),
       ],
     );
