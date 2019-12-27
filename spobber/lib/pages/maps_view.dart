@@ -124,23 +124,27 @@ class _MapViewState extends State<MapView>
   }
 
   Widget createGoogleMapsMap() {
-    return GoogleMap(
-      onMapCreated: _onMapCreated,
-      initialCameraPosition: initialCameraPosition,
-      markers: markers,
-      polylines: Set<Polyline>.of(polylines.values),
-      onCameraMove: (newPosition) =>
-          clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
-      onCameraIdle: clusteringHelper.onMapIdle,
-      myLocationButtonEnabled: true,
-      myLocationEnabled: true,
-      mapType: mapType,
-      mapToolbarEnabled: false,
-      minMaxZoomPreference: MinMaxZoomPreference(7, 21),
-      cameraTargetBounds: new CameraTargetBounds(
-        new LatLngBounds(
-          northeast: LatLng(54.01786, 7.230455),
-          southwest: LatLng(50.74753, 2.992192),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: GoogleMap(
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: initialCameraPosition,
+        markers: markers,
+        polylines: Set<Polyline>.of(polylines.values),
+        onCameraMove: (newPosition) =>
+            clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
+        onCameraIdle: clusteringHelper.updateMap(),
+        myLocationButtonEnabled: true,
+        myLocationEnabled: true,
+        mapType: mapType,
+        mapToolbarEnabled: false,
+        minMaxZoomPreference: MinMaxZoomPreference(7, 21),
+        cameraTargetBounds: new CameraTargetBounds(
+          new LatLngBounds(
+            northeast: LatLng(54.01786, 7.230455),
+            southwest: LatLng(50.74753, 2.992192),
+          ),
         ),
       ),
     );
@@ -273,7 +277,8 @@ class _MapViewState extends State<MapView>
             ],
           ),
           floatingActionButton: FancyFab(test: testthisfunc),
-           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           bottomNavigationBar: bottomNavigatorInformation(
               userLocation.latitude, userLocation.longitude));
     }
