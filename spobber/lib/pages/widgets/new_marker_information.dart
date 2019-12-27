@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:spobber/data/global_variable.dart';
+import 'package:spobber/data/marker_detail.dart';
 import 'package:spobber/data/place_response.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,9 +16,28 @@ class NewMarkerInformation extends StatefulWidget {
 // the form.
 class _MarkerInfoState extends State<NewMarkerInformation> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  List<String> _colors = <String>['', 'red', 'green', 'blue', 'orange'];
+  List<String> _colors = <String>[
+    '',
+    'Lijmlas Edilon-NS',
+    'Lijmlas Edilon-TC',
+    'Lijmlas BWG-S',
+    'Lijmlas BWG-S versterkt',
+    'Lijmlas Kloos HB600',
+    'Lijmlas Kloos HB480',
+    'Lijmlas ETS PF1/BN2 - oud',
+    'Lijmlas ETS PF1/BN2 - nieuw',
+    'Geconstr. las NS',
+    'Geconstr. las Tenconi-4 gats',
+    'Geconstr. las Tenconi-6 gats',
+    'Geconstr. las Exel',
+    'Geconstr. las BWG-MT',
+    'Geconstr. las BWG-MT versterkt',
+    'Lijmlas type onbekend',
+    'Geconstr. las type onbekend',
+    'Lijmlas Railpro-HIRD'
+  ];
   String _color = '';
-  Contact newContact = new Contact();
+  MarkerDetail newMarkerDetail = new MarkerDetail();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -67,7 +87,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       return InputDecorator(
                         decoration: InputDecoration(
                           icon: const Icon(Icons.color_lens),
-                          labelText: 'Color',
+                          labelText: 'Type',
                         ),
                         isEmpty: _color == '',
                         child: new DropdownButtonHideUnderline(
@@ -76,7 +96,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                             isDense: true,
                             onChanged: (String newValue) {
                               setState(() {
-                                newContact.favoriteColor = newValue;
+                                newMarkerDetail.type = newValue;
                                 _color = newValue;
                                 state.didChange(newValue);
                               });
@@ -107,8 +127,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   }
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
-    _scaffoldKey.currentState.showSnackBar(
-        new SnackBar(backgroundColor: Theme.of(context).accentColor, content: new Text(message)));
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+        backgroundColor: Theme.of(context).accentColor,
+        content: new Text(message)));
   }
 
   void _submitForm() {
@@ -120,60 +141,23 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       form.save(); //This invokes each onSaved event
 
       print('Form save called, newContact is now up to date...');
-      print('Email: ${newContact.name}');
-      print('Dob: ${newContact.dob}');
-      print('Phone: ${newContact.phone}');
-      print('Email: ${newContact.email}');
-      print('Favorite Color: ${newContact.favoriteColor}');
+      print('Email: ${newMarkerDetail.id}');
+      print('Dob: ${newMarkerDetail.latitude}');
+      print('Phone: ${newMarkerDetail.longitude}');
+      print('Email: ${newMarkerDetail.placement}');
+      print('Favorite Color: ${newMarkerDetail.type}');
       print('========================================');
       print('Submitting to back end...');
       print('TODO - we will write the submission part next...');
 
-      var contactService = new ContactService();
-      contactService.createContact(newContact).then((value) =>
-          showMessage('New contact created for ${value.name}!', Colors.blue));
+      var contactService = new MarkerDetail();
+      contactService.createContact(newMarkerDetail).then((value) =>
+          showMessage('New contact created for ${value.id}!', Colors.blue));
     }
   }
 }
 
-class ContactService {
-  static const _serviceUrl = 'http://mockbin.org/echo';
-  static final _headers = {'Content-Type': 'application/json'};
-
-  Future<Contact> createContact(Contact contact) async {
-    try {
-      String json = _toJson(contact);
-      final response =
-          await http.post(_serviceUrl, headers: _headers, body: json);
-      var c = _fromJson(response.body);
-      return c;
-    } catch (e) {
-      print('Server Exception!!!');
-      print(e);
-      return null;
-    }
-  }
-
-  Contact _fromJson(String json) {
-    Map<String, dynamic> map = jsonDecode(json);
-    var contact = new Contact();
-    contact.name = map['name'];
-    contact.phone = map['phone'];
-    contact.email = map['email'];
-    contact.email = map['favoriteColor'];
-    return contact;
-  }
-
-  String _toJson(Contact contact) {
-    var mapData = new Map();
-    mapData["name"] = contact.name;
-    mapData["phone"] = contact.phone;
-    mapData["email"] = contact.email;
-    mapData["favoriteColor"] = contact.favoriteColor;
-    String json = jsonEncode(mapData);
-    return json;
-  }
-}
+class ContactService {}
 
 class Contact {
   String name;

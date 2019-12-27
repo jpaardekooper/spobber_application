@@ -29,29 +29,28 @@
  */
 
 class PlaceResponse {
-  final String secretId;
-  final String equipmentId;
-  final String type;
-  final String placement;
-  final double latitude;
-  final double longitude;
-  final String source;
-  final String previewImageUri;
-  final String objectUri;
-  final String readableID;
+ final String secretId;
+ final String equipmentId;
+ final String type;
+ final String placement;
+ final double latitude;
+ final double longitude;
+ final String source;
+ final String previewImageUri;
+ final String objectUri;
+ final String readableID;
 
-  PlaceResponse({
-    this.secretId,
-    this.equipmentId,
-    this.type,
-    this.placement,
-    this.latitude,
-    this.longitude,
-    this.source,
-    this.previewImageUri,
-    this.objectUri,
-    this.readableID
-  });
+  PlaceResponse(
+      {this.secretId,
+      this.equipmentId,
+      this.type,
+      this.placement,
+      this.latitude,
+      this.longitude,
+      this.source,
+      this.previewImageUri,
+      this.objectUri,
+      this.readableID});
   //PlaceResponse({this.id, this.type, this.latitude, this.longitude, this.status, this.preview_image_uri, this.object_uri});
 
   PlaceResponse fromJson(Map<String, dynamic> json) {
@@ -62,14 +61,13 @@ class PlaceResponse {
         // status: json['status']);
         secretId: json['secret_id'],
         equipmentId: json['equipment_id'],
-        type: json['type'],      
+        type: json['type'],
         placement: json['placement'],
         latitude: json['latitude'],
-        longitude: json['longitude'],    
+        longitude: json['longitude'],
         source: json['source'],
         previewImageUri: json['preview_image_uri'],
         objectUri: json['object_uri'],
-        readableID: json['readable_id']
-        );
+        readableID: json['readable_id']);
   }
 }
