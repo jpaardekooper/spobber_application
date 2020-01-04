@@ -57,6 +57,8 @@ class ClusteringHelper {
   //List of points for memory clustering
   List<LatLngAndGeohash> list;
 
+  Timer iosMapStopped;
+
   //Call during the editing of CameraPosition
   //If you want updateMap during the zoom in/out set forceUpdate to true
   //this is NOT RECCOMENDED
@@ -65,15 +67,15 @@ class ClusteringHelper {
     if (forceUpdate) {
       updateMap();
     }
+    if (Platform.isIOS) {
+      iosMapStopped?.cancel();
+      iosMapStopped = Timer(const Duration(milliseconds: 500), updateMap);
+    }
   }
 
   //Call when user stop to move or zoom the map
   Future<void> onMapIdle() async {
-    //  if (list == null || _currentZoom >= 19) {
-    //    return;
-    //   } else {
     updateMap();
-    //  }
   }
 
   updateMap() {
@@ -386,8 +388,8 @@ class ClusteringHelper {
   }
 
   final favoritePlaceController = TextEditingController();
-  _favoritePlaces(
-      double lat, double long, String readableid, String source, String secretId, String type) async {
+  _favoritePlaces(double lat, double long, String readableid, String source,
+      String secretId, String type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var imageData;
     print(source);
@@ -413,8 +415,17 @@ class ClusteringHelper {
     ///array 3 is source
     ///array 4 is secretid
     ///array 5 is type
-    var placePosition =
-        lat.toString() + ',' + long.toString() + ',' + imageData + ',' + source + ',' + secretId + ',' + type;
+    var placePosition = lat.toString() +
+        ',' +
+        long.toString() +
+        ',' +
+        imageData +
+        ',' +
+        source +
+        ',' +
+        secretId +
+        ',' +
+        type;
 
     print('Place Name $placeName => $placePosition Captured.');
     await prefs.setString(
