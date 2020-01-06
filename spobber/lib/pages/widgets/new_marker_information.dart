@@ -20,10 +20,9 @@ class NewMarkerInformation extends StatefulWidget {
 // the form.
 class _MarkerInfoState extends State<NewMarkerInformation> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-   List<String> _type = <String>[
+  List<String> _type = <String>[
     '',
     'ES-LAS',
-    '------',
   ];
   List<String> _types = <String>[
     '',
@@ -58,114 +57,134 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
         title: Text("Nieuw object"),
       ),
       body: SafeArea(
-          top: false,
-          bottom: false,
-          child: Form(
-              key: _formKey,
-              autovalidate: true,
-              child: new ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                children: <Widget>[
-                      new FormField(
-                    builder: (FormFieldState state) {
-                      return InputDecorator(
-                        decoration: InputDecoration(
-                          icon: const Icon(Icons.color_lens),
-                          labelText: 'Type',
-                        ),
-                        isEmpty: _typeTxt == '',
-                        child: new DropdownButtonHideUnderline(
-                          child: new DropdownButton(
-                            value: _typeTxt,
-                            isDense: true,
-                            onChanged: (String newValue) {
-                              setState(() {
-                                newMarkerDetail.type = newValue;
-                                _typeTxt = newValue;
-                                state.didChange(newValue);
-                              });
-                            },
-                            items: _type.map((String value) {
-                              return new DropdownMenuItem(
-                                value: value,
-                                child: new Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      );
-                    },
-                    validator: (val) {
-                      return val != '' ? null : 'Selecteer het object soort';
-                    },
-                  ),
-                  new TextFormField(
-                    decoration:  InputDecoration(
-                      icon:  Icon(Icons.person),
-                      hintText: 'Enter your first and last name',
-                      labelText: '',
+        top: false,
+        bottom: false,
+        child: Form(
+          key: _formKey,
+          autovalidate: true,
+          child: new ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            children: <Widget>[
+              new TextFormField(
+                enabled: false,
+                initialValue: 'Spobber Application',
+                decoration: InputDecoration(
+                  icon: Icon(Icons.person),
+                  hintText: 'Bron',
+                  labelText: 'Bron',
+                  
+                ),            
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  else{
+                     newMarkerDetail.source = value;
+                  }
+                },
+              ),
+              new FormField(
+                builder: (FormFieldState state) {
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                      icon: const Icon(Icons.color_lens),
+                      labelText: 'Type',
                     ),
-                  ),
-                  new TextFormField(
-                    decoration: const InputDecoration(
-                      icon: const Icon(Icons.phone),
-                      hintText: 'Enter a phone number',
-                      labelText: 'Phone',
+                    isEmpty: _typeTxt == '',
+                    child: new DropdownButtonHideUnderline(
+                      child: new DropdownButton(
+                        value: _typeTxt,
+                        isDense: true,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            newMarkerDetail.type = newValue;
+                            _typeTxt = newValue;
+                            state.didChange(newValue);
+                          });
+                        },
+                        items: _type.map((String value) {
+                          return new DropdownMenuItem(
+                            value: value,
+                            child: new Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ),
-                    keyboardType: TextInputType.phone,
-                    inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly,
-                    ],
-                  ),
-                  new TextFormField(
-                    decoration: const InputDecoration(
-                      icon: const Icon(Icons.email),
-                      hintText: 'Enter a email address',
-                      labelText: 'Email',
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  new FormField(
-                    builder: (FormFieldState state) {
-                      return InputDecorator(
-                        decoration: InputDecoration(
-                          icon: const Icon(Icons.color_lens),
-                          labelText: 'Soort Type',
-                        ),
-                        isEmpty: _typesTxt == '',
-                        child: new DropdownButtonHideUnderline(
-                          child: new DropdownButton(
-                            value: _typesTxt,
-                            isDense: true,
-                            onChanged: (String newValue) {
-                              setState(() {
-                                newMarkerDetail.type = newValue;
-                                _typesTxt = newValue;
-                                state.didChange(newValue);
-                              });
-                            },
-                            items: _types.map((String value) {
-                              return new DropdownMenuItem(
-                                value: value,
-                                child: new Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      );
-                    },
-                    validator: (val) {
-                      return val != '' ? null : 'Selecteer het object soort';
-                    },
-                  ),
-                  new Container(
-                      padding: const EdgeInsets.only(left: 40.0, top: 20.0),
-                      child: new RaisedButton(
-                        child: const Text('Submit'),
-                        onPressed: _submitForm,
-                      )),
+                  );
+                },
+                validator: (val) {
+                  return val != '' ? null : 'Selecteer het object soort';
+                },
+              ),
+              new TextFormField(
+                decoration: InputDecoration(
+                  icon: Icon(Icons.person),
+                  hintText: 'Enter your first and last name',
+                  labelText: '',
+                ),
+              ),
+              new TextFormField(
+                decoration: const InputDecoration(
+                  icon: const Icon(Icons.phone),
+                  hintText: 'Enter a phone number',
+                  labelText: 'Phone',
+                ),
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  WhitelistingTextInputFormatter.digitsOnly,
                 ],
-              ),),),
+              ),
+              new TextFormField(
+                decoration: const InputDecoration(
+                  icon: const Icon(Icons.email),
+                  hintText: 'Enter a email address',
+                  labelText: 'Email',
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              new FormField(
+                builder: (FormFieldState state) {
+                  return InputDecorator(
+                    decoration: InputDecoration(
+                      icon: const Icon(Icons.color_lens),
+                      labelText: 'Soort Type',
+                    ),
+                    isEmpty: _typesTxt == '',
+                    child: new DropdownButtonHideUnderline(
+                      child: new DropdownButton(
+                        value: _typesTxt,
+                        isDense: true,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            newMarkerDetail.type = newValue;
+                            _typesTxt = newValue;
+                            state.didChange(newValue);
+                          });
+                        },
+                        items: _types.map((String value) {
+                          return new DropdownMenuItem(
+                            value: value,
+                            child: new Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  );
+                },
+                validator: (val) {
+                  return val != '' ? null : 'Selecteer het object soort';
+                },
+              ),
+              new Container(
+                  padding: const EdgeInsets.only(left: 40.0, top: 20.0),
+                  child: new RaisedButton(
+                    child: const Text('Submit'),
+                    onPressed: _submitForm,
+                  )),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

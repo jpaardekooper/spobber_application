@@ -22,6 +22,7 @@ class _MarkerHistoryState extends State<MarkerHistory>
     final response = await http.get(
         "https://spobber.azurewebsites.net/api/objects/${widget.secretid}");
     print("https://spobber.azurewebsites.net/api/objects/${widget.secretid}");
+
     print("HALO");
     if (response.statusCode == 200) {
       if (mounted) {
@@ -49,10 +50,11 @@ class _MarkerHistoryState extends State<MarkerHistory>
       ),
       itemBuilder: (BuildContext context, int index) {
         final data = list[index];
-        if (data['value'].toString() == "" || data['value'].toString() == null || data['value'].toString() == '') {
+        if (data['value'].toString() == "" ||
+            data['value'].toString() == null ||
+            data['value'].toString() == '') {
           return null;
-        }
-        else{
+        } else {
           if (index % 4 == 0) {
             return Column(
                 mainAxisSize: MainAxisSize.min,

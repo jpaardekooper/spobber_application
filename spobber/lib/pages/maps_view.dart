@@ -25,10 +25,10 @@ class MapView extends StatefulWidget {
   _MapViewState createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView> {
-  // with AutomaticKeepAliveClientMixin<MapView> {
-////  @override
-//  bool get wantKeepAlive => true;
+class _MapViewState extends State<MapView>
+    with AutomaticKeepAliveClientMixin<MapView> {
+  @override
+  bool get wantKeepAlive => true;
 
   List<LatLngAndGeohash> list = new List<LatLngAndGeohash>();
 
@@ -153,7 +153,7 @@ class _MapViewState extends State<MapView> {
         polylines: Set<Polyline>.of(polylines.values),
         onCameraMove: (newPosition) =>
             clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
-         onCameraIdle: clusteringHelper.onMapIdle,
+        onCameraIdle: clusteringHelper.onMapIdle,
         myLocationButtonEnabled: false,
         myLocationEnabled: true,
         mapType: mapType,
@@ -322,37 +322,37 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-   // print("test");
+    // print("test");
     var userLocation = Provider.of<UserLocation>(context);
     mylocation = LatLng(userLocation.latitude, userLocation.longitude);
     // if (userLocation == null) {
     //   return Center(child: CircularProgressIndicator());
     // } else {
- 
-      return Scaffold(
-          body: Stack(
-            children: <Widget>[
-              //creating the google maps app
-              createGoogleMapsMap(),
-              //changing map
-              _mapTypeCycler(),
-              //custom animation to current location
-              _location(),
-              //searching the data source
-              _search(),
-              //filter
-              _changeSourceFilter(),
-            ],
-          ),
-          floatingActionButton: FancyFab(test: testthisfunc),
-          bottomNavigationBar: bottomNavigatorInformation(
-              userLocation.latitude, userLocation.longitude));
-  //  }
+
+    return Scaffold(
+        body: Stack(
+          children: <Widget>[
+            //creating the google maps app
+            createGoogleMapsMap(),
+            //changing map
+            _mapTypeCycler(),
+            //custom animation to current location
+            _location(),
+            //searching the data source
+            _search(),
+            //filter
+            _changeSourceFilter(),
+          ],
+        ),
+        floatingActionButton: FancyFab(test: testthisfunc),
+        bottomNavigationBar: bottomNavigatorInformation(
+            userLocation.latitude, userLocation.longitude));
+    //  }
   }
 
   void testthisfunc() {
     if (mounted) {
-        clusteringHelper.list.clear();     
+      clusteringHelper.list.clear();
     }
   }
 
