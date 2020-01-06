@@ -44,25 +44,53 @@ class _MarkerHistoryState extends State<MarkerHistory>
   Widget build(BuildContext context) {
     return ListView.separated(
       itemCount: list.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(height: 0,),
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        height: 0,
+      ),
       itemBuilder: (BuildContext context, int index) {
         final data = list[index];
-        if(index % 5 == 0){
-          return Container(padding: EdgeInsets.all(8) ,color: Theme.of(context).accentColor, child: Text(""));
+        if (data['value'].toString() == "" || data['value'].toString() == null || data['value'].toString() == '') {
+          return null;
         }
-        
+        else{
+          if (index % 4 == 0) {
+            return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    color: Theme.of(context).accentColor,
+                    child: Text(""),
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.all(10.0),
+                    leading: Icon(Icons.info),
+                    title: Text(
+                      data['variable'].toString().toUpperCase(),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      data['value'].toString(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ]);
+          }
           return ListTile(
             contentPadding: EdgeInsets.all(10.0),
             leading: Icon(Icons.info),
-            title: Text(data['variable'].toString().toUpperCase(), style: TextStyle(fontWeight: FontWeight.bold),),
+            title: Text(
+              data['variable'].toString().toUpperCase(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             subtitle: Text(
               data['value'].toString(),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           );
-     
-  
+        }
       },
     );
   }

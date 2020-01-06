@@ -23,7 +23,7 @@ class ClusteringHelper {
   ClusteringHelper.forMemory({
     @required this.list,
     @required this.updateMarkers,
-    this.maxZoomForAggregatePoints = 19.0,
+    this.maxZoomForAggregatePoints = 18.0,
     @required this.aggregationSetup,
     this.bitmapAssetPathForSingleMarker,
     this.showMarkerInformation,
@@ -77,7 +77,6 @@ class ClusteringHelper {
   //Call when user stop to move or zoom the map
   Future<void> onMapIdle() async {
     updateMap();
-
   }
 
   updateMap() {
@@ -213,17 +212,18 @@ class ClusteringHelper {
         final Uint8List markerIcon =
             await getBytesFromCanvas(a.count.toString(), getColor(a.count));
         bitmapDescriptor = BitmapDescriptor.fromBytes(markerIcon);
+
+        final MarkerId markerId = MarkerId(a.getId());
+
+        final marker = Marker(
+          markerId: markerId,
+          position: a.location,
+          infoWindow: InfoWindow(title: a.count.toString()),
+          icon: bitmapDescriptor,
+        );
+
+        markers.add(marker);
       }
-      final MarkerId markerId = MarkerId(a.getId());
-
-      final marker = Marker(
-        markerId: markerId,
-        position: a.location,
-        infoWindow: InfoWindow(title: a.count.toString()),
-        icon: bitmapDescriptor,
-      );
-
-      markers.add(marker);
     }
     updateMarkers(markers, zoom);
   }

@@ -11,7 +11,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/global_variable.dart';
-import 'package:spobber/data/global_variable.dart';
 
 import 'new_marker_information.dart';
 
@@ -20,19 +19,19 @@ class PlaceMarkerBody extends StatefulWidget {
   State<StatefulWidget> createState() => PlaceMarkerBodyState();
 }
 
-typedef Marker MarkerUpdateAction(Marker marker);
+//typedef Marker MarkerUpdateAction(Marker marker);
 
 class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   static final LatLng center = const LatLng(-33.86711, 151.1947171);
   LatLngBounds _visibleRegion;
 
-  GoogleMapController controller;
+  GoogleMapController _addObjectController;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   MarkerId selectedMarker;
   int _markerIdCounter = 1;
 
   void _onMapCreated(GoogleMapController controller) {
-    this.controller = controller;
+    this._addObjectController = controller;
   }
 
   @override
@@ -41,6 +40,19 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   CameraPosition getbounds;
+
+  void _onInfoWindowTapped(MarkerId markerId) {
+    final Marker marker = markers[selectedMarker];
+
+    if (marker != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                (NewMarkerInformation(position: marker.position)),
+          ));
+    }
+  }
 
   void _onMarkerTapped(MarkerId markerId) {
     final Marker tappedMarker = markers[markerId];
@@ -94,36 +106,83 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
     }
   }
 
+  Widget _location() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Color.fromRGBO(51, 216, 178, 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: InkWell(
+                splashColor: const Color(0xff004990),
+                onTap: () {
+                  _goToCurrentLocation();
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.location_searching), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _goToCurrentLocation() {
+    if (mounted) {
+      _addObjectController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            //  bearing: 270.0,
+            target: LatLng(mylocation.latitude, mylocation.longitude),
+            //  tilt: 30.0,
+            zoom: 18.0,
+          ),
+        ),
+      );
+    }
+  }
+
   void _add() async {
-    final LatLngBounds visibleRegion = await controller.getVisibleRegion();
-    setState(() {
-      _visibleRegion = visibleRegion;
-    });
+    print("kom je hier");
+    if (mounted) {
+      final LatLngBounds visibleRegion =
+          await _addObjectController.getVisibleRegion();
+      setState(() {
+        _visibleRegion = visibleRegion;
+      });
+    }
 
     final String markerIdVal = 'marker_id_$_markerIdCounter';
     _markerIdCounter++;
     final MarkerId markerId = MarkerId(markerIdVal);
-
+    LatLng markerPos = LatLng(
+      ((_visibleRegion.northeast.latitude + _visibleRegion.southwest.latitude) /
+          2),
+      ((_visibleRegion.northeast.longitude +
+              _visibleRegion.southwest.longitude) /
+          2),
+    );
     final Marker marker = Marker(
-      draggable: true,
+      draggable: false,
       markerId: markerId,
-      position: LatLng(
-        ((_visibleRegion.northeast.latitude +
-                _visibleRegion.southwest.latitude) /
-            2),
-        ((_visibleRegion.northeast.longitude +
-                _visibleRegion.southwest.longitude) /
-            2),
-      ),
+      position: markerPos,
       infoWindow: InfoWindow(
         title: markerIdVal,
-        snippet: 'nieuw object',
-        onTap: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => (NewMarkerInformation()),
-              ));
+        snippet: 'Nieuw Object klik hier om gegvens toe te voegen',
+        onTap: () {
+          _onInfoWindowTapped(markerId);
         },
       ),
       onTap: () {
@@ -260,6 +319,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   Widget createGoogleMapsMap() {
     return GoogleMap(
       myLocationEnabled: true,
+      myLocationButtonEnabled: false,
       onMapCreated: _onMapCreated,
       mapType: mapType,
       initialCameraPosition: CameraPosition(
@@ -469,6 +529,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
           children: <Widget>[
             createGoogleMapsMap(),
             addMarker(),
+            _location(),
             // moveMarkerToTop(),
             // moveMarkerToBottom(),
             // moveMarkerToLeft(),

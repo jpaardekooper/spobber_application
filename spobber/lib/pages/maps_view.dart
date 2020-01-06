@@ -25,10 +25,10 @@ class MapView extends StatefulWidget {
   _MapViewState createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView>
-    with AutomaticKeepAliveClientMixin<MapView> {
-  @override
-  bool get wantKeepAlive => true;
+class _MapViewState extends State<MapView> {
+  // with AutomaticKeepAliveClientMixin<MapView> {
+////  @override
+//  bool get wantKeepAlive => true;
 
   List<LatLngAndGeohash> list = new List<LatLngAndGeohash>();
 
@@ -42,17 +42,18 @@ class _MapViewState extends State<MapView>
   void _onMapCreated(GoogleMapController mapController) async {
     print("onMapCreated");
     clusteringHelper.mapController = mapController;
-    clusteringHelper.updateMap();
+    //   clusteringHelper.updateMap();
   }
 
   double lastzoom;
   updateMarkers(Set<Marker> markers, double zoom) {
     // if (lastzoom != zoom) {
     //   lastzoom = zoom;
-
-    setState(() {
-      this.markers = markers;
-    });
+    if (mounted) {
+      setState(() {
+        this.markers = markers;
+      });
+    }
     // } else {
     //   return;
     // }
@@ -60,30 +61,30 @@ class _MapViewState extends State<MapView>
 
   @override
   void initState() {
-    initIcons();
-
     super.initState();
+    if (mounted) {
+      initIcons();
+      initMemoryClustering();
+    }
   }
 
   //initialize icons
-  initIcons() {
+  void initIcons() async {
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(size: Size(24, 24)), 'assets/SAP.png')
         .then((onValue) {
       myIconSap = onValue;
     });
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(12, 12)), 'assets/SIGMA.png')
+            ImageConfiguration(size: Size(24, 24)), 'assets/SIGMA.png')
         .then((onValue) {
       myIconSigma = onValue;
     });
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(12, 12)), 'assets/UST02.png')
+            ImageConfiguration(size: Size(24, 24)), 'assets/UST02.png')
         .then((onValue) {
       myIconUST02 = onValue;
     });
-
-    initMemoryClustering();
   }
 
   // For memory solution
@@ -118,9 +119,11 @@ class _MapViewState extends State<MapView>
               child: InkWell(
                 splashColor: const Color(0xff004990), // splash color
                 onTap: () {
-                  setState(() {
-                    mapType = nextType;
-                  });
+                  if (mounted) {
+                    setState(() {
+                      mapType = nextType;
+                    });
+                  }
                 }, // button pressed
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +153,7 @@ class _MapViewState extends State<MapView>
         polylines: Set<Polyline>.of(polylines.values),
         onCameraMove: (newPosition) =>
             clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
-        onCameraIdle: clusteringHelper.updateMap(),
+         onCameraIdle: clusteringHelper.onMapIdle,
         myLocationButtonEnabled: false,
         myLocationEnabled: true,
         mapType: mapType,
@@ -262,21 +265,27 @@ class _MapViewState extends State<MapView>
                       return AlertDialogFilter(
                         switchValueisSap: isSap,
                         valueChangedisSap: (value) {
-                          setState(() {
-                            isSap = value;
-                          });
+                          if (mounted) {
+                            setState(() {
+                              isSap = value;
+                            });
+                          }
                         },
                         switchValueisSigma: isSigma,
                         valueChangedisSigma: (value) {
-                          setState(() {
-                            isSigma = value;
-                          });
+                          if (mounted) {
+                            setState(() {
+                              isSigma = value;
+                            });
+                          }
                         },
                         switchValueisUST02: isUST02,
                         valueChangedisUST02: (value) {
-                          setState(() {
-                            isUST02 = value;
-                          });
+                          if (mounted) {
+                            setState(() {
+                              isUST02 = value;
+                            });
+                          }
                         },
                       );
                     },
@@ -313,11 +322,13 @@ class _MapViewState extends State<MapView>
 
   @override
   Widget build(BuildContext context) {
+   // print("test");
     var userLocation = Provider.of<UserLocation>(context);
     mylocation = LatLng(userLocation.latitude, userLocation.longitude);
-    if (userLocation == null) {
-      return Center(child: CircularProgressIndicator());
-    } else {
+    // if (userLocation == null) {
+    //   return Center(child: CircularProgressIndicator());
+    // } else {
+ 
       return Scaffold(
           body: Stack(
             children: <Widget>[
@@ -336,13 +347,13 @@ class _MapViewState extends State<MapView>
           floatingActionButton: FancyFab(test: testthisfunc),
           bottomNavigationBar: bottomNavigatorInformation(
               userLocation.latitude, userLocation.longitude));
-    }
+  //  }
   }
 
   void testthisfunc() {
-    setState(() {
-      clusteringHelper.list.clear();
-    });
+    if (mounted) {
+        clusteringHelper.list.clear();     
+    }
   }
 
   void _showMarkerInformation(
@@ -373,10 +384,11 @@ class _MapViewState extends State<MapView>
       //   _onPolylineTapped(polylineId);
       // },
     );
-
-    setState(() {
-      polylines[polylineId] = polyline;
-    });
+    if (mounted) {
+      setState(() {
+        polylines[polylineId] = polyline;
+      });
+    }
   }
 
   Widget bottomNavigatorInformation(double lat, double long) {
@@ -448,12 +460,13 @@ class _MapViewState extends State<MapView>
 
   loadDataToMaps() async {
     clusteringHelper.list.clear();
+    if (mounted) {
+      final LatLngBounds visibleRegion =
+          await clusteringHelper.mapController.getVisibleRegion();
 
-    final LatLngBounds visibleRegion =
-        await clusteringHelper.mapController.getVisibleRegion();
-
-    _visibleRegion = visibleRegion;
-    print("setting visible region: $visibleRegion");
+      _visibleRegion = visibleRegion;
+      print("setting visible region: $visibleRegion");
+    }
 
     LoadMarkers loadmarkers = LoadMarkers(
       northLatitude: _visibleRegion.northeast.latitude,

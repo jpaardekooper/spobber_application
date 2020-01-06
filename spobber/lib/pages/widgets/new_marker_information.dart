@@ -2,12 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/data/marker_detail.dart';
 import 'package:spobber/data/place_response.dart';
 import 'package:http/http.dart' as http;
 
 class NewMarkerInformation extends StatefulWidget {
+  final LatLng position;
+
+  NewMarkerInformation({@required this.position});
   @override
   _MarkerInfoState createState() => _MarkerInfoState();
 }
@@ -16,7 +20,12 @@ class NewMarkerInformation extends StatefulWidget {
 // the form.
 class _MarkerInfoState extends State<NewMarkerInformation> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  List<String> _colors = <String>[
+   List<String> _type = <String>[
+    '',
+    'ES-LAS',
+    '------',
+  ];
+  List<String> _types = <String>[
     '',
     'Lijmlas Edilon-NS',
     'Lijmlas Edilon-TC',
@@ -36,31 +45,65 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     'Geconstr. las type onbekend',
     'Lijmlas Railpro-HIRD'
   ];
-  String _color = '';
-  MarkerDetail newMarkerDetail = new MarkerDetail();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  String _typeTxt = '';
+  String _typesTxt = '';
+  MarkerDetail newMarkerDetail = MarkerDetail();
+  final GlobalKey<ScaffoldState> _scaffoldKeyThree = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      key: _scaffoldKey,
-      appBar: new AppBar(
-        title: new Text("nieuw object"),
+    return Scaffold(
+      key: _scaffoldKeyThree,
+      appBar: AppBar(
+        title: Text("Nieuw object"),
       ),
-      body: new SafeArea(
+      body: SafeArea(
           top: false,
           bottom: false,
-          child: new Form(
+          child: Form(
               key: _formKey,
               autovalidate: true,
               child: new ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 children: <Widget>[
+                      new FormField(
+                    builder: (FormFieldState state) {
+                      return InputDecorator(
+                        decoration: InputDecoration(
+                          icon: const Icon(Icons.color_lens),
+                          labelText: 'Type',
+                        ),
+                        isEmpty: _typeTxt == '',
+                        child: new DropdownButtonHideUnderline(
+                          child: new DropdownButton(
+                            value: _typeTxt,
+                            isDense: true,
+                            onChanged: (String newValue) {
+                              setState(() {
+                                newMarkerDetail.type = newValue;
+                                _typeTxt = newValue;
+                                state.didChange(newValue);
+                              });
+                            },
+                            items: _type.map((String value) {
+                              return new DropdownMenuItem(
+                                value: value,
+                                child: new Text(value),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      );
+                    },
+                    validator: (val) {
+                      return val != '' ? null : 'Selecteer het object soort';
+                    },
+                  ),
                   new TextFormField(
-                    decoration: const InputDecoration(
-                      icon: const Icon(Icons.person),
+                    decoration:  InputDecoration(
+                      icon:  Icon(Icons.person),
                       hintText: 'Enter your first and last name',
-                      labelText: 'Name',
+                      labelText: '',
                     ),
                   ),
                   new TextFormField(
@@ -87,21 +130,21 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       return InputDecorator(
                         decoration: InputDecoration(
                           icon: const Icon(Icons.color_lens),
-                          labelText: 'Type',
+                          labelText: 'Soort Type',
                         ),
-                        isEmpty: _color == '',
+                        isEmpty: _typesTxt == '',
                         child: new DropdownButtonHideUnderline(
                           child: new DropdownButton(
-                            value: _color,
+                            value: _typesTxt,
                             isDense: true,
                             onChanged: (String newValue) {
                               setState(() {
                                 newMarkerDetail.type = newValue;
-                                _color = newValue;
+                                _typesTxt = newValue;
                                 state.didChange(newValue);
                               });
                             },
-                            items: _colors.map((String value) {
+                            items: _types.map((String value) {
                               return new DropdownMenuItem(
                                 value: value,
                                 child: new Text(value),
@@ -112,7 +155,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       );
                     },
                     validator: (val) {
-                      return val != '' ? null : 'Please select a color';
+                      return val != '' ? null : 'Selecteer het object soort';
                     },
                   ),
                   new Container(
@@ -122,12 +165,12 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                         onPressed: _submitForm,
                       )),
                 ],
-              ))),
+              ),),),
     );
   }
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+    _scaffoldKeyThree.currentState.showSnackBar(new SnackBar(
         backgroundColor: Theme.of(context).accentColor,
         content: new Text(message)));
   }
@@ -141,11 +184,17 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       form.save(); //This invokes each onSaved event
 
       print('Form save called, newContact is now up to date...');
-      print('Email: ${newMarkerDetail.id}');
-      print('Dob: ${newMarkerDetail.latitude}');
-      print('Phone: ${newMarkerDetail.longitude}');
-      print('Email: ${newMarkerDetail.placement}');
-      print('Favorite Color: ${newMarkerDetail.type}');
+      print('ID: ${newMarkerDetail.id}');
+      print('LAT: ${newMarkerDetail.latitude}');
+      print('LONG: ${newMarkerDetail.longitude}');
+      print('PLAATSING: ${newMarkerDetail.placement}');
+      print('TYPE: ${newMarkerDetail.type}');
+
+      print('source: ${newMarkerDetail.source}');
+      print('equipmentStatus: ${newMarkerDetail.equipmentStatus}');
+      print('parentEquipKind: ${newMarkerDetail.parentEquipKind}');
+      print('source: ${newMarkerDetail.source}');
+      print('trackVersion: ${newMarkerDetail.trackVersion}');
       print('========================================');
       print('Submitting to back end...');
       print('TODO - we will write the submission part next...');
@@ -157,12 +206,12 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   }
 }
 
-class ContactService {}
+// class ContactService {}
 
-class Contact {
-  String name;
-  DateTime dob;
-  String phone = '';
-  String email = '';
-  String favoriteColor = '';
-}
+// class Contact {
+//   String name;
+//   DateTime dob;
+//   String phone = '';
+//   String email = '';
+//   String favoriteColor = '';
+// }
