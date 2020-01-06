@@ -9,8 +9,9 @@ Widget getErrorWidget(FlutterErrorDetails error) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Center(
-          child: Text("Error Occured"),
-        )
+          child: Text("Uw Locatie wordt geladen"),
+        ),
+        Center(child: CircularProgressIndicator(),)
       ],
     ),
   );

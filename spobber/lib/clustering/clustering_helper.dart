@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spobber/data/global_variable.dart';
 
 import 'aggregated_points.dart';
 import 'aggregation_setup.dart';
@@ -22,7 +23,7 @@ class ClusteringHelper {
   ClusteringHelper.forMemory({
     @required this.list,
     @required this.updateMarkers,
-    this.maxZoomForAggregatePoints = 18.0,
+    this.maxZoomForAggregatePoints = 19.0,
     @required this.aggregationSetup,
     this.bitmapAssetPathForSingleMarker,
     this.showMarkerInformation,
@@ -76,6 +77,7 @@ class ClusteringHelper {
   //Call when user stop to move or zoom the map
   Future<void> onMapIdle() async {
     updateMap();
+
   }
 
   updateMap() {
@@ -99,7 +101,7 @@ class ClusteringHelper {
 
   Future<List<AggregatedPoints>> getAggregatedPoints(double zoom) async {
     assert(() {
-      print("loading aggregation");
+      // print("loading aggregation");
       return true;
     }());
 
@@ -194,7 +196,7 @@ class ClusteringHelper {
     List<AggregatedPoints> aggregation = await getAggregatedPoints(zoom);
 
     assert(() {
-      print("aggregation lenght: " + aggregation.length.toString());
+      // print("aggregation lenght: " + aggregation.length.toString());
       return true;
     }());
     final Set<Marker> markers = {};
@@ -206,9 +208,7 @@ class ClusteringHelper {
         return true;
       }());
       BitmapDescriptor bitmapDescriptor;
-      if (a.count == 1) {
-        return;
-      } else {
+      if (a.count > 1) {
         // >1
         final Uint8List markerIcon =
             await getBytesFromCanvas(a.count.toString(), getColor(a.count));
@@ -228,16 +228,16 @@ class ClusteringHelper {
     updateMarkers(markers, zoom);
   }
 
-  final String _markerImageUrlSap =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+  // final String _markerImageUrlSap =
+  //     'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
-  /// Url image used on cluster markers (red)
-  final String _markerImageUrlSigma =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/SIGMA.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+  // /// Url image used on cluster markers (red)
+  // final String _markerImageUrlSigma =
+  //     'https://spobberstorageaccount.dfs.core.windows.net/marker/SIGMA.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
-  /// Url image used on cluster markers (blue)
-  final String _markerImageUrlMeetTrein =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+  // /// Url image used on cluster markers (blue)
+  // final String _markerImageUrlMeetTrein =
+  //     'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
   /// If there is a cached file and it's not old returns the cached marker image file
   /// else it will download the image and save it on the temp dir and return that file.
@@ -307,9 +307,9 @@ class ClusteringHelper {
       final Set<Marker> markers = listOfPoints.map((p) {
         final MarkerId markerId = MarkerId(p.getId());
 
-        getIconMarker(p.source).then((value) {
-          print(test);
-        });
+        // getIconMarker(p.source).then((value) {
+        //   print(test);
+        // });
         return Marker(
             //anchor: Offset(0.5, 0.5),
             markerId: markerId,
@@ -353,37 +353,15 @@ class ClusteringHelper {
     }
   }
 
-  BitmapDescriptor test;
-  BitmapDescriptor test2;
-  BitmapDescriptor test3;
-
   getIcon(String source) {
     if (source == "SAP") {
-      return test;
+      return myIconSap;
     } else if (source == "SIGMA") {
-      return test2;
+      //    return BitmapDescriptor.fromAsset("assets/SIGMA.png");
+      return myIconSigma;
     } else if (source == "UST02") {
-      return test3;
-    }
-  }
-
-//get marker for an image this needs to be an UNIT-8 function soon
-  getIconMarker(String source) async {
-    if (source == "SAP") {
-      final BitmapDescriptor markerImage =
-          await getMarkerImageFromUrl(_markerImageUrlSap);
-      test = markerImage;
-      return test;
-    } else if (source == "SIGMA") {
-      final BitmapDescriptor markerImage =
-          await getMarkerImageFromUrl(_markerImageUrlSigma);
-      test2 = markerImage;
-      return test2;
-    } else if (source == "UST02") {
-      final BitmapDescriptor markerImage =
-          await getMarkerImageFromUrl(_markerImageUrlMeetTrein);
-      test3 = markerImage;
-      return test3;
+      //   return BitmapDescriptor.fromAsset("assets/UST02.png");
+      return myIconUST02;
     }
   }
 

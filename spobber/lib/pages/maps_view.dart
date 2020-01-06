@@ -21,19 +21,14 @@ import 'marker_information/marker_template.dart';
 import 'dart:ui';
 
 class MapView extends StatefulWidget {
-// List<LatLngAndGeohash> list;
-
-//   HomeScreen({this.list}) ;
-
   @override
   _MapViewState createState() => _MapViewState();
 }
 
 class _MapViewState extends State<MapView>
-//   with AutomaticKeepAliveClientMixin<MapView>
-{
-  // @override
-  // bool get wantKeepAlive => true;
+    with AutomaticKeepAliveClientMixin<MapView> {
+  @override
+  bool get wantKeepAlive => true;
 
   List<LatLngAndGeohash> list = new List<LatLngAndGeohash>();
 
@@ -52,22 +47,43 @@ class _MapViewState extends State<MapView>
 
   double lastzoom;
   updateMarkers(Set<Marker> markers, double zoom) {
-    if (lastzoom != zoom) {
-      lastzoom = zoom;
+    // if (lastzoom != zoom) {
+    //   lastzoom = zoom;
 
-      setState(() {
-        this.markers = markers;
-      });
-    } else {
-      return;
-    }
+    setState(() {
+      this.markers = markers;
+    });
+    // } else {
+    //   return;
+    // }
   }
 
   @override
   void initState() {
-    initMemoryClustering();
+    initIcons();
 
     super.initState();
+  }
+
+  //initialize icons
+  initIcons() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(24, 24)), 'assets/SAP.png')
+        .then((onValue) {
+      myIconSap = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(12, 12)), 'assets/SIGMA.png')
+        .then((onValue) {
+      myIconSigma = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(12, 12)), 'assets/UST02.png')
+        .then((onValue) {
+      myIconUST02 = onValue;
+    });
+
+    initMemoryClustering();
   }
 
   // For memory solution
@@ -135,7 +151,7 @@ class _MapViewState extends State<MapView>
         onCameraMove: (newPosition) =>
             clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
         onCameraIdle: clusteringHelper.updateMap(),
-        myLocationButtonEnabled: true,
+        myLocationButtonEnabled: false,
         myLocationEnabled: true,
         mapType: mapType,
         mapToolbarEnabled: false,
@@ -144,6 +160,39 @@ class _MapViewState extends State<MapView>
           new LatLngBounds(
             northeast: LatLng(54.01786, 7.230455),
             southwest: LatLng(50.74753, 2.992192),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _location() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Color.fromRGBO(51, 216, 178, 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: InkWell(
+                splashColor: const Color(0xff004990),
+                onTap: () {
+                  _goToCurrentLocation();
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.location_searching), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -213,15 +262,21 @@ class _MapViewState extends State<MapView>
                       return AlertDialogFilter(
                         switchValueisSap: isSap,
                         valueChangedisSap: (value) {
-                          isSap = value;
+                          setState(() {
+                            isSap = value;
+                          });
                         },
                         switchValueisSigma: isSigma,
                         valueChangedisSigma: (value) {
-                          isSigma = value;
+                          setState(() {
+                            isSigma = value;
+                          });
                         },
                         switchValueisUST02: isUST02,
                         valueChangedisUST02: (value) {
-                          isUST02 = value;
+                          setState(() {
+                            isUST02 = value;
+                          });
                         },
                       );
                     },
@@ -270,6 +325,8 @@ class _MapViewState extends State<MapView>
               createGoogleMapsMap(),
               //changing map
               _mapTypeCycler(),
+              //custom animation to current location
+              _location(),
               //searching the data source
               _search(),
               //filter
@@ -277,8 +334,6 @@ class _MapViewState extends State<MapView>
             ],
           ),
           floatingActionButton: FancyFab(test: testthisfunc),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
           bottomNavigationBar: bottomNavigatorInformation(
               userLocation.latitude, userLocation.longitude));
     }
@@ -454,6 +509,19 @@ class _MapViewState extends State<MapView>
           target: LatLng(lat, long),
           // tilt: 30.0,
           zoom: 20.0,
+        ),
+      ),
+    );
+  }
+
+  _goToCurrentLocation() {
+    clusteringHelper.mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          //  bearing: 270.0,
+          target: LatLng(mylocation.latitude, mylocation.longitude),
+          //  tilt: 30.0,
+          zoom: 18.0,
         ),
       ),
     );

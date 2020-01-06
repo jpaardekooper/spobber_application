@@ -24,7 +24,7 @@ class AggregationSetup {
       Colors.pink
     ],
     this.maxZoomLimits = const [
-      3.0,
+      7.0,
       5.0,
       7.5,
       10.5,

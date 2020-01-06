@@ -36,3 +36,8 @@ String searchObject = "";
 
 LatLng mylocation;
 
+//icon animations;
+BitmapDescriptor myIconSap;
+BitmapDescriptor myIconSigma;
+BitmapDescriptor myIconUST02;
+
