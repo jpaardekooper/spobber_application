@@ -46,17 +46,18 @@ class _MapViewState extends State<MapView>
   }
 
   double lastzoom;
+  bool loadMarkerFirstTime = true;
   updateMarkers(Set<Marker> markers, double zoom) {
-    // if (lastzoom != zoom) {
-    //   lastzoom = zoom;
-    if (mounted) {
-      setState(() {
-        this.markers = markers;
-      });
+    if (lastzoom != zoom) {
+      lastzoom = zoom;
+      if (mounted) {
+        setState(() {
+          this.markers = markers;
+        });
+      }
+    } else {
+      return;
     }
-    // } else {
-    //   return;
-    // }
   }
 
   @override
@@ -85,6 +86,11 @@ class _MapViewState extends State<MapView>
         .then((onValue) {
       myIconUST02 = onValue;
     });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(24, 24)), 'assets/spobber_icon.png')
+        .then((onValue) {
+      myIconSpobber = onValue;
+    });
   }
 
   // For memory solution
@@ -94,7 +100,7 @@ class _MapViewState extends State<MapView>
       updateMarkers: updateMarkers,
       aggregationSetup: AggregationSetup(markerSize: 150),
       showMarkerInformation: _showMarkerInformation,
-      goToMarkerLocation: goToMarkerLocation,
+      goToMarkerZoomLocation: goToMarkerZoomLocation,
     );
   }
 
@@ -223,6 +229,7 @@ class _MapViewState extends State<MapView>
                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
                   } else {
                     //searchNearby();
+                    lastzoom = null;
                     loadDataToMaps();
                     showToast("Data wordt ingeladen", context,
                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
@@ -287,6 +294,14 @@ class _MapViewState extends State<MapView>
                             });
                           }
                         },
+                        switchValueisSpobber: isSpobber,
+                        valueChangedisSpobber: (value) {
+                          if (mounted) {
+                            setState(() {
+                              isSpobber = value;
+                            });
+                          }
+                        },
                       );
                     },
                   );
@@ -315,6 +330,8 @@ class _MapViewState extends State<MapView>
       return Icon(Icons.filter_2, color: Colors.white, size: 20);
     } else if (selector == 3) {
       return Icon(Icons.filter_3, color: Colors.white, size: 20);
+    } else if (selector == 4) {
+      return Icon(Icons.filter_4, color: Colors.white, size: 20);
     } else {
       return Icon(Icons.filter_9_plus, color: Colors.white, size: 20);
     }
@@ -324,30 +341,30 @@ class _MapViewState extends State<MapView>
   Widget build(BuildContext context) {
     // print("test");
     var userLocation = Provider.of<UserLocation>(context);
-    mylocation = LatLng(userLocation.latitude, userLocation.longitude);
-    // if (userLocation == null) {
-    //   return Center(child: CircularProgressIndicator());
-    // } else {
-
-    return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            //creating the google maps app
-            createGoogleMapsMap(),
-            //changing map
-            _mapTypeCycler(),
-            //custom animation to current location
-            _location(),
-            //searching the data source
-            _search(),
-            //filter
-            _changeSourceFilter(),
-          ],
-        ),
-        floatingActionButton: FancyFab(test: testthisfunc),
-        bottomNavigationBar: bottomNavigatorInformation(
-            userLocation.latitude, userLocation.longitude));
-    //  }
+    if (userLocation == null) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      mylocation = LatLng(userLocation.latitude, userLocation.longitude);
+      return Scaffold(
+          body: Stack(
+            children: <Widget>[
+              //creating the google maps app
+              createGoogleMapsMap(),
+              //changing map
+              _mapTypeCycler(),
+              //custom animation to current location
+              _location(),
+              //searching the data source
+              _search(),
+              //filter
+              _changeSourceFilter(),
+            ],
+          ),
+          floatingActionButton: FancyFab(test: testthisfunc),
+          bottomNavigationBar: bottomNavigatorInformation(
+              userLocation.latitude, userLocation.longitude));
+      //  }
+    }
   }
 
   void testthisfunc() {
@@ -460,6 +477,7 @@ class _MapViewState extends State<MapView>
 
   loadDataToMaps() async {
     clusteringHelper.list.clear();
+    list.clear();
     if (mounted) {
       final LatLngBounds visibleRegion =
           await clusteringHelper.mapController.getVisibleRegion();
@@ -514,7 +532,26 @@ class _MapViewState extends State<MapView>
     clusteringHelper.updateMap();
   }
 
+  int _markerIdCounter = 0;
+  Marker lastmarker;
+  Marker currentMarker;
   goToMarkerLocation(double lat, double long) {
+    final String markerIdVal = 'marker_id_$_markerIdCounter';
+    _markerIdCounter++;
+    final MarkerId markerId = MarkerId(markerIdVal);
+
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: LatLng(lat, long),
+    );
+
+    setState(() {
+      markers.remove(lastmarker);
+      currentMarker = marker;
+      lastmarker = currentMarker;
+      markers.add(currentMarker);
+    });
+
     clusteringHelper.mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -522,6 +559,19 @@ class _MapViewState extends State<MapView>
           target: LatLng(lat, long),
           // tilt: 30.0,
           zoom: 20.0,
+        ),
+      ),
+    );
+  }
+
+  goToMarkerZoomLocation(double lat, double long, currentzoom) {
+    clusteringHelper.mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          //  bearing: 270.0,
+          target: LatLng(lat, long),
+          // tilt: 30.0,
+          zoom: currentzoom + 2.5,
         ),
       ),
     );

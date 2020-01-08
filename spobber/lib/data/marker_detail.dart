@@ -21,10 +21,11 @@ class MarkerDetail {
   String source;
   int year;
   String readableID;
+  String objectType;
   // final String image;
 
   MarkerDetail(
-      {this.id,
+     {this.id,
       this.secretId,
       this.type,
       this.description,
@@ -41,7 +42,8 @@ class MarkerDetail {
       this.trackVersion,
       this.source,
       this.year,
-      this.readableID
+      this.readableID,
+      this.objectType
       //this.image
       });
 
@@ -63,7 +65,8 @@ class MarkerDetail {
         trackVersion: json['track_version'],
         source: json['source'],
         year: json['year'],
-        readableID: json['readable_ID']
+        readableID: json['readable_ID'],
+        objectType: json['object_type']
         //   image: json['image'],
         );
   }
@@ -74,9 +77,11 @@ class MarkerDetail {
   Future<MarkerDetail> createContact(MarkerDetail contact) async {
     try {
       String json = _toJson(contact);
+     
       final response =
           await http.post(_serviceUrl, headers: _headers, body: json);
       var c = _fromJson(response.body);
+      
       return c;
     } catch (e) {
       print('Server Exception!!!');
@@ -105,6 +110,7 @@ class MarkerDetail {
     markerObjectToPush.source = map['source'];
     markerObjectToPush.year = map['year'];
     markerObjectToPush.readableID = map['readable_ID'];
+    markerObjectToPush.objectType = map['object_type'];
 
     return markerObjectToPush;
   }
@@ -129,6 +135,7 @@ class MarkerDetail {
     map['source'] = markerObjectToPush.source;
     map['year'] = markerObjectToPush.year;
     map['readable_ID'] = markerObjectToPush.readableID;
+    map['object_type'] = markerObjectToPush.objectType;
     String json = jsonEncode(map);
     return json;
   }

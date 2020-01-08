@@ -9,7 +9,9 @@ class AlertDialogFilter extends StatefulWidget {
       @required this.switchValueisSigma,
       @required this.valueChangedisSigma,
       @required this.switchValueisUST02,
-      @required this.valueChangedisUST02});
+      @required this.valueChangedisUST02,
+      @required this.switchValueisSpobber,
+      @required this.valueChangedisSpobber});
 
   final bool switchValueisSap;
   final ValueChanged valueChangedisSap;
@@ -20,6 +22,9 @@ class AlertDialogFilter extends StatefulWidget {
   final bool switchValueisUST02;
   final ValueChanged valueChangedisUST02;
 
+  final bool switchValueisSpobber;
+  final ValueChanged valueChangedisSpobber;
+
   @override
   _AlertDialogFilter createState() => _AlertDialogFilter();
 }
@@ -28,12 +33,14 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
   bool _switchValueSap;
   bool _switchValueSigma;
   bool _switchValueUST02;
+  bool _switchValueSpobber;
 
   @override
   void initState() {
     _switchValueSap = widget.switchValueisSap;
     _switchValueSigma = widget.switchValueisSigma;
     _switchValueUST02 = widget.switchValueisUST02;
+    _switchValueSpobber = widget.switchValueisSpobber;
     super.initState();
   }
 
@@ -140,6 +147,24 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
                           setDataSource.add("UST02");
                         } else {
                           setDataSource.remove("UST02");
+                        }
+                      });
+                    },
+                    secondary: const Icon(Icons.tram),
+                  ),
+                  Divider(),
+                  SwitchListTile(
+                    activeColor: Colors.orange,
+                    title: const Text('Spobber Applicatie'),
+                    value: _switchValueSpobber,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _switchValueSpobber = value;
+                        widget.valueChangedisSpobber(value);
+                        if (value == true) {
+                          setDataSource.add("SPOBBER");
+                        } else {
+                          setDataSource.remove("SPOBBER");
                         }
                       });
                     },

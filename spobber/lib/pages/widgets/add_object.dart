@@ -11,6 +11,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/global_variable.dart';
+import 'package:spobber/data/marker_detail.dart';
 
 import 'new_marker_information.dart';
 
@@ -22,7 +23,7 @@ class PlaceMarkerBody extends StatefulWidget {
 //typedef Marker MarkerUpdateAction(Marker marker);
 
 class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
-  static final LatLng center = const LatLng(-33.86711, 151.1947171);
+  PlaceMarkerBodyState();
   LatLngBounds _visibleRegion;
 
   GoogleMapController _addObjectController;
@@ -40,19 +41,6 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   CameraPosition getbounds;
-
-  void _onInfoWindowTapped(MarkerId markerId) {
-    final Marker marker = markers[selectedMarker];
-
-    if (marker != null) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                (NewMarkerInformation(position: marker.position)),
-          ));
-    }
-  }
 
   void _onMarkerTapped(MarkerId markerId) {
     final Marker tappedMarker = markers[markerId];
@@ -154,6 +142,40 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
     }
   }
 
+  void _onInfoWindowTapped(MarkerId markerId) {
+    final Marker marker = markers[selectedMarker];
+
+    if (marker != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => (NewMarkerInformation(
+              markerinformation: new MarkerDetail(
+                id: "STATUS_NEW_OBJECT",
+                secretId: "STATUS_NEW_OBJECT",
+                type: "Es-las",
+                description: "",
+                equipmentId: "",
+                equipmentStatus: "",
+                userStatusEquipment: "",
+                parentEquipKind: "",
+                datacollection: "",
+                placement: "",
+                latitude: marker.position.latitude,
+                longitude: marker.position.longitude,
+                picFileName: "",
+                runNr: "",
+                trackVersion: "",
+                source: "Spobber",
+                year: 2019, // => 21-04-2019 02:40:25
+                readableID: "STATUS_NEW_OBJECT",
+              ),
+            )),
+          ));
+    }
+  }
+
+  static LatLng center;
   void _add() async {
     print("kom je hier");
     if (mounted) {
@@ -174,6 +196,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
               _visibleRegion.southwest.longitude) /
           2),
     );
+
     final Marker marker = Marker(
       draggable: false,
       markerId: markerId,
@@ -188,9 +211,9 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
       onTap: () {
         _onMarkerTapped(markerId);
       },
-      onDragEnd: (LatLng position) {
-        _onMarkerDragEnd(markerId, position);
-      },
+      // onDragEnd: (LatLng position) {
+      //   _onMarkerDragEnd(markerId, position);
+      // },
     );
 
     setState(() {
@@ -332,17 +355,46 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
 
   Widget addMarker() {
     return Align(
-      alignment: Alignment.topCenter,
-      child: FlatButton(
-        color: Colors.orange,
-        textColor: Colors.white,
-        disabledColor: Colors.grey,
-        disabledTextColor: Colors.black,
-        padding: EdgeInsets.all(8.0),
-        splashColor: Colors.blueAccent,
-        child: const Text('Object toevoegen'),
-        onPressed: _add,
+      alignment: Alignment.bottomLeft,
+      child: Container(
+        padding: const EdgeInsets.all(30.0),
+        child: RaisedButton(
+          onPressed: _add,
+          padding: const EdgeInsets.all(0.0),
+          textColor: Colors.white,
+          child: Container(
+            width: MediaQuery.of(context).size.width / 2.5,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: <Color>[
+                  Color(0xFF1b2932),
+                  Color(0xFF1b2932),
+                  Color(0xE61b2932),
+                ],
+              ),
+            ),
+            padding: const EdgeInsets.all(10.0),
+            child: const Text(
+              'Nieuw object toevoegen',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
       ),
+      // child: FlatButton(
+
+      //   color: Colors.orange,
+      //   textColor: Colors.white,
+      //   disabledColor: Colors.grey,
+      //   disabledTextColor: Colors.black,
+      //   padding: EdgeInsets.all(8.0),
+      //   splashColor: Colors.blueAccent,
+      //   child: const Text('Object toevoegen'),
+      //   onPressed: _add,
+      // ),
     );
   }
 
@@ -432,19 +484,19 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   Widget addCrossToCenter() {
     return Align(
       alignment: Alignment.center,
-      child: Container(
-        // padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
-        child: IconButton(
-          color: Colors.orange,
-          //    textColor: Colors.white,
-          disabledColor: Theme.of(context).accentColor,
-          //    disabledTextColor: Colors.black,
-          padding: EdgeInsets.all(8.0),
-          //    splashColor: Colors.blueAccent,
-          icon: Icon(Icons.close),
-          onPressed: null,
-          iconSize: 20,
-        ),
+
+      // padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
+      child: IconButton(
+        padding: EdgeInsets.only(bottom: 30),
+        color: Colors.orange,
+        //    textColor: Colors.white,
+        disabledColor: Theme.of(context).accentColor,
+        //    disabledTextColor: Colors.black,
+        // padding: EdgeInsets.all(8.0),
+        //    splashColor: Colors.blueAccent,
+        icon: Icon(Icons.location_on),
+        onPressed: null,
+        iconSize: 30,
       ),
     );
   }
@@ -454,28 +506,32 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
 
   Widget showRemoveButton() {
     return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: 20),
-        child: Visibility(
-          //  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
-          visible: showRemove,
-          child: FlatButton(
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
-            disabledColor: Colors.grey,
-            disabledTextColor: Colors.black,
-            padding: EdgeInsets.all(8.0),
-            splashColor: Colors.blueAccent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(Icons.close),
-                Text('$selectedText verwijderen')
-              ],
-            ),
+      alignment: Alignment.bottomRight,
+      child: Visibility(
+        //  padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 2),
+        visible: showRemove,
+        child: Container(
+          padding: const EdgeInsets.all(30.0),
+          child: RaisedButton(
             onPressed: _remove,
+            padding: const EdgeInsets.all(0.0),
+            textColor: Colors.white,
+            child: Container(
+              width: MediaQuery.of(context).size.width / 2.5,
+              color: Colors.red,
+              padding: const EdgeInsets.all(10.0),
+              child: selectedMarker != null
+                  ? Text(
+                      '${selectedMarker.value} verwijderen',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  : Text(
+                      '',
+                    ),
+            ),
           ),
         ),
       ),

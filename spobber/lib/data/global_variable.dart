@@ -8,6 +8,7 @@ bool isSap = false;
 bool isSigma = false;
 bool isUST02 = false;
 bool isVideo = false;
+bool isSpobber = false;
 
 bool switchValue1 = false;
 bool switchValue2 = false;
@@ -29,8 +30,7 @@ String currentSelectedMarkerObjectUri;
 
 String singleMarkerObject = "";
 
-//MarkerId makeSelectedMarkerbigger;
-
+MarkerId makeSelectedMarkerbigger;
 
 String searchObject = "";
 
@@ -40,4 +40,5 @@ LatLng mylocation;
 BitmapDescriptor myIconSap;
 BitmapDescriptor myIconSigma;
 BitmapDescriptor myIconUST02;
+BitmapDescriptor myIconSpobber;
 

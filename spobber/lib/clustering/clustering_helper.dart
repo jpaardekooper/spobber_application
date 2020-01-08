@@ -18,7 +18,7 @@ import 'package:meta/meta.dart';
 
 class ClusteringHelper {
   Function showMarkerInformation;
-  Function goToMarkerLocation;
+  Function goToMarkerZoomLocation;
 
   ClusteringHelper.forMemory({
     @required this.list,
@@ -27,7 +27,7 @@ class ClusteringHelper {
     @required this.aggregationSetup,
     this.bitmapAssetPathForSingleMarker,
     this.showMarkerInformation,
-    this.goToMarkerLocation,
+    this.goToMarkerZoomLocation,
   })  : assert(list != null),
         assert(aggregationSetup != null);
 
@@ -216,11 +216,14 @@ class ClusteringHelper {
         final MarkerId markerId = MarkerId(a.getId());
 
         final marker = Marker(
-          markerId: markerId,
-          position: a.location,
-          infoWindow: InfoWindow(title: a.count.toString()),
-          icon: bitmapDescriptor,
-        );
+            markerId: markerId,
+            position: a.location,
+            infoWindow: InfoWindow(title: a.count.toString()),
+            icon: bitmapDescriptor,
+            onTap: () {
+              goToMarkerZoomLocation(
+                  a.location.latitude, a.location.longitude, _currentZoom);
+            });
 
         markers.add(marker);
       }
@@ -325,14 +328,16 @@ class ClusteringHelper {
                     "Lat: ${p.location.latitude.toStringAsFixed(3)}, Long: ${p.location.longitude.toStringAsFixed(3)}"),
             icon: getIcon(p.source),
             onTap: () {
-              goToMarkerLocation(p.location.latitude, p.location.longitude);
+              //   goToMarkerLocation(p.location.latitude, p.location.longitude);
             });
       }).toSet();
 
+      // if (zoom >= 18.5) {
+
+      // }
+      // else{
       updateMarkers(markers, zoom);
-
-      // if (unclusterMarker && zoom > 18.5) {
-
+      // }
       //   unclusterMarker = false;
       // } else if (zoom <= 18.5) {
       //   updateMarkers(markers);
@@ -362,6 +367,9 @@ class ClusteringHelper {
     } else if (source == "UST02") {
       //   return BitmapDescriptor.fromAsset("assets/UST02.png");
       return myIconUST02;
+    } else if (source == "SPOBBER") {
+      //   return BitmapDescriptor.fromAsset("assets/UST02.png");
+      return myIconSpobber;
     }
   }
 
@@ -378,6 +386,8 @@ class ClusteringHelper {
       print(imageData);
     } else if (source == "UST02") {
       imageData = "assets/UST02.png";
+    } else if (source == "SPOBBER") {
+      imageData = "assets/spobber_icon.png";
     } else {
       return;
     }
