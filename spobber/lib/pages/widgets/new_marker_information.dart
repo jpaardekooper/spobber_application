@@ -628,7 +628,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 },
               ),
               new TextFormField(
-                enabled: false,
+                enabled: true,
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   WhitelistingTextInputFormatter.digitsOnly
