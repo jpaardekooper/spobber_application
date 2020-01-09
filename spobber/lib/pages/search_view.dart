@@ -11,7 +11,7 @@ import 'package:spobber/data/place_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:spobber/pages/widgets/single_marker_with_maps.dart';
-import 'package:vibration/vibration.dart';
+
 import '../data/global_variable.dart';
 import 'dart:async';
 import '../data/place_response.dart';
@@ -121,7 +121,7 @@ class _SearchViewState extends State<SearchView> {
                                     gravity: Toast.CENTER,
                                     duration: Toast.LENGTH_SHORT);
 
-                                Vibration.vibrate(duration: 500);
+                             
 
                                 setState(() {
                                   this.lat = singleMarker[0].latitude;

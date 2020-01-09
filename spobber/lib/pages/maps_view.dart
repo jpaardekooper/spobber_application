@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:spobber/network/location_services.dart';
 
 import 'marker_information/marker_template.dart';
-import 'package:vibration/vibration.dart';
+
 
 import 'dart:ui';
 
@@ -482,7 +482,7 @@ class _MapViewState extends State<MapView>
     loadmarkers.searchNearby().then((value) {
       loadThisDataSet();
 
-      Vibration.vibrate(duration: 500);
+  
     });
   }
 
