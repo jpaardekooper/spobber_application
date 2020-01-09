@@ -72,8 +72,9 @@ class _MapViewState extends State<MapView>
   }
 
   //initialize icons
-  void initIcons() async {
-    if (Platform.isIOS || Theme.of(context).platform == TargetPlatform.iOS) {
+  void initIcons() {
+    print(platformIsIOS);
+    if (platformIsIOS) {
       BitmapDescriptor.fromAssetImage(
               ImageConfiguration(size: Size(24, 24)), 'assets/ios/SAP.png')
           .then((onValue) {
@@ -129,7 +130,7 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  MapType mapType = MapType.normal;
+  MapType mapType = MapType.terrain;
 
   Widget _mapTypeCycler() {
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];

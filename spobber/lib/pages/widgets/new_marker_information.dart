@@ -17,7 +17,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   List<String> _status = <String>[
     '',
     'Actief',
-    'Inactief ',
+    'Inactief',
     'Gereed voor verwijdering',
   ];
 
@@ -226,10 +226,11 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               //   thickness: 20,
               // ),
               new TextFormField(
+                enabled: false,
                 initialValue: '${widget.markerinformation.readableID}',
                 decoration: InputDecoration(
                     alignLabelWithHint: true,
-                    enabled: false,
+                    //enabled: false,
                     icon: Icon(Icons.security),
                     hintText: 'readable_ID',
                     labelText: 'readable_ID'.toUpperCase(),
@@ -248,11 +249,12 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 },
               ),
               new TextFormField(
+                enabled: false,
                 initialValue: '${widget.markerinformation.secretId}',
                 decoration: InputDecoration(
                     alignLabelWithHint: true,
                     icon: Icon(Icons.security),
-                    enabled: false,
+                   // enabled: false,
                     hintText: 'secretId',
                     labelText: 'secretId'.toUpperCase(),
                     labelStyle: TextStyle(
@@ -274,7 +276,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 decoration: InputDecoration(
                     alignLabelWithHint: true,
                     icon: Icon(Icons.description),
-                    hintText: 'Type',
+                    hintText: 'Type ES-las',
                     labelText: 'Type'.toUpperCase(),
                     labelStyle: TextStyle(
                         color: Theme.of(context).accentColor,
@@ -602,7 +604,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                         fontWeight: FontWeight.bold)),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Please enter some text';
+                     newMarkerDetail.trackVersion = value;
                   } else {
                     newMarkerDetail.trackVersion = value;
                   }
@@ -629,7 +631,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               ),
               new TextFormField(
                 enabled: true,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.datetime,
                 inputFormatters: <TextInputFormatter>[
                   WhitelistingTextInputFormatter.digitsOnly
                 ], // Only n
@@ -656,8 +658,8 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 initialValue: 'Spobberman',
                 decoration: InputDecoration(
                     alignLabelWithHint: true,
-                    icon: Icon(Icons.description),
-                    labelText: 'beschrijving'.toUpperCase(),
+                    icon: Icon(Icons.person),
+                    labelText: 'Gewijzigd door'.toUpperCase(),
                     labelStyle: TextStyle(
                         color: Theme.of(context).accentColor,
                         fontSize: 17,
@@ -693,7 +695,8 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       return Icon(Icons.sentiment_satisfied, color: Colors.orange);
     } else if (status == 'Gereed voor verwijdering') {
       return Icon(Icons.sentiment_satisfied, color: Colors.red);
-    } else if (status == '') {
+    }
+     else if (status == '') {
       return Icon(Icons.sentiment_satisfied);
     }
   }
@@ -704,7 +707,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
         content: new Text(message)));
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     final FormState form = _formKey.currentState;
 
     if (!form.validate()) {
@@ -712,6 +715,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     } else {
       newMarkerDetail.readableID = widget.markerinformation.readableID;
       newMarkerDetail.secretId = widget.markerinformation.secretId;
+      newMarkerDetail.picFileName = "";
       form.save(); //This invokes each onSaved event
 
       print('Form save called, newContact is now up to date...');
@@ -730,14 +734,15 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       print('source: ${newMarkerDetail.source}');
       print('year: ${newMarkerDetail.year}');
       print('readableID: ${newMarkerDetail.readableID}');
-      print('objectType: ${newMarkerDetail.creator}');
+      print('Auteur: ${newMarkerDetail.creator}');
       print('========================================');
       print('Submitting to back end...');
       print('TODO - we will write the submission part next...');
 
       var contactService = new MarkerDetail();
       contactService.createContact(newMarkerDetail).then((value) => showMessage(
-          'New contact created for ${value.readableID}!', Colors.blue));
+          'New contact created for ${newMarkerDetail.readableID}!', Colors.blue)    
+      );
     }
   }
 }

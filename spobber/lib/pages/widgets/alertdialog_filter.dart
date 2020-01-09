@@ -92,7 +92,7 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
                 Divider(),
                 SwitchListTile(
                     activeColor: Theme.of(context).accentColor,
-                    title: const Text('SAP'),
+                    title:  Text('SAP',  style: TextStyle(color: _switchValueSap ? Theme.of(context).accentColor : null),),
                     value: _switchValueSap,
                     onChanged: (bool value) {
                       setState(() {
@@ -105,15 +105,15 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
                         }
                       });
                     },
-                    secondary: const Icon(
-                      Icons.tram,
+                    secondary: Icon(
+                      Icons.tram, color: _switchValueSap ? Theme.of(context).accentColor : null
                     )),
 
                 Divider(),
 
                 SwitchListTile(
                     activeColor: Theme.of(context).accentColor,
-                    title: const Text('SIGMA'),
+                    title:  Text('SIGMA',  style: TextStyle(color: _switchValueSigma ? Theme.of(context).accentColor : null),),
                     value: _switchValueSigma,
                     onChanged: (bool value) {
                       setState(() {
@@ -128,13 +128,13 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
                         }
                       });
                     },
-                    secondary: const Icon(
-                      Icons.tram,
-                    )),
+                    secondary:  Icon(
+                      Icons.tram, color: _switchValueSigma ? Theme.of(context).accentColor : null
+                    ),),
                 Divider(),
                 SwitchListTile(
                  activeColor: Theme.of(context).accentColor,
-                  title: const Text('UST02 meettrein'),
+                  title:  Text('UST02 meettrein',  style: TextStyle(color: _switchValueUST02 ? Theme.of(context).accentColor : null),),
                   value: _switchValueUST02,
                   onChanged: (bool value) {
                     setState(() {
@@ -147,12 +147,12 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
                       }
                     });
                   },
-                  secondary: const Icon(Icons.tram),
+                  secondary: Icon(Icons.tram, color: _switchValueUST02 ? Theme.of(context).accentColor : null),
                 ),
                 Divider(),
                 SwitchListTile(
                activeColor: Theme.of(context).accentColor,
-                  title: const Text('Spobber Applicatie'),
+                  title: Text('Spobber Applicatie', style: TextStyle(color: _switchValueSpobber ? Theme.of(context).accentColor : null)),
                   value: _switchValueSpobber,
                   onChanged: (bool value) {
                     setState(() {
@@ -165,7 +165,7 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
                       }
                     });
                   },
-                  secondary: const Icon(Icons.tram),
+                  secondary: Icon(Icons.tram, color: _switchValueSpobber ? Theme.of(context).accentColor : null),
                 )
                 // SwitchListTile(
                 //     title: const Text('Videoschouwtrein'),

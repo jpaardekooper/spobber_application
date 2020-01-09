@@ -31,6 +31,15 @@ class _TabsState extends State<TabsViewMaps> {
 
   @override
   Widget build(BuildContext context) {
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      setState(() {
+        platformIsIOS = true;
+      });
+    } else {
+      setState(() {
+        platformIsIOS = false;
+      });
+    }
     ErrorWidget.builder = getErrorWidget;
     return StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,

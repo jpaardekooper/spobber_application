@@ -35,7 +35,7 @@ MarkerId makeSelectedMarkerbigger;
 String searchObject = "";
 
 LatLng mylocation;
-
+bool platformIsIOS;
 //icon animations;
 BitmapDescriptor myIconSap;
 BitmapDescriptor myIconSigma;

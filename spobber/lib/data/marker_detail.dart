@@ -72,17 +72,19 @@ class MarkerDetail {
         );
   }
 
-  static const _serviceUrl = 'http://mockbin.org/echo';
+  //static const _serviceUrl = 'http://mockbin.org/echo';
+ static const _serviceUrl = 'http://spobber.azurewebsites.net/api/objects/upload';
   static final _headers = {'Content-Type': 'application/json'};
 
   Future<MarkerDetail> createContact(MarkerDetail contact) async {
     try {
-      String json = _toJson(contact);
-     
+      String json = _toJson(contact);    
+           print(json);
+      
       final response =
           await http.post(_serviceUrl, headers: _headers, body: json);
       var c = _fromJson(response.body);
-      
+
       return c;
     } catch (e) {
       print('Server Exception!!!');
