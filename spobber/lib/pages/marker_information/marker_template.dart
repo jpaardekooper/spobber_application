@@ -63,8 +63,8 @@ class MarkerTemplate extends StatelessWidget {
             //  physics: NeverScrollableScrollPhysics(),
             children: [
               //     MarkerInfo(id: readableId.toString()),
-              MarkerHistory(secretid: secretId.toString()),
-              GridViewDemo(id: readableId.toString(), secretId: secretId),
+              MarkerHistory(secretid: secretId),
+              GridViewDemo(id: readableId, secretId: secretId),
               //   MarkerImage(id: id, secretId: secretId),
             ],
           ),

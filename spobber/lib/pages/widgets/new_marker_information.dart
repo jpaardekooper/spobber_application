@@ -186,6 +186,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   MarkerDetail newMarkerDetail = MarkerDetail();
   final GlobalKey<ScaffoldState> _scaffoldKeyThree = GlobalKey<ScaffoldState>();
 
+  String test1;
+  String test2;
+
   // String secretId;
   // String type;
   // String description;
@@ -203,6 +206,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   // String source;
   // int year;
   // String readableID;
+  //creator
 
   @override
   Widget build(BuildContext context) {
@@ -215,472 +219,537 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
         top: false,
         bottom: false,
         child: Form(
-          key: _formKey,
-          //autovalidate: true,
-          child: new ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            children: <Widget>[
-              // Divider(
-              //   color: Theme.of(context).accentColor,
-              //   height: 50,
-              //   thickness: 20,
-              // ),
-              new TextFormField(
-                enabled: false,
-                initialValue: '${widget.markerinformation.readableID}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    //enabled: false,
-                    icon: Icon(Icons.security),
-                    hintText: 'readable_ID',
-                    labelText: 'readable_ID'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    value = '';
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.readableID =
-                        widget.markerinformation.readableID.toString();
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: false,
-                initialValue: '${widget.markerinformation.secretId}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.security),
-                   // enabled: false,
-                    hintText: 'secretId',
-                    labelText: 'secretId'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.secretId =
-                        widget.markerinformation.secretId;
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: true,
-                initialValue: '${widget.markerinformation.type}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.description),
-                    hintText: 'Type ES-las',
-                    labelText: 'Type'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.type = value;
-                  }
-                },
-              ),
-              new FormField(
-                builder: (FormFieldState state) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                        alignLabelWithHint: true,
-                        icon: const Icon(Icons.description),
-                        labelText: 'Type Es-las'.toUpperCase(),
-                        labelStyle: TextStyle(
-                            color: Theme.of(context).accentColor,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold)),
-                    isEmpty: _typesTxt == '',
-                    child: new DropdownButtonHideUnderline(
-                      child: new DropdownButton(
-                        value: _typesTxt,
-                        isDense: true,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            newMarkerDetail.type = newValue;
-                            _typesTxt = newValue;
-                            state.didChange(newValue);
-                          });
-                        },
-                        items: _types.map((String value) {
-                          return new DropdownMenuItem(
-                            value: value,
-                            child: new Text(value),
-                          );
-                        }).toList(),
-                      ),
+            key: _formKey,
+            autovalidate: false,
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Divider(
+                      color: Theme.of(context).accentColor,
+                      height: 50,
+                      thickness: 20,
                     ),
-                  );
-                },
-                validator: (val) {
-                  return val != '' ? null : 'Selecteer het object soort';
-                },
-              ),
-              // Divider(
-              //   color: Theme.of(context).accentColor,
-              //   height: 50,
-              //   thickness: 20,
-              // ),
-              new TextFormField(
-                enabled: true,
-                initialValue: '${widget.markerinformation.description}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.description),
-                    labelText: 'beschrijving'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.description = value;
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: true,
-                initialValue: '${widget.markerinformation.equipmentId}',
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  WhitelistingTextInputFormatter.digitsOnly
-                ], // Only n
-                decoration: InputDecoration(
-                    icon: Icon(Icons.description),
-                    helperText:
-                        'Unieke identificatienummer van een equipment (uit SAP).',
-                    labelText: 'Equipment'.toUpperCase(),
-                    alignLabelWithHint: true,
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.equipmentId = value;
-                  }
-                },
-              ),
-              new FormField(
-                builder: (FormFieldState state) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                        alignLabelWithHint: true,
-                        icon: _getStatusCode(_statusTxt),
-                        helperText:
-                            'Status van het object in de railinfrastructuur',
-                        labelText: 'Status'.toUpperCase(),
-                        labelStyle: TextStyle(
-                            color: Theme.of(context).accentColor,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold)),
-                    isEmpty:
-                        _statusTxt == widget.markerinformation.equipmentStatus,
-                    child: new DropdownButtonHideUnderline(
-                      child: new DropdownButton(
-                        value: _statusTxt,
-                        isDense: true,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            newMarkerDetail.equipmentStatus = newValue;
-                            _statusTxt = newValue;
-                            state.didChange(newValue);
-                          });
-                        },
-                        items: _status.map((String value) {
-                          return new DropdownMenuItem(
-                            value: value,
-                            child: new Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  );
-                },
-                validator: (val) {
-                  return val != '' ? null : 'Status van het object';
-                },
-              ),
-              new TextFormField(
-                enabled: true,
-                initialValue: '${widget.markerinformation.userStatusEquipment}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.live_help),
-                    helperText: 'De status wordt overgenomen uit SAP PLM.',
-                    labelText: 'User status equipment'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.userStatusEquipment = value;
-                  }
-                },
-              ),
-              // Divider(
-              //   color: Theme.of(context).accentColor,
-              //   height: 50,
-              //   thickness: 20,
-              // ),
-              new TextFormField(
-                enabled: true,
-                initialValue: '${widget.markerinformation.parentEquipKind}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.live_help),
-                    labelText: 'Parent equip kind'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.parentEquipKind = value;
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: true,
-                initialValue: '${widget.markerinformation.datacollection}',
-                decoration: InputDecoration(
-                    icon: Icon(Icons.list),
-                    alignLabelWithHint: true,
-                    helperText:
-                        "De reden van de mutatie van de infrastamdata van het object. ",
-                    labelText: 'Datacollectie'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.datacollection = value;
-                  }
-                },
-              ),
-              new FormField(
-                builder: (FormFieldState state) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                        alignLabelWithHint: true,
-                        icon: const Icon(Icons.location_on),
-                        helperText:
-                            'De locatie in het spoor, het wissel of de kruising waar de ES-las zich bevindt.',
-                        labelText: 'Plaatsing'.toUpperCase(),
-                        labelStyle: TextStyle(
-                            color: Theme.of(context).accentColor,
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold)),
-                    isEmpty:
-                        _plaatsingTxt == widget.markerinformation.placement,
-                    child: new DropdownButtonHideUnderline(
-                      child: new DropdownButton(
-                        value: _plaatsingTxt,
-                        isDense: true,
-                        onChanged: (String newValue) {
-                          setState(() {
-                            newMarkerDetail.placement = newValue;
-                            _plaatsingTxt = newValue;
-                            state.didChange(newValue);
-                          });
-                        },
-                        items: _plaatsing.map((String value) {
-                          return new DropdownMenuItem(
-                            value: value,
-                            child: new Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  );
-                },
-                validator: (val) {
-                  return val != '' ? null : 'Plaatsing van het object';
-                },
-              ),
-              new TextFormField(
-                enabled: false,
-                initialValue: '${widget.markerinformation.latitude}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.location_on),
-                    //  hintText: 'Parent equip kind',
-                    labelText: 'GPS coordinate van de Latitude'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    value = '';
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.latitude =
-                        widget.markerinformation.latitude;
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: false,
-                initialValue: '${widget.markerinformation.longitude}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.location_on),
-                    labelText: 'GPS coordinate van de Longitude'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.longitude =
-                        widget.markerinformation.longitude;
-                  }
-                },
-              ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: '${widget.markerinformation.readableID}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          //enabled: false,
+                          icon: Icon(Icons.security),
+                          hintText: 'readable_ID',
+                          labelText: 'readable_ID'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     value = '';
+                      //     return 'Please enter some text';
+                      //   } else {
 
-              new TextFormField(
-                enabled: true,
-                initialValue: '${widget.markerinformation.runNr}',
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  WhitelistingTextInputFormatter.digitsOnly
-                ], // Only n
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.tram),
-                    labelText: 'Run nummer'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.runNr = value;
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: true,
-                initialValue: '${widget.markerinformation.trackVersion}',
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  WhitelistingTextInputFormatter.digitsOnly
-                ], // Only n
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.tram),
-                    labelText: 'Track versie'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                     newMarkerDetail.trackVersion = value;
-                  } else {
-                    newMarkerDetail.trackVersion = value;
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: false,
-                initialValue: '${widget.markerinformation.source}',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.art_track),
-                    labelText: 'Bron'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.source = value;
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: true,
-                keyboardType: TextInputType.datetime,
-                inputFormatters: <TextInputFormatter>[
-                  WhitelistingTextInputFormatter.digitsOnly
-                ], // Only n
-                initialValue: '${widget.markerinformation.year}',
+                      //   }
 
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.calendar_today),
-                    labelText: 'Datum '.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.year = int.parse(value);
-                  }
-                },
-              ),
-              new TextFormField(
-                enabled: false,
-                initialValue: 'Spobberman',
-                decoration: InputDecoration(
-                    alignLabelWithHint: true,
-                    icon: Icon(Icons.person),
-                    labelText: 'Gewijzigd door'.toUpperCase(),
-                    labelStyle: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold)),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else {
-                    newMarkerDetail.creator = value;
-                  }
-                },
-              ),
-              new Container(
-                  padding: const EdgeInsets.only(left: 40.0, top: 20.0),
-                  child: new RaisedButton(
-                    child: const Text('Submit'),
-                    onPressed: _submitForm,
-                  )),
-            ],
-          ),
-        ),
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.readableID =
+                            widget.markerinformation.readableID.toString();
+                      },
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: '${widget.markerinformation.secretId}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.security),
+                          // enabled: false,
+                          hintText: 'secretId',
+                          labelText: 'secretId'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.secretId =
+                      //         widget.markerinformation.secretId;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.secretId =
+                            widget.markerinformation.secretId;
+                      },
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      initialValue: '${widget.markerinformation.type}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.description),
+                          hintText: 'Type ES-las',
+                          labelText: 'Type'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.type = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.type = value;
+                      },
+                    ),
+                    FormField(
+                      builder: (FormFieldState state) {
+                        return InputDecorator(
+                          decoration: InputDecoration(
+                              alignLabelWithHint: true,
+                              icon: const Icon(Icons.description),
+                              labelText: 'Type Es-las'.toUpperCase(),
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold)),
+                          isEmpty: _typesTxt == '',
+                          child: new DropdownButtonHideUnderline(
+                            child: new DropdownButton(
+                              value: _typesTxt,
+                              isDense: true,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  newMarkerDetail.type = newValue;
+                                  _typesTxt = newValue;
+                                  state.didChange(newValue);
+                                });
+                              },
+                              items: _types.map((String value) {
+                                return new DropdownMenuItem(
+                                  value: value,
+                                  child: new Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
+                      },
+                      validator: (val) {
+                        return val != '' ? null : 'Selecteer het type es-las';
+                      },
+                    ),
+                    Divider(
+                      color: Theme.of(context).accentColor,
+                      height: 50,
+                      thickness: 20,
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      initialValue: '${widget.markerinformation.description}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.description),
+                          labelText: 'beschrijving'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.description = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.description = value;
+                      },
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      initialValue: '${widget.markerinformation.equipmentId}',
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly
+                      ], // Only n
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.description),
+                          helperText:
+                              'Unieke identificatienummer van een equipment (uit SAP).',
+                          labelText: 'Equipment'.toUpperCase(),
+                          alignLabelWithHint: true,
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.equipmentId = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.equipmentId = value;
+                      },
+                    ),
+                    FormField(
+                      builder: (FormFieldState state) {
+                        return InputDecorator(
+                          decoration: InputDecoration(
+                              alignLabelWithHint: true,
+                              icon: _getStatusCode(_statusTxt),
+                              helperText:
+                                  'Status van het object in de railinfrastructuur',
+                              labelText: 'Status'.toUpperCase(),
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold)),
+                          isEmpty: _statusTxt ==
+                              widget.markerinformation.equipmentStatus,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              value: _statusTxt,
+                              isDense: true,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  newMarkerDetail.equipmentStatus = newValue;
+                                  _statusTxt = newValue;
+                                  state.didChange(newValue);
+                                });
+                              },
+                              items: _status.map((String value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
+                      },
+                      validator: (val) {
+                        return val != '' ? null : 'Status van het object';
+                      },
+                    ),
+                    Divider(
+                      color: Theme.of(context).accentColor,
+                      height: 50,
+                      thickness: 20,
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      initialValue:
+                          '${widget.markerinformation.userStatusEquipment}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.live_help),
+                          helperText:
+                              'De status wordt overgenomen uit SAP PLM.',
+                          labelText: 'User status equipment'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.userStatusEquipment = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.userStatusEquipment = value;
+                      },
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      initialValue:
+                          '${widget.markerinformation.parentEquipKind}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.live_help),
+                          labelText: 'Parent equip kind'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.parentEquipKind = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.parentEquipKind = value;
+                      },
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      initialValue:
+                          '${widget.markerinformation.datacollection}',
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.list),
+                          alignLabelWithHint: true,
+                          helperText:
+                              "De reden van de mutatie van de infrastamdata van het object. ",
+                          labelText: 'Datacollectie'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.datacollection = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.datacollection = value;
+                      },
+                    ),
+                    Divider(
+                      color: Theme.of(context).accentColor,
+                      height: 50,
+                      thickness: 20,
+                    ),
+                    FormField(
+                      builder: (FormFieldState state) {
+                        return InputDecorator(
+                          decoration: InputDecoration(
+                              alignLabelWithHint: true,
+                              icon: const Icon(Icons.location_on),
+                              helperText:
+                                  'De locatie in het spoor, het wissel of de kruising waar de ES-las zich bevindt.',
+                              labelText: 'Plaatsing'.toUpperCase(),
+                              labelStyle: TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold)),
+                          isEmpty: _plaatsingTxt ==
+                              widget.markerinformation.placement,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              value: _plaatsingTxt,
+                              isDense: true,
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  newMarkerDetail.placement = newValue;
+                                  _plaatsingTxt = newValue;
+                                  state.didChange(newValue);
+                                });
+                              },
+                              items: _plaatsing.map((String value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        );
+                      },
+                      validator: (val) {
+                        return val != '' ? null : 'Plaatsing van het object';
+                      },
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: '${widget.markerinformation.latitude}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.location_on),
+                          //  hintText: 'Parent equip kind',
+                          labelText:
+                              'GPS coordinate van de Latitude'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     value = '';
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.latitude =
+                      //         widget.markerinformation.latitude;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.latitude =
+                            widget.markerinformation.latitude;
+                      },
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: '${widget.markerinformation.longitude}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.location_on),
+                          labelText:
+                              'GPS coordinate van de Longitude'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.longitude =
+                      //         widget.markerinformation.longitude;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.longitude =
+                            widget.markerinformation.longitude;
+                      },
+                    ),
+                    Divider(
+                      color: Theme.of(context).accentColor,
+                      height: 50,
+                      thickness: 20,
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      initialValue: '${widget.markerinformation.runNr}',
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly
+                      ], // Only n
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.tram),
+                          labelText: 'Run nummer'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.runNr = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.runNr = value;
+                      },
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      initialValue: '${widget.markerinformation.trackVersion}',
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly
+                      ], // Only n
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.tram),
+                          labelText: 'Track versie'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     newMarkerDetail.trackVersion = value;
+                      //   } else {
+                      //     newMarkerDetail.trackVersion = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.trackVersion = value;
+                      },
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: '${widget.markerinformation.source}',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.art_track),
+                          labelText: 'Bron'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      // validator: (value) {
+                      //   if (value.isEmpty) {
+                      //     return 'Please enter some text';
+                      //   } else {
+                      //     newMarkerDetail.source = value;
+                      //   }
+                      // },
+                      onSaved: (value) {
+                        newMarkerDetail.source = value;
+                      },
+                    ),
+                    TextFormField(
+                      enabled: true,
+                      keyboardType: TextInputType.datetime,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly
+                      ], // Only n
+                      initialValue: '${widget.markerinformation.year}',
+
+                      decoration: InputDecoration(
+                          // alignLabelWithHint: true,
+                          icon: Icon(Icons.calendar_today),
+                          labelText: 'Datum '.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        } else {
+                          newMarkerDetail.year = int.parse(value);
+                        }
+                      },
+                      onSaved: (value) {
+                        newMarkerDetail.year = int.parse(value);
+                      },
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: 'Spobberman',
+                      decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          icon: Icon(Icons.person),
+                          labelText: 'Gewijzigd door'.toUpperCase(),
+                          labelStyle: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold)),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        } else {
+                          newMarkerDetail.creator = value;
+                        }
+                      },
+                    ),
+                    Container(
+                        padding: const EdgeInsets.only(left: 40.0, top: 20.0),
+                        child: new RaisedButton(
+                          child: const Text('Verzenden'),
+                          onPressed: _submitForm,
+                        )),
+                  ],
+                ),
+              ],
+            )),
       ),
     );
   }
@@ -695,8 +764,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       return Icon(Icons.sentiment_satisfied, color: Colors.orange);
     } else if (status == 'Gereed voor verwijdering') {
       return Icon(Icons.sentiment_satisfied, color: Colors.red);
-    }
-     else if (status == '') {
+    } else if (status == '') {
       return Icon(Icons.sentiment_satisfied);
     }
   }
@@ -740,19 +808,24 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       print('TODO - we will write the submission part next...');
 
       var contactService = new MarkerDetail();
-      contactService.createContact(newMarkerDetail).then((value) => showMessage(
-          'New contact created for ${newMarkerDetail.readableID}!', Colors.blue)    
-      );
+      contactService
+          .createContact(newMarkerDetail)
+          .then((value) => showMessage(
+              'New contact created for ${newMarkerDetail.readableID}!',
+              Colors.blue))
+          .then((_) {
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          Navigator.of(context).pop();
+        });
+      });
     }
   }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+
+    super.dispose();
+  }
 }
-
-// class ContactService {}
-
-// class Contact {
-//   String name;
-//   DateTime dob;
-//   String phone = '';
-//   String email = '';
-//   String favoriteColor = '';
-// }
