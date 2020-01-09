@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,7 +19,6 @@ import 'package:provider/provider.dart';
 import 'package:spobber/network/location_services.dart';
 
 import 'marker_information/marker_template.dart';
-
 
 import 'dart:ui';
 
@@ -72,26 +73,49 @@ class _MapViewState extends State<MapView>
 
   //initialize icons
   void initIcons() async {
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(24, 24)), 'assets/SAP.png')
-        .then((onValue) {
-      myIconSap = onValue;
-    });
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(24, 24)), 'assets/SIGMA.png')
-        .then((onValue) {
-      myIconSigma = onValue;
-    });
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(24, 24)), 'assets/UST02.png')
-        .then((onValue) {
-      myIconUST02 = onValue;
-    });
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(24, 24)), 'assets/spobber_icon.png')
-        .then((onValue) {
-      myIconSpobber = onValue;
-    });
+    if (Platform.isIOS || Theme.of(context).platform == TargetPlatform.iOS) {
+      BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)), 'assets/ios/SAP.png')
+          .then((onValue) {
+        myIconSap = onValue;
+      });
+      BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)), 'assets/ios/SIGMA.png')
+          .then((onValue) {
+        myIconSigma = onValue;
+      });
+      BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)), 'assets/ios/UST02.png')
+          .then((onValue) {
+        myIconUST02 = onValue;
+      });
+      BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(24, 24)),
+              'assets/ios/spobber_icon.png')
+          .then((onValue) {
+        myIconSpobber = onValue;
+      });
+    } else {
+      BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)), 'assets/SAP.png')
+          .then((onValue) {
+        myIconSap = onValue;
+      });
+      BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)), 'assets/SIGMA.png')
+          .then((onValue) {
+        myIconSigma = onValue;
+      });
+      BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)), 'assets/UST02.png')
+          .then((onValue) {
+        myIconUST02 = onValue;
+      });
+      BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(size: Size(24, 24)), 'assets/spobber_icon.png')
+          .then((onValue) {
+        myIconSpobber = onValue;
+      });
+    }
   }
 
   // For memory solution
@@ -218,7 +242,7 @@ class _MapViewState extends State<MapView>
                     lastzoom = null;
                     loadDataToMaps();
                     showToast("Data wordt ingeladen", context,
-                        gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+                        gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
                   }
                 },
                 child: Icon(Icons.search),
@@ -481,8 +505,6 @@ class _MapViewState extends State<MapView>
 
     loadmarkers.searchNearby().then((value) {
       loadThisDataSet();
-
-  
     });
   }
 

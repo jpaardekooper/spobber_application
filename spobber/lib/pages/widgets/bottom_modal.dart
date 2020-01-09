@@ -146,7 +146,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Type: " + places[index].type + "     Ophaal ID: " + places[index].readableID, 
+                            "Ophaal ID: " + places[index].readableID, 
                             style: TextStyle(
                                 fontSize: 12.5, fontWeight: FontWeight.bold),
                           ),
