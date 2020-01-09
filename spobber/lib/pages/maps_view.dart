@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:spobber/network/location_services.dart';
 
 import 'marker_information/marker_template.dart';
+import 'package:vibration/vibration.dart';
 
 import 'dart:ui';
 
@@ -121,26 +122,18 @@ class _MapViewState extends State<MapView>
                 color: Color.fromRGBO(51, 216, 178, 1),
                 borderRadius: BorderRadius.circular(5),
               ),
+
               // button color
               child: InkWell(
-                splashColor: const Color(0xff004990), // splash color
-                onTap: () {
-                  if (mounted) {
-                    setState(() {
-                      mapType = nextType;
-                    });
-                  }
-                }, // button pressed
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.map,
-                    ), // icon
-                    // Text("Call"), // text
-                  ],
-                ),
-              ),
+                  splashColor: const Color(0xff004990), // splash color
+                  onTap: () {
+                    if (mounted) {
+                      setState(() {
+                        mapType = nextType;
+                      });
+                    }
+                  }, // button pressed
+                  child: Icon(Icons.map)),
             ),
           ),
         ),
@@ -177,35 +170,28 @@ class _MapViewState extends State<MapView>
 
   Widget _location() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(0, 10, 12, 0),
-      child: Align(
-        alignment: Alignment.topRight,
-        child: SizedBox.fromSize(
-          size: Size(37, 37), // button width and height
-          child: ClipRect(
-            child: Container(
-              decoration: new BoxDecoration(
-                color: Color.fromRGBO(51, 216, 178, 1),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: InkWell(
-                splashColor: const Color(0xff004990),
-                onTap: () {
-                  _goToCurrentLocation();
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.location_searching), // icon
-                    // Text("Call"), // text
-                  ],
+        padding: EdgeInsets.fromLTRB(0, 10, 12, 0),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: SizedBox.fromSize(
+            size: Size(37, 37), // button width and height
+            child: ClipRect(
+              child: Container(
+                decoration: new BoxDecoration(
+                  color: Color.fromRGBO(51, 216, 178, 1),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: InkWell(
+                  splashColor: const Color(0xff004990),
+                  onTap: () {
+                    _goToCurrentLocation();
+                  },
+                  child: Icon(Icons.location_searching),
                 ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Widget _search() {
@@ -235,13 +221,7 @@ class _MapViewState extends State<MapView>
                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
                   }
                 },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.search), // icon
-                    // Text("Call"), // text
-                  ],
-                ),
+                child: Icon(Icons.search),
               ),
             ),
           ),
@@ -501,6 +481,8 @@ class _MapViewState extends State<MapView>
 
     loadmarkers.searchNearby().then((value) {
       loadThisDataSet();
+
+      Vibration.vibrate(duration: 500);
     });
   }
 

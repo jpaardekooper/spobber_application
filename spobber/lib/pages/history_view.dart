@@ -7,10 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
 class HistoryView extends StatefulWidget {
+  // @override
+  // State<StatefulWidget> createState() {
+  //   return HistoryViewState();
+  // }
+
   @override
-  State<StatefulWidget> createState() {
-    return HistoryViewState();
-  }
+  HistoryViewState createState() => HistoryViewState();
 }
 
 class HistoryViewState extends State<HistoryView> {
@@ -100,8 +103,12 @@ class HistoryViewState extends State<HistoryView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Geschiedenis overzicht"),
+        centerTitle: true,
+      ),
+      body: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           //refresh button

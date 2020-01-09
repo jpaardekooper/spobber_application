@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class MarkerDetail {
-  String id;
+  //String id;
   String secretId;
   String type;
   String description;
@@ -21,11 +21,12 @@ class MarkerDetail {
   String source;
   int year;
   String readableID;
-  String objectType;
+  String creator;
   // final String image;
 
   MarkerDetail(
-     {this.id,
+     {
+       //this.id,
       this.secretId,
       this.type,
       this.description,
@@ -43,13 +44,13 @@ class MarkerDetail {
       this.source,
       this.year,
       this.readableID,
-      this.objectType
+      this.creator
       //this.image
       });
 
   MarkerDetail fromJson(Map<String, dynamic> json) {
     return MarkerDetail(
-        id: json['id'],
+    //    id: json['id'],
         secretId: json['secret_Id'],
         type: json['type'],
         description: json['description'],
@@ -66,7 +67,7 @@ class MarkerDetail {
         source: json['source'],
         year: json['year'],
         readableID: json['readable_ID'],
-        objectType: json['object_type']
+        creator: json['creator']
         //   image: json['image'],
         );
   }
@@ -93,7 +94,7 @@ class MarkerDetail {
   MarkerDetail _fromJson(String json) {
     Map<String, dynamic> map = jsonDecode(json);
     var markerObjectToPush = new MarkerDetail();
-    markerObjectToPush.id = map['id'];
+ //   markerObjectToPush.id = map['id'];
     markerObjectToPush.secretId = map['secret_Id'];
     markerObjectToPush.type = map['type'];
     markerObjectToPush.description = map['description'];
@@ -110,7 +111,7 @@ class MarkerDetail {
     markerObjectToPush.source = map['source'];
     markerObjectToPush.year = map['year'];
     markerObjectToPush.readableID = map['readable_ID'];
-    markerObjectToPush.objectType = map['object_type'];
+    markerObjectToPush.creator = map['creator'];
 
     return markerObjectToPush;
   }
@@ -118,7 +119,7 @@ class MarkerDetail {
   String _toJson(MarkerDetail markerObjectToPush) {
     var map = new Map();
     // mapData["name"] = markerObjectToPush.name;
-    map['id'] = markerObjectToPush.id;
+ //   map['id'] = markerObjectToPush.id;
     map['secret_Id'] = markerObjectToPush.secretId;
     map['type'] = markerObjectToPush.type;
     map['description'] = markerObjectToPush.description;
@@ -135,7 +136,7 @@ class MarkerDetail {
     map['source'] = markerObjectToPush.source;
     map['year'] = markerObjectToPush.year;
     map['readable_ID'] = markerObjectToPush.readableID;
-    map['object_type'] = markerObjectToPush.objectType;
+    map['creator'] = markerObjectToPush.creator;
     String json = jsonEncode(map);
     return json;
   }

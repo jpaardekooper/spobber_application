@@ -68,31 +68,31 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
     }
   }
 
-  void _onMarkerDragEnd(MarkerId markerId, LatLng newPosition) async {
-    final Marker tappedMarker = markers[markerId];
-    if (tappedMarker != null) {
-      await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-                actions: <Widget>[
-                  FlatButton(
-                    child: const Text('OK'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                ],
-                content: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 66),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text('Old position: ${tappedMarker.position}'),
-                        Text('New position: $newPosition'),
-                      ],
-                    )));
-          });
-    }
-  }
+  // void _onMarkerDragEnd(MarkerId markerId, LatLng newPosition) async {
+  //   final Marker tappedMarker = markers[markerId];
+  //   if (tappedMarker != null) {
+  //     await showDialog<void>(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //               actions: <Widget>[
+  //                 FlatButton(
+  //                   child: const Text('OK'),
+  //                   onPressed: () => Navigator.of(context).pop(),
+  //                 )
+  //               ],
+  //               content: Padding(
+  //                   padding: const EdgeInsets.symmetric(vertical: 66),
+  //                   child: Column(
+  //                     mainAxisSize: MainAxisSize.min,
+  //                     children: <Widget>[
+  //                       Text('Old position: ${tappedMarker.position}'),
+  //                       Text('New position: $newPosition'),
+  //                     ],
+  //                   )));
+  //         });
+  //   }
+  // }
 
   Widget _location() {
     return Padding(
@@ -151,7 +151,8 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
           MaterialPageRoute(
             builder: (context) => (NewMarkerInformation(
               markerinformation: new MarkerDetail(
-                id: "STATUS_NEW_OBJECT",
+                //        id: "STATUS_NEW_OBJECT",
+                readableID: "STATUS_NEW_OBJECT",
                 secretId: "STATUS_NEW_OBJECT",
                 type: "Es-las",
                 description: "",
@@ -166,9 +167,9 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
                 picFileName: "",
                 runNr: "",
                 trackVersion: "",
-                source: "Spobber",
+                source: "SPOBBER",
                 year: 2019, // => 21-04-2019 02:40:25
-                readableID: "STATUS_NEW_OBJECT",
+                creator: ""
               ),
             )),
           ));

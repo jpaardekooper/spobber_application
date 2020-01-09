@@ -1,12 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/data/marker_detail.dart';
-import 'package:spobber/data/place_response.dart';
-import 'package:http/http.dart' as http;
 
 class NewMarkerInformation extends StatefulWidget {
   final MarkerDetail markerinformation;
@@ -192,7 +186,6 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   MarkerDetail newMarkerDetail = MarkerDetail();
   final GlobalKey<ScaffoldState> _scaffoldKeyThree = GlobalKey<ScaffoldState>();
 
-  // String id;
   // String secretId;
   // String type;
   // String description;
@@ -216,7 +209,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     return Scaffold(
       key: _scaffoldKeyThree,
       appBar: AppBar(
-        title: Text(widget.markerinformation.id),
+        title: Text(widget.markerinformation.readableID),
       ),
       body: SafeArea(
         top: false,
@@ -235,6 +228,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               new TextFormField(
                 initialValue: '${widget.markerinformation.readableID}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     enabled: false,
                     icon: Icon(Icons.security),
                     hintText: 'readable_ID',
@@ -256,6 +250,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               new TextFormField(
                 initialValue: '${widget.markerinformation.secretId}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.security),
                     enabled: false,
                     hintText: 'secretId',
@@ -277,6 +272,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 enabled: true,
                 initialValue: '${widget.markerinformation.type}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.description),
                     hintText: 'Type',
                     labelText: 'Type'.toUpperCase(),
@@ -296,6 +292,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 builder: (FormFieldState state) {
                   return InputDecorator(
                     decoration: InputDecoration(
+                        alignLabelWithHint: true,
                         icon: const Icon(Icons.description),
                         labelText: 'Type Es-las'.toUpperCase(),
                         labelStyle: TextStyle(
@@ -337,6 +334,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 enabled: true,
                 initialValue: '${widget.markerinformation.description}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.description),
                     labelText: 'beschrijving'.toUpperCase(),
                     labelStyle: TextStyle(
@@ -354,11 +352,16 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               new TextFormField(
                 enabled: true,
                 initialValue: '${widget.markerinformation.equipmentId}',
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ], // Only n
                 decoration: InputDecoration(
                     icon: Icon(Icons.description),
                     helperText:
                         'Unieke identificatienummer van een equipment (uit SAP).',
                     labelText: 'Equipment'.toUpperCase(),
+                    alignLabelWithHint: true,
                     labelStyle: TextStyle(
                         color: Theme.of(context).accentColor,
                         fontSize: 17,
@@ -375,7 +378,8 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 builder: (FormFieldState state) {
                   return InputDecorator(
                     decoration: InputDecoration(
-                        icon: const Icon(Icons.sentiment_satisfied),
+                        alignLabelWithHint: true,
+                        icon: _getStatusCode(_statusTxt),
                         helperText:
                             'Status van het object in de railinfrastructuur',
                         labelText: 'Status'.toUpperCase(),
@@ -414,6 +418,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 enabled: true,
                 initialValue: '${widget.markerinformation.userStatusEquipment}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.live_help),
                     helperText: 'De status wordt overgenomen uit SAP PLM.',
                     labelText: 'User status equipment'.toUpperCase(),
@@ -438,6 +443,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 enabled: true,
                 initialValue: '${widget.markerinformation.parentEquipKind}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.live_help),
                     labelText: 'Parent equip kind'.toUpperCase(),
                     labelStyle: TextStyle(
@@ -457,6 +463,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 initialValue: '${widget.markerinformation.datacollection}',
                 decoration: InputDecoration(
                     icon: Icon(Icons.list),
+                    alignLabelWithHint: true,
                     helperText:
                         "De reden van de mutatie van de infrastamdata van het object. ",
                     labelText: 'Datacollectie'.toUpperCase(),
@@ -476,6 +483,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 builder: (FormFieldState state) {
                   return InputDecorator(
                     decoration: InputDecoration(
+                        alignLabelWithHint: true,
                         icon: const Icon(Icons.location_on),
                         helperText:
                             'De locatie in het spoor, het wissel of de kruising waar de ES-las zich bevindt.',
@@ -515,6 +523,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 enabled: false,
                 initialValue: '${widget.markerinformation.latitude}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.location_on),
                     //  hintText: 'Parent equip kind',
                     labelText: 'GPS coordinate van de Latitude'.toUpperCase(),
@@ -536,6 +545,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 enabled: false,
                 initialValue: '${widget.markerinformation.longitude}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.location_on),
                     labelText: 'GPS coordinate van de Longitude'.toUpperCase(),
                     labelStyle: TextStyle(
@@ -555,7 +565,12 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               new TextFormField(
                 enabled: true,
                 initialValue: '${widget.markerinformation.runNr}',
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ], // Only n
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.tram),
                     labelText: 'Run nummer'.toUpperCase(),
                     labelStyle: TextStyle(
@@ -573,7 +588,12 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               new TextFormField(
                 enabled: true,
                 initialValue: '${widget.markerinformation.trackVersion}',
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ], // Only n
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.tram),
                     labelText: 'Track versie'.toUpperCase(),
                     labelStyle: TextStyle(
@@ -592,6 +612,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                 enabled: false,
                 initialValue: '${widget.markerinformation.source}',
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.art_track),
                     labelText: 'Bron'.toUpperCase(),
                     labelStyle: TextStyle(
@@ -608,9 +629,14 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               ),
               new TextFormField(
                 enabled: false,
-                keyboardType: TextInputType.numberWithOptions(),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ], // Only n
                 initialValue: '${widget.markerinformation.year}',
+
                 decoration: InputDecoration(
+                    alignLabelWithHint: true,
                     icon: Icon(Icons.calendar_today),
                     labelText: 'Datum '.toUpperCase(),
                     labelStyle: TextStyle(
@@ -622,6 +648,25 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                     return 'Please enter some text';
                   } else {
                     newMarkerDetail.year = int.parse(value);
+                  }
+                },
+              ),
+              new TextFormField(
+                enabled: false,
+                initialValue: 'Spobberman',
+                decoration: InputDecoration(
+                    alignLabelWithHint: true,
+                    icon: Icon(Icons.description),
+                    labelText: 'beschrijving'.toUpperCase(),
+                    labelStyle: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold)),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  } else {
+                    newMarkerDetail.creator = value;
                   }
                 },
               ),
@@ -638,6 +683,21 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     );
   }
 
+  _getStatusCode(String status) {
+    ///   'Actief',
+    // 'Inactief ',
+    // 'Gereed voor verwijdering',
+    if (status == 'Actief') {
+      return Icon(Icons.sentiment_satisfied, color: Colors.green);
+    } else if (status == 'Inactief') {
+      return Icon(Icons.sentiment_satisfied, color: Colors.orange);
+    } else if (status == 'Gereed voor verwijdering') {
+      return Icon(Icons.sentiment_satisfied, color: Colors.red);
+    } else if (status == '') {
+      return Icon(Icons.sentiment_satisfied);
+    }
+  }
+
   void showMessage(String message, [MaterialColor color = Colors.red]) {
     _scaffoldKeyThree.currentState.showSnackBar(new SnackBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -650,12 +710,11 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     if (!form.validate()) {
       showMessage('Form is not valid!  Please review and correct.');
     } else {
-      newMarkerDetail.id = widget.markerinformation.id;
+      newMarkerDetail.readableID = widget.markerinformation.readableID;
       newMarkerDetail.secretId = widget.markerinformation.secretId;
       form.save(); //This invokes each onSaved event
 
       print('Form save called, newContact is now up to date...');
-      print('ID: ${newMarkerDetail.id}');
       print('secretId: ${newMarkerDetail.secretId}');
       print('type: ${newMarkerDetail.type}');
       print('description: ${newMarkerDetail.description}');
@@ -671,14 +730,14 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       print('source: ${newMarkerDetail.source}');
       print('year: ${newMarkerDetail.year}');
       print('readableID: ${newMarkerDetail.readableID}');
-      print('objectType: ${newMarkerDetail.objectType}');
+      print('objectType: ${newMarkerDetail.creator}');
       print('========================================');
       print('Submitting to back end...');
       print('TODO - we will write the submission part next...');
 
       var contactService = new MarkerDetail();
-      contactService.createContact(newMarkerDetail).then((value) =>
-          showMessage('New contact created for ${value.id}!', Colors.blue));
+      contactService.createContact(newMarkerDetail).then((value) => showMessage(
+          'New contact created for ${value.readableID}!', Colors.blue));
     }
   }
 }

@@ -38,7 +38,7 @@ class _TabsState extends State<TabsViewMaps> {
         resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         body: DefaultTabController(
-          length: 3,
+          length: 2,
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
@@ -46,34 +46,37 @@ class _TabsState extends State<TabsViewMaps> {
                 'Spobber',
                 style: TextStyle(fontWeight: FontWeight.w700),
               ),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.info),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TutorialSpot()),
-                    );
-                  },
-                )
-              ],
+              // actions: <Widget>[
+              //   IconButton(
+              //     icon: Icon(Icons.info),
+              //     onPressed: () {
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) => TutorialSpot()),
+              //       );
+              //     },
+              //   )
+              // ],
               flexibleSpace: Container(
                 color: Theme.of(context).primaryColor,
               ),
               bottom: TabBar(indicatorColor: Colors.white, tabs: <Widget>[
                 //Tab(icon: Icon(Icons.home), text: 'Home'),
                 new Container(
-                  height: 70,
-                  child: Tab(icon: Icon(Icons.my_location), text: 'Kaart'),
+                  //      height: 50,
+                  child: Tab(
+                    icon: Icon(Icons.my_location),
+                    text: 'Kaart',
+                  ),
                 ),
                 new Container(
-                  height: 70,
+                  //       height: 50,
                   child: Tab(icon: Icon(Icons.search), text: 'Zoeken'),
                 ),
-                new Container(
-                  height: 70,
-                  child: Tab(icon: Icon(Icons.history), text: 'Geschiedenis'),
-                ),
+                // new Container(
+                //   height: 70,
+                //   child: Tab(icon: Icon(Icons.history), text: 'Geschiedenis'),
+                // ),
                 // new Container(
                 //   height: 70,
                 //   child: Tab(icon: Icon(Icons.history), text: 'Tensorflow'),
@@ -88,7 +91,7 @@ class _TabsState extends State<TabsViewMaps> {
                 // HomeView(),
                 MapView(),
                 SearchView(),
-                HistoryView(),
+                //       HistoryView(),
               ],
             ),
           ),

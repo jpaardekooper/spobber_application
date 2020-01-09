@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/main.dart';
 import 'package:spobber/data/global_variable.dart';
 
 /// An indicator showing the currently selected page of a PageController
@@ -88,9 +89,58 @@ class TutorialSpotPageState extends State<TutorialSpot> {
   }
 
   final List<Widget> _pages = <Widget>[
-    new FlutterLogo(colors: Colors.blue),
-    new FlutterLogo(style: FlutterLogoStyle.stacked, colors: Colors.red),
-    new FlutterLogo(style: FlutterLogoStyle.horizontal, colors: Colors.green),
+    new Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Text("Stap 1",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          Image.asset(
+            "assets/result_data.png",
+          ),
+          Text(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            style: TextStyle(fontSize: 20),
+          )
+        ],
+      ),
+    ),
+    new Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+      
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+            Text("Stap 2",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          Image.asset(
+            "assets/resultmanagers.png",
+          ),
+          Text(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            style: TextStyle(fontSize: 20),
+          )
+        ],
+      ),
+    ),
+    new Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Text("Stap 3",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          Image.asset(
+            "assets/spobber.png",
+          ),
+          Text(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            style: TextStyle(fontSize: 20),
+          )
+        ],
+      ),
+    ),
   ];
 
   Widget _buildPageItem(BuildContext context, int index) {
@@ -99,28 +149,28 @@ class TutorialSpotPageState extends State<TutorialSpot> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new IconTheme(
-        data: new IconThemeData(color: _kArrowColor),
-        child: new Stack(
+    return Scaffold(
+      body: IconTheme(
+        data: IconThemeData(color: _kArrowColor),
+        child: Stack(
           children: <Widget>[
-            new PageView.builder(
-              physics: new AlwaysScrollableScrollPhysics(),
+            PageView.builder(
+              physics: AlwaysScrollableScrollPhysics(),
               controller: _controller,
               itemCount: _pages.length,
               itemBuilder: (BuildContext context, int index) {
                 return _buildPageItem(context, index % _pages.length);
               },
             ),
-            new Positioned(
+            Positioned(
               bottom: 0.0,
               left: 0.0,
               right: 0.0,
-              child: new Container(
+              child: Container(
                 color: Colors.grey[800].withOpacity(0.5),
                 padding: const EdgeInsets.all(20.0),
-                child: new Center(
-                  child: new DotsIndicator(
+                child: Center(
+                  child: DotsIndicator(
                     controller: _controller,
                     itemCount: _pages.length,
                     onPageSelected: (int page) {
@@ -134,7 +184,7 @@ class TutorialSpotPageState extends State<TutorialSpot> {
                 ),
               ),
             ),
-            new Align(
+            Align(
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: EdgeInsets.all(20),

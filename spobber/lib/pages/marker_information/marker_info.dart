@@ -146,7 +146,7 @@ class _MarkerInfoState extends State<MarkerInfo>
     formWidget.add(new TextFormField(
       enabled: false,
       controller: TextEditingController(
-          text: markerDetailandInformation[0].id.toString()),
+          text: markerDetailandInformation[0].readableID.toString()),
       decoration: InputDecoration(
           labelText: 'equipment',
           hintText: 'equipment',

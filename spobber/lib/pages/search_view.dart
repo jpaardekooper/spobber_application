@@ -11,6 +11,7 @@ import 'package:spobber/data/place_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:spobber/pages/widgets/single_marker_with_maps.dart';
+import 'package:vibration/vibration.dart';
 import '../data/global_variable.dart';
 import 'dart:async';
 import '../data/place_response.dart';
@@ -57,9 +58,8 @@ class _SearchViewState extends State<SearchView> {
               cursorColor: Colors.black,
               controller: myController,
               focusNode: _searchField,
-              
               onFieldSubmitted: (value) {
-                _searchField.unfocus();                
+                _searchField.unfocus();
               },
               decoration: InputDecoration(
                 fillColor: Colors.white,
@@ -76,8 +76,8 @@ class _SearchViewState extends State<SearchView> {
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     borderSide: BorderSide(color: Colors.black)),
-                errorText: _empty ? 'Invalid Position' : null,
-                hintText: 'Enter Latitude,Longitude or ID',
+                errorText: _empty ? 'Foute invoer' : null,
+                hintText: 'Vul de ID van het object in',
                 hintStyle: TextStyle(fontSize: 20.0, color: Colors.grey),
               ),
               style: TextStyle(fontSize: 20.00, color: Colors.black),
@@ -106,29 +106,29 @@ class _SearchViewState extends State<SearchView> {
 
                           final response = await http.get(url);
                           fillMarkerList(response).then((value) {
-                            if (value) {                            
+                            if (value) {
+                              if (singleMarker[0].readableID == "0" ||
+                                  singleMarker[0].readableID == null) {
+                                showToast(
+                                    "Geen geldig equipment nummer gevonden",
+                                    context,
+                                    gravity: Toast.CENTER,
+                                    duration: Toast.LENGTH_LONG);
+                              } else {
                                 showToast(
                                     "Object id: ${myController.text} wordt geladen",
                                     context,
                                     gravity: Toast.CENTER,
                                     duration: Toast.LENGTH_SHORT);
 
+                                Vibration.vibrate(duration: 500);
+
                                 setState(() {
                                   this.lat = singleMarker[0].latitude;
                                   this.long = singleMarker[0].longitude;
                                 });
-                              }else{
-                                  showToast(
-                                    "Geen geldig equipment nummer gevonden",
-                                    context,
-                                    gravity: Toast.CENTER,
-                                    duration: Toast.LENGTH_SHORT);
                               }
-                            //  else {
-                            //   setState(() {
-                            //     isButtonDisabled = false;
-                            //   });
-                            // }
+                            }
                           });
                         }
                       },
@@ -139,7 +139,6 @@ class _SearchViewState extends State<SearchView> {
       ),
     );
   }
-
 
   final FocusNode _searchField = FocusNode();
 

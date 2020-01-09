@@ -132,7 +132,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                     children: [
                       Container(
                         height: 90.0,
-                        width: 90.0,
+                        width: 45.0,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(10.0),
@@ -146,7 +146,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Type: " + places[index].type,
+                            "Type: " + places[index].type + "     Ophaal ID: " + places[index].readableID, 
                             style: TextStyle(
                                 fontSize: 12.5, fontWeight: FontWeight.bold),
                           ),
@@ -178,7 +178,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                                     widget.longitude,
                                     places[index].latitude,
                                     places[index].longitude) +
-                                " meter",
+                                " km",
                             style: TextStyle(
                                 fontSize: 11.0, fontWeight: FontWeight.w300),
                           ),

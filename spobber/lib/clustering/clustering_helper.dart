@@ -324,9 +324,11 @@ class ClusteringHelper {
                       p.readableID, p.source, p.secretId, p.type);
                 },
                 title: "ID: ${p.readableID}",
-                snippet:
-                    "Lat: ${p.location.latitude.toStringAsFixed(3)}, Long: ${p.location.longitude.toStringAsFixed(3)}"),
+                snippet: p.placement == null || p.placement == ""
+                    ? "Lat: ${p.location.latitude.toStringAsFixed(3)}, Long: ${p.location.longitude.toStringAsFixed(3)}"
+                    : "Plaatsing: ${p.placement}"),
             icon: getIcon(p.source),
+            anchor: Offset(0.5, 0.5),
             onTap: () {
               //   goToMarkerLocation(p.location.latitude, p.location.longitude);
             });

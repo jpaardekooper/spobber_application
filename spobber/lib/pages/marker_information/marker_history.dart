@@ -24,8 +24,6 @@ class _MarkerHistoryState extends State<MarkerHistory>
     final response = await http.get(
         "https://spobber.azurewebsites.net/api/objects/${widget.secretid}");
     print("https://spobber.azurewebsites.net/api/objects/${widget.secretid}");
-
-    print("HALO");
     if (response.statusCode == 200) {
       if (mounted) {
         setState(() {
@@ -57,10 +55,7 @@ class _MarkerHistoryState extends State<MarkerHistory>
 
           if (data['variable'] == "readable_id") {
             editObjectInfomartion.readableID = data['value'];
-          }
-          if (data['variable'] == "id") {
-            editObjectInfomartion.id = data['value'];
-          }
+          }        
           if (data['variable'] == "equipment_id") {
             editObjectInfomartion.equipmentId = data['value'];
           }
@@ -159,7 +154,7 @@ class _MarkerHistoryState extends State<MarkerHistory>
               MaterialPageRoute(
                 builder: (context) => (NewMarkerInformation(
                   markerinformation: new MarkerDetail(
-                    id: editObjectInfomartion.readableID,
+          //          id: editObjectInfomartion.readableID,
                     secretId: editObjectInfomartion.secretId,
                     type: editObjectInfomartion.type,
                     description: editObjectInfomartion.description,
