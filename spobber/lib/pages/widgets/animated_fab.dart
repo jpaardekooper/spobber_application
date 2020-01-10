@@ -1,7 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:spobber/pages/tflite/home.dart';
-import 'package:spobber/pages/widgets/page.dart';
 
 import 'add_object.dart';
 

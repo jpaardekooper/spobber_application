@@ -2,14 +2,11 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spobber/data/global_variable.dart';
 
 import 'package:spobber/network/location_services.dart';
 import 'package:provider/provider.dart';
 import 'package:spobber/pages/search_view.dart';
-import 'package:spobber/pages/widgets/page.dart';
-import 'history_view.dart';
 import 'maps_view.dart';
 import 'widgets/error_view.dart';
 

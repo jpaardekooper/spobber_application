@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:spobber/pages/history_view.dart';
 import 'package:spobber/pages/tflite/home.dart';
 import 'package:spobber/pages/widgets/page.dart';
-import '../../data/global_variable.dart';
 import 'add_object.dart';
 
 // //Represents the Homepage widget
