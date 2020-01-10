@@ -11,6 +11,7 @@ import 'package:spobber/pages/widgets/animated_fab.dart';
 import 'package:spobber/pages/widgets/bottom_modal.dart';
 import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:toast/toast.dart';
+import 'package:vibration/vibration.dart';
 
 import '../clustering/aggregation_setup.dart';
 import '../clustering/clustering_helper.dart';
@@ -506,6 +507,7 @@ class _MapViewState extends State<MapView>
 
     loadmarkers.searchNearby().then((value) {
       loadThisDataSet();
+      Vibration.vibrate(duration: 1000);
     });
   }
 
