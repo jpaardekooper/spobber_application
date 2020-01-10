@@ -41,6 +41,49 @@ class HistoryViewState extends State<HistoryView> {
                     child: Image.asset(_getPrefData(prefs.get(key), 2)),
                     radius: 8,
                   ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.warning,
+                                    color: Colors.redAccent,
+                                    size: 32,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text("Bevestigen ?"),
+                                  ),
+                                ],
+                              ),
+                              content: Text(
+                                  "Weet u zeker dat u uw geschiedenis wilt verwijderen? Het kan niet meer worden teruggedraaid"),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text("Cancel"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text("Delete"),
+                                  onPressed: () {
+                                    setState(() {
+                                      deleteAllPrefs(key);
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                  ),
                   title: Text(
                     "ID: " + key.replaceRange(0, 2, ""),
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -96,9 +139,12 @@ class HistoryViewState extends State<HistoryView> {
     Toast.show(msg, context, duration: duration, gravity: gravity);
   }
 
-  void deleteAllPrefs() async {
+  void deleteAllPrefs(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+
+    setState(() {
+      prefs.remove(key);
+    });
   }
 
   @override
@@ -121,54 +167,16 @@ class HistoryViewState extends State<HistoryView> {
             },
           ),
 
-          ListTile(
-            leading: Icon(
-              Icons.delete,
-              color: Colors.redAccent,
-              size: 32,
-            ),
-            title: Text("Verwijder geschiedenis"),
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.warning,
-                            color: Colors.redAccent,
-                            size: 32,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text("Bevestigen ?"),
-                          ),
-                        ],
-                      ),
-                      content: Text(
-                          "Weet u zeker dat u uw geschiedenis wilt verwijderen? Het kan niet meer worden teruggedraaid"),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text("Cancel"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        FlatButton(
-                          child: Text("Delete"),
-                          onPressed: () {
-                            setState(() {
-                              deleteAllPrefs();
-                            });
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  });
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(
+          //     Icons.delete,
+          //     color: Colors.redAccent,
+          //     size: 32,
+          //   ),
+          //   title: Text("Verwijder geschiedenis"),
+          //   onTap: () {
+
+          // );
 
           FutureBuilder<List<Widget>>(
               //  getAllPrefs return List of Widgets

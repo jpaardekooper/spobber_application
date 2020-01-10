@@ -814,7 +814,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               'New contact created for ${newMarkerDetail.readableID}!',
               Colors.blue))
           .then((_) {
-        Future.delayed(const Duration(milliseconds: 1500), () {
+        Future.delayed(const Duration(milliseconds: 1000), () {
           Navigator.of(context).pop();
         });
       });

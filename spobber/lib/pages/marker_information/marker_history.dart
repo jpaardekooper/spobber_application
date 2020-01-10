@@ -53,7 +53,7 @@ class _MarkerHistoryState extends State<MarkerHistory>
         itemBuilder: (BuildContext context, int index) {
           final data = list[index];
 
-          if (data['variable'] == "readable_id") {
+          if (data['variable'] == "readable_id") {           
             editObjectInfomartion.readableID = data['value'];
           }        
           if (data['variable'] == "equipment_id") {

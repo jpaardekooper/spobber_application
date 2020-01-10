@@ -25,8 +25,8 @@ class MarkerDetail {
   // final String image;
 
   MarkerDetail(
-     {
-       //this.id,
+      {
+      //this.id,
       this.secretId,
       this.type,
       this.description,
@@ -50,7 +50,7 @@ class MarkerDetail {
 
   MarkerDetail fromJson(Map<String, dynamic> json) {
     return MarkerDetail(
-    //    id: json['id'],
+        //    id: json['id'],
         secretId: json['secret_Id'],
         type: json['type'],
         description: json['description'],
@@ -73,13 +73,14 @@ class MarkerDetail {
   }
 
   //static const _serviceUrl = 'http://mockbin.org/echo';
- static const _serviceUrl = 'http://spobber.azurewebsites.net/api/objects/upload';
+  static const _serviceUrl =
+      'http://spobber.azurewebsites.net/api/objects/upload';
   static final _headers = {'Content-Type': 'application/json'};
 
   Future<MarkerDetail> createContact(MarkerDetail contact) async {
     try {
-      String json = _toJson(contact);    
-           print(json);
+      String json = _toJson(contact);
+      print(json);
       
       final response =
           await http.post(_serviceUrl, headers: _headers, body: json);
@@ -96,7 +97,7 @@ class MarkerDetail {
   MarkerDetail _fromJson(String json) {
     Map<String, dynamic> map = jsonDecode(json);
     var markerObjectToPush = new MarkerDetail();
- //   markerObjectToPush.id = map['id'];
+    //   markerObjectToPush.id = map['id'];
     markerObjectToPush.secretId = map['secret_Id'];
     markerObjectToPush.type = map['type'];
     markerObjectToPush.description = map['description'];
@@ -121,7 +122,7 @@ class MarkerDetail {
   String _toJson(MarkerDetail markerObjectToPush) {
     var map = new Map();
     // mapData["name"] = markerObjectToPush.name;
- //   map['id'] = markerObjectToPush.id;
+    //   map['id'] = markerObjectToPush.id;
     map['secret_Id'] = markerObjectToPush.secretId;
     map['type'] = markerObjectToPush.type;
     map['description'] = markerObjectToPush.description;
