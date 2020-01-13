@@ -27,7 +27,7 @@ class _SearchViewState extends State<SearchView> {
   final myController = TextEditingController();
   //final favoritePlaceController = TextEditingController();
 
-  ClusteringHelper clusteringHelper;
+  //ClusteringHelper clusteringHelper;
 
   ///changes after declaring the desired location
   // Widget _searchView;
