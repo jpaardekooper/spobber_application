@@ -1,8 +1,6 @@
 import 'package:fluster/fluster.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
-import 'package:spobber/data/global_variable.dart';
 
 /// [Fluster] can only handle markers that conform to the [Clusterable] abstract class.
 ///
@@ -11,30 +9,20 @@ import 'package:spobber/data/global_variable.dart';
 /// [InfoWindow] to your marker here, then you can use the [toMarker] method to convert
 /// this to a proper [Marker] that the [GoogleMap] can read.
 class MapMarker extends Clusterable {
-  final int readableId;
-  final String secretId;
+  final String id;
   final LatLng position;
-  final BitmapDescriptor icon;
-  final VoidCallback onTapFunction;
-  final String equipment;
-  final String objectUri;
-  final String placement;
+  BitmapDescriptor icon;
 
   MapMarker({
-    @required this.readableId,
+    @required this.id,
     @required this.position,
-    @required this.icon,
-    @required this.secretId,
-    @required this.equipment,
-    this.placement,
-    this.onTapFunction,
-    this.objectUri,
+    this.icon,
     isCluster = false,
     clusterId,
     pointsSize,
     childMarkerId,
   }) : super(
-          markerId: readableId.toString(),
+          markerId: id,
           latitude: position.latitude,
           longitude: position.longitude,
           isCluster: isCluster,
@@ -44,29 +32,11 @@ class MapMarker extends Clusterable {
         );
 
   Marker toMarker() => Marker(
-         markerId: MarkerId(isCluster ? 'cl_$readableId' : readableId.toString()),
+        markerId: MarkerId(isCluster ? 'cl_$id' : id),
         position: LatLng(
           position.latitude,
           position.longitude,
         ),
-        icon:  icon,
-        onTap: () {
-          //   selectMarker(equipment, secretId, objectUri);
-          currentSelectedMarkerID = readableId.toString();
-          currentSelectedMarkerSecretID = secretId;
-          currentSelectedMarkerObjectUri = objectUri;
-        },
-        //   consumeTapEvents: true,
-        infoWindow: isCluster
-            ? InfoWindow(
-                title: "$pointsSize",
-                snippet: "Plaatsing: $placement",
-                onTap: null,
-              )
-            : InfoWindow(
-                title: "Equipment: $readableId",
-                snippet: "Plaatsing: $placement",
-                onTap: onTapFunction,
-              ),
-      ); 
+        icon: icon,
+      );
 }

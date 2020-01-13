@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:fluster/fluster.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-
 import 'package:spobber/clustering/map_marker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -40,6 +40,59 @@ class MapHelper {
     return BitmapDescriptor.fromBytes(markerImageBytes);
   }
 
+  /// Draw a [clusterColor] circle with the [clusterSize] text inside that is [width] wide.
+  ///
+  /// Then it will convert the canvas to an image and generate the [BitmapDescriptor]
+  /// to be used on the cluster marker icons.
+  static Future<BitmapDescriptor> _getClusterMarker(
+    int clusterSize,
+    Color clusterColor,
+    Color textColor,
+    int width,
+  ) async {
+    assert(clusterSize != null);
+    assert(clusterColor != null);
+    assert(width != null);
+
+    final PictureRecorder pictureRecorder = PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()..color = clusterColor;
+    final TextPainter textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+    );
+
+    final double radius = width / 2;
+
+    canvas.drawCircle(
+      Offset(radius, radius),
+      radius,
+      paint,
+    );
+
+    textPainter.text = TextSpan(
+      text: clusterSize.toString(),
+      style: TextStyle(
+        fontSize: radius - 5,
+        fontWeight: FontWeight.bold,
+        color: textColor,
+      ),
+    );
+
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(radius - textPainter.width / 2, radius - textPainter.height / 2),
+    );
+
+    final image = await pictureRecorder.endRecording().toImage(
+          radius.toInt() * 2,
+          radius.toInt() * 2,
+        );
+    final data = await image.toByteData(format: ImageByteFormat.png);
+
+    return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
+  }
+
   /// Resizes the given [imageBytes] with the [targetWidth].
   ///
   /// We don't want the marker image to be too big so we might need to resize the image.
@@ -72,22 +125,17 @@ class MapHelper {
     List<MapMarker> markers,
     int minZoom,
     int maxZoom,
-    String clusterImageUrl,
   ) async {
     assert(markers != null);
     assert(minZoom != null);
     assert(maxZoom != null);
-    assert(clusterImageUrl != null);
-
-    final BitmapDescriptor clusterImage =
-        await MapHelper.getMarkerImageFromUrl(clusterImageUrl);
 
     return Fluster<MapMarker>(
       minZoom: minZoom,
       maxZoom: maxZoom,
-      radius: 75,
-      extent: 1024,
-      nodeSize: 100,
+      radius: 150,
+      extent: 2048,
+      nodeSize: 64,
       points: markers,
       createCluster: (
         BaseCluster cluster,
@@ -95,64 +143,44 @@ class MapHelper {
         double lat,
       ) =>
           MapMarker(
-        readableId: int.parse(cluster.id.toString()),
-        secretId: null,
+        id: cluster.id.toString(),
         position: LatLng(lat, lng),
-        icon: cluster.isCluster
-            ? getBitmapDescriptor(cluster.pointsSize)
-            : clusterImage,
-        // icon: BitmapDescriptor.fromAsset('assets/cluster.png'),
         isCluster: true,
         clusterId: cluster.id,
         pointsSize: cluster.pointsSize,
         childMarkerId: cluster.childMarkerId,
-        equipment: null,
-        onTapFunction: null,
       ),
     );
   }
 
   /// Gets a list of markers and clusters that reside within the visible bounding box for
   /// the given [currentZoom]. For more info check [Fluster.clusters].
-  static List<Marker> getClusterMarkers(
+  static Future<List<Marker>> getClusterMarkers(
     Fluster<MapMarker> clusterManager,
     double currentZoom,
+    Color clusterColor,
+    Color clusterTextColor,
+    int clusterWidth,
   ) {
     assert(currentZoom != null);
+    assert(clusterColor != null);
+    assert(clusterTextColor != null);
+    assert(clusterWidth != null);
 
-    if (clusterManager == null) return [];
+    if (clusterManager == null) return Future.value([]);
 
-    return clusterManager
-        .clusters([-180, -85, 180, 85], currentZoom.toInt())
-        .map((cluster) => cluster.toMarker())
-        .toList();
+    return Future.wait(clusterManager.clusters(
+        [-180, -85, 180, 85], currentZoom.toInt()).map((mapMarker) async {
+      if (mapMarker.isCluster) {
+        mapMarker.icon = await _getClusterMarker(
+          mapMarker.pointsSize,
+          clusterColor,
+          clusterTextColor,
+          clusterWidth,
+        );
+      }
+
+      return mapMarker.toMarker();
+    }).toList());
   }
-}
-
-BitmapDescriptor getBitmapDescriptor(int count) {
-  BitmapDescriptor bitmapDescriptor;
-
-  if (count < 10) {
-    // + 2
-    bitmapDescriptor = BitmapDescriptor.fromAsset("assets/cluster/m1.png");
-  } else if (count < 25) {
-    // + 10
-    bitmapDescriptor = BitmapDescriptor.fromAsset("assets/cluster/m2.png");
-  } else if (count < 50) {
-    // + 25
-    bitmapDescriptor = BitmapDescriptor.fromAsset("assets/cluster/m3.png");
-  } else if (count < 100) {
-    // + 50
-    bitmapDescriptor = BitmapDescriptor.fromAsset("assets/cluster/m4.png");
-  } else if (count < 500) {
-    // + 100
-    bitmapDescriptor = BitmapDescriptor.fromAsset("assets/cluster/m5.png");
-  } else if (count < 1000) {
-    // +500
-    bitmapDescriptor = BitmapDescriptor.fromAsset("assets/cluster/m6.png");
-  } else {
-    // + 1k
-    bitmapDescriptor = BitmapDescriptor.fromAsset("assets/cluster/m7.png");
-  }
-  return bitmapDescriptor;
 }
