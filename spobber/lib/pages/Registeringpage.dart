@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_string_encryption/flutter_string_encryption.dart';
+//import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 
+import 'package:encrypt/encrypt.dart' as encrypt;
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  GlobalKey<FormState> _key = new GlobalKey();
+  final _key = GlobalKey<FormState>();
   bool checkpassword = false;
   bool _validate = false;
   String name, email, password;
@@ -24,12 +25,19 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<bool> register(
       String _email, String _username, String _password) async {
-    final cryptor = new PlatformStringCryptor();
-    final key =
-        'MZlo8hLg5HDeJpsEIp5jVQ==:NxiOBTn9vVfENgCG13onWLKKmj2mC8eibz7rDnuRLJQ=';
-    final encrypted = await cryptor.encrypt(_password, key);
+    //final cryptor = new PlatformStringCryptor();
 
-    Map data = {"email": _email, "username": _username, "password": encrypted};
+    final key = encrypt.Key.fromUtf8('@+()_FDAS()HJIUOPFiphdusfaho8!@&');
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    final iv = encrypt.IV.fromLength(16);
+
+    final encrypted = encrypter.encrypt(_password, iv: iv);
+
+   // final encrypted = await cryptor.encrypt(_password, key);
+  // print(encrypted.base16);
+
+
+    Map data = {"email": _email, "username": _username, "password": encrypted.base16};
     HttpClientRequest request = await _preparePostPackage(
         _spobberEndpoint + "authentication/register", data);
     HttpClientResponse response = await request.close();
@@ -137,6 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: checkpassword ? Colors.red : Colors.grey[700],
                   ),
                   onPressed: () => setState(() {
+                    
                     checkpassword = !checkpassword;
                   }),
                 ),
@@ -226,6 +235,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _sendToServer() {
+   
     if (_key.currentState.validate()) {
       // No any error in validation
       _key.currentState.save();

@@ -104,6 +104,7 @@ class _MapViewState extends State<MapView>
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
   Widget _search() {
     return Padding(
+      
       padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
       child: Align(
         alignment: Alignment.topRight,
