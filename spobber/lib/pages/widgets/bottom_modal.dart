@@ -11,12 +11,14 @@ class BottomSheetSwitch extends StatefulWidget {
     @required this.latitude,
     @required this.longitude,
     @required this.gotoLocation,
+    @required this.openMarkerInfo,
   });
   //final List<PlaceResponse> places;
 
   final double latitude;
   final double longitude;
   final Function gotoLocation;
+  final Function openMarkerInfo;
 
   @override
   _BottomSheetSwitch createState() => _BottomSheetSwitch();
@@ -49,12 +51,12 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          border: Border(          
+          border: Border(
             top: BorderSide(
               //                    <--- top side
               color: Theme.of(context).accentColor,
               width: 4.0,
-            ),            
+            ),
           ),
         ),
         child: Container(
@@ -102,8 +104,14 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         );
       },
       child: InkWell(
-        onTap: () {
-          // moveCamera();
+        onDoubleTap: () async {
+          setState(() {
+            currentSelectedMarkerID = places[index].readableID;
+            currentSelectedMarkerObjectUri = places[index].objectUri;
+            currentSelectedMarkerSecretID = places[index].secretId;
+          });
+
+          widget.openMarkerInfo();
         },
         child: Stack(
           children: [
@@ -146,13 +154,14 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Ophaal ID: " + places[index].readableID, 
+                            "Ophaal ID: " + places[index].readableID,
                             style: TextStyle(
                                 fontSize: 12.5, fontWeight: FontWeight.bold),
                           ),
                           places[index].equipmentId != '0'
                               ? Text(
-                                  "Equipment: " + places[index].equipmentId.toString(),
+                                  "Equipment: " +
+                                      places[index].equipmentId.toString(),
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w600),

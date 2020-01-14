@@ -3,19 +3,43 @@ import 'dart:io';
 
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:spobber/clustering/map_marker.dart';
 import 'package:spobber/clustering/map_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:spobber/data/load_markers.dart';
+import 'package:spobber/data/place_response.dart';
+import 'package:spobber/network/location_services.dart';
 import 'package:spobber/pages/marker_information/marker_template.dart';
 import 'package:spobber/data/global_variable.dart';
+import 'package:spobber/pages/widgets/alertdialog_filter.dart';
+import 'package:spobber/pages/widgets/animated_fab.dart';
+import 'package:spobber/pages/widgets/bottom_modal.dart';
+import 'package:spobber/pages/widgets/show_toast.dart';
+import 'package:toast/toast.dart';
 
 class MapView extends StatefulWidget {
   @override
   _MapViewState createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView> {
-  final Completer<GoogleMapController> _mapController = Completer();
+class _MapViewState extends State<MapView>
+//    with AutomaticKeepAliveClientMixin<MapView>
+{
+  // @override
+  // bool get wantKeepAlive => true;
+
+  final GlobalKey<ScaffoldState> _scaffoldKeyGoogle =
+      new GlobalKey<ScaffoldState>();
+  PersistentBottomSheetController controller;
+  GoogleMapController _mapController;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
+  }
 
   /// Set of displayed markers and cluster markers on the map
   final Set<Marker> _markers = Set();
@@ -42,7 +66,7 @@ class _MapViewState extends State<MapView> {
   // final String _markerImageUrl =
   //     'https://img.icons8.com/office/80/000000/marker.png';
 
-   final String _markerImageUrlSap =
+  final String _markerImageUrlSap =
       'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
   /// Url image used on cluster markers (red)
@@ -52,7 +76,6 @@ class _MapViewState extends State<MapView> {
   /// Url image used on cluster markers (blue)
   final String _markerImageUrlMeetTrein =
       'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
-
 
   /// Color of the cluster circle
   final Color _clusterColor = Colors.blue;
@@ -74,33 +97,195 @@ class _MapViewState extends State<MapView> {
     LatLng(41.139813, -8.609381),
   ];
 
-  /// Called when the Google Map widget is created. Updates the map loading state
-  /// and inits the markers.
-  void _onMapCreated(GoogleMapController controller) {
-    _mapController.complete(controller);
+  /// Inits [Fluster] and all the markers with network images and updates the loading state.
+  // void _initMarkers() async {
 
-    setState(() {
-      _isMapLoading = false;
-    });
+  // }
 
-    _initMarkers();
+  Widget _search() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Color.fromRGBO(51, 216, 178, 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: InkWell(
+                splashColor: const Color(0xff004990),
+                onTap: () {
+                  if (setDataSource.length <= 0) {
+                    showToast("Selecteer minimaal één databron.", context,
+                        gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+                  } else {
+                    //searchNearby();
+                    _closeModalBottomSheet();
+                    loadDataToMaps();
+                    showToast("Data wordt ingeladen", context,
+                        gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+                  }
+                },
+                child: Icon(Icons.search),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  /// Inits [Fluster] and all the markers with network images and updates the loading state.
-  void _initMarkers() async {
+  LatLngBounds _visibleRegion;
+
+  Future loadDataToMaps() async {
+    places.clear();
+
+    if (mounted) {
+      final LatLngBounds visibleRegion =
+          await _mapController.getVisibleRegion();
+
+      _visibleRegion = visibleRegion;
+      print("setting visible region: $visibleRegion");
+    }
+
+    LoadMarkers loadmarkers = LoadMarkers(
+      northLatitude: _visibleRegion.northeast.latitude,
+      northLongitude: _visibleRegion.northeast.longitude,
+      bottomLatitude: _visibleRegion.southwest.latitude,
+      bottomLongitude: _visibleRegion.southwest.longitude,
+    );
+
+    addPolyLines(
+        _visibleRegion.northeast.latitude,
+        _visibleRegion.northeast.longitude,
+        _visibleRegion.southwest.latitude,
+        _visibleRegion.southwest.longitude);
+
+    loadmarkers.searchNearby().then((value) {
+      loadThisDataSet();
+    });
+  }
+
+  MapType mapType = MapType.terrain;
+
+  Widget _mapTypeCycler() {
+    final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(12, 10, 0, 0),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Color.fromRGBO(51, 216, 178, 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+
+              // button color
+              child: InkWell(
+                  splashColor: const Color(0xff004990), // splash color
+                  onTap: () {
+                    if (mounted) {
+                      setState(() {
+                        mapType = nextType;
+                      });
+                    }
+                  }, // button pressed
+                  child: Icon(Icons.map)),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void loadThisDataSet() async {
     final List<MapMarker> markers = [];
 
-    for (LatLng markerLocation in _markerLocations) {
-      final BitmapDescriptor markerImage =
-          await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
+    for (PlaceResponse markerLocation in places) {
+      //if there is no image found and
+      if (markerLocation.source == "SAP") {
+        final BitmapDescriptor markerImage =
+            await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
 
-      markers.add(
-        MapMarker(
-          id: _markerLocations.indexOf(markerLocation).toString(),
-          position: markerLocation,
-          icon: markerImage,
-        ),
-      );
+        markers.add(
+          MapMarker(
+              readableId: markerLocation.readableID,
+              secretId: markerLocation.secretId,
+              equipment: markerLocation.equipmentId.toString(),
+              objectUri: markerLocation.objectUri,
+              onTapFunction: openMarkerInfo,             
+              placement: markerLocation.placement,
+              position:
+                  new LatLng(markerLocation.latitude, markerLocation.longitude),
+              icon: markerImage,
+              type: markerLocation.type,
+              source: markerLocation.source,
+       ),
+        );
+      } else if (markerLocation.source == "SIGMA") {
+        final BitmapDescriptor markerImage2 =
+            await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
+
+        markers.add(
+          MapMarker(
+              readableId: markerLocation.readableID,
+              secretId: markerLocation.secretId,
+              equipment: markerLocation.readableID.toString(),
+              objectUri: markerLocation.objectUri,
+              onTapFunction: openMarkerInfo,
+              placement: markerLocation.placement,
+              position:
+                  new LatLng(markerLocation.latitude, markerLocation.longitude),
+              icon: markerImage2,
+              type: markerLocation.type,
+              source: markerLocation.source),
+        );
+      } else if (markerLocation.source == "UST02") {
+        final BitmapDescriptor markerImage3 =
+            await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+
+        markers.add(
+          MapMarker(
+              readableId: markerLocation.readableID,
+              secretId: markerLocation.secretId,
+              equipment: markerLocation.equipmentId.toString(),
+              objectUri: markerLocation.objectUri,
+              onTapFunction: openMarkerInfo,
+              placement: markerLocation.placement,
+              position:
+                  new LatLng(markerLocation.latitude, markerLocation.longitude),
+              icon: markerImage3,
+              type: markerLocation.type,
+              source: markerLocation.source),
+        );
+      } else if (markerLocation.source == "SPOBBER") {
+        final BitmapDescriptor markerImage3 =
+            await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+
+        markers.add(
+          MapMarker(
+              readableId: markerLocation.readableID,
+              secretId: markerLocation.secretId,
+              equipment: markerLocation.equipmentId.toString(),
+              objectUri: markerLocation.objectUri,
+              onTapFunction: openMarkerInfo,
+              placement: markerLocation.placement,
+              position:
+                  new LatLng(markerLocation.latitude, markerLocation.longitude),
+              icon: markerImage3,
+              type: markerLocation.type,
+              source: markerLocation.source),
+        );
+      } else {
+        print("marker has no source");
+      }
     }
 
     _clusterManager = await MapHelper.initClusterManager(
@@ -109,10 +294,136 @@ class _MapViewState extends State<MapView> {
       _maxClusterZoom,
     );
 
-    await _updateMarkers();
+    await _updateMarkers().then((onValue) {
+      _updateMarkerOnMap();
+    });
   }
 
-  Future openMarkerInfo() async{
+  List<LatLng> points = <LatLng>[];
+
+  Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
+  void addPolyLines(
+      double northlat, double northlong, double southlat, double southlong) {
+    points.clear();
+
+    points.add(_createLatLng(northlat, northlong));
+    points.add(_createLatLng(northlat, southlong));
+    points.add(_createLatLng(southlat, southlong));
+    points.add(_createLatLng(southlat, northlong));
+    points.add(_createLatLng(northlat, northlong));
+
+    addPolyline();
+  }
+
+  void addPolyline() {
+    final String polylineIdVal = 'polyline_id_1';
+    final PolylineId polylineId = PolylineId(polylineIdVal);
+
+    final Polyline polyline = Polyline(
+      polylineId: polylineId,
+      color: Colors.blueGrey,
+      width: 1,
+      points: points,
+    );
+    if (mounted) {
+      setState(() {
+        polylines[polylineId] = polyline;
+      });
+    }
+  }
+
+  LatLng _createLatLng(double lat, double lng) {
+    return LatLng(lat, lng);
+  }
+
+  Widget _changeSourceFilter() {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: SizedBox.fromSize(
+          size: Size(37, 37), // button width and height
+          child: ClipRect(
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Color.fromRGBO(51, 216, 178, 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: InkWell(
+                splashColor: const Color(0xff004990),
+                onTap: () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialogFilter(
+                        switchValueisSap: isSap,
+                        valueChangedisSap: (value) {
+                          if (mounted) {
+                            setState(() {
+                              isSap = value;
+                            });
+                          }
+                        },
+                        switchValueisSigma: isSigma,
+                        valueChangedisSigma: (value) {
+                          if (mounted) {
+                            setState(() {
+                              isSigma = value;
+                            });
+                          }
+                        },
+                        switchValueisUST02: isUST02,
+                        valueChangedisUST02: (value) {
+                          if (mounted) {
+                            setState(() {
+                              isUST02 = value;
+                            });
+                          }
+                        },
+                        switchValueisSpobber: isSpobber,
+                        valueChangedisSpobber: (value) {
+                          if (mounted) {
+                            setState(() {
+                              isSpobber = value;
+                            });
+                          }
+                        },
+                      );
+                    },
+                  );
+                }, // button pressed
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    getIcon(setDataSource.length), // icon
+                    // Text("Call"), // text
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Icon getIcon(int selector) {
+    if (selector <= 0) {
+      return Icon(Icons.filter);
+    } else if (selector == 1) {
+      return Icon(Icons.filter_1, color: Colors.white, size: 20);
+    } else if (selector == 2) {
+      return Icon(Icons.filter_2, color: Colors.white, size: 20);
+    } else if (selector == 3) {
+      return Icon(Icons.filter_3, color: Colors.white, size: 20);
+    } else if (selector == 4) {
+      return Icon(Icons.filter_4, color: Colors.white, size: 20);
+    } else {
+      return Icon(Icons.filter_9_plus, color: Colors.white, size: 20);
+    }
+  }
+
+  Future openMarkerInfo() async {
     print("HALO test function activated");
     Navigator.push(
       context,
@@ -163,44 +474,248 @@ class _MapViewState extends State<MapView> {
       ..addAll(updatedMarkers);
 
     setState(() {
-      _areMarkersLoading = false;  
+      _areMarkersLoading = false;
     });
+  }
+
+// const  double latitude = 0;
+// double longitude;
+//   static final CameraPosition _myLocation = CameraPosition(
+//       target: LatLng(latitude, longitude), zoom: 15, bearing: 0.0, tilt: 0.0);
+
+  createGoogleMapsMap() {
+    if (mounted) {
+      return new Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: mylocation,
+            zoom: _currentZoom,
+          ),
+          markers: _markers,
+          polylines: Set<Polyline>.of(polylines.values),
+          onCameraMove: (position) => _updateMarkers(position.zoom),
+          onCameraIdle: _updateMarkerOnMap,
+          myLocationButtonEnabled: false,
+          myLocationEnabled: true,
+          //  mapType: mapType,
+          mapToolbarEnabled: false,
+          minMaxZoomPreference: MinMaxZoomPreference(7, 21),
+          cameraTargetBounds: new CameraTargetBounds(
+            new LatLngBounds(
+              northeast: LatLng(54.01786, 7.230455),
+              southwest: LatLng(50.74753, 2.992192),
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  /// Called when the Google Map widget is created. Updates the map loading state
+  /// and inits the markers.
+  ///
+  void _onMapCreated(GoogleMapController controller) async {
+    // _mapController.complete(controller);
+    _mapController = controller;
+    //  _initMarkers();
+  }
+
+  Widget _location() {
+    return Padding(
+        padding: EdgeInsets.fromLTRB(0, 10, 12, 0),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: SizedBox.fromSize(
+            size: Size(37, 37), // button width and height
+            child: ClipRect(
+              child: Container(
+                decoration: new BoxDecoration(
+                  color: Color.fromRGBO(51, 216, 178, 1),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: InkWell(
+                  splashColor: const Color(0xff004990),
+                  onTap: () {
+                    _goToCurrentLocation();
+                  },
+                  child: Icon(Icons.location_searching),
+                ),
+              ),
+            ),
+          ),
+        ));
+  }
+
+  _goToCurrentLocation() async {
+    _mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          //  bearing: 270.0,
+          target: LatLng(mylocation.latitude, mylocation.longitude),
+          //  tilt: 30.0,
+          zoom: 18.0,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          // Google Map widget
-          Opacity(
-            opacity: _isMapLoading ? 0 : 1,
-            child: GoogleMap(
-              mapToolbarEnabled: false,
-              initialCameraPosition: CameraPosition(
-                target: LatLng(41.143029, -8.611274),
-                zoom: _currentZoom,
-              ),
-              markers: _markers,
-              onMapCreated: (controller) => _onMapCreated(controller),
-              onCameraMove: (position) => _updateMarkers(position.zoom),
-              onCameraIdle: _updateMarkerOnMap,
-            ),
-          ),
+    var userLocation = Provider.of<UserLocation>(context);
+    if (userLocation == null) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      mylocation = LatLng(userLocation.latitude, userLocation.longitude);
+      return Scaffold(
+        key: _scaffoldKeyGoogle,
+        body: Stack(
+          children: <Widget>[
+            //maps changer
 
-          // Map loading indicator
-          Opacity(
-            opacity: _isMapLoading ? 1 : 0,
-            child: Center(child: CircularProgressIndicator()),
-          ),
+            createGoogleMapsMap(),
+            _mapTypeCycler(),
+            _location(),
+            // Map markers loading indicator
+            _loadingIndicator(),
+            _search(),
+            //filter
+            _changeSourceFilter(),
+          ],
+        ),
+        floatingActionButton: FancyFab(test: testthisfunc),
+        bottomNavigationBar: bottomNavigatorInformation(
+            userLocation.latitude, userLocation.longitude),
+      );
+    }
+  }
 
-          // Map markers loading indicator
-          if (_areMarkersLoading)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Card(
+  void _closeModalBottomSheet() {
+    if (controller != null ) {
+      controller.close();
+      controller = null;
+    }
+  }
+
+  Widget bottomNavigatorInformation(double lat, double long) {
+    return GestureDetector(    
+      onTap: () {
+        if (places.length <= 0 || places.length > 30) {
+          return;
+        } else {
+          print("Locatie van het drukken $lat, $long ");
+          showBottomSheet<void>(
+            
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (BuildContext context) {
+              return BottomSheetSwitch(
+                //places: places,
+                latitude: lat,
+                longitude: long,
+                gotoLocation: goToMarkerLocation,
+                 openMarkerInfo: openMarkerInfo,
+              );
+            },
+          );
+        }
+      },
+      child: BottomAppBar(
+        color: Theme.of(context).primaryColor,
+        child: new Row(
+          mainAxisSize: MainAxisSize.max,
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+                icon: places.length <= 0 || places.length > 30
+                    ? Icon(
+                        Icons.not_listed_location,
+                        color: Colors.white,
+                      )
+                    : Icon(Icons.touch_app, color: Colors.white),
+                onPressed: () {}),
+            bottomApptext(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  int _markerIdCounter = 0;
+  Marker lastmarker;
+  Marker currentMarker;
+  goToMarkerLocation(double lat, double long) {
+    final String markerIdVal = 'marker_id_$_markerIdCounter';
+    _markerIdCounter++;
+    final MarkerId markerId = MarkerId(markerIdVal);
+
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: LatLng(lat, long),
+    );
+
+    setState(() {
+      _markers.remove(lastmarker);
+      currentMarker = marker;
+      lastmarker = currentMarker;
+      _markers.add(currentMarker);
+    });
+
+    _mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          //  bearing: 270.0,
+          target: LatLng(lat, long),
+          // tilt: 30.0,
+          zoom: 20.0,
+        ),
+      ),
+    );
+  }
+
+  goToMarkerZoomLocation(double lat, double long, currentzoom) {
+    _mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          //  bearing: 270.0,
+          target: LatLng(lat, long),
+          // tilt: 30.0,
+          zoom: currentzoom + 2.5,
+        ),
+      ),
+    );
+  }
+
+  Widget bottomApptext() {
+    Text text;
+    if (setDataSource.length == 0) {
+      text = Text(
+        "Selecteer een databron",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      );
+    } else if (places.length <= 0) {
+      text = Text(
+        "Er zijn geen objecten gevonden klik op zoeken",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      );
+    } else {
+      text = Text(
+        "Er zijn ${places.length.toString()} objecten gevonden",
+        style: TextStyle(color: Colors.white),
+      );
+    }
+    return text;
+  }
+
+  _loadingIndicator() {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: _areMarkersLoading
+              ? Card(
                   elevation: 2,
                   color: Colors.grey.withOpacity(0.9),
                   child: Padding(
@@ -210,11 +725,11 @@ class _MapViewState extends State<MapView> {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
+                )
+              : Text(''),
+        ));
   }
+
+  testthisfunc() {}
+
 }

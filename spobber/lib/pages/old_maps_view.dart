@@ -482,8 +482,8 @@
 // //     clusteringHelper.list.clear();
 // //     list.clear();
 // //     if (mounted) {
-// //       final LatLngBounds visibleRegion =
-// //           await clusteringHelper.mapController.getVisibleRegion();
+// //       
+
 
 // //       _visibleRegion = visibleRegion;
 // //       print("setting visible region: $visibleRegion");
