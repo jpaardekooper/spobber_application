@@ -538,7 +538,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
 // A breaking change to the ImageStreamListener API affects this sample.
 // I've updates the sample to use the new API, but as we cannot use the new
 // API before it makes it to stable I'm commenting out this sample for now
-// TODO(amirh): uncomment this one the ImageStream API change makes it to stable.
+//  uncomment this one the ImageStream API change makes it to stable.
 // https://github.com/flutter/flutter/issues/33438
 //
 //  void _setMarkerIcon(BitmapDescriptor assetIcon) {

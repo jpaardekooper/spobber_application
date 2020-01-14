@@ -31,13 +31,11 @@ class _MapViewState extends State<MapView>
 
   final GlobalKey<ScaffoldState> _scaffoldKeyGoogle =
       new GlobalKey<ScaffoldState>();
-  PersistentBottomSheetController controller;
+
   GoogleMapController _mapController;
 
   @override
   void dispose() {
-    // TODO: implement dispose
-
     super.dispose();
   }
 
@@ -55,9 +53,6 @@ class _MapViewState extends State<MapView>
 
   /// Current map zoom. Initial zoom will be 15, street level
   double _currentZoom = 15;
-
-  /// Map loading flag
-  bool _isMapLoading = true;
 
   /// Markers loading flag
   bool _areMarkersLoading = true;
@@ -77,31 +72,36 @@ class _MapViewState extends State<MapView>
   final String _markerImageUrlMeetTrein =
       'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
+  final String _markerImageSpobber =
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/spobber.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
   /// Color of the cluster circle
   final Color _clusterColor = Colors.blue;
 
   /// Color of the cluster text
   final Color _clusterTextColor = Colors.white;
 
-  /// Example marker coordinates
-  final List<LatLng> _markerLocations = [
-    LatLng(41.147125, -8.611249),
-    LatLng(41.145599, -8.610691),
-    LatLng(41.145645, -8.614761),
-    LatLng(41.146775, -8.614913),
-    LatLng(41.146982, -8.615682),
-    LatLng(41.140558, -8.611530),
-    LatLng(41.138393, -8.608642),
-    LatLng(41.137860, -8.609211),
-    LatLng(41.138344, -8.611236),
-    LatLng(41.139813, -8.609381),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    if (mounted) {
+      initIcons();
+    }
+  }
+
+  BitmapDescriptor markerSap;
+  BitmapDescriptor markerSigma;
+  BitmapDescriptor markerUst02;
+  BitmapDescriptor markerSpobber;
+
+  initIcons() async {
+    markerSap = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
+    markerSigma = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
+    markerUst02 =  await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+    markerSpobber = await MapHelper.getMarkerImageFromUrl(_markerImageSpobber);
+  }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
-  // void _initMarkers() async {
-
-  // }
-
   Widget _search() {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
@@ -123,7 +123,6 @@ class _MapViewState extends State<MapView>
                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
                   } else {
                     //searchNearby();
-                    _closeModalBottomSheet();
                     loadDataToMaps();
                     showToast("Data wordt ingeladen", context,
                         gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
@@ -169,7 +168,7 @@ class _MapViewState extends State<MapView>
     });
   }
 
-   MapType mapType = MapType.terrain;
+  MapType mapType = MapType.terrain;
 
   Widget _mapTypeCycler() {
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
@@ -211,27 +210,24 @@ class _MapViewState extends State<MapView>
     for (PlaceResponse markerLocation in places) {
       //if there is no image found and
       if (markerLocation.source == "SAP") {
-        final BitmapDescriptor markerImage =
-            await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
-
         markers.add(
           MapMarker(
-              readableId: markerLocation.readableID,
-              secretId: markerLocation.secretId,
-              equipment: markerLocation.equipmentId.toString(),
-              objectUri: markerLocation.objectUri,
-              onTapFunction: openMarkerInfo,             
-              placement: markerLocation.placement,
-              position:
-                  new LatLng(markerLocation.latitude, markerLocation.longitude),
-              icon: markerImage,
-              type: markerLocation.type,
-              source: markerLocation.source,
-       ),
+            readableId: markerLocation.readableID,
+            secretId: markerLocation.secretId,
+            equipment: markerLocation.equipmentId.toString(),
+            objectUri: markerLocation.objectUri,
+            onTapFunction: openMarkerInfo,
+            placement: markerLocation.placement,
+            position:
+                new LatLng(markerLocation.latitude, markerLocation.longitude),
+            icon: markerSap,
+            type: markerLocation.type,
+            source: markerLocation.source,
+          ),
         );
       } else if (markerLocation.source == "SIGMA") {
-        final BitmapDescriptor markerImage2 =
-            await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
+        // final BitmapDescriptor markerImage2 =
+        //     await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
 
         markers.add(
           MapMarker(
@@ -243,13 +239,13 @@ class _MapViewState extends State<MapView>
               placement: markerLocation.placement,
               position:
                   new LatLng(markerLocation.latitude, markerLocation.longitude),
-              icon: markerImage2,
+              icon: markerSigma,
               type: markerLocation.type,
               source: markerLocation.source),
         );
       } else if (markerLocation.source == "UST02") {
-        final BitmapDescriptor markerImage3 =
-            await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+        // final BitmapDescriptor markerImage3 =
+        //     await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
 
         markers.add(
           MapMarker(
@@ -261,13 +257,13 @@ class _MapViewState extends State<MapView>
               placement: markerLocation.placement,
               position:
                   new LatLng(markerLocation.latitude, markerLocation.longitude),
-              icon: markerImage3,
+              icon: markerUst02,
               type: markerLocation.type,
               source: markerLocation.source),
         );
       } else if (markerLocation.source == "SPOBBER") {
-        final BitmapDescriptor markerImage3 =
-            await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+        // final BitmapDescriptor markerImage3 =
+        //     await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
 
         markers.add(
           MapMarker(
@@ -279,7 +275,7 @@ class _MapViewState extends State<MapView>
               placement: markerLocation.placement,
               position:
                   new LatLng(markerLocation.latitude, markerLocation.longitude),
-              icon: markerImage3,
+              icon: markerSpobber,
               type: markerLocation.type,
               source: markerLocation.source),
         );
@@ -455,7 +451,7 @@ class _MapViewState extends State<MapView>
     if (Platform.isIOS) {
       iosMapStopped?.cancel();
       iosMapStopped =
-          Timer(const Duration(milliseconds: 500), _updateMarkerOnMap);
+          Timer(const Duration(milliseconds: 150), _updateMarkerOnMap);
     }
   }
 
@@ -478,39 +474,33 @@ class _MapViewState extends State<MapView>
     });
   }
 
-// const  double latitude = 0;
-// double longitude;
-//   static final CameraPosition _myLocation = CameraPosition(
-//       target: LatLng(latitude, longitude), zoom: 15, bearing: 0.0, tilt: 0.0);
-
-  createGoogleMapsMap() {
-
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: mylocation,
-            zoom: _currentZoom,
-          ),
-          markers: _markers,
-          polylines: Set<Polyline>.of(polylines.values),
-          onCameraMove: (position) => _updateMarkers(position.zoom),
-          onCameraIdle: _updateMarkerOnMap,
-          myLocationButtonEnabled: false,
-          myLocationEnabled: true,
-          mapType: mapType,
-          mapToolbarEnabled: false,
-          minMaxZoomPreference: MinMaxZoomPreference(7, 21),
-          cameraTargetBounds: new CameraTargetBounds(
-            new LatLngBounds(
-              northeast: LatLng(54.01786, 7.230455),
-              southwest: LatLng(50.74753, 2.992192),
-            ),
+  Widget createGoogleMapsMap() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: GoogleMap(
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: mylocation,
+          zoom: _currentZoom,
+        ),
+        markers: _markers,
+        polylines: Set<Polyline>.of(polylines.values),
+        onCameraMove: (position) => _updateMarkers(position.zoom),
+        onCameraIdle: _updateMarkerOnMap,
+        myLocationButtonEnabled: false,
+        myLocationEnabled: true,
+        mapType: mapType,
+        mapToolbarEnabled: false,
+        minMaxZoomPreference: MinMaxZoomPreference(7, 21),
+        cameraTargetBounds: new CameraTargetBounds(
+          new LatLngBounds(
+            northeast: LatLng(54.01786, 7.230455),
+            southwest: LatLng(50.74753, 2.992192),
           ),
         ),
-      );
+      ),
+    );
   }
 
   /// Called when the Google Map widget is created. Updates the map loading state
@@ -591,22 +581,14 @@ class _MapViewState extends State<MapView>
     }
   }
 
-  void _closeModalBottomSheet() {
-    if (controller != null ) {
-      controller.close();
-      controller = null;
-    }
-  }
-
   Widget bottomNavigatorInformation(double lat, double long) {
-    return GestureDetector(    
+    return GestureDetector(
       onTap: () {
         if (places.length <= 0 || places.length > 30) {
           return;
         } else {
           print("Locatie van het drukken $lat, $long ");
           showBottomSheet<void>(
-            
             context: context,
             backgroundColor: Colors.transparent,
             builder: (BuildContext context) {
@@ -615,7 +597,7 @@ class _MapViewState extends State<MapView>
                 latitude: lat,
                 longitude: long,
                 gotoLocation: goToMarkerLocation,
-                 openMarkerInfo: openMarkerInfo,
+                openMarkerInfo: openMarkerInfo,
               );
             },
           );
@@ -730,5 +712,4 @@ class _MapViewState extends State<MapView>
   }
 
   testthisfunc() {}
-
 }

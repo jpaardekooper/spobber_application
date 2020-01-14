@@ -16,7 +16,8 @@ class MarkerHistory extends StatefulWidget {
 }
 
 class _MarkerHistoryState extends State<MarkerHistory>
-    with AutomaticKeepAliveClientMixin<MarkerHistory> {
+    with AutomaticKeepAliveClientMixin<MarkerHistory> 
+    {
   var list = List();
 
   _loadList() async {
@@ -41,6 +42,7 @@ class _MarkerHistoryState extends State<MarkerHistory>
   }
 
   MarkerDetail editObjectInfomartion = new MarkerDetail();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
