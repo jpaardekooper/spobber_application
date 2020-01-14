@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/pages/history_view.dart';
 import 'package:spobber/pages/tflite/home.dart';
 import 'package:spobber/pages/widgets/page.dart';
@@ -182,7 +183,11 @@ class _DrawerFilter extends State<DrawerFilter> {
           title: Text("Nieuw Object toevoegen"),
           // subtitle: Text("-"),
           leading: Icon(Icons.add),
-          trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).accentColor, size: 18,),
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+            color: Theme.of(context).accentColor,
+            size: 18,
+          ),
           onTap: () {
             Navigator.push(
               context,
@@ -196,7 +201,11 @@ class _DrawerFilter extends State<DrawerFilter> {
           title: Text("TensorFlow"),
           //subtitle: Text("-"),
           leading: Icon(Icons.camera_alt),
-              trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).accentColor, size: 18,),
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+            color: Theme.of(context).accentColor,
+            size: 18,
+          ),
           onTap: () async {
             try {
               cameras = await availableCameras();
@@ -215,7 +224,11 @@ class _DrawerFilter extends State<DrawerFilter> {
           title: Text("Geschiedenis:"),
           // subtitle: Text("date"),
           leading: Icon(Icons.history),
-             trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).accentColor, size: 18,),
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+            color: Theme.of(context).accentColor,
+            size: 18,
+          ),
           onTap: () {
             Navigator.push(
               context,
@@ -227,7 +240,11 @@ class _DrawerFilter extends State<DrawerFilter> {
           title: Text("Info:"),
           //  subtitle: Text("date"),
           leading: Icon(Icons.info),
-              trailing: Icon(Icons.arrow_forward_ios, color: Theme.of(context).accentColor, size: 18,),
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+            color: Theme.of(context).accentColor,
+            size: 18,
+          ),
           onTap: () {
             Navigator.push(
               context,
@@ -270,9 +287,12 @@ class _DrawerFilter extends State<DrawerFilter> {
           Divider(),
           ListTile(
             title: Text("Uitloggen"),
-          //  leading: Icon(Icons.settings_power),
-            trailing: Icon(Icons.settings_power, color: Colors.red,),
-            onTap: (){
+            //  leading: Icon(Icons.settings_power),
+            trailing: Icon(
+              Icons.settings_power,
+              color: Colors.red,
+            ),
+            onTap: () {
               print("Uitgelogd");
             },
           )
@@ -287,22 +307,20 @@ class _DrawerFilter extends State<DrawerFilter> {
       child: Column(children: [
         UserAccountsDrawerHeader(
           margin: EdgeInsets.all(0),
-          accountName: Text("SpobberUserExample"),
-          accountEmail: Text("SpobberUserExample@resultdata.ai"),
+          accountName: Text(userInformation.username),
+          accountEmail: Text(userInformation.email),
           onDetailsPressed: () {
             setState(() {
               showUserDetails = !showUserDetails;
             });
           },
           currentAccountPicture: CircleAvatar(
-            backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
-                ? Colors.blue
-                : Colors.white,
-            child: Text(
-              "A",
-              style: TextStyle(fontSize: 40.0),
-            ),
-          ),
+              backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
+                  ? Colors.blue
+                  : Colors.white,
+              child: Theme.of(context).platform == TargetPlatform.iOS
+                  ? Text("I", style: TextStyle(fontSize: 40.0))
+                  : Text("A", style: TextStyle(fontSize: 40.0))),
         ),
         Expanded(
             child: showUserDetails ? _buildUserDetail() : _buildDrawerList())

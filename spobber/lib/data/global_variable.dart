@@ -1,4 +1,5 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:spobber/data/Users.dart';
 import 'package:spobber/data/place_response.dart';
 import 'package:spobber/data/marker_detail.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,9 +37,8 @@ String searchObject = "";
 
 LatLng mylocation;
 bool platformIsIOS;
-//icon animations;
-BitmapDescriptor myIconSap;
-BitmapDescriptor myIconSigma;
-BitmapDescriptor myIconUST02;
-BitmapDescriptor myIconSpobber;
+
+
+User userInformation;
+
 

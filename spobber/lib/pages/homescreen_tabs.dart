@@ -1,7 +1,10 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spobber/data/Users.dart';
 import 'package:spobber/data/global_variable.dart';
 
 import 'package:spobber/network/location_services.dart';
@@ -13,15 +16,16 @@ import 'widgets/error_view.dart';
 import 'widgets/drawer_filter.dart';
 
 class TabsViewMaps extends StatefulWidget {
-  static String tag = 'tabs';
   @override
   _TabsState createState() => _TabsState();
 }
 
 class _TabsState extends State<TabsViewMaps> {
+
   @override
   void initState() {
     super.initState();
+    getData();
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -43,6 +47,7 @@ class _TabsState extends State<TabsViewMaps> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
+        
         body: DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -52,6 +57,12 @@ class _TabsState extends State<TabsViewMaps> {
                 'Spobber',
                 style: TextStyle(fontWeight: FontWeight.w700),
               ),
+                actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () => popupMessage(),
+          ),
+        ],
               // actions: <Widget>[
               //   IconButton(
               //     icon: Icon(Icons.info),
@@ -89,6 +100,7 @@ class _TabsState extends State<TabsViewMaps> {
                 // ),
               ]),
             ),
+            
             drawer: DrawerFilter(),
             body: TabBarView(
               //disable tabs scroll
@@ -104,5 +116,56 @@ class _TabsState extends State<TabsViewMaps> {
         ),
       ),
     );
+  }
+
+  
+  void popupMessage() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Logout'),
+          content: Text('Are you sure you want to log out?'),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Container(
+                alignment: Alignment.center,
+                height: 40,
+                width: 80,
+                color: Color(0xFF0062A5),
+                child: Text(
+                  'Confirm',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800, color: Colors.white),
+                ),
+              ),
+              onPressed: () => goToLogin(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<User> getData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String item = prefs.getString('user');
+    userInformation = User.fromJson(json.decode(item));
+    return userInformation;
+  }
+
+  void goToLogin() async{
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.remove('user');
+    });
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/screen1', (Route<dynamic> route) => false);
   }
 }

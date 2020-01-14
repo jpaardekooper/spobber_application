@@ -68,7 +68,7 @@ class MapMarker extends Clusterable {
             ? null
             : InfoWindow(
                 title: "ReadableId: $readableId",
-                snippet: "Plaatsing: $placement",
+                snippet: "Bron: $source",
                 onTap: () {
                   onTapFunction();
                   _favoritePlaces(

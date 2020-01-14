@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:spobber/pages/LoginPage.dart';
+import 'package:spobber/pages/Registeringpage.dart';
 import 'package:spobber/pages/homescreen_tabs.dart';
 import 'theme/theme.dart';
-
-
-
-
 
 void main() async {
    WidgetsFlutterBinding.ensureInitialized(); 
@@ -42,7 +40,12 @@ class MyApp extends StatelessWidget {
         accentColor: Color.fromRGBO(51,216,178, 1),  
               
       ),
-      home: TabsViewMaps(),
+      home: LoginPage(),
+      routes: <String, WidgetBuilder>{
+        '/screen1': (BuildContext context) => new LoginPage(),    
+        '/screen2': (BuildContext context) => new TabsViewMaps(),    
+        '/screen3': (BuildContext context) => new RegisterPage(),
+      },
     );
   } 
 }
