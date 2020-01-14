@@ -169,7 +169,7 @@ class _MapViewState extends State<MapView>
     });
   }
 
-  MapType mapType = MapType.terrain;
+   MapType mapType = MapType.terrain;
 
   Widget _mapTypeCycler() {
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
@@ -484,8 +484,8 @@ class _MapViewState extends State<MapView>
 //       target: LatLng(latitude, longitude), zoom: 15, bearing: 0.0, tilt: 0.0);
 
   createGoogleMapsMap() {
-    if (mounted) {
-      return new Container(
+
+      return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: GoogleMap(
@@ -500,7 +500,7 @@ class _MapViewState extends State<MapView>
           onCameraIdle: _updateMarkerOnMap,
           myLocationButtonEnabled: false,
           myLocationEnabled: true,
-          //  mapType: mapType,
+          mapType: mapType,
           mapToolbarEnabled: false,
           minMaxZoomPreference: MinMaxZoomPreference(7, 21),
           cameraTargetBounds: new CameraTargetBounds(
@@ -511,7 +511,6 @@ class _MapViewState extends State<MapView>
           ),
         ),
       );
-    }
   }
 
   /// Called when the Google Map widget is created. Updates the map loading state
