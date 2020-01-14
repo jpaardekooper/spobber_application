@@ -1,0 +1,1368 @@
+// // import 'package:flutter/material.dart';
+
+// // import 'package:google_maps_flutter/google_maps_flutter.dart';
+// // import 'package:spobber/clustering/splash_bloc.dart';
+// // import 'package:spobber/data/global_variable.dart';
+// // import 'package:spobber/data/load_markers.dart';
+// // import 'package:spobber/pages/widgets/alertdialog_filter.dart';
+// // import 'package:spobber/pages/widgets/animated_fab.dart';
+// // import 'package:spobber/pages/widgets/bottom_modal.dart';
+// // import 'package:spobber/pages/widgets/show_toast.dart';
+// // import 'package:toast/toast.dart';
+
+// // import '../clustering/aggregation_setup.dart';
+// // import '../clustering/clustering_helper.dart';
+// // import '../clustering/lat_lang_geohash.dart';
+// // import 'package:provider/provider.dart';
+// // import 'package:spobber/network/location_services.dart';
+
+// // import 'marker_information/marker_template.dart';
+
+// // import 'dart:ui';
+
+// // class MapView extends StatefulWidget {
+// //   @override
+// //   _MapViewState createState() => _MapViewState();
+// // }
+
+// // class _MapViewState extends State<MapView>
+// //     with AutomaticKeepAliveClientMixin<MapView> {
+// //   @override
+// //   bool get wantKeepAlive => true;
+
+// //   List<LatLngAndGeohash> list = new List<LatLngAndGeohash>();
+
+// //   ClusteringHelper clusteringHelper;
+// //   final CameraPosition initialCameraPosition =
+// //       //    CameraPosition(target: LatLng(0.000000, 0.000000), zoom: 0.0);
+// //       CameraPosition(target: LatLng(52.3667, 4.8945), zoom: 7.0);
+
+// //   Set<Marker> markers = Set();
+
+// //   void _onMapCreated(GoogleMapController mapController) async {
+// //     print("onMapCreated");
+// //     clusteringHelper.mapController = mapController;
+// //     //   clusteringHelper.updateMap();
+// //   }
+
+// //   double lastzoom;
+// //   bool loadMarkerFirstTime = true;
+// //   updateMarkers(Set<Marker> markers, double zoom) {
+// //     if (lastzoom != zoom) {
+// //       lastzoom = zoom;
+// //       if (mounted) {
+// //         setState(() {
+// //           this.markers = markers;
+// //         });
+// //       }
+// //     } else {
+// //       return;
+// //     }
+// //   }
+
+// //   @override
+// //   void initState() {
+// //     super.initState();
+// //     if (mounted) {
+// //       initIcons();
+// //       initMemoryClustering();
+// //     }
+// //   }
+
+// //   //initialize icons
+// //   void initIcons() {
+// //     print(platformIsIOS);
+// //     if (platformIsIOS) {
+// //       BitmapDescriptor.fromAssetImage(
+// //               ImageConfiguration(size: Size(24, 24)), 'assets/ios/SAP.png')
+// //           .then((onValue) {
+// //         myIconSap = onValue;
+// //       });
+// //       BitmapDescriptor.fromAssetImage(
+// //               ImageConfiguration(size: Size(24, 24)), 'assets/ios/SIGMA.png')
+// //           .then((onValue) {
+// //         myIconSigma = onValue;
+// //       });
+// //       BitmapDescriptor.fromAssetImage(
+// //               ImageConfiguration(size: Size(24, 24)), 'assets/ios/UST02.png')
+// //           .then((onValue) {
+// //         myIconUST02 = onValue;
+// //       });
+// //       BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(24, 24)),
+// //               'assets/ios/spobber_icon.png')
+// //           .then((onValue) {
+// //         myIconSpobber = onValue;
+// //       });
+// //     } else {
+// //       BitmapDescriptor.fromAssetImage(
+// //               ImageConfiguration(size: Size(24, 24)), 'assets/SAP.png')
+// //           .then((onValue) {
+// //         myIconSap = onValue;
+// //       });
+// //       BitmapDescriptor.fromAssetImage(
+// //               ImageConfiguration(size: Size(24, 24)), 'assets/SIGMA.png')
+// //           .then((onValue) {
+// //         myIconSigma = onValue;
+// //       });
+// //       BitmapDescriptor.fromAssetImage(
+// //               ImageConfiguration(size: Size(24, 24)), 'assets/UST02.png')
+// //           .then((onValue) {
+// //         myIconUST02 = onValue;
+// //       });
+// //       BitmapDescriptor.fromAssetImage(
+// //               ImageConfiguration(size: Size(24, 24)), 'assets/spobber_icon.png')
+// //           .then((onValue) {
+// //         myIconSpobber = onValue;
+// //       });
+// //     }
+// //   }
+
+// //   // For memory solution
+// //   initMemoryClustering() {
+// //     clusteringHelper = ClusteringHelper.forMemory(
+// //       list: list,
+// //       updateMarkers: updateMarkers,
+// //       aggregationSetup: AggregationSetup(markerSize: 150),
+// //       showMarkerInformation: _showMarkerInformation,
+// //       goToMarkerZoomLocation: goToMarkerZoomLocation,
+// //     );
+// //   }
+
+// //   MapType mapType = MapType.terrain;
+
+// //   Widget _mapTypeCycler() {
+// //     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
+
+// //     return Padding(
+// //       padding: EdgeInsets.fromLTRB(12, 10, 0, 0),
+// //       child: Align(
+// //         alignment: Alignment.topLeft,
+// //         child: SizedBox.fromSize(
+// //           size: Size(37, 37), // button width and height
+// //           child: ClipRect(
+// //             child: Container(
+// //               decoration: new BoxDecoration(
+// //                 color: Color.fromRGBO(51, 216, 178, 1),
+// //                 borderRadius: BorderRadius.circular(5),
+// //               ),
+
+// //               // button color
+// //               child: InkWell(
+// //                   splashColor: const Color(0xff004990), // splash color
+// //                   onTap: () {
+// //                     if (mounted) {
+// //                       setState(() {
+// //                         mapType = nextType;
+// //                       });
+// //                     }
+// //                   }, // button pressed
+// //                   child: Icon(Icons.map)),
+// //             ),
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   Widget createGoogleMapsMap() {
+// //     return Container(
+// //       width: MediaQuery.of(context).size.width,
+// //       height: MediaQuery.of(context).size.height,
+// //       child: GoogleMap(
+// //         onMapCreated: _onMapCreated,
+// //         initialCameraPosition: initialCameraPosition,
+// //         markers: markers,
+// //         polylines: Set<Polyline>.of(polylines.values),
+// //         onCameraMove: (newPosition) =>
+// //             clusteringHelper.onCameraMove(newPosition, forceUpdate: false),
+// //         onCameraIdle: clusteringHelper.onMapIdle,
+// //         myLocationButtonEnabled: false,
+// //         myLocationEnabled: true,
+// //         mapType: mapType,
+// //         mapToolbarEnabled: false,
+// //         minMaxZoomPreference: MinMaxZoomPreference(7, 21),
+// //         cameraTargetBounds: new CameraTargetBounds(
+// //           new LatLngBounds(
+// //             northeast: LatLng(54.01786, 7.230455),
+// //             southwest: LatLng(50.74753, 2.992192),
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   Widget _location() {
+// //     return Padding(
+// //         padding: EdgeInsets.fromLTRB(0, 10, 12, 0),
+// //         child: Align(
+// //           alignment: Alignment.topRight,
+// //           child: SizedBox.fromSize(
+// //             size: Size(37, 37), // button width and height
+// //             child: ClipRect(
+// //               child: Container(
+// //                 decoration: new BoxDecoration(
+// //                   color: Color.fromRGBO(51, 216, 178, 1),
+// //                   borderRadius: BorderRadius.circular(5),
+// //                 ),
+// //                 child: InkWell(
+// //                   splashColor: const Color(0xff004990),
+// //                   onTap: () {
+// //                     _goToCurrentLocation();
+// //                   },
+// //                   child: Icon(Icons.location_searching),
+// //                 ),
+// //               ),
+// //             ),
+// //           ),
+// //         ));
+// //   }
+
+// //   Widget _search() {
+// //     return Padding(
+// //       padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+// //       child: Align(
+// //         alignment: Alignment.topRight,
+// //         child: SizedBox.fromSize(
+// //           size: Size(37, 37), // button width and height
+// //           child: ClipRect(
+// //             child: Container(
+// //               decoration: new BoxDecoration(
+// //                 color: Color.fromRGBO(51, 216, 178, 1),
+// //                 borderRadius: BorderRadius.circular(5),
+// //               ),
+// //               child: InkWell(
+// //                 splashColor: const Color(0xff004990),
+// //                 onTap: () {
+// //                   if (setDataSource.length <= 0) {
+// //                     showToast("Selecteer minimaal één databron.", context,
+// //                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+// //                   } else {
+// //                     //searchNearby();
+// //                     lastzoom = null;
+// //                     loadDataToMaps();
+// //                     showToast("Data wordt ingeladen", context,
+// //                         gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
+// //                   }
+// //                 },
+// //                 child: Icon(Icons.search),
+// //               ),
+// //             ),
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   Widget _changeSourceFilter() {
+// //     return Padding(
+// //       padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
+// //       child: Align(
+// //         alignment: Alignment.topRight,
+// //         child: SizedBox.fromSize(
+// //           size: Size(37, 37), // button width and height
+// //           child: ClipRect(
+// //             child: Container(
+// //               decoration: new BoxDecoration(
+// //                 color: Color.fromRGBO(51, 216, 178, 1),
+// //                 borderRadius: BorderRadius.circular(5),
+// //               ),
+// //               child: InkWell(
+// //                 splashColor: const Color(0xff004990),
+// //                 onTap: () {
+// //                   showDialog<void>(
+// //                     context: context,
+// //                     builder: (BuildContext context) {
+// //                       return AlertDialogFilter(
+// //                         switchValueisSap: isSap,
+// //                         valueChangedisSap: (value) {
+// //                           if (mounted) {
+// //                             setState(() {
+// //                               isSap = value;
+// //                             });
+// //                           }
+// //                         },
+// //                         switchValueisSigma: isSigma,
+// //                         valueChangedisSigma: (value) {
+// //                           if (mounted) {
+// //                             setState(() {
+// //                               isSigma = value;
+// //                             });
+// //                           }
+// //                         },
+// //                         switchValueisUST02: isUST02,
+// //                         valueChangedisUST02: (value) {
+// //                           if (mounted) {
+// //                             setState(() {
+// //                               isUST02 = value;
+// //                             });
+// //                           }
+// //                         },
+// //                         switchValueisSpobber: isSpobber,
+// //                         valueChangedisSpobber: (value) {
+// //                           if (mounted) {
+// //                             setState(() {
+// //                               isSpobber = value;
+// //                             });
+// //                           }
+// //                         },
+// //                       );
+// //                     },
+// //                   );
+// //                 }, // button pressed
+// //                 child: Column(
+// //                   mainAxisAlignment: MainAxisAlignment.center,
+// //                   children: <Widget>[
+// //                     getIcon(setDataSource.length), // icon
+// //                     // Text("Call"), // text
+// //                   ],
+// //                 ),
+// //               ),
+// //             ),
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   Icon getIcon(int selector) {
+// //     if (selector <= 0) {
+// //       return Icon(Icons.filter);
+// //     } else if (selector == 1) {
+// //       return Icon(Icons.filter_1, color: Colors.white, size: 20);
+// //     } else if (selector == 2) {
+// //       return Icon(Icons.filter_2, color: Colors.white, size: 20);
+// //     } else if (selector == 3) {
+// //       return Icon(Icons.filter_3, color: Colors.white, size: 20);
+// //     } else if (selector == 4) {
+// //       return Icon(Icons.filter_4, color: Colors.white, size: 20);
+// //     } else {
+// //       return Icon(Icons.filter_9_plus, color: Colors.white, size: 20);
+// //     }
+// //   }
+
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     // print("test");
+// //     var userLocation = Provider.of<UserLocation>(context);
+// //     if (userLocation == null) {
+// //       return Center(child: CircularProgressIndicator());
+// //     } else {
+// //       mylocation = LatLng(userLocation.latitude, userLocation.longitude);
+// //       return Scaffold(
+// //           body: Stack(
+// //             children: <Widget>[
+// //               //creating the google maps app
+// //               createGoogleMapsMap(),
+// //               //changing map
+// //               _mapTypeCycler(),
+// //               //custom animation to current location
+// //               _location(),
+// //               //searching the data source
+// //               _search(),
+// //               //filter
+// //               _changeSourceFilter(),
+// //             ],
+// //           ),
+// //           floatingActionButton: FancyFab(test: testthisfunc),
+// //           bottomNavigationBar: bottomNavigatorInformation(
+// //               userLocation.latitude, userLocation.longitude));
+// //       //  }
+// //     }
+// //   }
+
+// //   void testthisfunc() {
+// //     if (mounted) {
+// //       clusteringHelper.list.clear();
+// //     }
+// //   }
+
+// //   void _showMarkerInformation(
+// //       String type, String objectUri, String id, String secret) {
+// //     Navigator.push(
+// //       context,
+// //       MaterialPageRoute(
+// //         builder: (context) => MarkerTemplate(
+// //           type: type,
+// //           //   objectUri: objectUri,
+// //           readableId: id,
+// //           secretId: secret,
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   void addPolyline() {
+// //     final String polylineIdVal = 'polyline_id_1';
+// //     final PolylineId polylineId = PolylineId(polylineIdVal);
+
+// //     final Polyline polyline = Polyline(
+// //       polylineId: polylineId,
+// //       color: Colors.blueGrey,
+// //       width: 1,
+// //       points: points,
+// //       // onTap: () {
+// //       //   _onPolylineTapped(polylineId);
+// //       // },
+// //     );
+// //     if (mounted) {
+// //       setState(() {
+// //         polylines[polylineId] = polyline;
+// //       });
+// //     }
+// //   }
+
+// //   Widget bottomNavigatorInformation(double lat, double long) {
+// //     return GestureDetector(
+// //       onTap: () {
+// //         if (clusteringHelper.list.length <= 0 ||
+// //             clusteringHelper.list.length > 30) {
+// //           return;
+// //         } else {
+// //           print("Locatie van het drukken $lat, $long ");
+// //           showBottomSheet<void>(
+// //             context: context,
+// //             backgroundColor: Colors.transparent,
+// //             builder: (BuildContext context) {
+// //               return BottomSheetSwitch(
+// //                 //places: places,
+// //                 latitude: lat,
+// //                 longitude: long,
+// //                 gotoLocation: goToMarkerLocation,
+// //               );
+// //             },
+// //           );
+// //         }
+// //       },
+// //       child: BottomAppBar(
+// //         color: Theme.of(context).primaryColor,
+// //         child: new Row(
+// //           mainAxisSize: MainAxisSize.max,
+// //           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// //           children: <Widget>[
+// //             IconButton(
+// //                 icon: clusteringHelper.list.length <= 0 ||
+// //                         clusteringHelper.list.length > 30
+// //                     ? Icon(
+// //                         Icons.not_listed_location,
+// //                         color: Colors.white,
+// //                       )
+// //                     : Icon(Icons.touch_app, color: Colors.white),
+// //                 onPressed: () {}),
+// //             bottomApptext(),
+// //           ],
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   Widget bottomApptext() {
+// //     Text text;
+// //     if (setDataSource.length == 0) {
+// //       text = Text(
+// //         "Selecteer een databron",
+// //         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+// //       );
+// //     } else if (clusteringHelper.list.length <= 0) {
+// //       text = Text(
+// //         "Er zijn geen objecten gevonden klik op zoeken",
+// //         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+// //       );
+// //     } else {
+// //       text = Text(
+// //         "Er zijn ${clusteringHelper.list.length.toString()} objecten gevonden",
+// //         style: TextStyle(color: Colors.white),
+// //       );
+// //     }
+// //     return text;
+// //   }
+
+// //   LatLngBounds _visibleRegion;
+
+// //   loadDataToMaps() async {
+// //     clusteringHelper.list.clear();
+// //     list.clear();
+// //     if (mounted) {
+// //       
+
+
+// //       _visibleRegion = visibleRegion;
+// //       print("setting visible region: $visibleRegion");
+// //     }
+
+// //     LoadMarkers loadmarkers = LoadMarkers(
+// //       northLatitude: _visibleRegion.northeast.latitude,
+// //       northLongitude: _visibleRegion.northeast.longitude,
+// //       bottomLatitude: _visibleRegion.southwest.latitude,
+// //       bottomLongitude: _visibleRegion.southwest.longitude,
+// //     );
+
+// //     addPolyLines(
+// //         _visibleRegion.northeast.latitude,
+// //         _visibleRegion.northeast.longitude,
+// //         _visibleRegion.southwest.latitude,
+// //         _visibleRegion.southwest.longitude);
+
+// //     loadmarkers.searchNearby().then((value) {
+// //       loadThisDataSet();
+// //     });
+// //   }
+
+// //   List<LatLng> points = <LatLng>[];
+
+// //   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
+// //   void addPolyLines(
+// //       double northlat, double northlong, double southlat, double southlong) {
+// //     points.clear();
+
+// //     points.add(_createLatLng(northlat, northlong));
+// //     points.add(_createLatLng(northlat, southlong));
+// //     points.add(_createLatLng(southlat, southlong));
+// //     points.add(_createLatLng(southlat, northlong));
+// //     points.add(_createLatLng(northlat, northlong));
+
+// //     addPolyline();
+// //   }
+
+// //   LatLng _createLatLng(double lat, double lng) {
+// //     return LatLng(lat, lng);
+// //   }
+
+// //   loadThisDataSet() async {
+// //     List<LatLngAndGeohash> fakeList =
+// //         await SplashBloc().getListOfLatLngAndGeohash(context);
+
+// //     clusteringHelper.list = fakeList;
+// //     clusteringHelper.updateMap();
+// //   }
+
+// //   int _markerIdCounter = 0;
+// //   Marker lastmarker;
+// //   Marker currentMarker;
+// //   goToMarkerLocation(double lat, double long) {
+// //     final String markerIdVal = 'marker_id_$_markerIdCounter';
+// //     _markerIdCounter++;
+// //     final MarkerId markerId = MarkerId(markerIdVal);
+
+// //     final Marker marker = Marker(
+// //       markerId: markerId,
+// //       position: LatLng(lat, long),
+// //     );
+
+// //     setState(() {
+// //       markers.remove(lastmarker);
+// //       currentMarker = marker;
+// //       lastmarker = currentMarker;
+// //       markers.add(currentMarker);
+// //     });
+
+// //     clusteringHelper.mapController.animateCamera(
+// //       CameraUpdate.newCameraPosition(
+// //         CameraPosition(
+// //           //  bearing: 270.0,
+// //           target: LatLng(lat, long),
+// //           // tilt: 30.0,
+// //           zoom: 20.0,
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   goToMarkerZoomLocation(double lat, double long, currentzoom) {
+// //     clusteringHelper.mapController.animateCamera(
+// //       CameraUpdate.newCameraPosition(
+// //         CameraPosition(
+// //           //  bearing: 270.0,
+// //           target: LatLng(lat, long),
+// //           // tilt: 30.0,
+// //           zoom: currentzoom + 2.5,
+// //         ),
+// //       ),
+// //     );
+// //   }
+
+// //   _goToCurrentLocation() {
+// //     clusteringHelper.mapController.animateCamera(
+// //       CameraUpdate.newCameraPosition(
+// //         CameraPosition(
+// //           //  bearing: 270.0,
+// //           target: LatLng(mylocation.latitude, mylocation.longitude),
+// //           //  tilt: 30.0,
+// //           zoom: 18.0,
+// //         ),
+// //       ),
+// //     );
+// //   }
+// // }
+// import 'package:spobber/data/global_variable.dart';
+// import 'package:spobber/data/place_response.dart';
+// import 'package:spobber/pages/widgets/bottom_modal.dart';
+
+// import '../data/global_variable.dart';
+// import 'dart:async';
+// import 'dart:ui';
+
+// import 'package:flutter/material.dart';
+
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'marker_information/marker_template.dart';
+
+// import 'package:toast/toast.dart';
+// import 'package:provider/provider.dart';
+// import '../network/location_services.dart';
+// import 'package:spobber/data/load_markers.dart';
+
+// import 'package:fluster/fluster.dart';
+// import 'package:spobber/clustering/map_helper.dart';
+// import 'package:spobber/clustering/map_marker.dart';
+
+// import 'package:spobber/pages/widgets/alertdialog_filter.dart';
+
+// import 'dart:io';
+
+// class MapView extends StatefulWidget {
+//   @override
+//   _MapViewState createState() => _MapViewState();
+// }
+
+// typedef Marker MarkerUpdateAction(Marker marker);
+
+// class _MapViewState extends State<MapView>
+// // with AutomaticKeepAliveClientMixin<MapView>
+// {
+// //  @override
+//   // bool get wantKeepAlive => true;
+
+//   bool currentWidget = true;
+
+//   //Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+//   MarkerId selectedMarker;
+//   int _markerIdCounter = 1;
+
+//   bool loading = true;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
+
+//   //When clicked function is performed on a marker
+//   // void _onMarkerTapped(MarkerId markerId) {
+//   //   final Marker tappedMarker = markers[markerId];
+//   //   if (tappedMarker != null) {
+//   //     setState(() {
+//   //       // if (markers.containsKey(selectedMarker)) {
+//   //       //   final Marker resetOld = markers[selectedMarker]
+//   //       //       .copyWith(iconParam: BitmapDescriptor.defaultMarker);
+//   //       //   markers[selectedMarker] = resetOld;
+//   //       // }
+
+//   //       selectedMarker = markerId;
+//   //       // final Marker newMarker = tappedMarker.copyWith(
+//   //       //   iconParam: BitmapDescriptor.defaultMarkerWithHue(
+//   //       //     BitmapDescriptor.hueGreen,
+//   //       //   ),
+//   //       // );
+//   //       // markers[markerId] = newMarker;
+//   //     });
+//   //   }
+//   // }
+
+//   //   void _onNewMarkerTapped(MarkerId markerId) {
+//   //   final Marker tappedMarker = markers[markerId];
+//   //   if (tappedMarker != null) {
+//   //     setState(() {
+//   //       selectedMarker = markerId;
+//   //     });
+//   //   }
+//   // }
+
+//   void _add(double userlat, double userlong) {
+//     final String markerIdVal = 'marker_id_$_markerIdCounter';
+//     _markerIdCounter++;
+//     final MarkerId markerId = MarkerId(markerIdVal);
+
+//     final Marker marker = Marker(
+//       markerId: markerId,
+//       position: LatLng(userlat, userlong),
+//       infoWindow: InfoWindow(title: markerIdVal, snippet: '*', onTap: () {}),
+//       onTap: () {
+//         // _onMarkerTapped(markerId);
+//         // Navigator.push(
+//         //   context,
+//         //   MaterialPageRoute(
+//         //       builder: (context) => MarkerTemplate(
+//         //               markerDetail: new MarkerDetail(
+//         //             markerId.toString(),
+//         //             widget.keyword,
+//         //             currentLocation.latitude.toString(),
+//         //             currentLocation.longitude.toString(),
+//         //             "-",
+//         //             "-",
+//         //             "-",
+//         //           ))),
+//         // );
+//       },
+//     );
+
+//     setState(() {
+//       _markers.add(marker);
+//       //  markers[markerId] = marker;
+//     });
+//   }
+
+//   static double latitude = 52.051968;
+//   static double longitude = 4.5121536;
+
+//   //List<Marker> markers2 = <Marker>[];
+
+//   bool searching = true;
+//   String keyword;
+
+//   Completer<GoogleMapController> _controller = Completer();
+
+//   static final CameraPosition _myLocation = CameraPosition(
+//       target: LatLng(latitude, longitude), zoom: 15, bearing: 0.0, tilt: 0.0);
+
+//   // void _setStyle(GoogleMapController controller) async {
+//   //   String value = await DefaultAssetBundle.of(context)
+//   //       .loadString('assets/maps_style.json');
+//   //   controller.setMapStyle(value);
+//   // }
+
+// // void searchNearby(){
+// // places.add(PlaceResponse(id: 1, type: "es-las", latitude: currentLocation.latitude, longitude: currentLocation.longitude, status: 1, preview_image_uri: "12", object_uri: "dsa"));
+// // places.add(PlaceResponse(id: 2, type: "es-las", latitude: currentLocation.latitude + 0.0000000005, longitude: currentLocation.longitude + 0.0000000005, status: 1, preview_image_uri: "12", object_uri: "dsa"));
+
+// // }
+
+//   Future<void> searchNearby() async {
+//     setState(() {
+//       places.clear();
+//       _markers.clear();
+//       //  markers.clear();
+//     });
+//     final GoogleMapController controller = await _controller.future;
+//     final LatLngBounds visibleRegion = await controller.getVisibleRegion();
+
+//     setState(() {
+//       _visibleRegion = visibleRegion;
+//       print("setting visible region: $visibleRegion");
+//     });
+//     LoadMarkers loadmarkers = LoadMarkers(
+//       northLatitude: _visibleRegion.northeast.latitude,
+//       northLongitude: _visibleRegion.northeast.longitude,
+//       bottomLatitude: _visibleRegion.southwest.latitude,
+//       bottomLongitude: _visibleRegion.southwest.longitude,
+//     );
+//     loadmarkers.searchNearby().then((value) {
+//       //   _handleResponse();
+//       _initMarkers();
+//     });
+//   }
+
+//   MapType _mapType = MapType.normal;
+
+//   Widget _mapTypeCycler() {
+//     final MapType nextType = MapType.values[_mapType.index == 2 ? 1 : 2];
+
+//     return Padding(
+//       padding: EdgeInsets.fromLTRB(12, 70, 0, 0),
+//       child: Align(
+//         alignment: Alignment.topLeft,
+//         child: SizedBox.fromSize(
+//           size: Size(37, 37), // button width and height
+//           child: ClipRect(
+//             child: Container(
+//               decoration: new BoxDecoration(
+//                 color: Colors.white.withOpacity(0.7),
+//                 borderRadius: BorderRadius.circular(5),
+//               ),
+//               // button color
+//               child: InkWell(
+//                 splashColor: const Color(0xff004990), // splash color
+//                 onTap: () {
+//                   setState(() {
+//                     _mapType = nextType;
+//                   });
+//                 }, // button pressed
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: <Widget>[
+//                     Icon(Icons.map), // icon
+//                     // Text("Call"), // text
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _search() {
+//     return Padding(
+//       padding: EdgeInsets.fromLTRB(0, 70, 12, 0),
+//       child: Align(
+//         alignment: Alignment.topRight,
+//         child: SizedBox.fromSize(
+//           size: Size(37, 37), // button width and height
+//           child: ClipRect(
+//             child: Container(
+//               decoration: new BoxDecoration(
+//                 color: Colors.white.withOpacity(0.7),
+//                 borderRadius: BorderRadius.circular(5),
+//               ),
+//               child: InkWell(
+//                 splashColor: const Color(0xff004990),
+//                 onTap: () {
+//                   setState(() {
+//                     places.clear();
+//                     //  markers.clear();
+//                     _markers.clear();
+//                     // circles.clear();
+//                     // polylines.clear();
+//                   });
+
+//                   if (setDataSource.length <= 0) {
+//                     showToast("Selecteer minimaal één databron.",
+//                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+//                   } else {
+//                     searchNearby();
+//                     showToast("Data wordt ingeladen",
+//                         gravity: Toast.BOTTOM, duration: Toast.LENGTH_SHORT);
+//                   }
+//                 },
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: <Widget>[
+//                     Icon(Icons.search), // icon
+//                     // Text("Call"), // text
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   // @override
+//   // void dispose() {
+//   //   super.dispose();
+//   // }
+
+//   Widget _addMarker(double lat, double long) {
+//     return Padding(
+//       padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
+//       child: Align(
+//         alignment: Alignment.topRight,
+//         child: SizedBox.fromSize(
+//           size: Size(37, 37), // button width and height
+//           child: ClipRect(
+//             child: Container(
+//               decoration: new BoxDecoration(
+//                 color: Colors.white.withOpacity(0.7),
+//                 borderRadius: BorderRadius.circular(5),
+//               ), // button color
+//               child: InkWell(
+//                 splashColor: const Color(0xff004990),
+//                 onTap: () {
+//                   _add(lat, long);
+//                 }, // button pressed
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: <Widget>[
+//                     Icon(Icons.add), // icon
+//                     // Text("Call"), // text
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _changeSourceFilter() {
+//     return Padding(
+//       padding: EdgeInsets.fromLTRB(0, 130, 12, 0),
+//       child: Align(
+//         alignment: Alignment.topRight,
+//         child: SizedBox.fromSize(
+//           size: Size(37, 37), // button width and height
+//           child: ClipRect(
+//             child: Container(
+//               decoration: new BoxDecoration(
+//                 color: Color.fromRGBO(51, 216, 178, 1),
+//                 borderRadius: BorderRadius.circular(5),
+//               ),
+//               child: InkWell(
+//                 splashColor: const Color(0xff004990),
+//                 onTap: () {
+//                   showDialog<void>(
+//                     context: context,
+//                     builder: (BuildContext context) {
+//                       return AlertDialogFilter(
+//                         switchValueisSap: isSap,
+//                         valueChangedisSap: (value) {
+//                           if (mounted) {
+//                             setState(() {
+//                               isSap = value;
+//                             });
+//                           }
+//                         },
+//                         switchValueisSigma: isSigma,
+//                         valueChangedisSigma: (value) {
+//                           if (mounted) {
+//                             setState(() {
+//                               isSigma = value;
+//                             });
+//                           }
+//                         },
+//                         switchValueisUST02: isUST02,
+//                         valueChangedisUST02: (value) {
+//                           if (mounted) {
+//                             setState(() {
+//                               isUST02 = value;
+//                             });
+//                           }
+//                         },
+//                         switchValueisSpobber: isSpobber,
+//                         valueChangedisSpobber: (value) {
+//                           if (mounted) {
+//                             setState(() {
+//                               isSpobber = value;
+//                             });
+//                           }
+//                         },
+//                       );
+//                     },
+//                   );
+//                 }, // button pressed
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: <Widget>[
+//                     getIcon(setDataSource.length), // icon
+//                     // Text("Call"), // text
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Icon getIcon(int selector) {
+//     if (selector <= 0) {
+//       return Icon(Icons.filter);
+//     } else if (selector == 1) {
+//       return Icon(Icons.filter_1, color: Colors.white, size: 20);
+//     } else if (selector == 2) {
+//       return Icon(Icons.filter_2, color: Colors.white, size: 20);
+//     } else if (selector == 3) {
+//       return Icon(Icons.filter_3, color: Colors.white, size: 20);
+//     } else if (selector == 4) {
+//       return Icon(Icons.filter_4, color: Colors.white, size: 20);
+//     } else {
+//       return Icon(Icons.filter_9_plus, color: Colors.white, size: 20);
+//     }
+//   }
+
+//   Widget _buildGoogleMap(BuildContext context) {
+//     return GestureDetector(
+//       child: Container(
+//         height: MediaQuery.of(context).size.height,
+//         width: MediaQuery.of(context).size.width,
+//         child: GoogleMap(
+//           onMapCreated: (GoogleMapController controller) {
+//             // _setStyle(controller);
+//             _controller.complete(controller);
+//             // if (controller == null) {
+//             //   _controller.complete(controller);
+//             // } else {
+//             //   print("Do nothing");
+//             // }
+//           },
+//           mapToolbarEnabled: false,
+//           onCameraMove: (position) => _updateMarkers(position.zoom),
+//           // onCameraIdle: _onCameraIdle,
+//           mapType: _mapType,
+//           initialCameraPosition: _myLocation,
+//           compassEnabled: true,
+//           myLocationButtonEnabled: true,
+//           myLocationEnabled: true,
+//           markers: _markers,
+
+//           // markers: Set<Marker>.of(markers.values),
+//           // circles: Set<Circle>.of(circles.values),
+//           // polylines: Set<Polyline>.of(polylines.values),
+//         ),
+//       ),
+//     );
+//   }
+
+//   // Future _mapIdleSubscription() async{
+
+//   // }
+//   static LatLngBounds _visibleRegion;
+
+//   //var userLocation;
+//   @override
+//   Widget build(BuildContext context) {
+//     //print(_loading);
+//     //print(currentLocation.latitude);
+//     // if (_loading) {
+//     //   return new Scaffold(body: Center(child: CircularProgressIndicator()));
+//     // } else {
+//     var userLocation = Provider.of<UserLocation>(context);
+
+//     return Scaffold(
+//       resizeToAvoidBottomInset: false,
+//       body: Container(
+//         color: Colors.white,
+//         child: userLocation == null
+//             ? Center(child: CircularProgressIndicator())
+//             : Stack(
+//                 children: <Widget>[
+//                   _buildGoogleMap(context),
+//                   _mapTypeCycler(),
+//                   _search(),
+//                   _addMarker(userLocation.latitude, userLocation.longitude),
+//                   _changeSourceFilter(),
+//                   // Map markers loading indicator
+//                   _areMarkersLoading
+//                       ? Padding(
+//                           padding: const EdgeInsets.all(8.0),
+//                           child: Align(
+//                             alignment: Alignment.topCenter,
+//                             child: Card(
+//                               elevation: 2,
+//                               color: Colors.grey.withOpacity(0.9),
+//                               child: Padding(
+//                                 padding: const EdgeInsets.all(4),
+//                                 child: Text(
+//                                   'Er wordt geclusterd',
+//                                   style: TextStyle(color: Colors.white),
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                         )
+//                       : Padding(
+//                           padding: const EdgeInsets.all(8.0),
+//                           child: Align(
+//                             alignment: Alignment.topCenter,
+//                           ),
+//                         ),
+//                 ],
+//               ),
+//       ),
+//       bottomNavigationBar: GestureDetector(
+//         onTap: () {
+//           if (places.length <= 0 || places.length > 30) {
+//             return;
+//           } else {
+//             print(
+//                 "Locatie van het drukken ${userLocation.latitude}, ${userLocation.longitude} ");
+//             showModalBottomSheet<void>(
+//               context: context,
+//               builder: (BuildContext context) {
+//                 return BottomSheetSwitch(
+//                   //places: places,
+//                   latitude: userLocation.latitude,
+//                   longitude: userLocation.longitude,
+//                   gotoLocation: gotoLocation,
+//                 );
+//               },
+//             );
+//           }
+//         },
+//         child: BottomAppBar(
+//           child: new Row(
+//             mainAxisSize: MainAxisSize.max,
+//             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+//             children: <Widget>[
+//               IconButton(
+//                   icon: places.length <= 0
+//                       ? Icon(Icons.not_listed_location)
+//                       : Icon(Icons.touch_app),
+//                   onPressed: () {}),
+//               bottomApptext(),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//   // }
+
+//   Widget bottomApptext() {
+//     Text text;
+//     if (places.length <= 0) {
+//       text = Text("Er zijn geen objecten gevonden klik op zoeken");
+//     } else {
+//       text = Text("Er zijn ${places.length.toString()} objecten gevonden");
+//     }
+//     return text;
+//   }
+
+//   Future<void> gotoLocation(double lat, double long) async {
+//     final GoogleMapController controller = await _controller.future;
+//     controller.animateCamera(
+//       CameraUpdate.newCameraPosition(
+//         CameraPosition(
+//           target: LatLng(lat, long),
+//           zoom: 21,
+//           // tilt: 50.0,
+//           // bearing: 45.0,
+//         ),
+//       ),
+//     );
+//     _showLocationMarker(lat, long);
+
+//     //_add(lat, long);
+//   }
+
+//   Marker lastmarker;
+//   Marker currentMarker;
+
+//   void _showLocationMarker(double lat, double long) {
+//     final String markerIdVal = 'marker_id_$_markerIdCounter';
+//     _markerIdCounter++;
+//     final MarkerId markerId = MarkerId(markerIdVal);
+
+//     final Marker marker = Marker(
+//       markerId: markerId,
+//       position: LatLng(lat, long),
+//     );
+
+//     setState(() {
+//       _markers.remove(lastmarker);
+//       currentMarker = marker;
+//       lastmarker = currentMarker;
+//       _markers.add(currentMarker);
+//     });
+//   }
+
+//   // _addMarkerOnScreen(double lat, double long){
+//   //   MarkerId lookingId;
+//   //   Marker lookingAt = new Marker(
+//   //     markerId: lookingId,
+//   //     position: LatLng(lat,long)
+//   //     );
+
+//   // }
+
+//   void showToast(String msg, {int duration, int gravity}) {
+//     Toast.show(msg, context, duration: duration, gravity: gravity);
+//   }
+
+//   ///google maps clustering
+//   ///
+//   ////// Set of displayed markers and cluster markers on the map
+//   final Set<Marker> _markers = Set();
+
+//   /// Minimum zoom at which the markers will cluster
+//   final int _minClusterZoom = 0;
+
+//   /// Maximum zoom at which the markers will cluster
+//   final int _maxClusterZoom = 18;
+
+//   /// [Fluster] instance used to manage the clusters
+//   Fluster<MapMarker> _clusterManager;
+
+//   /// Current map zoom. Initial zoom will be 15, street level
+//   double _currentZoom = 15;
+
+//   /// Map loading flag
+//   bool _isMapLoading = true;
+
+//   /// Markers loading flag
+//   bool _areMarkersLoading = false;
+
+//   /// Url image used on normal markers sap (yellow)
+//   final String _markerImageUrlSap =
+//       'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+//   /// Url image used on cluster markers (red)
+//   final String _markerImageUrlSigma =
+//       'https://spobberstorageaccount.dfs.core.windows.net/marker/SIGMA.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+//   /// Url image used on cluster markers (blue)
+//   final String _markerImageUrlMeetTrein =
+//       'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+//   /// Url image used on cluster markers (cluster itself)
+//   final String _clusterImageUrl =
+//       "https://spobberstorageaccount.dfs.core.windows.net/marker/place-marker.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D";
+
+//   /// Url image used on cluster markers
+//   final String _clusterImageUrl2 =
+//       'https://img.icons8.com/officel/80/000000/place-marker.png';
+
+//   /// Inits [Fluster] and all the markers with network images and updates the loading state.
+//   void _initMarkers() async {
+//     final List<MapMarker> markers = [];
+
+//     markers.clear();
+
+//     for (PlaceResponse markerLocation in places) {
+//       //if there is no image found and
+//       if (markerLocation.source == "SAP") {
+//         final BitmapDescriptor markerImage =
+//             await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
+
+//         markers.add(
+//           MapMarker(
+//             readableId: places.indexOf(markerLocation),
+//             equipment: markerLocation.equipmentId.toString(),
+//             secretId: markerLocation.secretId,
+//             objectUri: markerLocation.objectUri,
+//             onTapFunction: openMarkerInfo,
+//             placement: markerLocation.placement,
+//             position:
+//                 new LatLng(markerLocation.latitude, markerLocation.longitude),
+//             icon: markerImage,
+//           ),
+//         );
+//       } else if (markerLocation.source == "SIGMA") {
+//         final BitmapDescriptor markerImage2 =
+//             await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
+
+//         markers.add(
+//           MapMarker(
+//             readableId: places.indexOf(markerLocation),
+//             secretId: markerLocation.secretId,
+//             equipment: markerLocation.readableID.toString(),
+//             objectUri: markerLocation.objectUri,
+//             onTapFunction: openMarkerInfo,
+//             placement: markerLocation.placement,
+//             position:
+//                 new LatLng(markerLocation.latitude, markerLocation.longitude),
+//             icon: markerImage2,
+//           ),
+//         );
+//       } else {
+//         final BitmapDescriptor markerImage3 =
+//             await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+
+//         markers.add(
+//           MapMarker(
+//             readableId: places.indexOf(markerLocation),
+//             secretId: markerLocation.secretId,
+//             equipment: markerLocation.equipmentId.toString(),
+//             objectUri: markerLocation.objectUri,
+//             onTapFunction: openMarkerInfo,
+//             placement: markerLocation.placement,
+//             position:
+//                 new LatLng(markerLocation.latitude, markerLocation.longitude),
+//             icon: markerImage3,
+//           ),
+//         );
+//       }
+//     }
+
+//     _clusterManager = await MapHelper.initClusterManager(
+//       markers,
+//       _minClusterZoom,
+//       _maxClusterZoom,
+//       _clusterImageUrl,
+//     );
+
+//     _updateMarkers();
+//   }
+
+//   openMarkerInfo() {
+//     print("HALO test function activated");
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (context) => MarkerTemplate(
+//           type: "ES-LAS",
+//           readableId: currentSelectedMarkerID,
+//           secretId: currentSelectedMarkerSecretID,
+//         ),
+//       ),
+//     );
+//   }
+
+// // double updatedZoomToCal;
+
+// //   void _onCameraIdle() {
+// //     print(_currentZoom);
+// //     print(updatedZoomToCal);
+// //     if (places.length > 0 && _currentZoom != updatedZoomToCal) {
+
+//   // setState(() {
+//   //   _areMarkersLoading = true;
+//   // });
+// //       _markers
+// //         ..clear()
+// //         ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+
+// //       Future.delayed(const Duration(seconds: 1), () {
+// //         setState(() {
+// //           _areMarkersLoading = false;
+// //         });
+// //       });
+// //     }
+// //   }
+
+//   bool _mayILoadMarkers = true;
+//   Timer iosMapStopped;
+
+//   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
+//   /// updates state.
+//   void _updateMarkers([double updatedZoom]) {
+//     if (_clusterManager == null || updatedZoom == _currentZoom) return;
+
+//     if (updatedZoom != null) {
+//       _currentZoom = updatedZoom;
+//     }
+//     //print(_mayILoadMarkers);
+
+//     if (Platform.isIOS) {
+//       iosMapStopped?.cancel();
+//       iosMapStopped = Timer(const Duration(milliseconds: 500), updateMap);
+//     } else {
+//       //  print("HALOOO " + _mayILoadMarkers.toString());
+//       setState(() {
+//         _areMarkersLoading = true;
+//         _mayILoadMarkers = false;
+//       });
+//       _markers
+//         ..clear()
+//         ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+
+//       Future.delayed(const Duration(seconds: 3), () {
+//         setState(() {
+//           _mayILoadMarkers = true;
+//           _areMarkersLoading = false;
+//         });
+//       });
+//     }
+//   }
+
+//   updateMap() {
+//     setState(() {
+//       _areMarkersLoading = true;
+//       _mayILoadMarkers = false;
+//     });
+//     _markers
+//       ..clear()
+//       ..addAll(MapHelper.getClusterMarkers(_clusterManager, _currentZoom));
+
+//     Future.delayed(const Duration(seconds: 3), () {
+//       setState(() {
+//         _mayILoadMarkers = true;
+//         _areMarkersLoading = false;
+//       });
+//     });
+//   }
+// }
