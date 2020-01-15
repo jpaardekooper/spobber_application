@@ -69,7 +69,7 @@ class GridViewDemoState extends State<GridViewDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(child: Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +118,7 @@ class GridViewDemoState extends State<GridViewDemo> {
                       )));
         },
       ),
-    );
+    ),);
   }
 
   @override

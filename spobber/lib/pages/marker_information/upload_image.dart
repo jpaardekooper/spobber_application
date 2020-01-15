@@ -119,7 +119,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     print(widget.secretId);
-    return Scaffold(
+    return SafeArea(child:Scaffold(
       appBar: AppBar(
         title: Text("Voeg een foto toe"),
       ),
@@ -176,6 +176,6 @@ class _TakePictureScreen extends State<TakePictureScreen> {
           ],
         ),
       ),
-    );
+    ),);
   }
 }

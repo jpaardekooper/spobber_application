@@ -14,7 +14,7 @@ class MarkerTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(readableId.toString() + " " + secretId);
-    return DefaultTabController(
+    return SafeArea(child: DefaultTabController(
       length: 2,
       child: Scaffold(
         primary: false,
@@ -69,6 +69,6 @@ class MarkerTemplate extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),);
   }
 }

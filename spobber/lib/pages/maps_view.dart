@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
+
 
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +26,10 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView>
-  //  with AutomaticKeepAliveClientMixin<MapView>
+    with AutomaticKeepAliveClientMixin<MapView>
 {
-  // @override
-  // bool get wantKeepAlive => true;
+  @override
+  bool get wantKeepAlive => true;
 
   final GlobalKey<ScaffoldState> _scaffoldKeyGoogle =
       new GlobalKey<ScaffoldState>();
