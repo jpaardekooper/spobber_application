@@ -13,25 +13,25 @@ String _token;
 
 Future<bool> _ping() async {
   return true;
-  HttpClient provider = new HttpClient();
-  HttpClientRequest request =
-      await provider.postUrl(Uri.parse(_spobberEndpoint + "ping"));
-  request.headers.set('content-type', 'application/json');
-  Map data = {
-    "username": _username,
-    "token": _token,
-  };
-  request.add(utf8.encode(json.encode(data)));
-  HttpClientResponse response = await request.close();
-  if (response.statusCode == 200) {
-    return true;
-  } else {
-    if (await _login()) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // HttpClient provider = new HttpClient();
+  // HttpClientRequest request =
+  //     await provider.postUrl(Uri.parse(_spobberEndpoint + "ping"));
+  // request.headers.set('content-type', 'application/json');
+  // Map data = {
+  //   "username": _username,
+  //   "token": _token,
+  // };
+  // request.add(utf8.encode(json.encode(data)));
+  // HttpClientResponse response = await request.close();
+  // if (response.statusCode == 200) {
+  //   return true;
+  // } else {
+  //   if (await _login()) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }
 
 Future<bool> _login() async {
