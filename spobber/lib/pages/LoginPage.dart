@@ -284,7 +284,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           'http://spobber.azurewebsites.net/api/authentication/login?username=$_username&password=$_password');
       print(response.statusCode);
       if (response.statusCode == 200) {
-        showMessage('Login was succesvol!', blueIsh);
+        showMessage('Login was succesvol!', Colors.blue);
 
         Future.delayed(const Duration(milliseconds: 1000), () {
           goToMainPage();
@@ -297,7 +297,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       return null;
     }
   }
-  Color blueIsh = Color(0xFF0062A5);
+  
 
   void goToMainPage() {
     Navigator.pushReplacement(
