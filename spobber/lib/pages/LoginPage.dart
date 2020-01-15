@@ -44,6 +44,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     loadData();
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKeyLogin = GlobalKey<ScaffoldState>();
+
+  void showMessage(String message, [MaterialColor color = Colors.red]) {
+    _scaffoldKeyLogin.currentState.showSnackBar(new SnackBar(
+        backgroundColor: Theme.of(context).accentColor,
+        content: new Text(message)));
+  }
+
   loadanimation() {
     _loginAnimationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1500));
@@ -77,8 +85,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         login.password != null) {
       //  String _password = await cryptor.decrypt(login.password, key);
       String _password = login.password;
-      print("dit is password variable "+ password);
-      print("dit is _password variable " +_password);
+      print("dit is password variable " + password);
+      print("dit is _password variable " + _password);
       // final plainText = _password;
       final key = encrypt.Key.fromUtf8('@+()_FDAS()HJIUOPFiphdusfaho8!@&');
       final iv = encrypt.IV.fromLength(16);
@@ -94,7 +102,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             username: login.username,
             password: login.password,
             email: login.email));
-        goToMainPage();
+        showMessage('Login was succesvol!', Colors.blue);
+
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          goToMainPage();
+        });
       } else {
         _errorMessage();
       }
@@ -114,6 +126,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      key: _scaffoldKeyLogin,
       body: Container(
         child: new Form(
           key: _key,
@@ -271,7 +284,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           'http://spobber.azurewebsites.net/api/authentication/login?username=$_username&password=$_password');
       print(response.statusCode);
       if (response.statusCode == 200) {
-        goToMainPage();
+        showMessage('Login was succesvol!', Colors.blue);
+
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          goToMainPage();
+        });
       } else {
         print(response.statusCode);
         return null;

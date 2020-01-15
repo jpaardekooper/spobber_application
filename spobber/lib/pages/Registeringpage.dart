@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -12,6 +13,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _key = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKeyRegister = GlobalKey<ScaffoldState>();
   bool checkpassword = false;
   bool _validate = false;
   String name, email, password;
@@ -33,23 +35,37 @@ class _RegisterPageState extends State<RegisterPage> {
 
     final encrypted = encrypter.encrypt(_password, iv: iv);
 
-   // final encrypted = await cryptor.encrypt(_password, key);
-  // print(encrypted.base16);
+    // final encrypted = await cryptor.encrypt(_password, key);
+    // print(encrypted.base16);
 
-
-    Map data = {"email": _email, "username": _username, "password": encrypted.base16};
+    Map data = {
+      "email": _email,
+      "username": _username,
+      "password": encrypted.base16
+    };
     HttpClientRequest request = await _preparePostPackage(
         _spobberEndpoint + "authentication/register", data);
     HttpClientResponse response = await request.close();
     if (response.statusCode == 200) {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/screen1', (Route<dynamic> route) => false);
+      showMessage(
+          'Nieuw account gemaakt voor  gebruiker $_username!', Colors.blue);
+
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/screen1', (Route<dynamic> route) => false);
+      });
       return true;
     } else {
       response = await request.close();
       if (response.statusCode == 200) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            '/screen1', (Route<dynamic> route) => false);
+        showMessage(
+            'Nieuw account gemaakt voor  gebruiker $_username!', Colors.blue);
+
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/screen1', (Route<dynamic> route) => false);
+        });
+
         return true;
       } else {
         return false;
@@ -60,12 +76,13 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldKeyRegister,
       appBar: new AppBar(
-        title: new Text('Registration'),
+        title: new Text('Registreren'),
       ),
       body: new SingleChildScrollView(
-        child: new Container(
-          margin: new EdgeInsets.all(15.0),
+        child: new Container(          
+          margin: new EdgeInsets.all(25.0),
           child: new Form(
             key: _key,
             autovalidate: _validate,
@@ -76,12 +93,15 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  void showMessage(String message, [MaterialColor color = Colors.red]) {
+    _scaffoldKeyRegister.currentState.showSnackBar(new SnackBar(
+        backgroundColor: Theme.of(context).accentColor,
+        content: new Text(message)));
+  }
 
   Widget registeringUI() {
-    return Center(
-      child: Container(
-        width: 250,
-        child: new Column(
+    return  Column(
+
           children: <Widget>[
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.1,
@@ -145,7 +165,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: checkpassword ? Colors.red : Colors.grey[700],
                   ),
                   onPressed: () => setState(() {
-                    
                     checkpassword = !checkpassword;
                   }),
                 ),
@@ -174,7 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             new SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             new Container(
-              width: 250,
+             
               height: 50.0,
               alignment: FractionalOffset.center,
               decoration: new BoxDecoration(
@@ -185,16 +204,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: FlatButton(
                   onPressed: _sendToServer,
                   color: Colors.transparent,
-                  child: Text('Register', style: TextStyle(color: Colors.white),),
+                  child: Text(
+                    'Verzenden',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             )
           ],
-        ),
-      ),
+
     );
   }
-
 
   String validateName(String value) {
     if (value.length == 0) {
@@ -235,7 +255,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _sendToServer() {
-   
     if (_key.currentState.validate()) {
       // No any error in validation
       _key.currentState.save();
