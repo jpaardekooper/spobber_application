@@ -166,7 +166,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
                 trackVersion: "",
                 source: "SPOBBER",
                 year: 2019, // => 21-04-2019 02:40:25
-                creator: ""
+                creator: userInformation.username
               ),
             )),
           ));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 import 'package:spobber/data/marker_detail.dart';
 import 'package:spobber/pages/widgets/new_marker_information.dart';
 
@@ -16,8 +17,7 @@ class MarkerHistory extends StatefulWidget {
 }
 
 class _MarkerHistoryState extends State<MarkerHistory>
-    with AutomaticKeepAliveClientMixin<MarkerHistory> 
-    {
+    with AutomaticKeepAliveClientMixin<MarkerHistory> {
   var list = List();
 
   _loadList() async {
@@ -42,7 +42,7 @@ class _MarkerHistoryState extends State<MarkerHistory>
   }
 
   MarkerDetail editObjectInfomartion = new MarkerDetail();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,14 +54,18 @@ class _MarkerHistoryState extends State<MarkerHistory>
         itemBuilder: (BuildContext context, int index) {
           final data = list[index];
 
-          if (data['variable'] == "readable_id") {           
+          if (data['variable'] == "readable_id" || data['variable'] == "id") {
             editObjectInfomartion.readableID = data['value'];
-          }        
+          }
           if (data['variable'] == "equipment_id") {
             editObjectInfomartion.equipmentId = data['value'];
           }
-          if (data['variable'] == "secret_id") {
+          if (data['variable'] == "secret_id" || data['variable'] == "id") {
             editObjectInfomartion.secretId = data['value'];
+            if (editObjectInfomartion.secretId == "" ||
+                editObjectInfomartion.secretId == null) {
+              editObjectInfomartion.secretId = "empty";
+            }
           }
           if (data['variable'] == "type") {
             editObjectInfomartion.type = data['value'];
@@ -102,8 +106,15 @@ class _MarkerHistoryState extends State<MarkerHistory>
           if (data['variable'] == "source") {
             editObjectInfomartion.source = data['value'];
           }
-          if (data['variable'] == "year") {
-            editObjectInfomartion.year = data['value'];
+          if (data['variable'] == "source") {
+            editObjectInfomartion.source = data['value'];
+          }
+          if (data['variable'] == "creator") {
+            editObjectInfomartion.creator = data['value'];
+            if (editObjectInfomartion.creator == "" ||
+                editObjectInfomartion.creator == null) {
+              editObjectInfomartion.creator = "empty";
+            }
           }
 
           if (index % 4 == 0) {
@@ -150,32 +161,36 @@ class _MarkerHistoryState extends State<MarkerHistory>
         child: Icon(Icons.edit),
         heroTag: "edit",
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => (NewMarkerInformation(
-                  markerinformation: new MarkerDetail(
-          //          id: editObjectInfomartion.readableID,
-                    secretId: editObjectInfomartion.secretId,
-                    type: editObjectInfomartion.type,
-                    description: editObjectInfomartion.description,
-                    equipmentId: editObjectInfomartion.equipmentId,
-                    equipmentStatus: editObjectInfomartion.equipmentStatus,
-                    userStatusEquipment:editObjectInfomartion.userStatusEquipment,
-                    parentEquipKind: editObjectInfomartion.parentEquipKind,
-                    datacollection: editObjectInfomartion.datacollection,
-                    placement: editObjectInfomartion.placement,
-                    latitude: editObjectInfomartion.latitude,
-                    longitude: editObjectInfomartion.longitude,
-                    picFileName: editObjectInfomartion.picFileName,
-                    runNr: editObjectInfomartion.runNr,
-                    trackVersion: editObjectInfomartion.trackVersion,
-                    source: editObjectInfomartion.source,
-                    year: editObjectInfomartion.year, // => 21-04-2019 02:40:25
-                    readableID: editObjectInfomartion.readableID,
-                  ),
-                )),
-              ));
+          setState(() {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => (NewMarkerInformation(
+                    markerinformation: MarkerDetail(
+                        //          id: editObjectInfomartion.readableID,
+                        secretId: editObjectInfomartion.secretId,
+                        type: editObjectInfomartion.type,
+                        description: editObjectInfomartion.description,
+                        equipmentId: editObjectInfomartion.equipmentId,
+                        equipmentStatus: editObjectInfomartion.equipmentStatus,
+                        userStatusEquipment:
+                            editObjectInfomartion.userStatusEquipment,
+                        parentEquipKind: editObjectInfomartion.parentEquipKind,
+                        datacollection: editObjectInfomartion.datacollection,
+                        placement: editObjectInfomartion.placement,
+                        latitude: editObjectInfomartion.latitude,
+                        longitude: editObjectInfomartion.longitude,
+                        picFileName: editObjectInfomartion.picFileName,
+                        runNr: editObjectInfomartion.runNr,
+                        trackVersion: editObjectInfomartion.trackVersion,
+                        source: editObjectInfomartion.source,
+                        year: editObjectInfomartion
+                            .year, // => 21-04-2019 02:40:25
+                        readableID: editObjectInfomartion.readableID,
+                        creator: editObjectInfomartion.creator),
+                  )),
+                ));
+          });
         },
       ),
     );

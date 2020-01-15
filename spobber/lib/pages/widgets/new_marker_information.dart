@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/data/marker_detail.dart';
 
 class NewMarkerInformation extends StatefulWidget {
@@ -376,9 +377,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       enabled: true,
                       initialValue: '${widget.markerinformation.equipmentId}',
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ], // Only n
+                      // inputFormatters: <TextInputFormatter>[
+                      //   WhitelistingTextInputFormatter.digitsOnly
+                      // ], // Only n
                       decoration: InputDecoration(
                           icon: Icon(Icons.description),
                           helperText:
@@ -624,9 +625,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       enabled: true,
                       initialValue: '${widget.markerinformation.runNr}',
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ], // Only n
+                      // inputFormatters: <TextInputFormatter>[
+                      //   WhitelistingTextInputFormatter.digitsOnly
+                      // ], // Only n
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
                           icon: Icon(Icons.tram),
@@ -650,9 +651,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       enabled: true,
                       initialValue: '${widget.markerinformation.trackVersion}',
                       keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ], // Only n
+                      // inputFormatters: <TextInputFormatter>[
+                      //   WhitelistingTextInputFormatter.digitsOnly
+                      // ], // Only n
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
                           icon: Icon(Icons.tram),
@@ -697,9 +698,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                     TextFormField(
                       enabled: true,
                       keyboardType: TextInputType.datetime,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ], // Only n
+                      // inputFormatters: <TextInputFormatter>[
+                      //   WhitelistingTextInputFormatter.digitsOnly
+                      // ], // Only n
                       initialValue: '${widget.markerinformation.year}',
 
                       decoration: InputDecoration(
@@ -723,7 +724,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                     ),
                     TextFormField(
                       enabled: false,
-                      initialValue: 'Spobberman',
+                      initialValue: "${widget.markerinformation.creator}",
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
                           icon: Icon(Icons.person),
@@ -736,7 +737,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                         if (value.isEmpty) {
                           return 'Please enter some text';
                         } else {
-                          newMarkerDetail.creator = value;
+                          newMarkerDetail.creator = userInformation.username;
                         }
                       },
                     ),
