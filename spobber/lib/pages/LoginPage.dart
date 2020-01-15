@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             username: login.username,
             password: login.password,
             email: login.email));
-        showMessage('Login was succesvol!', Theme.of(context).accentColor);
+        showMessage('Login was succesvol!', Colors.blue);
 
         Future.delayed(const Duration(milliseconds: 1000), () {
           goToMainPage();
