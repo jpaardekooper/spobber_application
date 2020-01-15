@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   GlobalKey<FormState> _key = new GlobalKey();
   SharedPreferences sharedpreferences;
 
+GlobalKey key = GlobalKey();
   // final cryptor = new PlatformStringCryptor();
   // final key =
   //     'MZlo8hLg5HDeJpsEIp5jVQ==:NxiOBTn9vVfENgCG13onWLKKmj2mC8eibz7rDnuRLJQ=';

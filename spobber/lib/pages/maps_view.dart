@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +20,16 @@ import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:toast/toast.dart';
 
 class MapView extends StatefulWidget {
+  
   @override
   _MapViewState createState() => _MapViewState();
 }
 
 class _MapViewState extends State<MapView>
-    with AutomaticKeepAliveClientMixin<MapView>
+  //  with AutomaticKeepAliveClientMixin<MapView>
 {
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 
   final GlobalKey<ScaffoldState> _scaffoldKeyGoogle =
       new GlobalKey<ScaffoldState>();
@@ -46,13 +48,13 @@ class _MapViewState extends State<MapView>
   final int _minClusterZoom = 0;
 
   /// Maximum zoom at which the markers will cluster
-  final int _maxClusterZoom = 19;
+  final int _maxClusterZoom = 17;
 
   /// [Fluster] instance used to manage the clusters
   Fluster<MapMarker> _clusterManager;
 
   /// Current map zoom. Initial zoom will be 15, street level
-  double _currentZoom = 15;
+  double _currentZoom = 7;
 
   /// Markers loading flag
   bool _areMarkersLoading = true;
@@ -84,9 +86,9 @@ class _MapViewState extends State<MapView>
   @override
   void initState() {
     super.initState();
-    if (mounted) {
+  //  if (mounted) {
       initIcons();
-    }
+  //  }
   }
 
   BitmapDescriptor markerSap;
@@ -95,6 +97,7 @@ class _MapViewState extends State<MapView>
   BitmapDescriptor markerSpobber;
 
   initIcons() async {
+    
     markerSap = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
     markerSigma = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
     markerUst02 =  await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
@@ -204,11 +207,12 @@ class _MapViewState extends State<MapView>
       ),
     );
   }
-
+ 
   void loadThisDataSet() async {
     final List<MapMarker> markers = [];
 
     for (PlaceResponse markerLocation in places) {
+    
       //if there is no image found and
       if (markerLocation.source == "SAP") {
         markers.add(
@@ -221,6 +225,7 @@ class _MapViewState extends State<MapView>
             placement: markerLocation.placement,
             position:
                 new LatLng(markerLocation.latitude, markerLocation.longitude),
+                // new LatLng(dp(markerLocation.latitude,6), dp(markerLocation.longitude,6)),
             icon: markerSap,
             type: markerLocation.type,
             source: markerLocation.source,
@@ -240,6 +245,7 @@ class _MapViewState extends State<MapView>
               placement: markerLocation.placement,
               position:
                   new LatLng(markerLocation.latitude, markerLocation.longitude),
+                  //new LatLng(dp(markerLocation.latitude,6), dp(markerLocation.longitude,6)),
               icon: markerSigma,
               type: markerLocation.type,
               source: markerLocation.source),
@@ -258,6 +264,7 @@ class _MapViewState extends State<MapView>
               placement: markerLocation.placement,
               position:
                   new LatLng(markerLocation.latitude, markerLocation.longitude),
+                  //  new LatLng(dp(markerLocation.latitude,6), dp(markerLocation.longitude,6)),
               icon: markerUst02,
               type: markerLocation.type,
               source: markerLocation.source),
@@ -476,10 +483,7 @@ class _MapViewState extends State<MapView>
   }
 
   Widget createGoogleMapsMap() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: GoogleMap(
+    return  GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
           target: mylocation,
@@ -500,7 +504,7 @@ class _MapViewState extends State<MapView>
             southwest: LatLng(50.74753, 2.992192),
           ),
         ),
-      ),
+      
     );
   }
 
