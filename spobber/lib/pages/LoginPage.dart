@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
     _scaffoldKeyLogin.currentState.showSnackBar(new SnackBar(
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: color,
         content: new Text(message)));
   }
 
@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             username: login.username,
             password: login.password,
             email: login.email));
-        showMessage('Login was succesvol!', Colors.blue);
+        showMessage('Login was succesvol!', Theme.of(context).accentColor);
 
         Future.delayed(const Duration(milliseconds: 1000), () {
           goToMainPage();
@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
                     errorText: invalidInfo
-                        ? 'Combinatie van usernaam en wachtwoord wordt niet herkent'
+                        ? 'Invalide inloggegevens'
                         : null,
                     border: OutlineInputBorder(),
                     labelText: 'Username',
@@ -362,6 +362,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   _errorMessage() {
     _loginAnimationController.reverse();
+    showMessage('Invalide inloggegevens!', Colors.red);
     setState(() {
       invalidInfo = true;
     });
