@@ -61,7 +61,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-    return Scaffold(      
+    return Scaffold(  
+      appBar: AppBar(),    
       body: _model == ""
           ? Center(
               child: CircularProgressIndicator()
