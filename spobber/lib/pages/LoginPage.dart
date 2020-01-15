@@ -255,12 +255,12 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             height: 50,
           ),
           Container(
-            width: 180,
+          
             height: 30,
             color: Colors.transparent,
             child: FlatButton(
               child: Text(
-                'Heeft u nog geen account? Druk hier om te registreren',
+                'Heeft u nog geen account?\n Druk hier om te registreren',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.blue[200],
@@ -284,7 +284,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           'http://spobber.azurewebsites.net/api/authentication/login?username=$_username&password=$_password');
       print(response.statusCode);
       if (response.statusCode == 200) {
-        showMessage('Login was succesvol!', Colors.blue);
+        showMessage('Login was succesvol!', blueIsh);
 
         Future.delayed(const Duration(milliseconds: 1000), () {
           goToMainPage();
@@ -297,6 +297,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       return null;
     }
   }
+  Color blueIsh = Color(0xFF0062A5);
 
   void goToMainPage() {
     Navigator.pushReplacement(

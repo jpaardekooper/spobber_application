@@ -95,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
     _scaffoldKeyRegister.currentState.showSnackBar(new SnackBar(
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Color(0xFF0062A5),
         content: new Text(message)));
   }
 
