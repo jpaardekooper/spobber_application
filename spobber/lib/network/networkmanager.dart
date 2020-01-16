@@ -34,20 +34,20 @@ Future<bool> _ping() async {
   // }
 }
 
-Future<bool> _login() async {
-  Map data = {
-    "username": _username,
-    "password": _password,
-  };
-  HttpClientRequest request =
-      await _prepareGetPackage(_spobberEndpoint + "authentication", data);
-  HttpClientResponse response = await request.close();
-  if (response.statusCode == 200) {
-    return true;
-  } else {
-    return false;
-  }
-}
+// Future<bool> _login() async {
+//   Map data = {
+//     "username": _username,
+//     "password": _password,
+//   };
+//   HttpClientRequest request =
+//       await _prepareGetPackage(_spobberEndpoint + "authentication", data);
+//   HttpClientResponse response = await request.close();
+//   if (response.statusCode == 200) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
 
 Future<HttpClientRequest> _preparePostPackage(String endpoint, Map data) async {
   HttpClient provider = new HttpClient();
@@ -57,13 +57,13 @@ Future<HttpClientRequest> _preparePostPackage(String endpoint, Map data) async {
   return request;
 }
 
-Future<HttpClientRequest> _prepareGetPackage(String endpoint, Map data) async {
-  HttpClient provider = new HttpClient();
-  HttpClientRequest request = await provider.getUrl(Uri.parse(endpoint));
-  request.headers.set('content-type', 'application/json');
-  request.add(utf8.encode(json.encode(data)));
-  return request;
-}
+// Future<HttpClientRequest> _prepareGetPackage(String endpoint, Map data) async {
+//   HttpClient provider = new HttpClient();
+//   HttpClientRequest request = await provider.getUrl(Uri.parse(endpoint));
+//   request.headers.set('content-type', 'application/json');
+//   request.add(utf8.encode(json.encode(data)));
+//   return request;
+// }
 
 Future<HttpClientResponse> uploadImage(
     String fileName, String base64Image, String secretId) async {
@@ -81,28 +81,28 @@ Future<HttpClientResponse> uploadImage(
   return response;
 }
 
-Future<bool> login(String username, String password) async {
-  Map<String, String> data = {
-    "username": _username,
-    "password": _password,
-  };
-  Response response =
-      await get(_spobberEndpoint + "authentication", headers: data);
-  if (response.statusCode == 200) {
-    LoginModel model = json.decode(response.body);
-    _token = model.token;
-    return true;
-  } else {
-    response = await get(_spobberEndpoint + "authentication", headers: data);
-    if (response.statusCode == 200) {
-      LoginModel model = json.decode(response.body);
-      _token = model.token;
-      return true;
-    } else {
-      return false;
-    }
-  }
-}
+// Future<bool> login(String username, String password) async {
+//   Map<String, String> data = {
+//     "username": _username,
+//     "password": _password,
+//   };
+//   Response response =
+//       await get(_spobberEndpoint + "authentication", headers: data);
+//   if (response.statusCode == 200) {
+//     LoginModel model = json.decode(response.body);
+//     _token = model.token;
+//     return true;
+//   } else {
+//     response = await get(_spobberEndpoint + "authentication", headers: data);
+//     if (response.statusCode == 200) {
+//       LoginModel model = json.decode(response.body);
+//       _token = model.token;
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   }
+// }
 
 Future<List<PlaceResponse>> loadMarkers(
     List<String> dataSources, String url) async {
@@ -119,6 +119,7 @@ Future<List<PlaceResponse>> loadMarkers(
   Map<String, String> data = {"username": _username, "token": _token};
 
   Response response = await get(url, headers: data);
+  
   if (response.statusCode == 200) {  
     return (json.decode(response.body) as List)
         .map((data) => new PlaceResponse().fromJson(data))

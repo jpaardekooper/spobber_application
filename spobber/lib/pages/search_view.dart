@@ -80,8 +80,9 @@ class _SearchViewState extends State<SearchView> {
               ),
               style: TextStyle(fontSize: 20.00, color: Colors.black),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              width: MediaQuery.of(context).size.width / 2,
+              padding: const EdgeInsets.all(20.0),
               child: RaisedButton(
                 child: Text("Zoeken"),
                 color: isButtonDisabled
@@ -118,8 +119,6 @@ class _SearchViewState extends State<SearchView> {
                                     context,
                                     gravity: Toast.CENTER,
                                     duration: Toast.LENGTH_SHORT);
-
-                             
 
                                 setState(() {
                                   this.lat = singleMarker[0].latitude;

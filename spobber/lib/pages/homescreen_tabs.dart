@@ -21,7 +21,6 @@ class TabsViewMaps extends StatefulWidget {
 }
 
 class _TabsState extends State<TabsViewMaps> {
-
   @override
   void initState() {
     super.initState();
@@ -33,13 +32,13 @@ class _TabsState extends State<TabsViewMaps> {
   @override
   Widget build(BuildContext context) {
     if (Theme.of(context).platform == TargetPlatform.iOS) {
-      setState(() {
+   //   setState(() {
         platformIsIOS = true;
-      });
+     // });
     } else {
-      setState(() {
+    //  setState(() {
         platformIsIOS = false;
-      });
+   //   });
     }
     ErrorWidget.builder = getErrorWidget;
     return StreamProvider<UserLocation>(
@@ -53,13 +52,13 @@ class _TabsState extends State<TabsViewMaps> {
           child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text(
+              title: const Text(
                 'Spobber',
-                style: TextStyle(fontWeight: FontWeight.w700),
+                style: const TextStyle(fontWeight: FontWeight.w700),
               ),
                 actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.exit_to_app),
+            icon:const Icon(Icons.exit_to_app),
             onPressed: () => popupMessage(),
           ),
         ],
@@ -81,14 +80,14 @@ class _TabsState extends State<TabsViewMaps> {
                 //Tab(icon: Icon(Icons.home), text: 'Home'),
                 new Container(
                   //      height: 50,
-                  child: Tab(
-                    icon: Icon(Icons.my_location),
+                  child: const Tab(
+                    icon: const Icon(Icons.my_location),
                     text: 'Kaart',
                   ),
                 ),
                 new Container(
                   //       height: 50,
-                  child: Tab(icon: Icon(Icons.search), text: 'Zoeken'),
+                  child: const Tab(icon: Icon(Icons.search), text: 'Zoeken'),
                 ),
                 // new Container(
                 //   height: 70,
@@ -118,7 +117,9 @@ class _TabsState extends State<TabsViewMaps> {
     ),);
   }
 
-  
+   static const double heightPop = 40;
+   static const double widthPop = 80;
+
   void popupMessage() {
     showDialog(
       context: context,
@@ -127,8 +128,8 @@ class _TabsState extends State<TabsViewMaps> {
           title: Text('Logout'),
           content: Text('Are you sure you want to log out?'),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text("Cancel"),
+             FlatButton(
+              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -136,12 +137,12 @@ class _TabsState extends State<TabsViewMaps> {
             new FlatButton(
               child: new Container(
                 alignment: Alignment.center,
-                height: 40,
-                width: 80,
-                color: Color(0xFF0062A5),
-                child: Text(
+                height: heightPop,
+                width: widthPop,
+                color: const Color(0xFF0062A5),
+                child: const Text(
                   'Confirm',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.w800, color: Colors.white),
                 ),
               ),

@@ -12,12 +12,10 @@ class MarkerTemplate extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    print(readableId.toString() + " " + secretId);
+  Widget build(BuildContext context) {   
     return SafeArea(child: DefaultTabController(
       length: 2,
-      child: Scaffold(
-        primary: false,
+      child: Scaffold(       
         appBar: AppBar(
           flexibleSpace: Container(
               // decoration: BoxDecoration(
@@ -44,11 +42,11 @@ class MarkerTemplate extends StatelessWidget {
             //labelColor: Colors.white,
             tabs: [
               Tab(
-                icon: Icon(Icons.info),
+                icon: const Icon(Icons.info),
                 text: "Informatie",
               ),
               Tab(
-                icon: Icon(Icons.image),
+                icon:const Icon(Icons.image),
                 text: "Afbeeldingen",
               ),
               //        Tab(icon: Icon(Icons.comment), text: "Commentaar"),

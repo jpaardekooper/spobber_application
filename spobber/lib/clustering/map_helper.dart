@@ -143,12 +143,12 @@ class MapHelper {
         double lat,
       ) =>
           MapMarker(
-        readableId: cluster.id.toString(),      
+        readableId: cluster.id.toString(),
         position: LatLng(lat, lng),
         isCluster: true,
         clusterId: cluster.id,
         pointsSize: cluster.pointsSize,
-        childMarkerId: cluster.childMarkerId,    
+        childMarkerId: cluster.childMarkerId,
       ),
     );
   }

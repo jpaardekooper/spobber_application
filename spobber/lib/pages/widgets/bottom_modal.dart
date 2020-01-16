@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:spobber/clustering/map_marker.dart';
 
 import 'dart:math' show cos, sqrt, asin;
 
-import '../../data/global_variable.dart';
+import 'package:spobber/data/global_variable.dart';
+
+//import '../../data/global_variable.dart';
 
 class BottomSheetSwitch extends StatefulWidget {
   BottomSheetSwitch({
-    //  @required this.places,
+    @required this.markers,
     @required this.latitude,
     @required this.longitude,
     @required this.gotoLocation,
     @required this.openMarkerInfo,
   });
-  //final List<PlaceResponse> places;
+  final List<MapMarker> markers;
 
   final double latitude;
   final double longitude;
@@ -65,7 +68,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
           width: MediaQuery.of(context).size.width,
           child: PageView.builder(
             controller: _pageController,
-            itemCount: places.length,
+            itemCount: widget.markers.length,
             itemBuilder: (BuildContext context, int index) {
               return _coffeeShopList(index);
             },
@@ -82,8 +85,8 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
   }
 
   moveCamera() {
-    widget.gotoLocation(places[_pageController.page.toInt()].latitude,
-        places[_pageController.page.toInt()].longitude);
+    widget.gotoLocation(widget.markers[_pageController.page.toInt()].latitude,
+        widget.markers[_pageController.page.toInt()].longitude);
   }
 
   _coffeeShopList(index) {
@@ -106,9 +109,9 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
       child: InkWell(
         onDoubleTap: () async {
           setState(() {
-            currentSelectedMarkerID = places[index].readableID;
-            currentSelectedMarkerObjectUri = places[index].objectUri;
-            currentSelectedMarkerSecretID = places[index].secretId;
+            currentSelectedMarkerID = widget.markers[index].readableId;
+            currentSelectedMarkerObjectUri = widget.markers[index].objectUri;
+            currentSelectedMarkerSecretID = widget.markers[index].secretId;
           });
 
           widget.openMarkerInfo();
@@ -117,7 +120,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
           children: [
             Center(
               child: Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   horizontal: 10.0,
                   vertical: 20.0,
                 ),
@@ -128,7 +131,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black87,
-                        offset: Offset(0.0, 4.0),
+                        offset: const Offset(0.0, 4.0),
                         blurRadius: 10.0,
                       ),
                     ]),
@@ -142,9 +145,9 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                         height: 90.0,
                         width: 45.0,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10.0),
-                              topLeft: Radius.circular(10.0)),
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: const Radius.circular(10.0),
+                              topLeft: const Radius.circular(10.0)),
                           image: getCorrectPhoto(index),
                         ),
                       ),
@@ -154,41 +157,42 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Ophaal ID: " + places[index].readableID,
-                            style: TextStyle(
+                            "Ophaal ID: " + widget.markers[index].readableId,
+                            style: const TextStyle(
                                 fontSize: 12.5, fontWeight: FontWeight.bold),
                           ),
-                          places[index].equipmentId != '0'
+                          widget.markers[index].equipment != '0'
                               ? Text(
                                   "Equipment: " +
-                                      places[index].equipmentId.toString(),
-                                  style: TextStyle(
+                                      widget.markers[index].equipment,
+                                  style: const TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w600),
                                 )
                               : Text(
-                                  "Bron: " + places[index].source,
-                                  style: TextStyle(
+                                  "Bron: " + widget.markers[index].source,
+                                  style: const TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w600),
                                 ),
-                          places[index].placement != ""
+                          widget.markers[index].placement != ""
                               ? Text(
-                                  "Plaatsing: " + places[index].placement,
-                                  style: TextStyle(
+                                  "Plaatsing: " +
+                                      widget.markers[index].placement,
+                                  style: const TextStyle(
                                       fontSize: 11.0,
                                       fontWeight: FontWeight.w300),
                                 )
-                              : Text(""),
+                              : const Text(""),
                           Text(
                             "Afstand: " +
                                 calculateDistance(
                                     widget.latitude,
                                     widget.longitude,
-                                    places[index].latitude,
-                                    places[index].longitude) +
+                                    widget.markers[index].latitude,
+                                    widget.markers[index].longitude) +
                                 " km",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 11.0, fontWeight: FontWeight.w300),
                           ),
                         ],
@@ -205,17 +209,18 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
   }
 
   getCorrectPhoto(int index) {
-    if (places[index].source == "SAP") {
-      return DecorationImage(
+    if (widget.markers[index].source == "SAP") {
+      return const DecorationImage(
           image: AssetImage("assets/SAP.png"), fit: BoxFit.none);
-    } else if (places[index].source == "SIGMA") {
-      return DecorationImage(
+    } else if (widget.markers[index].source == "SIGMA") {
+      return const DecorationImage(
           image: AssetImage("assets/SIGMA.png"), fit: BoxFit.none);
-    } else if (places[index].source == "UST02") {
-      return DecorationImage(
+    } else if (widget.markers[index].source == "UST02") {
+      return const DecorationImage(
           image: AssetImage("assets/UST02.png"), fit: BoxFit.none);
-    } else {
-      print("geen marker gevonden");
-    }
+    } else if (widget.markers[index].source == "SPOBBER") {
+      return const DecorationImage(
+          image: AssetImage("assets/spobber_icon.png"), fit: BoxFit.none);
+    } else {}
   }
 }

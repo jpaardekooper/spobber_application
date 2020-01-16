@@ -54,15 +54,16 @@ class _TakePictureScreen extends State<TakePictureScreen> {
     }
     // String fileName = tmpFile.path.split('/').last;
     upload(tmpFile.path);
-  } 
+  }
 
   upload(String fileN) async {
     String base64Image = base64Encode(
         (await testCompressAndGetFile(new File(fileN), fileN))
             .readAsBytesSync());
     String fileName = fileN.split("/").last;
-    
-    HttpClientResponse response = await uploadImage(fileName, base64Image, widget.secretId);
+
+    HttpClientResponse response =
+        await uploadImage(fileName, base64Image, widget.secretId);
 
     if (response.statusCode == 200) {
       setState(() {
@@ -119,63 +120,65 @@ class _TakePictureScreen extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     print(widget.secretId);
-    return SafeArea(child:Scaffold(
-      appBar: AppBar(
-        title: Text("Voeg een foto toe"),
-      ),
-      body: Container(
-         color: Colors.white,
-        padding: EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            OutlineButton(
-              onPressed: chooseCamera,
-              child: Text('Maak een foto'),
-            ),
-            OutlineButton(
-              onPressed: chooseImage,
-              child: Text('Kies uit gallerij'),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            showImage(),
-            SizedBox(
-              height: 20.0,
-            ),
-            OutlineButton(
-              onPressed: () {
-                if (magdrukken) {
-                  startUpload();
-                  setState(() {
-                    magdrukken = false;
-                  });
-                } else {
-                  print("mag niet drukken");
-                }
-              },
-              color: magdrukken ? Colors.black : Colors.red,
-              child: Text('Upload Foto'),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Text(
-              status,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.w500,
-                fontSize: 20.0,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Voeg een foto toe"),
+        ),
+        body: Container(
+          color: Colors.white,
+          padding: EdgeInsets.all(30.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              OutlineButton(
+                onPressed: chooseCamera,
+                child:const Text('Maak een foto'),
               ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-          ],
+              OutlineButton(
+                onPressed: chooseImage,
+                child: const Text('Kies uit gallerij'),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              showImage(),
+              const SizedBox(
+                height: 20.0,
+              ),
+              OutlineButton(
+                onPressed: () {
+                  if (magdrukken) {
+                    startUpload();
+                    setState(() {
+                      magdrukken = false;
+                    });
+                  } else {
+                    
+                  }
+                },
+                color: magdrukken ? Colors.black : Colors.red,
+                child: const Text('Upload Foto'),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              Text(
+                status,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20.0,
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+            ],
+          ),
         ),
       ),
-    ),);
+    );
   }
 }

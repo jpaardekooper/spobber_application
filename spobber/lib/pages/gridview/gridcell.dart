@@ -14,7 +14,7 @@ class AlbumCell extends StatelessWidget {
       ),
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Container(
           alignment: Alignment.center,
           child: Column(

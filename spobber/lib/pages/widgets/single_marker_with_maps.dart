@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/pages/marker_information/marker_template.dart';
+import 'package:spobber/pages/widgets/stackingMapWidget.dart';
 
 class SingleMarkerWithMaps extends StatefulWidget {
   @override
@@ -30,41 +31,19 @@ class _SingleMarkerWithMapsState extends State<SingleMarkerWithMaps> {
   );
 
   MapType mapType = MapType.normal;
-  Widget _mapTypeCycler() {
+  void changeMapType() {
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
+    setState(() {
+      mapType = nextType;
+    });
+  }
 
-    return Padding(
-      padding: EdgeInsets.fromLTRB(12, 10, 0, 0),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: SizedBox.fromSize(
-          size: Size(37, 37), // button width and height
-          child: ClipRect(
-            child: Container(
-              decoration: new BoxDecoration(
-                color: Color.fromRGBO(51, 216, 178, 1),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              // button color
-              child: InkWell(
-                splashColor: const Color(0xff004990), // splash color
-                onTap: () {
-                  setState(() {
-                    mapType = nextType;
-                  });
-                }, // button pressed
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.map, color: Colors.white, size: 20), // icon
-                    // Text("Call"), // text
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+  _mapTypeCycler() {
+    return StackingMapWidget(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.fromLTRB(12, 10, 0, 0),
+      onpressedFunction: changeMapType,
+      mapIcon: const Icon(Icons.map, size: 20),
     );
   }
 
@@ -97,15 +76,15 @@ class _SingleMarkerWithMapsState extends State<SingleMarkerWithMaps> {
     Marker resultMarker = Marker(
         markerId: MarkerId(singleMarker[0].readableID.toString()),
         infoWindow: InfoWindow(
-            title: singleMarker[0].readableID.toString(),            
-            snippet: "lat ${singleMarker[0].latitude}, long ${singleMarker[0].longitude}",
+            title: singleMarker[0].readableID.toString(),
+            snippet:
+                "lat ${singleMarker[0].latitude}, long ${singleMarker[0].longitude}",
             onTap: () {
-  
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => MarkerTemplate(
-                    type: singleMarker[0].type,     
+                    type: singleMarker[0].type,
                     readableId: singleMarker[0].readableID,
                     secretId: singleMarker[0].secretId,
                   ),

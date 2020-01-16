@@ -16,8 +16,8 @@ class MarkerHistory extends StatefulWidget {
   _MarkerHistoryState createState() => _MarkerHistoryState();
 }
 
-class _MarkerHistoryState extends State<MarkerHistory>
-    with AutomaticKeepAliveClientMixin<MarkerHistory> {
+class _MarkerHistoryState extends State<MarkerHistory> {
+ //   with AutomaticKeepAliveClientMixin<MarkerHistory> {
   var list = List();
 
   _loadList() async {
@@ -158,7 +158,7 @@ class _MarkerHistoryState extends State<MarkerHistory>
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Wijzigen",
-        child: Icon(Icons.edit),
+        child: const Icon(Icons.edit),
         heroTag: "edit",
         onPressed: () {
           setState(() {
@@ -202,6 +202,6 @@ class _MarkerHistoryState extends State<MarkerHistory>
     super.dispose();
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  // @override
+  // bool get wantKeepAlive => true;
 }

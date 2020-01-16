@@ -24,9 +24,11 @@ class MapMarker extends Clusterable {
   final String source;
   final String type;
 
+
   MapMarker({
     @required this.readableId,
     @required this.position,
+
     this.icon,
     this.secretId,
     this.equipment,
@@ -61,7 +63,7 @@ class MapMarker extends Clusterable {
           //   selectMarker(equipment, secretId, objectUri);
           currentSelectedMarkerID = equipment;
           currentSelectedMarkerSecretID = secretId;
-          currentSelectedMarkerObjectUri = objectUri;
+          currentSelectedMarkerObjectUri = objectUri;       
         },
         //   consumeTapEvents: true,
         infoWindow: isCluster

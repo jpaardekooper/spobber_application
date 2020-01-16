@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/data/marker_detail.dart';
+import 'package:spobber/pages/widgets/stackingMapWidget.dart';
 
 import 'new_marker_information.dart';
 
@@ -92,34 +93,13 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   // }
 
   Widget _location() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 10, 12, 0),
-      child: Align(
-        alignment: Alignment.topRight,
-        child: SizedBox.fromSize(
-          size: Size(37, 37), // button width and height
-          child: ClipRect(
-            child: Container(
-              decoration: new BoxDecoration(
-                color: Color.fromRGBO(51, 216, 178, 1),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: InkWell(
-                splashColor: const Color(0xff004990),
-                onTap: () {
-                  _goToCurrentLocation();
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.location_searching), // icon
-                    // Text("Call"), // text
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+    return StackingMapWidget(
+      alignment: Alignment.topRight,
+      padding: const EdgeInsets.fromLTRB(0, 10, 12, 0),
+      onpressedFunction: _goToCurrentLocation,
+      mapIcon: const Icon(
+        Icons.location_searching,
+        size: 20,
       ),
     );
   }
@@ -148,26 +128,25 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
           MaterialPageRoute(
             builder: (context) => (NewMarkerInformation(
               markerinformation: new MarkerDetail(
-                //        id: "STATUS_NEW_OBJECT",
-                readableID: "STATUS_NEW_OBJECT",
-                secretId: "STATUS_NEW_OBJECT",
-                type: "Es-las",
-                description: "",
-                equipmentId: "",
-                equipmentStatus: "",
-                userStatusEquipment: "",
-                parentEquipKind: "",
-                datacollection: "",
-                placement: "",
-                latitude: marker.position.latitude,
-                longitude: marker.position.longitude,
-                picFileName: "",
-                runNr: "",
-                trackVersion: "",
-                source: "SPOBBER",
-                year: 2019, // => 21-04-2019 02:40:25
-                creator: userInformation.username
-              ),
+                  //        id: "STATUS_NEW_OBJECT",
+                  readableID: "STATUS_NEW_OBJECT",
+                  secretId: "STATUS_NEW_OBJECT",
+                  type: "Es-las",
+                  description: "",
+                  equipmentId: "",
+                  equipmentStatus: "",
+                  userStatusEquipment: "",
+                  parentEquipKind: "",
+                  datacollection: "",
+                  placement: "",
+                  latitude: marker.position.latitude,
+                  longitude: marker.position.longitude,
+                  picFileName: "",
+                  runNr: "",
+                  trackVersion: "",
+                  source: "SPOBBER",
+                  year: 2019, // => 21-04-2019 02:40:25
+                  creator: userInformation.username),
             )),
           ));
     }
@@ -297,43 +276,19 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   // }
   MapType mapType = MapType.normal;
 
-  Widget _mapTypeCycler() {
+  void changeMapType() {
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
+    setState(() {
+      mapType = nextType;
+    });
+  }
 
-    return Padding(
-      padding: EdgeInsets.fromLTRB(12, 10, 0, 0),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: SizedBox.fromSize(
-          size: Size(37, 37), // button width and height
-          child: ClipRect(
-            child: Container(
-              decoration: new BoxDecoration(
-                color: Color.fromRGBO(51, 216, 178, 1),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              // button color
-              child: InkWell(
-                splashColor: const Color(0xff004990), // splash color
-                onTap: () {
-                  setState(() {
-                    mapType = nextType;
-                  });
-                }, // button pressed
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.map,
-                    ), // icon
-                    // Text("Call"), // text
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+  _mapTypeCycler() {
+    return StackingMapWidget(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.fromLTRB(12, 10, 0, 0),
+      onpressedFunction: changeMapType,
+      mapIcon: const Icon(Icons.map, size: 20),
     );
   }
 

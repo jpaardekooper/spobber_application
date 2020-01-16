@@ -36,8 +36,8 @@ class _FancyFabState extends State<FancyFab>
     _animateIcon =
         Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
     _buttonColor = ColorTween(
-      begin: Color.fromRGBO(51, 216, 178, 1),
-      end: Color(0xFF1b2932),
+      begin: const Color.fromRGBO(51, 216, 178, 1),
+      end: const Color(0xFF1b2932),
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Interval(
@@ -89,7 +89,7 @@ class _FancyFabState extends State<FancyFab>
               ));
         },
         tooltip: 'Add',
-        child: Icon(
+        child: const Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -116,7 +116,7 @@ class _FancyFabState extends State<FancyFab>
               ));
         },
         tooltip: 'Image',
-        child: Icon(Icons.camera),
+        child: const Icon(Icons.camera),
       ),
     );
   }

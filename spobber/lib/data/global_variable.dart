@@ -41,4 +41,8 @@ bool platformIsIOS;
 
 User userInformation;
 
+  BitmapDescriptor markerSap;
+  BitmapDescriptor markerSigma;
+  BitmapDescriptor markerUst02;
+  BitmapDescriptor markerSpobber;
 

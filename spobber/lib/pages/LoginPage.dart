@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:spobber/clustering/map_helper.dart';
 import 'package:spobber/data/Users.dart';
 import 'package:spobber/pages/Registeringpage.dart';
 import 'package:spobber/pages/homescreen_tabs.dart';
+import 'package:spobber/data/global_variable.dart';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
 
@@ -21,7 +23,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   GlobalKey<FormState> _key = new GlobalKey();
   SharedPreferences sharedpreferences;
 
-GlobalKey key = GlobalKey();
+  GlobalKey key = GlobalKey();
   // final cryptor = new PlatformStringCryptor();
   // final key =
   //     'MZlo8hLg5HDeJpsEIp5jVQ==:NxiOBTn9vVfENgCG13onWLKKmj2mC8eibz7rDnuRLJQ=';
@@ -41,16 +43,37 @@ GlobalKey key = GlobalKey();
   @override
   void initState() {
     super.initState();
-
+    initIcons();
     loadData();
+  }
+
+  static const String _markerImageUrlSap =
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+  /// Url image used on cluster markers (red)
+  static const String _markerImageUrlSigma =
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/SIGMA.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+  /// Url image used on cluster markers (blue)
+  static const String _markerImageUrlMeetTrein =
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+  static const String _markerImageSpobber =
+      'https://spobberstorageaccount.dfs.core.windows.net/marker/spobber.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+
+  initIcons() async {
+    markerSap = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
+    markerSigma = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
+    markerUst02 =
+        await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+    markerSpobber = await MapHelper.getMarkerImageFromUrl(_markerImageSpobber);
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKeyLogin = GlobalKey<ScaffoldState>();
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
-    _scaffoldKeyLogin.currentState.showSnackBar(new SnackBar(
-        backgroundColor: color,
-        content: new Text(message)));
+    _scaffoldKeyLogin.currentState.showSnackBar(
+        new SnackBar(backgroundColor: color, content: new Text(message)));
   }
 
   loadanimation() {
@@ -165,9 +188,7 @@ GlobalKey key = GlobalKey();
                   },
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
-                    errorText: invalidInfo
-                        ? 'Invalide inloggegevens'
-                        : null,
+                    errorText: invalidInfo ? 'Invalide inloggegevens' : null,
                     border: OutlineInputBorder(),
                     labelText: 'Username',
                   ),
@@ -209,54 +230,45 @@ GlobalKey key = GlobalKey();
           AnimatedBuilder(
             animation: _loginAnimationController,
             builder: (context, child) {
-              return Container(
-                width: _loginAnimation.value,
+              return MaterialButton(
+                minWidth: _loginAnimation.value,
                 height: 50.0,
-                alignment: FractionalOffset.center,
-                decoration: new BoxDecoration(
-                  color: Color(0xFF0062A5),
-                  borderRadius: new BorderRadius.all(
-                    _loginAnimation.value > 60
-                        ? const Radius.circular(10.0)
-                        : const Radius.circular(30.0),
-                  ),
+                highlightColor: Theme.of(context).primaryColor,
+                color: Color(0xFF0062A5),
+                textColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: _loginAnimation.value > 75
+                      ? new BorderRadius.circular(10.0)
+                      : new BorderRadius.circular(100.0),
+                  //  side: BorderSide(color: Colors.red)
                 ),
-                child: SizedBox.expand(
-                  child: FlatButton(
-                    color: Colors.transparent,
-                    child: _loginAnimation.value > 75
-                        ? Text(
-                            'Log in',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .primaryTextTheme
-                                    .title
-                                    .color,
-                                fontSize: 16),
-                          )
-                        : FittedBox(
-                            fit: BoxFit.fill,
-                            child: CircularProgressIndicator(
-                              value: null,
-                              strokeWidth: 4,
-                              valueColor: new AlwaysStoppedAnimation<Color>(
-                                  Colors.white),
-                            ),
-                          ),
-                    onPressed: () => {
-                      FocusScope.of(context).requestFocus(FocusNode()),
-                      _sendToServer(),
-                    },
-                  ),
-                ),
+                child: _loginAnimation.value > 75
+                    ? Text(
+                        'Log in',
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).primaryTextTheme.title.color,
+                            fontSize: 16),
+                      )
+                    : CircularProgressIndicator(
+                        value: null,
+                        strokeWidth: 2,
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                onPressed: () => {
+                  FocusScope.of(context).requestFocus(FocusNode()),
+                  _sendToServer(),
+                },
+                splashColor: Colors.blue,
               );
             },
           ),
+
           Divider(
             height: 50,
           ),
-          Container(
-          
+          Container(           
             height: 30,
             color: Colors.transparent,
             child: FlatButton(
@@ -268,7 +280,7 @@ GlobalKey key = GlobalKey();
                   fontSize: 13,
                 ),
               ),
-              onPressed: () => goToRegistering(),
+              onPressed:  goToRegistering,
             ),
           ),
         ]));
@@ -298,7 +310,6 @@ GlobalKey key = GlobalKey();
       return null;
     }
   }
-  
 
   void goToMainPage() {
     Navigator.pushReplacement(
@@ -320,7 +331,7 @@ GlobalKey key = GlobalKey();
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => RegisterPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
+        var begin = const Offset(0.0, 1.0);
         var end = Offset.zero;
         var curve = Curves.ease;
 

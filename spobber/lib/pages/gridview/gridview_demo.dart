@@ -108,7 +108,7 @@ class GridViewDemoState extends State<GridViewDemo> {
         heroTag: "Gridview",
         child: Icon(Icons.camera_alt),
         onPressed: () {
-          print("u pressed me");
+          
           Navigator.push(
               context,
               MaterialPageRoute(

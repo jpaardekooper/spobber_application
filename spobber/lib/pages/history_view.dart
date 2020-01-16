@@ -50,28 +50,28 @@ class HistoryViewState extends State<HistoryView> {
                             return AlertDialog(
                               title: Row(
                                 children: <Widget>[
-                                  Icon(
+                                 const Icon(
                                     Icons.warning,
                                     color: Colors.redAccent,
                                     size: 32,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text("Bevestigen ?"),
+                                    child: const Text("Bevestigen ?"),
                                   ),
                                 ],
                               ),
-                              content: Text(
+                              content:const Text(
                                   "Weet u zeker dat u uw geschiedenis wilt verwijderen? Het kan niet meer worden teruggedraaid"),
                               actions: <Widget>[
                                 FlatButton(
-                                  child: Text("Cancel"),
+                                  child: const Text("Annuleren"),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
                                 ),
                                 FlatButton(
-                                  child: Text("Delete"),
+                                  child: const Text("Verwijderen"),
                                   onPressed: () {
                                     setState(() {
                                       deleteAllPrefs(key);
@@ -121,7 +121,7 @@ class HistoryViewState extends State<HistoryView> {
 
               /// Copy Button for every LitTile
               IconButton(
-                  icon: Icon(Icons.content_copy),
+                  icon: const Icon(Icons.content_copy),
                   iconSize: 20,
                   color: Colors.grey[500],
                   onPressed: () {
@@ -151,7 +151,7 @@ class HistoryViewState extends State<HistoryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Geschiedenis overzicht"),
+        title: const Text("Geschiedenis overzicht"),
         centerTitle: true,
       ),
       body: ListView(
@@ -159,7 +159,7 @@ class HistoryViewState extends State<HistoryView> {
         children: <Widget>[
           //refresh button
           ListTile(
-            title: Text("Refresh"),
+            title: const Text("Refresh"),
             onTap: () {
               setState(() {
                 getAllPrefs();
@@ -189,11 +189,11 @@ class HistoryViewState extends State<HistoryView> {
                   );
                 } else if (snapshot.hasError) {
                   return ListTile(
-                    title: Text("Couldn\'t get History Positions"),
+                    title:const Text("Er heeft een fout opgegtreden"),
                   );
                 } else if (!snapshot.hasData)
                   return ListTile(
-                    title: Text("No Favorite History is Saved"),
+                    title: const Text("Geen geschiedenis gevonden"),
                   );
                 else {
                   return Column(children: snapshot.data);

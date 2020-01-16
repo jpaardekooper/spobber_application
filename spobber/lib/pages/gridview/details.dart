@@ -54,7 +54,7 @@ class GridDetailsState extends State<GridDetails> {
               child: Padding(
                 padding: EdgeInsets.all(20),
                 child: OutlineButton(
-                  child: Icon(
+                  child: const Icon(
                     Icons.close,
                     color: Colors.white,
                   ),
@@ -69,53 +69,53 @@ class GridDetailsState extends State<GridDetails> {
   }
 }
 
-class FullScreenWrapper extends StatelessWidget {
-  const FullScreenWrapper(
-      {this.imageProvider,
-      this.loadingChild,
-      this.backgroundDecoration,
-      this.minScale,
-      this.maxScale,
-      this.initialScale,
-      this.basePosition = Alignment.center});
+// class FullScreenWrapper extends StatelessWidget {
+//   const FullScreenWrapper(
+//       {this.imageProvider,
+//       this.loadingChild,
+//       this.backgroundDecoration,
+//       this.minScale,
+//       this.maxScale,
+//       this.initialScale,
+//       this.basePosition = Alignment.center});
 
-  final ImageProvider imageProvider;
-  final Widget loadingChild;
-  final Decoration backgroundDecoration;
-  final dynamic minScale;
-  final dynamic maxScale;
-  final dynamic initialScale;
-  final Alignment basePosition;
+//   final ImageProvider imageProvider;
+//   final Widget loadingChild;
+//   final Decoration backgroundDecoration;
+//   final dynamic minScale;
+//   final dynamic maxScale;
+//   final dynamic initialScale;
+//   final Alignment basePosition;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("test"),
-      ),
-      body: Container(
-        constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height,
-        ),
-        child: Stack(
-          children: <Widget>[
-            PhotoView(
-              imageProvider: imageProvider,
-              loadingChild: loadingChild,
-              backgroundDecoration: backgroundDecoration,
-              minScale: minScale,
-              maxScale: maxScale,
-              initialScale: initialScale,
-              basePosition: basePosition,
-            ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text("Foto", style: TextStyle(color: Colors.white))))
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("test"),
+//       ),
+//       body: Container(
+//         constraints: BoxConstraints.expand(
+//           height: MediaQuery.of(context).size.height,
+//         ),
+//         child: Stack(
+//           children: <Widget>[
+//             PhotoView(
+//               imageProvider: imageProvider,
+//               loadingChild: loadingChild,
+//               backgroundDecoration: backgroundDecoration,
+//               minScale: minScale,
+//               maxScale: maxScale,
+//               initialScale: initialScale,
+//               basePosition: basePosition,
+//             ),
+//             Align(
+//                 alignment: Alignment.bottomCenter,
+//                 child: Padding(
+//                     padding: EdgeInsets.all(20),
+//                     child: Text("Foto", style: TextStyle(color: Colors.white))))
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

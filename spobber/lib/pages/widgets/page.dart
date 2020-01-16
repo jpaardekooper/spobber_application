@@ -93,12 +93,12 @@ class TutorialSpotPageState extends State<TutorialSpot> {
       child: ListView(
         //    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Text("Stap 1",
+         const Text("Stap 1",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-          Image.asset(
+           Image.asset(
             "assets/result_data.png",
           ),
-          Text(
+         const  Text(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             style: TextStyle(fontSize: 20),
           )
@@ -110,7 +110,7 @@ class TutorialSpotPageState extends State<TutorialSpot> {
       child: ListView(
         //    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Text("Stap 2",
+          const Text("Stap 2",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
           Image.asset(
             "assets/resultmanagers.png",
@@ -127,7 +127,7 @@ class TutorialSpotPageState extends State<TutorialSpot> {
       child: ListView(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Text("Stap 3",
+          const Text("Stap 3",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
           Image.asset(
             "assets/spobber.png",

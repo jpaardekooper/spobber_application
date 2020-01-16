@@ -51,32 +51,15 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
         Navigator.pop(context);
       },
       child: Container(
-        color: Theme.of(context).primaryColor,
-        // decoration: BoxDecoration(
-        //   // Box decoration takes a gradient
-        //   gradient: LinearGradient(
-        //     // Where the linear gradient begins and ends
-        //     begin: Alignment.topLeft,
-        //     end: Alignment.bottomRight,
-        //     // Add one stop for each color. Stops should increase from 0 to 1
-        //     stops: [0.1, 0.5, 0.8, 0.9],
-        //     colors: [
-        //       // Colors are easy thanks to Flutter's Colors class.
-        //       Color(0xfffff),
-        //       Color(0xff0066C6),
-        //       Color(0xff004990),
-        //       Color(0xfffff),
-        //     ],
-        //   ),
-        // ),
+        color: Theme.of(context).primaryColor, 
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: AlertDialog(
-          title: Text(
+          title: const Text(
             "Selecteer databronnen",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          titleTextStyle: TextStyle(fontSize: 18, color: Colors.black),
+          titleTextStyle: const TextStyle(fontSize: 18, color: Colors.black),
           contentPadding: EdgeInsets.all(0.0),
           content: Container(
             width: MediaQuery.of(context).size.width,
@@ -134,7 +117,7 @@ class _AlertDialogFilter extends State<AlertDialogFilter> {
                 Divider(),
                 SwitchListTile(
                  activeColor: Theme.of(context).accentColor,
-                  title:  Text('UST02 meettrein',  style: TextStyle(color: _switchValueUST02 ? Theme.of(context).accentColor : null),),
+                  title: Text('UST02 meettrein',  style: TextStyle(color: _switchValueUST02 ? Theme.of(context).accentColor : null),),
                   value: _switchValueUST02,
                   onChanged: (bool value) {
                     setState(() {

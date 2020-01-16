@@ -239,7 +239,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
                           //enabled: false,
-                          icon: Icon(Icons.security),
+                          icon:const Icon(Icons.security),
                           hintText: 'readable_ID',
                           labelText: 'readable_ID'.toUpperCase(),
                           labelStyle: TextStyle(
@@ -265,7 +265,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       initialValue: '${widget.markerinformation.secretId}',
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.security),
+                          icon: const Icon(Icons.security),
                           // enabled: false,
                           hintText: 'secretId',
                           labelText: 'secretId'.toUpperCase(),
@@ -291,7 +291,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       initialValue: '${widget.markerinformation.type}',
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.description),
+                          icon: const Icon(Icons.description),
                           hintText: 'Type ES-las',
                           labelText: 'Type'.toUpperCase(),
                           labelStyle: TextStyle(
@@ -356,7 +356,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       initialValue: '${widget.markerinformation.description}',
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.description),
+                          icon: const Icon(Icons.description),
                           labelText: 'beschrijving'.toUpperCase(),
                           labelStyle: TextStyle(
                               color: Theme.of(context).accentColor,
@@ -381,7 +381,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       //   WhitelistingTextInputFormatter.digitsOnly
                       // ], // Only n
                       decoration: InputDecoration(
-                          icon: Icon(Icons.description),
+                          icon:const Icon(Icons.description),
                           helperText:
                               'Unieke identificatienummer van een equipment (uit SAP).',
                           labelText: 'Equipment'.toUpperCase(),
@@ -452,7 +452,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                           '${widget.markerinformation.userStatusEquipment}',
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.live_help),
+                          icon: const Icon(Icons.live_help),
                           helperText:
                               'De status wordt overgenomen uit SAP PLM.',
                           labelText: 'User status equipment'.toUpperCase(),
@@ -477,7 +477,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                           '${widget.markerinformation.parentEquipKind}',
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.live_help),
+                          icon: const Icon(Icons.live_help),
                           labelText: 'Parent equip kind'.toUpperCase(),
                           labelStyle: TextStyle(
                               color: Theme.of(context).accentColor,
@@ -499,7 +499,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       initialValue:
                           '${widget.markerinformation.datacollection}',
                       decoration: InputDecoration(
-                          icon: Icon(Icons.list),
+                          icon:const Icon(Icons.list),
                           alignLabelWithHint: true,
                           helperText:
                               "De reden van de mutatie van de infrastamdata van het object. ",
@@ -569,7 +569,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       initialValue: '${widget.markerinformation.latitude}',
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.location_on),
+                          icon:const Icon(Icons.location_on),
                           //  hintText: 'Parent equip kind',
                           labelText:
                               'GPS coordinate van de Latitude'.toUpperCase(),
@@ -596,7 +596,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       initialValue: '${widget.markerinformation.longitude}',
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.location_on),
+                          icon: const Icon(Icons.location_on),
                           labelText:
                               'GPS coordinate van de Longitude'.toUpperCase(),
                           labelStyle: TextStyle(
@@ -630,7 +630,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       // ], // Only n
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.tram),
+                          icon: const Icon(Icons.tram),
                           labelText: 'Run nummer'.toUpperCase(),
                           labelStyle: TextStyle(
                               color: Theme.of(context).accentColor,
@@ -656,7 +656,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       // ], // Only n
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.tram),
+                          icon:const Icon(Icons.tram),
                           labelText: 'Track versie'.toUpperCase(),
                           labelStyle: TextStyle(
                               color: Theme.of(context).accentColor,
@@ -678,7 +678,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       initialValue: '${widget.markerinformation.source}',
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.art_track),
+                          icon:const Icon(Icons.art_track),
                           labelText: 'Bron'.toUpperCase(),
                           labelStyle: TextStyle(
                               color: Theme.of(context).accentColor,
@@ -705,7 +705,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
 
                       decoration: InputDecoration(
                           // alignLabelWithHint: true,
-                          icon: Icon(Icons.calendar_today),
+                          icon:const Icon(Icons.calendar_today),
                           labelText: 'Datum '.toUpperCase(),
                           labelStyle: TextStyle(
                               color: Theme.of(context).accentColor,
@@ -716,6 +716,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                           return 'Please enter some text';
                         } else {
                           newMarkerDetail.year = int.parse(value);
+                          return '';
                         }
                       },
                       onSaved: (value) {
@@ -727,7 +728,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       initialValue: "${widget.markerinformation.creator}",
                       decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          icon: Icon(Icons.person),
+                          icon: const Icon(Icons.person),
                           labelText: 'Gewijzigd door'.toUpperCase(),
                           labelStyle: TextStyle(
                               color: Theme.of(context).accentColor,
@@ -738,6 +739,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                           return 'Please enter some text';
                         } else {
                           newMarkerDetail.creator = userInformation.username;
+                          return '';
                         }
                       },
                     ),
@@ -760,13 +762,13 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     // 'Inactief ',
     // 'Gereed voor verwijdering',
     if (status == 'Actief') {
-      return Icon(Icons.sentiment_satisfied, color: Colors.green);
+      return const Icon(Icons.sentiment_satisfied, color: Colors.green);
     } else if (status == 'Inactief') {
-      return Icon(Icons.sentiment_satisfied, color: Colors.orange);
+      return const Icon(Icons.sentiment_satisfied, color: Colors.orange);
     } else if (status == 'Gereed voor verwijdering') {
-      return Icon(Icons.sentiment_satisfied, color: Colors.red);
+      return const Icon(Icons.sentiment_satisfied, color: Colors.red);
     } else if (status == '') {
-      return Icon(Icons.sentiment_satisfied);
+      return const Icon(Icons.sentiment_satisfied);
     }
   }
 
