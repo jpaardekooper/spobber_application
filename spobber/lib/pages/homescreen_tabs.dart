@@ -15,22 +15,23 @@ import 'widgets/error_view.dart';
 
 import 'widgets/drawer_filter.dart';
 
-class TabsViewMaps extends StatefulWidget {
-  @override
-  _TabsState createState() => _TabsState();
-}
+// class TabsViewMaps extends StatefulWidget {
+//   @override
+//   _TabsState createState() => _TabsState();
+// }
 
-class _TabsState extends State<TabsViewMaps> {
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
+class TabsViewMaps extends StatelessWidget {
+  // @override
+  // void initState() {
+  // //  super.initState();
+   
+  // }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+     getData();
     if (Theme.of(context).platform == TargetPlatform.iOS) {
    //   setState(() {
         platformIsIOS = true;
@@ -59,20 +60,9 @@ class _TabsState extends State<TabsViewMaps> {
                 actions: <Widget>[
           IconButton(
             icon:const Icon(Icons.exit_to_app),
-            onPressed: () => popupMessage(),
+            onPressed: () => popupMessage(context),
           ),
-        ],
-              // actions: <Widget>[
-              //   IconButton(
-              //     icon: Icon(Icons.info),
-              //     onPressed: () {
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(builder: (context) => TutorialSpot()),
-              //       );
-              //     },
-              //   )
-              // ],
+        ],       
               flexibleSpace: Container(
                 color: Theme.of(context).primaryColor,
               ),
@@ -120,7 +110,7 @@ class _TabsState extends State<TabsViewMaps> {
    static const double heightPop = 40;
    static const double widthPop = 80;
 
-  void popupMessage() {
+  void popupMessage(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -146,7 +136,7 @@ class _TabsState extends State<TabsViewMaps> {
                       fontWeight: FontWeight.w800, color: Colors.white),
                 ),
               ),
-              onPressed: () => goToLogin(),
+              onPressed: () => goToLogin(context),
             ),
           ],
         );
@@ -161,11 +151,11 @@ class _TabsState extends State<TabsViewMaps> {
     return userInformation;
   }
 
-  void goToLogin() async{
+  void goToLogin(BuildContext context) async{
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
+ //   setState(() {
       prefs.remove('user');
-    });
+//    });
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/screen1', (Route<dynamic> route) => false);
   }

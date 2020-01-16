@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'loginmodel.dart';
+// import 'loginmodel.dart';
 import '../data/place_response.dart';
 import 'package:spobber/pages/gridview/album.dart';
 
 String _spobberEndpoint = "http://spobber.azurewebsites.net/api/";
 
 String _username;
-String _password;
+// String _password;
 String _token;
 
 Future<bool> _ping() async {

@@ -24,10 +24,10 @@ class MapView extends StatefulWidget {
   _MapViewState createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView> {
-  //   with AutomaticKeepAliveClientMixin<MapView> {
-  // @override
-  // bool get wantKeepAlive => true;
+class _MapViewState extends State<MapView> 
+    with AutomaticKeepAliveClientMixin<MapView> {
+  @override
+  bool get wantKeepAlive => true;
 
   GoogleMapController _mapController;
 
