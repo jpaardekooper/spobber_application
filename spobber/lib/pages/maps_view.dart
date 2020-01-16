@@ -24,7 +24,7 @@ class MapView extends StatefulWidget {
   _MapViewState createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView> 
+class _MapViewState extends State<MapView>
     with AutomaticKeepAliveClientMixin<MapView> {
   @override
   bool get wantKeepAlive => true;
@@ -85,6 +85,8 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   Future loadDataToMaps() async {
+    loadmarkers = true;
+    currentUpdate = 0;
     if (setDataSource.length <= 0) {
       showToast("Selecteer minimaal één databron.", context,
           gravity: Toast.CENTER, duration: Toast.LENGTH_SHORT);
@@ -171,7 +173,7 @@ class _MapViewState extends State<MapView>
           // LatLng(dp(markerLocation.latitude,6), dp(markerLocation.longitude,6)),
           icon: decideWhichImage(markerLocation.source),
           type: markerLocation.type,
-          source: markerLocation.source,        
+          source: markerLocation.source,
         ),
       );
     }
@@ -186,7 +188,7 @@ class _MapViewState extends State<MapView>
     await _updateMarkers().then((onValue) {
       _updateMarkerOnMap();
     });
-  }  
+  }
 
   List<LatLng> points = <LatLng>[];
 
@@ -307,6 +309,8 @@ class _MapViewState extends State<MapView>
   }
 
   Timer iosMapStopped;
+  double currentUpdate;
+  bool loadmarkers;
 
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
@@ -318,7 +322,7 @@ class _MapViewState extends State<MapView>
     }
 
     setState(() {
-      _areMarkersLoading = true;
+      _areMarkersLoading = false;
     });
 
     if (Platform.isIOS) {
@@ -330,6 +334,13 @@ class _MapViewState extends State<MapView>
 
   //when the camera is Idle for Android or IOS update the markers
   Future<void> _updateMarkerOnMap() async {
+    print(currentUpdate);
+    print(_currentZoom);
+    if (_clusterManager == null ||
+        _currentZoom == currentUpdate && loadmarkers == false) return;
+    loadmarkers = false;
+    currentUpdate = _currentZoom;
+    print("kom ik nu huier");
     final updatedMarkers = await MapHelper.getClusterMarkers(
       _clusterManager,
       _currentZoom,
@@ -343,7 +354,7 @@ class _MapViewState extends State<MapView>
       ..addAll(updatedMarkers);
 
     setState(() {
-      _areMarkersLoading = false;
+      _areMarkersLoading = true;
     });
   }
 
@@ -386,7 +397,10 @@ class _MapViewState extends State<MapView>
       alignment: Alignment.topRight,
       padding: const EdgeInsets.fromLTRB(0, 10, 12, 0),
       onpressedFunction: _goToCurrentLocation,
-      mapIcon: const Icon(Icons.location_searching, size: 20,),
+      mapIcon: const Icon(
+        Icons.location_searching,
+        size: 20,
+      ),
     );
   }
 
@@ -490,12 +504,12 @@ class _MapViewState extends State<MapView>
       position: LatLng(lat, long),
     );
 
-    // setState(() {
-    _markers.remove(lastmarker);
-    currentMarker = marker;
-    lastmarker = currentMarker;
-    _markers.add(currentMarker);
-    //  });
+    setState(() {
+      _markers.remove(lastmarker);
+      currentMarker = marker;
+      lastmarker = currentMarker;
+      _markers.add(currentMarker);
+    });
 
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -545,23 +559,24 @@ class _MapViewState extends State<MapView>
 
   _loadingIndicator() {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: _areMarkersLoading
-              ? Card(
-                  elevation: 2,
-                  color: Colors.grey.withOpacity(0.9),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: const Text(
-                      'Loading',
-                      style: TextStyle(color: Colors.white),
-                    ),
+      padding: const EdgeInsets.all(8.0),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: _areMarkersLoading
+            ? const Text('')
+            : Card(
+                elevation: 2,
+                color: Colors.grey.withOpacity(0.9),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: const Text(
+                    'Laden',
+                    style: TextStyle(color: Colors.white),
                   ),
-                )
-              : const Text(''),
-        ));
+                ),
+              ),
+      ),
+    );
   }
 
   testthisfunc() {}
