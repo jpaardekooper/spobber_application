@@ -76,15 +76,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return  Scaffold(
       key: _scaffoldKeyRegister,
-      appBar: new AppBar(
-        title: new Text('Registreren'),
+      appBar:  AppBar(
+        title: const Text('Registreren'),
       ),
-      body: new SingleChildScrollView(
-        child: new Container(
-          margin: new EdgeInsets.all(25.0),
-          child: new Form(
+      body:  SingleChildScrollView(
+        child:  Container(
+          margin:  const EdgeInsets.all(25.0),
+          child: Form(
             key: _key,
             autovalidate: _validate,
             child: registeringUI(),

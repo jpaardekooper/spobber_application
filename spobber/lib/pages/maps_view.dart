@@ -448,13 +448,11 @@ class _MapViewState extends State<MapView>
   }
 
   Widget bottomNavigatorInformation(double lat, double long) {
-    return GestureDetector(
+    return GestureDetector(    
       onTap: () {
         if (markers.length <= 0 || markers.length > 30) {
           return;
-        } else {
-          print("Locatie van het drukken $lat, $long ");
-          print("de lengte van markers is " + markers.length.toString());
+        } else { 
           showBottomSheet<void>(
             context: context,
             backgroundColor: Colors.transparent,
@@ -471,10 +469,10 @@ class _MapViewState extends State<MapView>
         }
       },
       child: BottomAppBar(
-        color: Theme.of(context).primaryColor,
+        color: markers.length <= 0 || markers.length > 30  ?  Theme.of(context).primaryColor : Theme.of(context).accentColor,
         child: new Row(
           mainAxisSize: MainAxisSize.max,
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             IconButton(
                 icon: markers.length <= 0 || markers.length > 30
@@ -550,7 +548,7 @@ class _MapViewState extends State<MapView>
       );
     } else {
       text = Text(
-        "Er zijn ${markers.length.toString()} objecten gevonden",
+        "Er zijn ${markers.length.toString()} objecten gevonden, klik hier voor meer informatie",
         style: TextStyle(color: Colors.white),
       );
     }

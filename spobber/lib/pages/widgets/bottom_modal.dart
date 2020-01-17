@@ -47,14 +47,11 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
 
     var value = 12742 * asin(sqrt(a));
-    if(value > 1)
-    {
-    return value.toStringAsFixed(3) + "m";
-    }
-    else{
+    if (value > 1) {
+      return value.toStringAsFixed(3) + "m";
+    } else {
       return value.toStringAsFixed(3) + "km";
     }
-
   }
 
   @override
@@ -127,102 +124,89 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
           ),
         );
       },
-      child: InkWell(
-        onDoubleTap: () async {
-          setState(() {
-            currentSelectedMarkerID = widget.markers[index].readableId;
-            currentSelectedMarkerObjectUri = widget.markers[index].objectUri;
-            currentSelectedMarkerSecretID = widget.markers[index].secretId;
-          });
-
-          widget.openMarkerInfo();
-        },
-        child: Stack(
-          children: [
-            Center(
-              child: Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 20.0,
-                ),
-                height: 125.0,
-                width: 275.0,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black87,
-                        offset: const Offset(0.0, 4.0),
-                        blurRadius: 10.0,
-                      ),
-                    ]),
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.white),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 90.0,
-                        width: 45.0,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                              bottomLeft: const Radius.circular(10.0),
-                              topLeft: const Radius.circular(10.0)),
-                          image: getCorrectPhoto(index),
-                        ),
-                      ),
-                      SizedBox(width: 5.0),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Ophaal ID: " + widget.markers[index].readableId,
-                            style: const TextStyle(
-                                fontSize: 12.5, fontWeight: FontWeight.bold),
-                          ),
-                          widget.markers[index].equipment != '0'
-                              ? Text(
-                                  "Equipment: " +
-                                      widget.markers[index].equipment,
-                                  style: const TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w600),
-                                )
-                              : Text(
-                                  "Bron: " + widget.markers[index].source,
-                                  style: const TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                          widget.markers[index].placement != ""
-                              ? Text(
-                                  "Plaatsing: " +
-                                      widget.markers[index].placement,
-                                  style: const TextStyle(
-                                      fontSize: 11.0,
-                                      fontWeight: FontWeight.w300),
-                                )
-                              : const Text(""),
-                          Text(
-                            "Afstand: " +
-                                calculateDistance(
-                                    widget.latitude,
-                                    widget.longitude,
-                                    widget.markers[index].latitude,
-                                    widget.markers[index].longitude),
-                            style: const TextStyle(
-                                fontSize: 11.0, fontWeight: FontWeight.w300),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+      child: Container(
+        margin: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.0),
+          color: Colors.white,
+        ),
+        child: ListTile(
+          title: Text(
+            "Ophaal ID: " + widget.markers[index].readableId,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          subtitle: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 5),
               ),
-            ),
-          ],
+              widget.markers[index].equipment != '0'
+                  ? Text(
+                      "Equipment: " + widget.markers[index].equipment,
+                      style: const TextStyle(
+                          fontSize: 14.0, fontWeight: FontWeight.w600),
+                    )
+                  : Text(
+                      "Bron: " + widget.markers[index].source,
+                      style: const TextStyle(
+                          fontSize: 14.0, fontWeight: FontWeight.w600),
+                    ),
+              Padding(
+                padding: EdgeInsets.only(top: 5),
+              ),
+              widget.markers[index].placement != ""
+                  ? Text(
+                      "Plaatsing: " + widget.markers[index].placement,
+                      style: const TextStyle(
+                          fontSize: 14.0, fontWeight: FontWeight.w600),
+                    )
+                  : const Text(""),
+              Padding(
+                padding: EdgeInsets.only(top: 5),
+              ),
+              Text(
+                "Afstand: " +
+                    calculateDistance(
+                        widget.latitude,
+                        widget.longitude,
+                        widget.markers[index].latitude,
+                        widget.markers[index].longitude),
+                style: const TextStyle(
+                    fontSize: 14.0, fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+          leading: Container(
+            padding: EdgeInsets.only(top: 10),
+            child: getCorrectPhoto(index),
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.keyboard_arrow_right),
+            color: Theme.of(context).primaryColor,
+            iconSize: 30,
+            onPressed: () async {
+              setState(() {
+                currentSelectedMarkerID = widget.markers[index].readableId;
+                currentSelectedMarkerObjectUri =
+                    widget.markers[index].objectUri;
+                currentSelectedMarkerSecretID = widget.markers[index].secretId;
+              });
+
+              widget.openMarkerInfo();
+            },
+          ),
+          onLongPress: () async {
+            setState(() {
+              currentSelectedMarkerID = widget.markers[index].readableId;
+              currentSelectedMarkerObjectUri = widget.markers[index].objectUri;
+              currentSelectedMarkerSecretID = widget.markers[index].secretId;
+            });
+
+            widget.openMarkerInfo();
+          },
         ),
       ),
     );
@@ -230,16 +214,15 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   getCorrectPhoto(int index) {
     if (widget.markers[index].source == "SAP") {
-      return const DecorationImage(
-          image: AssetImage("assets/SAP.png"), fit: BoxFit.none);
+      return const Image(image: AssetImage("assets/SAP.png"), fit: BoxFit.none);
     } else if (widget.markers[index].source == "SIGMA") {
-      return const DecorationImage(
+      return const Image(
           image: AssetImage("assets/SIGMA.png"), fit: BoxFit.none);
     } else if (widget.markers[index].source == "UST02") {
-      return const DecorationImage(
+      return const Image(
           image: AssetImage("assets/UST02.png"), fit: BoxFit.none);
     } else if (widget.markers[index].source == "SPOBBER") {
-      return const DecorationImage(
+      return const Image(
           image: AssetImage("assets/spobber_icon.png"), fit: BoxFit.none);
     } else {}
   }
