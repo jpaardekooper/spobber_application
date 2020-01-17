@@ -141,31 +141,33 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 5),
+                padding: EdgeInsets.only(top: 3),
               ),
               widget.markers[index].equipment != '0'
                   ? Text(
                       "Equipment: " + widget.markers[index].equipment,
                       style: const TextStyle(
-                          fontSize: 14.0, fontWeight: FontWeight.w600),
+                          fontSize: 12.0, fontWeight: FontWeight.w300),
                     )
                   : Text(
                       "Bron: " + widget.markers[index].source,
-                      style: const TextStyle(
-                          fontSize: 14.0, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                          fontSize: 12.0, fontWeight: FontWeight.w300),
                     ),
               Padding(
-                padding: EdgeInsets.only(top: 5),
+                padding: EdgeInsets.only(top: 3),
               ),
               widget.markers[index].placement != ""
                   ? Text(
                       "Plaatsing: " + widget.markers[index].placement,
                       style: const TextStyle(
-                          fontSize: 14.0, fontWeight: FontWeight.w600),
+                          fontSize: 12.0, fontWeight: FontWeight.w300),
                     )
-                  : const Text(""),
+                  : Padding(
+                      padding: EdgeInsets.only(top: 0),
+                    ),
               Padding(
-                padding: EdgeInsets.only(top: 5),
+                padding: EdgeInsets.only(top: 3),
               ),
               Text(
                 "Afstand: " +
@@ -174,8 +176,8 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                         widget.longitude,
                         widget.markers[index].latitude,
                         widget.markers[index].longitude),
-                style: const TextStyle(
-                    fontSize: 14.0, fontWeight: FontWeight.w600),
+               style: const TextStyle(
+                          fontSize: 12.0, fontWeight: FontWeight.w300),
               ),
             ],
           ),
@@ -214,16 +216,16 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   getCorrectPhoto(int index) {
     if (widget.markers[index].source == "SAP") {
-      return const Image(image: AssetImage("assets/SAP.png"), fit: BoxFit.none);
+      return const Image(image: AssetImage("assets/SAP.png"), fit: BoxFit.contain);
     } else if (widget.markers[index].source == "SIGMA") {
       return const Image(
-          image: AssetImage("assets/SIGMA.png"), fit: BoxFit.none);
+          image: AssetImage("assets/SIGMA.png"), fit: BoxFit.contain);
     } else if (widget.markers[index].source == "UST02") {
       return const Image(
-          image: AssetImage("assets/UST02.png"), fit: BoxFit.none);
+          image: AssetImage("assets/UST02.png"), fit: BoxFit.contain);
     } else if (widget.markers[index].source == "SPOBBER") {
       return const Image(
-          image: AssetImage("assets/spobber_icon.png"), fit: BoxFit.none);
+          image: AssetImage("assets/spobber_icon.png"), fit: BoxFit.contain);
     } else {}
   }
 }

@@ -14,7 +14,7 @@ class NewMarkerInformation extends StatefulWidget {
 // Create a corresponding State class. This class will hold the data related to
 // the form.
 class _MarkerInfoState extends State<NewMarkerInformation> {
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   List<String> _status = <String>[
     '',
     'Actief',
@@ -740,7 +740,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                   fontSize: 17,
                   fontWeight: FontWeight.bold)),
           validator: (value) {
-            if (value.isEmpty) {
+            if (value.isEmpty || null) {
               return 'Please enter some text';
             } else {
               newMarkerDetail.year = int.parse(value);
@@ -854,9 +854,8 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   }
 
   void _submitForm() async {
-    final FormState form = _formKey.currentState;
-
-    if (!form.validate()) {
+    print("kom je hier");
+    if (_formKey.currentState.validate()) {
       setState(() {
         _validate = true;
       });
@@ -865,7 +864,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       newMarkerDetail.readableID = widget.markerinformation.readableID;
       newMarkerDetail.secretId = widget.markerinformation.secretId;
       newMarkerDetail.picFileName = "";
-      form.save(); //This invokes each onSaved event
+      _formKey.currentState.save(); //This invokes each onSaved event
 
       print('Form save called, newContact is now up to date...');
       print('secretId: ${newMarkerDetail.secretId}');

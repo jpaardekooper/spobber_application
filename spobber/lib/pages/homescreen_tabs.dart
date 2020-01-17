@@ -24,102 +24,106 @@ class TabsViewMaps extends StatelessWidget {
   // @override
   // void initState() {
   // //  super.initState();
-   
+
   // }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-     getData();
+    getData();
     if (Theme.of(context).platform == TargetPlatform.iOS) {
-   //   setState(() {
-        platformIsIOS = true;
-     // });
+      //   setState(() {
+      platformIsIOS = true;
+      // });
     } else {
-    //  setState(() {
-        platformIsIOS = false;
-   //   });
+      //  setState(() {
+      platformIsIOS = false;
+      //   });
     }
     ErrorWidget.builder = getErrorWidget;
     return StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,
-      child: SafeArea(child:Scaffold(
-        resizeToAvoidBottomInset: false,
-        key: _scaffoldKey,
-        
-        body: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: const Text(
-                'Spobber',
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              ),
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          key: _scaffoldKey,
+          body: DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                centerTitle: false,
+                primary: true,
+                title: const Text(
+                  'Spobber',
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
                 actions: <Widget>[
-          IconButton(
-            icon:const Icon(Icons.exit_to_app),
-            onPressed: () => popupMessage(context),
-          ),
-        ],       
-              flexibleSpace: Container(
-                color: Theme.of(context).primaryColor,
-              ),
-              bottom: TabBar(indicatorColor: Colors.white, tabs: <Widget>[
-                //Tab(icon: Icon(Icons.home), text: 'Home'),
-                new Container(
-                  //      height: 50,
-                  child: const Tab(
-                    icon: const Icon(Icons.my_location),
-                    text: 'Kaart',
+               
+                  
+                    IconButton(
+                    icon: const Icon(Icons.exit_to_app), color: Colors.white54,
+                    onPressed: () => popupMessage(context),
                   ),
+               
+                
+                ],
+                flexibleSpace: Container(
+                  color: Theme.of(context).primaryColor,
                 ),
-                new Container(
-                  //       height: 50,
-                  child: const Tab(icon: Icon(Icons.search), text: 'Zoeken'),
-                ),
-                // new Container(
-                //   height: 70,
-                //   child: Tab(icon: Icon(Icons.history), text: 'Geschiedenis'),
-                // ),
-                // new Container(
-                //   height: 70,
-                //   child: Tab(icon: Icon(Icons.history), text: 'Tensorflow'),
-                // ),
-              ]),
-            ),
-            
-            drawer: DrawerFilter(),
-            body: TabBarView(
-              //disable tabs scroll
-              physics: NeverScrollableScrollPhysics(),
-              children: <Widget>[
-                // HomeView(),
-                MapView(),
-                SearchView(),
-                //       HistoryView(),
-              ],
+                bottom: TabBar(indicatorColor: Colors.white, tabs: <Widget>[
+                  //Tab(icon: Icon(Icons.home), text: 'Home'),
+                  new Container(
+                    //      height: 50,
+                    child: const Tab(
+                      text: 'Kaart',
+                    ),
+                  ),
+                  new Container(
+                    //       height: 50,
+                    child: const Tab(text: 'Zoeken'),
+                  ),
+                  // new Container(
+                  //   height: 70,
+                  //   child: Tab(icon: Icon(Icons.history), text: 'Geschiedenis'),
+                  // ),
+                  // new Container(
+                  //   height: 70,
+                  //   child: Tab(icon: Icon(Icons.history), text: 'Tensorflow'),
+                  // ),
+                ]),
+              ),
+              drawer: DrawerFilter(),
+              body: TabBarView(
+                //disable tabs scroll
+                physics: NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  // HomeView(),
+                  MapView(),
+                  SearchView(),
+                  //       HistoryView(),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),);
+    );
   }
 
-   static const double heightPop = 40;
-   static const double widthPop = 80;
+  static const double heightPop = 40;
+  static const double widthPop = 80;
 
   void popupMessage(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Logout'),
-          content: Text('Are you sure you want to log out?'),
+          title: const Text('Afmelden'),
+          content: const Text('Weet u zeker dat u wilt afmelden?'),
           actions: <Widget>[
-             FlatButton(
-              child: const Text("Cancel"),
+            FlatButton(
+              child: const Text("Annuleren"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -129,11 +133,11 @@ class TabsViewMaps extends StatelessWidget {
                 alignment: Alignment.center,
                 height: heightPop,
                 width: widthPop,
-                color: const Color(0xFF0062A5),
+                color: Theme.of(context).primaryColor,
                 child: const Text(
-                  'Confirm',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w800, color: Colors.white),
+                  'Bevestigen',
+                  style: const TextStyle(fontWeight: FontWeight.w600,
+                       color: Colors.white),
                 ),
               ),
               onPressed: () => goToLogin(context),
@@ -151,10 +155,10 @@ class TabsViewMaps extends StatelessWidget {
     return userInformation;
   }
 
-  void goToLogin(BuildContext context) async{
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
- //   setState(() {
-      prefs.remove('user');
+  void goToLogin(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   setState(() {
+    prefs.remove('user');
 //    });
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/screen1', (Route<dynamic> route) => false);
