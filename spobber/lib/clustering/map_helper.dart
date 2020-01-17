@@ -133,7 +133,7 @@ class MapHelper {
     return Fluster<MapMarker>(
       minZoom: minZoom,
       maxZoom: maxZoom,
-      radius: 200,
+      radius: 150,
       extent: 2048,
       nodeSize: 64,
       points: markers,
