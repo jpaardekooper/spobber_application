@@ -52,17 +52,29 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              //                    <--- top side
-              color: Theme.of(context).accentColor,
-              width: 4.0,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          color: Theme.of(context).accentColor,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Swipe naar beneden om te sluiten",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+              const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.white,
+              )
+            ],
           ),
         ),
-        child: Container(
+        Container(
           height: 125.0,
           color: Theme.of(context).primaryColor,
           width: MediaQuery.of(context).size.width,
@@ -73,7 +85,9 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
               return _coffeeShopList(index);
             },
           ),
-        ));
+        ),
+      ],
+    );
   }
 
   void _onScroll() {
