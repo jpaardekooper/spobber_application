@@ -47,7 +47,14 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
 
     var value = 12742 * asin(sqrt(a));
-    return value.toStringAsFixed(3);
+    if(value > 1)
+    {
+    return value.toStringAsFixed(3) + "m";
+    }
+    else{
+      return value.toStringAsFixed(3) + "km";
+    }
+
   }
 
   @override
@@ -204,8 +211,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                                     widget.latitude,
                                     widget.longitude,
                                     widget.markers[index].latitude,
-                                    widget.markers[index].longitude) +
-                                " km",
+                                    widget.markers[index].longitude),
                             style: const TextStyle(
                                 fontSize: 11.0, fontWeight: FontWeight.w300),
                           ),
