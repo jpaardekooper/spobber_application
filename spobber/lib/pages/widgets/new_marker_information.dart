@@ -740,7 +740,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                   fontSize: 17,
                   fontWeight: FontWeight.bold)),
           validator: (value) {
-            if (value.isEmpty || null) {
+            if (value.isEmpty) {
               return 'Please enter some text';
             } else {
               newMarkerDetail.year = int.parse(value);
@@ -854,13 +854,13 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   }
 
   void _submitForm() async {
-    print("kom je hier");
-    if (_formKey.currentState.validate()) {
-      setState(() {
-        _validate = true;
-      });
-      showMessage('Form is not valid!  Please review and correct.');
-    } else {
+  
+    // if (_formKey.validate()) {
+    //   setState(() {
+    //     _validate = true;
+    //   });
+    //   showMessage('Form is not valid!  Please review and correct.');
+    // } else {
       newMarkerDetail.readableID = widget.markerinformation.readableID;
       newMarkerDetail.secretId = widget.markerinformation.secretId;
       newMarkerDetail.picFileName = "";
@@ -899,7 +899,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
         });
       });
     }
-  }
+ // }
 
   @override
   void dispose() {

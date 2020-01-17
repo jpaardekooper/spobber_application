@@ -5,12 +5,12 @@ import 'package:spobber/pages/tflite/home.dart';
 import 'add_object.dart';
 
 class FancyFab extends StatefulWidget {
-  final Function() onPressed;
-  final String tooltip;
-  final IconData icon;
-  final Function test;
+  // final Function() onPressed;
+  // final String tooltip;
+  // final IconData icon;
+  // final Function test;
 
-  FancyFab({this.onPressed, this.tooltip, this.icon, @required this.test});
+  // FancyFab({this.onPressed, this.tooltip, this.icon, @required this.test});
 
   @override
   _FancyFabState createState() => _FancyFabState();

@@ -41,6 +41,9 @@ class TabsViewMaps extends StatelessWidget {
       platformIsIOS = false;
       //   });
     }
+    
+     
+
     ErrorWidget.builder = getErrorWidget;
     return StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,

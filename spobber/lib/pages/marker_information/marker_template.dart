@@ -15,7 +15,8 @@ class MarkerTemplate extends StatelessWidget {
   Widget build(BuildContext context) {   
     return SafeArea(child: DefaultTabController(
       length: 2,
-      child: Scaffold(       
+      child: Scaffold(    
+        primary: true,   
         appBar: AppBar(
           flexibleSpace: Container(
               // decoration: BoxDecoration(

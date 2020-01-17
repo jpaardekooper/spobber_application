@@ -85,6 +85,8 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   Future loadDataToMaps() async {
+     closeBottomSheet(isBottomSheetActive);
+     isBottomSheetActive = false;
     loadmarkers = true;
     currentUpdate = 0;
     if (setDataSource.length <= 0) {
@@ -128,6 +130,8 @@ class _MapViewState extends State<MapView>
 
   MapType mapType = MapType.terrain;
   void changeMapType() {
+     closeBottomSheet(isBottomSheetActive);
+     isBottomSheetActive = false;
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
     setState(() {
       mapType = nextType;
@@ -237,6 +241,8 @@ class _MapViewState extends State<MapView>
   }
 
   getDataSourcePopUp() {
+     closeBottomSheet(isBottomSheetActive);
+     isBottomSheetActive = false;
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -405,6 +411,8 @@ class _MapViewState extends State<MapView>
   }
 
   _goToCurrentLocation() async {
+     closeBottomSheet(isBottomSheetActive);
+     isBottomSheetActive = false;
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -440,19 +448,30 @@ class _MapViewState extends State<MapView>
             _changeSourceFilter(),
           ],
         ),
-        floatingActionButton: FancyFab(test: testthisfunc),
+        floatingActionButton: FancyFab(),
         bottomNavigationBar: bottomNavigatorInformation(
             userLocation.latitude, userLocation.longitude),
       );
     }
   }
 
+  bool isBottomSheetActive = false;
+
+  closeBottomSheet(bool value) {
+    if (value == true) {
+      isBottomSheetActive = false;
+      Navigator.of(context).pop();
+    }
+  }
+
   Widget bottomNavigatorInformation(double lat, double long) {
-    return GestureDetector(    
+    return GestureDetector(
       onTap: () {
         if (markers.length <= 0 || markers.length > 30) {
+          isBottomSheetActive = false;
           return;
-        } else { 
+        } else {
+          isBottomSheetActive = true;
           showBottomSheet<void>(
             context: context,
             backgroundColor: Colors.transparent,
@@ -469,7 +488,9 @@ class _MapViewState extends State<MapView>
         }
       },
       child: BottomAppBar(
-        color: markers.length <= 0 || markers.length > 30  ?  Theme.of(context).primaryColor : Theme.of(context).accentColor,
+        color: markers.length <= 0 || markers.length > 30
+            ? Theme.of(context).primaryColor
+            : Theme.of(context).accentColor,
         child: new Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -577,5 +598,5 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  testthisfunc() {}
+
 }

@@ -63,8 +63,12 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
       children: <Widget>[
         Container(
           color: Theme.of(context).accentColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: GestureDetector(
+            onTap: (){
+              Navigator.of(context).pop();
+            },
+            child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,         
             children: <Widget>[
               Text(
                 "Swipe naar beneden om te sluiten",
@@ -77,7 +81,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
               )
             ],
           ),
-        ),
+        ),),
         Container(
           height: 125.0,
           color: Theme.of(context).primaryColor,

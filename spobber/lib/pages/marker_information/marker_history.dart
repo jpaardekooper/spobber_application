@@ -46,205 +46,222 @@ class _MarkerHistoryState extends State<MarkerHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.separated(
-          itemCount: list.length,
-          separatorBuilder: (BuildContext context, int index) => Divider(
-            height: 0,
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            final data = list[index];
-
-            if (data['variable'] == "readable_id" || data['variable'] == "id") {
-              editObjectInfomartion.readableID = data['value'];
-            }
-            if (data['variable'] == "equipment_id") {
-              editObjectInfomartion.equipmentId = data['value'];
-            }
-            if (data['variable'] == "secret_id" || data['variable'] == "id") {
-              editObjectInfomartion.secretId = data['value'];
-              if (editObjectInfomartion.secretId == "" ||
-                  editObjectInfomartion.secretId == null) {
-                editObjectInfomartion.secretId = "";
-              }
-            }
-            if (data['variable'] == "type") {
-              editObjectInfomartion.type = data['value'];
-              if (editObjectInfomartion.type == "" ||
-                  editObjectInfomartion.type == null) {
-                editObjectInfomartion.type = "";
-              }
-            }
-            if (data['variable'] == "description") {
-              editObjectInfomartion.description = data['value'];
-              if (editObjectInfomartion.description == "" ||
-                  editObjectInfomartion.description == null) {
-                editObjectInfomartion.description = "";
-              }
-            }
-            if (data['variable'] == "equipment_status") {
-              editObjectInfomartion.equipmentStatus = data['value'];
-              if (editObjectInfomartion.equipmentStatus == "" ||
-                  editObjectInfomartion.equipmentStatus == null) {
-                editObjectInfomartion.equipmentStatus = "";
-              }
-            }
-            if (data['variable'] == "user_status_equipment") {
-              editObjectInfomartion.userStatusEquipment = data['value'];
-              if (editObjectInfomartion.userStatusEquipment == "" ||
-                  editObjectInfomartion.userStatusEquipment == null) {
-                editObjectInfomartion.userStatusEquipment = "";
-              }
-            }
-            if (data['variable'] == "parent_equip_kind") {
-              editObjectInfomartion.parentEquipKind = data['value'];
-              if (editObjectInfomartion.parentEquipKind == "" ||
-                  editObjectInfomartion.parentEquipKind == null) {
-                editObjectInfomartion.parentEquipKind = "";
-              }
-            }
-            if (data['variable'] == "datacollection") {
-              editObjectInfomartion.datacollection = data['value'];
-              if (editObjectInfomartion.datacollection == "" ||
-                  editObjectInfomartion.datacollection == null) {
-                editObjectInfomartion.datacollection = "";
-              }
-            }
-            if (data['variable'] == "placement") {
-              editObjectInfomartion.placement = data['value'];
-              if (editObjectInfomartion.placement == "" ||
-                  editObjectInfomartion.placement == null) {
-                editObjectInfomartion.placement = "";
-              }
-            }
-            if (data['variable'] == "latitude") {
-              editObjectInfomartion.latitude = data['value'];
-            }
-            if (data['variable'] == "longitude") {
-              editObjectInfomartion.longitude = data['value'];
-            }
-            if (data['variable'] == "pic_file_name") {
-              editObjectInfomartion.picFileName = data['value'];
-              if (editObjectInfomartion.picFileName == "" ||
-                  editObjectInfomartion.picFileName == null) {
-                editObjectInfomartion.picFileName = "";
-              }
-            }
-            if (data['variable'] == "run_nr") {
-              editObjectInfomartion.runNr = data['value'];
-              if (editObjectInfomartion.runNr == "" ||
-                  editObjectInfomartion.runNr == null) {
-                editObjectInfomartion.runNr = "";
-              }
-            }
-            if (data['variable'] == "track_version") {
-              editObjectInfomartion.trackVersion = data['value'];
-              if (editObjectInfomartion.trackVersion == "" ||
-                  editObjectInfomartion.trackVersion == null) {
-                editObjectInfomartion.trackVersion = "";
-              }
-            }
-            if (data['variable'] == "source") {
-              editObjectInfomartion.source = data['value'];
-              if (editObjectInfomartion.source == "" ||
-                  editObjectInfomartion.source == null) {
-                editObjectInfomartion.source = "";
-              }
-            }
-            if (data['variable'] == "source") {
-              editObjectInfomartion.source = data['value'];
-              if (editObjectInfomartion.source == "" ||
-                  editObjectInfomartion.source == null) {
-                editObjectInfomartion.source = "";
-              }
-            }
-            if (data['variable'] == "creator") {
-              editObjectInfomartion.creator = data['value'];
-              if (editObjectInfomartion.creator == "" ||
-                  editObjectInfomartion.creator == null) {
-                editObjectInfomartion.creator = "";
-              }
-            }
-            if (data['variable'] == "year") {
-              editObjectInfomartion.year = data['value'];
-              if (editObjectInfomartion.year == 0 ||
-                  editObjectInfomartion.year == null) {
-                editObjectInfomartion.year = 0;
-              }
-            }
-
-            if (index % 4 == 0) {
-              return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Container(
-                      color: Theme.of(context).accentColor,
-                      child: Text(""),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.all(10.0),
-                      leading: Icon(Icons.info),
-                      title: Text(
-                        data['variable'].toString().toUpperCase(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        data['value'].toString(),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    )
-                  ]);
-            }
-            return ListTile(
-              contentPadding: EdgeInsets.all(10.0),
-              leading: Icon(Icons.info),
-              title: Text(
-                data['variable'].toString().toUpperCase(),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                data['value'].toString(),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            );
-          },
+      body: ListView.separated(
+        itemCount: list.length,
+        separatorBuilder: (BuildContext context, int index) => Divider(
+          height: 0,
         ),
-        floatingActionButton: FloatingActionButton(
-            tooltip: "Wijzigen",
-            child: const Icon(Icons.edit),
-            heroTag: "edit",
-            onPressed: () async {
-              final MarkerDetail setMarkerInfo = MarkerDetail(
-                  //          id: editObjectInfomartion.readableID,
-                  secretId: editObjectInfomartion.secretId,
-                  type: editObjectInfomartion.type,
-                  description: editObjectInfomartion.description,
-                  equipmentId: editObjectInfomartion.equipmentId,
-                  equipmentStatus: editObjectInfomartion.equipmentStatus,
-                  userStatusEquipment:
-                      editObjectInfomartion.userStatusEquipment,
-                  parentEquipKind: editObjectInfomartion.parentEquipKind,
-                  datacollection: editObjectInfomartion.datacollection,
-                  placement: editObjectInfomartion.placement,
-                  latitude: editObjectInfomartion.latitude,
-                  longitude: editObjectInfomartion.longitude,
-                  picFileName: editObjectInfomartion.picFileName,
-                  runNr: editObjectInfomartion.runNr,
-                  trackVersion: editObjectInfomartion.trackVersion,
-                  source: editObjectInfomartion.source,
-                  year: editObjectInfomartion.year, // => 21-04-2019 02:40:25
-                  readableID: editObjectInfomartion.readableID,
-                  creator: editObjectInfomartion.creator);
+        itemBuilder: (BuildContext context, int index) {
+          final data = list[index];
 
+          if (data['variable'] == "readable_id" || data['variable'] == "id") {
+            editObjectInfomartion.readableID = data['value'];
+            if (editObjectInfomartion.readableID == "" ||
+                editObjectInfomartion.readableID == null) {
+              editObjectInfomartion.readableID = "";
+            }
+          }
+          if (data['variable'] == "equipment_id") {
+            editObjectInfomartion.equipmentId = data['value'];
+            if (editObjectInfomartion.equipmentId == "" ||
+                editObjectInfomartion.equipmentId == null) {
+              editObjectInfomartion.equipmentId = "";
+            }
+          }
+          if (data['variable'] == "secret_id" || data['variable'] == "id") {
+            editObjectInfomartion.secretId = data['value'];
+            if (editObjectInfomartion.secretId == "" ||
+                editObjectInfomartion.secretId == null) {
+              editObjectInfomartion.secretId = "NOT_FOUND";
+            }
+          }
+          if (data['variable'] == "type") {
+            editObjectInfomartion.type = data['value'];
+            if (editObjectInfomartion.type == "" ||
+                editObjectInfomartion.type == null) {
+              editObjectInfomartion.type = "";
+            }
+          }
+          if (data['variable'] == "description") {
+            editObjectInfomartion.description = data['value'];
+            if (editObjectInfomartion.description == "" ||
+                editObjectInfomartion.description == null) {
+              editObjectInfomartion.description = "";
+            }
+          }
+          if (data['variable'] == "equipment_status") {
+            editObjectInfomartion.equipmentStatus = data['value'];
+            if (editObjectInfomartion.equipmentStatus == "" ||
+                editObjectInfomartion.equipmentStatus == null) {
+              editObjectInfomartion.equipmentStatus = "";
+            }
+          }
+          if (data['variable'] == "user_status_equipment") {
+            editObjectInfomartion.userStatusEquipment = data['value'];
+            if (editObjectInfomartion.userStatusEquipment == "" ||
+                editObjectInfomartion.userStatusEquipment == null) {
+              editObjectInfomartion.userStatusEquipment = "";
+            }
+          }
+          if (data['variable'] == "parent_equip_kind") {
+            editObjectInfomartion.parentEquipKind = data['value'];
+            if (editObjectInfomartion.parentEquipKind == "" ||
+                editObjectInfomartion.parentEquipKind == null) {
+              editObjectInfomartion.parentEquipKind = "";
+            }
+          }
+          if (data['variable'] == "datacollection") {
+            editObjectInfomartion.datacollection = data['value'];
+            if (editObjectInfomartion.datacollection == "" ||
+                editObjectInfomartion.datacollection == null) {
+              editObjectInfomartion.datacollection = "";
+            }
+          }
+          if (data['variable'] == "placement") {
+            editObjectInfomartion.placement = data['value'];
+            if (editObjectInfomartion.placement == "" ||
+                editObjectInfomartion.placement == null) {
+              editObjectInfomartion.placement = "";
+            }
+          }
+          if (data['variable'] == "latitude") {
+            editObjectInfomartion.latitude = data['value'];
+          }
+          if (data['variable'] == "longitude") {
+            editObjectInfomartion.longitude = data['value'];
+          }
+          if (data['variable'] == "pic_file_name") {
+            editObjectInfomartion.picFileName = data['value'];
+            if (editObjectInfomartion.picFileName == "" ||
+                editObjectInfomartion.picFileName == null) {
+              editObjectInfomartion.picFileName = "";
+            }
+          }
+          if (data['variable'] == "run_nr") {
+            editObjectInfomartion.runNr = data['value'];
+            if (editObjectInfomartion.runNr == "" ||
+                editObjectInfomartion.runNr == null) {
+              editObjectInfomartion.runNr = "";
+            }
+          }
+          if (data['variable'] == "track_version") {
+            editObjectInfomartion.trackVersion = data['value'];
+            if (editObjectInfomartion.trackVersion == "" ||
+                editObjectInfomartion.trackVersion == null) {
+              editObjectInfomartion.trackVersion = "";
+            }
+          }
+          if (data['variable'] == "source") {
+            editObjectInfomartion.source = data['value'];
+            if (editObjectInfomartion.source == "" ||
+                editObjectInfomartion.source == null) {
+              editObjectInfomartion.source = "";
+            }
+          }
+          if (data['variable'] == "source") {
+            editObjectInfomartion.source = data['value'];
+            if (editObjectInfomartion.source == "" ||
+                editObjectInfomartion.source == null) {
+              editObjectInfomartion.source = "";
+            }
+          }
+          if (data['variable'] == "creator") {
+            editObjectInfomartion.creator = data['value'];
+            if (editObjectInfomartion.creator == "" ||
+                editObjectInfomartion.creator == null) {
+              editObjectInfomartion.creator = "";
+            }
+          }
+          if (data['variable'] == "year") {
+            editObjectInfomartion.year = data['value'];
+            if (editObjectInfomartion.year == 0 ||
+                editObjectInfomartion.year == null) {
+              editObjectInfomartion.year = 0;
+            }
+          }
+
+          if (index % 4 == 0) {
+            return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    color: Theme.of(context).accentColor,
+                    child: Text(""),
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.all(10.0),
+                    leading: Icon(Icons.info),
+                    title: Text(
+                      data['variable'].toString().toUpperCase(),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      data['value'].toString(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ]);
+          }
+          return ListTile(
+            contentPadding: EdgeInsets.all(10.0),
+            leading: Icon(Icons.info),
+            title: Text(
+              data['variable'].toString().toUpperCase(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              data['value'].toString(),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: "Wijzigen",
+        child: const Icon(Icons.edit),
+        heroTag: "edit",
+        onPressed: () async {
+          final MarkerDetail setMarkerInfo = MarkerDetail(
+              //          id: editObjectInfomartion.readableID,
+              secretId: editObjectInfomartion.secretId,
+              type: editObjectInfomartion.type,
+              description: editObjectInfomartion.description,
+              equipmentId: editObjectInfomartion.equipmentId,
+              equipmentStatus: editObjectInfomartion.equipmentStatus,
+              userStatusEquipment:
+                  editObjectInfomartion.userStatusEquipment == null
+                      ? editObjectInfomartion.userStatusEquipment = ""
+                      : editObjectInfomartion.userStatusEquipment,
+              parentEquipKind: editObjectInfomartion.parentEquipKind,
+              datacollection: editObjectInfomartion.datacollection,
+              placement: editObjectInfomartion.placement,
+              latitude: editObjectInfomartion.latitude,
+              longitude: editObjectInfomartion.longitude,
+              picFileName: editObjectInfomartion.picFileName,
+              runNr: editObjectInfomartion.runNr,
+              trackVersion: editObjectInfomartion.trackVersion,
+              source: editObjectInfomartion.source,
+              year: editObjectInfomartion.year, // => 21-04-2019 02:40:25
+              readableID: editObjectInfomartion.readableID,
+              creator: editObjectInfomartion.creator);
+
+          Future.delayed(Duration(milliseconds: 500)).then(
+            (onValue) {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => (NewMarkerInformation(
-                        markerinformation: setMarkerInfo)),
-                  ));
-            }));
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      (NewMarkerInformation(markerinformation: setMarkerInfo)),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 
   @override
