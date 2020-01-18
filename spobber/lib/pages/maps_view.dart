@@ -13,7 +13,6 @@ import 'package:spobber/network/location_services.dart';
 import 'package:spobber/pages/marker_information/marker_template.dart';
 import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/pages/widgets/alertdialog_filter.dart';
-import 'package:spobber/pages/widgets/animated_fab.dart';
 import 'package:spobber/pages/widgets/bottom_modal.dart';
 import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:spobber/pages/widgets/stackingMapWidget.dart';
@@ -85,8 +84,8 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   Future loadDataToMaps() async {
-     closeBottomSheet(isBottomSheetActive);
-     isBottomSheetActive = false;
+    closeBottomSheet(isBottomSheetActive);
+    isBottomSheetActive = false;
     loadmarkers = true;
     currentUpdate = 0;
     if (setDataSource.length <= 0) {
@@ -130,12 +129,11 @@ class _MapViewState extends State<MapView>
 
   MapType mapType = MapType.terrain;
   void changeMapType() {
-     closeBottomSheet(isBottomSheetActive);
-     isBottomSheetActive = false;
+    closeBottomSheet(isBottomSheetActive);
+    isBottomSheetActive = false;
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
-    setState(() {
-      mapType = nextType;
-    });
+    mapType = nextType;
+    setState(() {});
   }
 
   _mapTypeCycler() {
@@ -221,9 +219,8 @@ class _MapViewState extends State<MapView>
       points: points,
     );
     if (mounted) {
-      setState(() {
-        polylines[polylineId] = polyline;
-      });
+      polylines[polylineId] = polyline;
+      setState(() {});
     }
   }
 
@@ -241,8 +238,8 @@ class _MapViewState extends State<MapView>
   }
 
   getDataSourcePopUp() {
-     closeBottomSheet(isBottomSheetActive);
-     isBottomSheetActive = false;
+    closeBottomSheet(isBottomSheetActive);
+    isBottomSheetActive = false;
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -250,33 +247,29 @@ class _MapViewState extends State<MapView>
           switchValueisSap: isSap,
           valueChangedisSap: (value) {
             if (mounted) {
-              setState(() {
-                isSap = value;
-              });
+              isSap = value;
+              setState(() {});
             }
           },
           switchValueisSigma: isSigma,
           valueChangedisSigma: (value) {
             if (mounted) {
-              setState(() {
-                isSigma = value;
-              });
+              isSigma = value;
+              setState(() {});
             }
           },
           switchValueisUST02: isUST02,
           valueChangedisUST02: (value) {
             if (mounted) {
-              setState(() {
-                isUST02 = value;
-              });
+              isUST02 = value;
+              setState(() {});
             }
           },
           switchValueisSpobber: isSpobber,
           valueChangedisSpobber: (value) {
             if (mounted) {
-              setState(() {
-                isSpobber = value;
-              });
+              isSpobber = value;
+              setState(() {});
             }
           },
         );
@@ -411,8 +404,8 @@ class _MapViewState extends State<MapView>
   }
 
   _goToCurrentLocation() async {
-     closeBottomSheet(isBottomSheetActive);
-     isBottomSheetActive = false;
+    closeBottomSheet(isBottomSheetActive);
+    isBottomSheetActive = false;
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -446,11 +439,18 @@ class _MapViewState extends State<MapView>
             _search(),
             //filter
             _changeSourceFilter(),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: bottomNavigatorInformation(
+                  userLocation.latitude, userLocation.longitude),
+              //
+            ),
           ],
         ),
-        floatingActionButton: FancyFab(),
-        bottomNavigationBar: bottomNavigatorInformation(
-            userLocation.latitude, userLocation.longitude),
+        //   floatingActionButton: FancyFab(),
+        //  bottomNavigationBar: b;
       );
     }
   }
@@ -466,48 +466,53 @@ class _MapViewState extends State<MapView>
 
   Widget bottomNavigatorInformation(double lat, double long) {
     return GestureDetector(
-      onTap: () {
-        if (markers.length <= 0 || markers.length > 30) {
-          isBottomSheetActive = false;
-          return;
-        } else {
-          isBottomSheetActive = true;
-          showBottomSheet<void>(
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (BuildContext context) {
-              return BottomSheetSwitch(
-                markers: markers,
-                latitude: lat,
-                longitude: long,
-                gotoLocation: goToMarkerLocation,
-                openMarkerInfo: openMarkerInfo,
-              );
-            },
-          );
-        }
-      },
-      child: BottomAppBar(
-        color: markers.length <= 0 || markers.length > 30
-            ? Theme.of(context).primaryColor
-            : Theme.of(context).accentColor,
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-                icon: markers.length <= 0 || markers.length > 30
-                    ? const Icon(
-                        Icons.not_listed_location,
-                        color: Colors.white,
-                      )
-                    : const Icon(Icons.touch_app, color: Colors.white),
-                onPressed: () {}),
-            bottomApptext(),
-          ],
-        ),
-      ),
-    );
+        onTap: () {
+          if (markers.length <= 0 || markers.length > 30) {
+            isBottomSheetActive = false;
+            return;
+          } else {
+            isBottomSheetActive = true;
+            showBottomSheet<void>(
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (BuildContext context) {
+                return BottomSheetSwitch(
+                  markers: markers,
+                  latitude: lat,
+                  longitude: long,
+                  gotoLocation: goToMarkerLocation,
+                  openMarkerInfo: openMarkerInfo,
+                );
+              },
+            );
+          }
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60),
+            topLeft: Radius.circular(60),
+          ),
+          child: BottomAppBar(
+            color: markers.length <= 0 || markers.length > 30
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).accentColor,
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                    icon: markers.length <= 0 || markers.length > 30
+                        ? const Icon(
+                            Icons.filter,
+                            color: Colors.white,
+                          )
+                        : const Icon(Icons.touch_app, color: Colors.white),
+                    onPressed: () {}),
+                bottomApptext(),
+              ],
+            ),
+          ),
+        ));
   }
 
   int _markerIdCounter = 0;
@@ -567,9 +572,16 @@ class _MapViewState extends State<MapView>
         "Er zijn geen objecten gevonden klik op zoeken",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       );
-    } else {
+    }
+     else if (markers.length > 30) {
       text = Text(
-        "Er zijn ${markers.length.toString()} objecten gevonden, klik hier voor meer informatie",
+        "Er zijn ${markers.length.toString()} objecten gevonden.",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      );
+    }
+     else {
+      text = Text(
+        "Er zijn ${markers.length.toString()} objecten gevonden. \nKlik hier voor meer informatie",
         style: TextStyle(color: Colors.white),
       );
     }
@@ -597,6 +609,4 @@ class _MapViewState extends State<MapView>
       ),
     );
   }
-
-
 }

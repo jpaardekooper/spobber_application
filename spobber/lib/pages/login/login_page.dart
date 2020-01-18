@@ -300,9 +300,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       if (response.statusCode == 200) {
         showMessage('Login was succesvol!', Colors.blue);
 
-        Future.delayed(const Duration(milliseconds: 250), () {
+  //      Future.delayed(const Duration(milliseconds: 500), () {
           goToMainPage();
-        });
+      //  });
       } else {
         print(response.statusCode);
         return null;

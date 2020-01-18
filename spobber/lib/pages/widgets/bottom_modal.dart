@@ -62,26 +62,42 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          color: Theme.of(context).accentColor,
+          decoration: BoxDecoration(
+              color: Theme.of(context).accentColor,
+              borderRadius: new BorderRadius.only(
+                  topLeft: const Radius.circular(60.0),
+                  topRight: const Radius.circular(60.0))),
           child: GestureDetector(
-            onTap: (){
-              Navigator.of(context).pop();
-            },
-            child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,         
-            children: <Widget>[
-              Text(
-                "Swipe naar beneden om te sluiten",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
-              ),
-              const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.white,
-              )
-            ],
-          ),
-        ),),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 4),
+                    width: 25,
+                    child: Divider(
+                      color: Colors.white,
+                      thickness: 2,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Swipe naar beneden om te sluiten",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
+                ],
+              )),
+        ),
         Container(
           height: 125.0,
           color: Theme.of(context).primaryColor,
@@ -155,7 +171,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                     )
                   : Text(
                       "Bron: " + widget.markers[index].source,
-                    style: const TextStyle(
+                      style: const TextStyle(
                           fontSize: 12.0, fontWeight: FontWeight.w300),
                     ),
               Padding(
@@ -180,8 +196,8 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                         widget.longitude,
                         widget.markers[index].latitude,
                         widget.markers[index].longitude),
-               style: const TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.w300),
+                style: const TextStyle(
+                    fontSize: 12.0, fontWeight: FontWeight.w300),
               ),
             ],
           ),
@@ -220,7 +236,8 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   getCorrectPhoto(int index) {
     if (widget.markers[index].source == "SAP") {
-      return const Image(image: AssetImage("assets/SAP.png"), fit: BoxFit.contain);
+      return const Image(
+          image: AssetImage("assets/SAP.png"), fit: BoxFit.contain);
     } else if (widget.markers[index].source == "SIGMA") {
       return const Image(
           image: AssetImage("assets/SIGMA.png"), fit: BoxFit.contain);
