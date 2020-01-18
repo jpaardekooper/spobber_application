@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:spobber/clustering/map_helper.dart';
 import 'package:spobber/data/Users.dart';
-import 'package:spobber/pages/Registeringpage.dart';
+import 'package:spobber/pages/login/register_page.dart';
 import 'package:spobber/pages/homescreen_tabs.dart';
 import 'package:spobber/data/global_variable.dart';
 
@@ -92,10 +92,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       ),
     );
   }
-
+  bool userFound = false;
   void loadData() async {
     sharedpreferences = await SharedPreferences.getInstance();
     if (sharedpreferences?.containsKey('user') != null) {
+      userFound = true;
       autoLogin();
     }
   }
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
       final encrypted = encrypter.encrypt(_password, iv: iv);
       final decrypted = encrypter.decrypt(encrypted, iv: iv);
-      print(decrypted);
+     // print(decrypted);
 
       if (decrypted == _password) {
         saveUser(User(
@@ -244,7 +245,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 ),
                 child: _loginAnimation.value > 75
                     ? Text(
-                        'Log in',
+                        userFound ? 'Laden' : 'Log in',
                         style: TextStyle(
                             color:
                                 Theme.of(context).primaryTextTheme.title.color,
@@ -299,7 +300,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       if (response.statusCode == 200) {
         showMessage('Login was succesvol!', Colors.blue);
 
-        Future.delayed(const Duration(milliseconds: 1000), () {
+        Future.delayed(const Duration(milliseconds: 250), () {
           goToMainPage();
         });
       } else {

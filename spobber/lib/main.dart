@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spobber/pages/LoginPage.dart';
-import 'package:spobber/pages/Registeringpage.dart';
+import 'package:spobber/pages/login/login_page.dart';
+import 'package:spobber/pages/login/register_page.dart';
 import 'package:spobber/pages/homescreen_tabs.dart';
 import 'theme/theme.dart';
 
