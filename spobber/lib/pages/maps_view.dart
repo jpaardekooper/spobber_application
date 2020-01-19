@@ -13,6 +13,7 @@ import 'package:spobber/network/location_services.dart';
 import 'package:spobber/pages/marker_information/marker_template.dart';
 import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/pages/widgets/alertdialog_filter.dart';
+import 'package:spobber/pages/widgets/animated_fab.dart';
 import 'package:spobber/pages/widgets/bottom_modal.dart';
 import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:spobber/pages/widgets/stackingMapWidget.dart';
@@ -449,7 +450,10 @@ class _MapViewState extends State<MapView>
             ),
           ],
         ),
-        //   floatingActionButton: FancyFab(),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 50.0),
+          child: FancyFab(),
+        ),
         //  bottomNavigationBar: b;
       );
     }
@@ -572,14 +576,12 @@ class _MapViewState extends State<MapView>
         "Er zijn geen objecten gevonden klik op zoeken",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       );
-    }
-     else if (markers.length > 30) {
+    } else if (markers.length > 30) {
       text = Text(
         "Er zijn ${markers.length.toString()} objecten gevonden.",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       );
-    }
-     else {
+    } else {
       text = Text(
         "Er zijn ${markers.length.toString()} objecten gevonden. \nKlik hier voor meer informatie",
         style: TextStyle(color: Colors.white),
