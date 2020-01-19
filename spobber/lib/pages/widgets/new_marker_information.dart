@@ -216,7 +216,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   Widget registeringUI() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[     
+      children: <Widget>[
         TextFormField(
           enabled: false,
           initialValue: '${widget.markerinformation.readableID}',
@@ -768,12 +768,12 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           // validator: (value) {
           //   if (value.isEmpty) {
           //     return 'Please enter some text';
-          //   } else {             
+          //   } else {
           //     return '';
           //   }
           // },
         ),
-         TextFormField(
+        TextFormField(
           enabled: false,
           initialValue: "${userInformation.username}",
           decoration: InputDecoration(
@@ -800,24 +800,29 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           highlightColor: Theme.of(context).primaryColor,
           color: Theme.of(context).primaryColor,
           textColor: Colors.white,
-          child: Text(
+          child: const Text(
             'Verzenden',
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
           onPressed: _submitForm,
-          splashColor: Colors.blue,
+          splashColor: Theme.of(context).accentColor,
         ),
       ],
     );
   }
 
   bool _validate = false;
+  bool _send = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKeyThree,
       appBar: AppBar(
         title: Text(widget.markerinformation.readableID),
+        leading: new IconButton(
+          icon: Icon(Icons.arrow_back, color: _send ? Colors.grey : Colors.white),
+          onPressed: _send ? null :() => Navigator.of(context).pop(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -854,52 +859,54 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   }
 
   void _submitForm() async {
-  
     // if (_formKey.validate()) {
     //   setState(() {
     //     _validate = true;
     //   });
     //   showMessage('Form is not valid!  Please review and correct.');
     // } else {
-      newMarkerDetail.readableID = widget.markerinformation.readableID;
-      newMarkerDetail.secretId = widget.markerinformation.secretId;
-      newMarkerDetail.picFileName = "";
-      _formKey.currentState.save(); //This invokes each onSaved event
+    setState(() {
+      _send = true;
+    });
+    newMarkerDetail.readableID = widget.markerinformation.readableID;
+    newMarkerDetail.secretId = widget.markerinformation.secretId;
+    newMarkerDetail.picFileName = "";
+    _formKey.currentState.save(); //This invokes each onSaved event
 
-      print('Form save called, newContact is now up to date...');
-      print('secretId: ${newMarkerDetail.secretId}');
-      print('type: ${newMarkerDetail.type}');
-      print('description: ${newMarkerDetail.description}');
-      print('equipmentStatus: ${newMarkerDetail.equipmentStatus}');
-      print('userStatusEquipment: ${newMarkerDetail.userStatusEquipment}');
-      print('parentEquipKind: ${newMarkerDetail.parentEquipKind}');
-      print('datacollection: ${newMarkerDetail.datacollection}');
-      print('placement: ${newMarkerDetail.placement}');
-      print('LAT: ${newMarkerDetail.latitude}');
-      print('LONG: ${newMarkerDetail.longitude}');
-      print('runNr: ${newMarkerDetail.runNr}');
-      print('trackVersion: ${newMarkerDetail.trackVersion}');
-      print('source: ${newMarkerDetail.source}');
-      print('year: ${newMarkerDetail.year}');
-      print('readableID: ${newMarkerDetail.readableID}');
-      print('Auteur: ${newMarkerDetail.creator}');
-      print('========================================');
-      print('Submitting to back end...');
-      print('TODO - we will write the submission part next...');
+    print('Form save called, newContact is now up to date...');
+    print('secretId: ${newMarkerDetail.secretId}');
+    print('type: ${newMarkerDetail.type}');
+    print('description: ${newMarkerDetail.description}');
+    print('equipmentStatus: ${newMarkerDetail.equipmentStatus}');
+    print('userStatusEquipment: ${newMarkerDetail.userStatusEquipment}');
+    print('parentEquipKind: ${newMarkerDetail.parentEquipKind}');
+    print('datacollection: ${newMarkerDetail.datacollection}');
+    print('placement: ${newMarkerDetail.placement}');
+    print('LAT: ${newMarkerDetail.latitude}');
+    print('LONG: ${newMarkerDetail.longitude}');
+    print('runNr: ${newMarkerDetail.runNr}');
+    print('trackVersion: ${newMarkerDetail.trackVersion}');
+    print('source: ${newMarkerDetail.source}');
+    print('year: ${newMarkerDetail.year}');
+    print('readableID: ${newMarkerDetail.readableID}');
+    print('Auteur: ${newMarkerDetail.creator}');
+    print('========================================');
+    print('Submitting to back end...');
+    print('TODO - we will write the submission part next...');
 
-      var contactService = new MarkerDetail();
-      contactService
-          .createContact(newMarkerDetail)
-          .then((value) => showMessage(
-              'New contact created for ${newMarkerDetail.readableID}!',
-              Colors.blue))
-          .then((_) {
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          Navigator.of(context).pop();
-        });
+    var contactService = new MarkerDetail();
+    contactService
+        .createContact(newMarkerDetail)
+        .then((value) => showMessage(
+            'New contact created for ${newMarkerDetail.readableID}!',
+            Colors.blue))
+        .then((_) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.of(context).pop();
       });
-    }
- // }
+    });
+  }
+  // }
 
   @override
   void dispose() {

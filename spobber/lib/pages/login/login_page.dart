@@ -245,7 +245,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 ),
                 child: _loginAnimation.value > 75
                     ? Text(
-                        userFound ? 'Laden' : 'Log in',
+                         'Log in',
                         style: TextStyle(
                             color:
                                 Theme.of(context).primaryTextTheme.title.color,
