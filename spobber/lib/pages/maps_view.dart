@@ -64,13 +64,10 @@ class _MapViewState extends State<MapView>
   /// Color of the cluster text
   final Color _clusterTextColor = Colors.white;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   //  if (mounted) {
-  //   initIcons();
-  //   //  }
-  // }
+  @override
+  void initState() {
+    super.initState();
+  }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
   Widget _search() {
@@ -419,44 +416,45 @@ class _MapViewState extends State<MapView>
     );
   }
 
+  Widget _bottomAppBar(double lat, double long) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: bottomNavigatorInformation(lat, long),
+      //
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);
-    if (userLocation == null) {
-      return const Center(child: CircularProgressIndicator());
-    } else {
-      mylocation = LatLng(userLocation.latitude, userLocation.longitude);
-      return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            //maps changer
+    userLocation == null
+        ? const Center(child: CircularProgressIndicator())
+        : mylocation = LatLng(userLocation.latitude, userLocation.longitude);
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          //maps changer
 
-            createGoogleMapsMap(),
-            _mapTypeCycler(),
+          createGoogleMapsMap(),
+          _mapTypeCycler(),
 
-            _location(),
-            // Map markers loading indicator
-            _loadingIndicator(),
-            _search(),
-            //filter
-            _changeSourceFilter(),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: bottomNavigatorInformation(
-                  userLocation.latitude, userLocation.longitude),
-              //
-            ),
-          ],
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 50.0),
-          child: FancyFab(),
-        ),
-        //  bottomNavigationBar: b;
-      );
-    }
+          _location(),
+          // Map markers loading indicator
+          _loadingIndicator(),
+          _search(),
+          //filter
+          _changeSourceFilter(),
+          _bottomAppBar(mylocation.latitude, mylocation.longitude),
+        ],
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50.0),
+        child: FancyFab(),
+      ),
+      //  bottomNavigationBar: b;
+    );
   }
 
   bool isBottomSheetActive = false;
