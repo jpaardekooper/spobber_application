@@ -545,7 +545,7 @@ class _MapViewState extends State<MapView>
           //  bearing: 270.0,
           target: LatLng(lat, long),
           // tilt: 30.0,
-          zoom: 20.0,
+          zoom: 21.0,
         ),
       ),
     );
