@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:spobber/clustering/map_helper.dart';
+
 import 'package:spobber/data/Users.dart';
 import 'package:spobber/pages/login/register_page.dart';
 import 'package:spobber/pages/homescreen_tabs.dart';
-import 'package:spobber/data/global_variable.dart';
+
 
 import 'package:encrypt/encrypt.dart' as encrypt;
 

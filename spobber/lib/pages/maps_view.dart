@@ -82,8 +82,6 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   Future loadDataToMaps() async {
-    closeBottomSheet(isBottomSheetActive);
-    isBottomSheetActive = false;
     loadmarkers = true;
     currentUpdate = 0;
     if (setDataSource.length <= 0) {
@@ -127,8 +125,6 @@ class _MapViewState extends State<MapView>
 
   MapType mapType = MapType.terrain;
   void changeMapType() {
-    closeBottomSheet(isBottomSheetActive);
-    isBottomSheetActive = false;
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
     mapType = nextType;
     setState(() {});
@@ -236,8 +232,6 @@ class _MapViewState extends State<MapView>
   }
 
   getDataSourcePopUp() {
-    closeBottomSheet(isBottomSheetActive);
-    isBottomSheetActive = false;
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -402,8 +396,6 @@ class _MapViewState extends State<MapView>
   }
 
   _goToCurrentLocation() async {
-    closeBottomSheet(isBottomSheetActive);
-    isBottomSheetActive = false;
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -436,7 +428,6 @@ class _MapViewState extends State<MapView>
       body: Stack(
         children: <Widget>[
           //maps changer
-
           createGoogleMapsMap(),
           _mapTypeCycler(),
 
@@ -457,24 +448,13 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  bool isBottomSheetActive = false;
-
-  closeBottomSheet(bool value) {
-    if (value == true) {
-      isBottomSheetActive = false;
-      Navigator.of(context).pop();
-    }
-  }
-
   Widget bottomNavigatorInformation(double lat, double long) {
     return GestureDetector(
         onTap: () {
           if (markers.length <= 0 || markers.length > 30) {
-            isBottomSheetActive = false;
             return;
           } else {
-            isBottomSheetActive = true;
-            showBottomSheet<void>(
+            showModalBottomSheet<void>(
               context: context,
               backgroundColor: Colors.transparent,
               builder: (BuildContext context) {

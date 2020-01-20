@@ -57,8 +57,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         //Theme color can be found under theme directory
-        //  primarySwatch: myColor,
-        primaryColor: myColor,
+        //  primarySwatch: myColor,    
+        primaryColor: myColor,        
         accentColor: const Color.fromRGBO(51, 216, 178, 1),
       ),
       home: LoginPage(),
