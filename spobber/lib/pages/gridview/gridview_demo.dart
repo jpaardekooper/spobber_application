@@ -25,6 +25,7 @@ class GridViewDemoState extends State<GridViewDemo> {
   final List<Album> test = [];
   int index;
   gridview(AsyncSnapshot<List<Album>> snapshot) {
+    test.clear();
     return Padding(
       padding: EdgeInsets.all(5.0),
       child: GridView.count(
@@ -34,7 +35,7 @@ class GridViewDemoState extends State<GridViewDemo> {
         crossAxisSpacing: 4.0,
         children: snapshot.data.map(
           (album) {
-            test.add(album);
+            test.add(album);        
             return GestureDetector(
               child: GridTile(
                 child: AlbumCell(album),
@@ -115,7 +116,7 @@ class GridViewDemoState extends State<GridViewDemo> {
                   // }
                   //
                   if (snapshot.hasData) {                  
-                    streamController.sink.add(snapshot.data.length);
+                    streamController.sink.add(snapshot.data.length);                  
                     // gridview              
                     return gridview(snapshot);
                   } else {
@@ -196,6 +197,9 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Foto " + (currentIndex + 1).toString()),
+      ),
       body: Container(
         decoration: widget.backgroundDecoration,
         constraints: BoxConstraints.expand(
@@ -234,7 +238,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final Album item = widget.galleryItems[index];
     return PhotoViewGalleryPageOptions(
-      imageProvider: AssetImage(item.uri),
+      imageProvider: NetworkImage(item.uri),
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 1.1,
