@@ -24,6 +24,11 @@ class MarkerTemplate extends StatelessWidget {
         child: Scaffold(
           primary: true,
           appBar: AppBar(
+            actions: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: Icon(Icons.remove_red_eye))
+            ],
             flexibleSpace: Container(
               decoration: BoxDecoration(
                 // Box decoration takes a gradient
@@ -57,7 +62,7 @@ class MarkerTemplate extends StatelessWidget {
                 ),
               ],
             ),
-            title: Text(type +" "+ readableId),
+            title: Text(type + " " + readableId),
           ),
           body: Container(
             color: Colors.white,

@@ -4,7 +4,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'services.dart';
 import 'album.dart';
 import 'gridcell.dart';
-import 'details.dart';
+// import 'details.dart';
 import 'dart:async';
 import 'package:spobber/pages/marker_information/upload_image.dart';
 
@@ -68,21 +68,21 @@ class GridViewDemoState extends State<GridViewDemo> {
     );
   }
 
-  goToDetailsPage(BuildContext context, Album album) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (BuildContext context) => GridDetails(
-          curAlbum: album,
-          imageProvider: NetworkImage(album.uri),
-          minScale: 0.2,
-          maxScale: 1.1,
-          //  initialScale: 0.1,
-        ),
-      ),
-    );
-  }
+  // goToDetailsPage(BuildContext context, Album album) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       fullscreenDialog: true,
+  //       builder: (BuildContext context) => GridDetails(
+  //         curAlbum: album,
+  //         imageProvider: NetworkImage(album.uri),
+  //         minScale: 0.2,
+  //         maxScale: 1.1,
+  //         //  initialScale: 0.1,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   circularProgress() {
     return Center(
@@ -93,6 +93,8 @@ class GridViewDemoState extends State<GridViewDemo> {
   @override
   Widget build(BuildContext context) {
     print(widget.source);
+      print(widget.secretId);
+            print(widget.id);
     return SafeArea(
       child: Scaffold(
         body: Column(

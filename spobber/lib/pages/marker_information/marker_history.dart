@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:spobber/data/marker_detail.dart';
 import 'package:spobber/pages/widgets/new_marker_information.dart';
+import 'package:spobber/pages/widgets/show_toast.dart';
+import 'package:toast/toast.dart';
 
 class MarkerHistory extends StatefulWidget {
   final String secretid;
@@ -50,7 +53,7 @@ class _MarkerHistoryState extends State<MarkerHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(    
       body: ListView.separated(
         controller: _controller,
         itemCount: list.length,
@@ -152,6 +155,12 @@ class _MarkerHistoryState extends State<MarkerHistory> {
               editObjectInfomartion.year = 0;
             }
           }
+           else if (data['variable'] == "image") {
+            // editObjectInfomartion. = data['value'];
+            // if (editObjectInfomartion.year == null) {
+            //   editObjectInfomartion.year = 0;
+            // }
+          }
 
           //     if (index % 4 == 0) {
           return Column(
@@ -160,14 +169,15 @@ class _MarkerHistoryState extends State<MarkerHistory> {
               children: <Widget>[
                 index % 3 == 0 && index != 0
                     ? Container(
-                        color:  const Color(0xff0066C6),
+                        color: const Color(0xff0066C6),
                         child: const Text(""),
                       )
                     : Container(),
-                Card(
+                   Card(
+               //  margin: index == list.length ? EdgeInsets.only(bottom: 50) : EdgeInsets.only(bottom: 0),
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(10.0),
-                    leading: Icon(Icons.info),
+                    contentPadding: index == list.length-1 ? EdgeInsets.only(left: 10, right: 60, top: 10, bottom: 10) : EdgeInsets.all(10),
+                    leading: const Icon(Icons.info),
                     title: Text(
                       data['variable'].toString().toUpperCase(),
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -177,14 +187,30 @@ class _MarkerHistoryState extends State<MarkerHistory> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.content_copy),
+                      iconSize: 20,
+                      color: Colors.grey[500],
+                      onPressed: () {
+                        Clipboard.setData(
+                            new ClipboardData(text: data['value'].toString()));
+                        showToast("Copied", context,
+                            gravity: Toast.BOTTOM,
+                            duration: Toast.LENGTH_SHORT);
+                      },
+                    ),
                   ),
-                )
+                ),
+               
               ]);
         },
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Wijzigen",
-        child: const Icon(Icons.edit, color: Colors.white,),
+        child: const Icon(
+          Icons.edit,
+          color: Colors.white,
+        ),
         heroTag: "edit",
         onPressed: () {
           if (editObjectInfomartion.userStatusEquipment == null) {
