@@ -114,11 +114,10 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
     );
   }
 
-  void _onScroll() {
+  void _onScroll() { 
+    moveCamera();
     if (_pageController.page.toInt() != prevPage) {
-      prevPage = _pageController.page.toInt();
-
-      moveCamera();
+      prevPage = _pageController.page.toInt();    
     }
   }
 
@@ -215,6 +214,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
                 currentSelectedMarkerObjectUri =
                     widget.markers[index].objectUri;
                 currentSelectedMarkerSecretID = widget.markers[index].secretId;
+                currentSelectedMarkerSource = widget.markers[index].source;
               });
 
               widget.openMarkerInfo();
@@ -225,6 +225,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
               currentSelectedMarkerID = widget.markers[index].readableId;
               currentSelectedMarkerObjectUri = widget.markers[index].objectUri;
               currentSelectedMarkerSecretID = widget.markers[index].secretId;
+              currentSelectedMarkerSource = widget.markers[index].source;
             });
 
             widget.openMarkerInfo();

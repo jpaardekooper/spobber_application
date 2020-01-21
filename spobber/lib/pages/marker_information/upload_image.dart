@@ -70,10 +70,10 @@ class _TakePictureScreen extends State<TakePictureScreen> {
         status = "Het uploaden is voltooid";
       });
 
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(milliseconds: 500));
       Navigator.pop(context);
     } else {
-      status = "error tijdens het uploaden";
+      status = "Error tijdens het uploaden";
     }
   }
 
@@ -120,6 +120,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     print(widget.secretId);
+    print(widget.id);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -133,7 +134,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
             children: <Widget>[
               OutlineButton(
                 onPressed: chooseCamera,
-                child:const Text('Maak een foto'),
+                child: const Text('Maak een foto'),
               ),
               OutlineButton(
                 onPressed: chooseImage,
@@ -153,9 +154,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
                     setState(() {
                       magdrukken = false;
                     });
-                  } else {
-                    
-                  }
+                  } else {}
                 },
                 color: magdrukken ? Colors.black : Colors.red,
                 child: const Text('Upload Foto'),
@@ -167,7 +166,7 @@ class _TakePictureScreen extends State<TakePictureScreen> {
                 status,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.green,
+                  color: status.contains("Error") ? Colors.red : Colors.green,
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,
                 ),

@@ -13,7 +13,8 @@ class GridViewDemo extends StatefulWidget {
   final String id;
   // final String title = "Photos";
   final String secretId;
-  GridViewDemo({@required this.id, @required this.secretId});
+  final String source;
+  GridViewDemo({@required this.id, @required this.secretId, @required this.source});
 
   @override
   GridViewDemoState createState() => GridViewDemoState();
@@ -91,6 +92,7 @@ class GridViewDemoState extends State<GridViewDemo> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.source);
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -129,7 +131,7 @@ class GridViewDemoState extends State<GridViewDemo> {
         ),
         floatingActionButton: FloatingActionButton(
           heroTag: "Gridview",
-          child: Icon(Icons.camera_alt),
+          child: const Icon(Icons.camera_alt, color: Colors.white,),
           onPressed: () {
             Navigator.push(
               context,
@@ -141,7 +143,7 @@ class GridViewDemoState extends State<GridViewDemo> {
               ),
             );
           },
-        ),
+        ) 
       ),
     );
   }

@@ -294,6 +294,7 @@ class _MapViewState extends State<MapView>
           type: "ES-LAS",
           readableId: currentSelectedMarkerID,
           secretId: currentSelectedMarkerSecretID,
+          source: currentSelectedMarkerSource,
         ),
       ),
     );

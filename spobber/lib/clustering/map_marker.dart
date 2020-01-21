@@ -64,7 +64,8 @@ class MapMarker extends Clusterable {
           //   selectMarker(equipment, secretId, objectUri);
           currentSelectedMarkerID = equipment;
           currentSelectedMarkerSecretID = secretId;
-          currentSelectedMarkerObjectUri = objectUri;       
+          currentSelectedMarkerObjectUri = objectUri;  
+            currentSelectedMarkerSource = source;     
         },
         //   consumeTapEvents: true,
         infoWindow: isCluster

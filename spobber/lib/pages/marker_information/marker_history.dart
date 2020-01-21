@@ -60,7 +60,7 @@ class _MarkerHistoryState extends State<MarkerHistory> {
         itemBuilder: (BuildContext context, int index) {
           final data = list[index];
 
-          if (data['variable'] == "readable_id" || data['variable'] == "id") {
+          if (data['variable'] == "readable_id") {
             editObjectInfomartion.readableID = data['value'];
             if (editObjectInfomartion.readableID == null) {
               editObjectInfomartion.readableID = "";
@@ -70,12 +70,13 @@ class _MarkerHistoryState extends State<MarkerHistory> {
             if (editObjectInfomartion.equipmentId == null) {
               editObjectInfomartion.equipmentId = "";
             }
-          } else if (data['variable'] == "secret_id" ||
-              data['variable'] == "id") {
+          } else if (data['variable'] == "secret_id") {
             editObjectInfomartion.secretId = data['value'];
             if (editObjectInfomartion.secretId == null) {
-              editObjectInfomartion.secretId = "NOT_FOUND";
+              editObjectInfomartion.secretId = "";
             }
+          } else if (data['variable'] == "id") {
+            editObjectInfomartion.secretId = data['value'];
           } else if (data['variable'] == "type") {
             editObjectInfomartion.type = data['value'];
             if (editObjectInfomartion.type == null) {
@@ -157,10 +158,10 @@ class _MarkerHistoryState extends State<MarkerHistory> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                index % 4 == 0
+                index % 3 == 0 && index != 0
                     ? Container(
-                        color: Theme.of(context).accentColor,
-                        child: Text(""),
+                        color:  const Color(0xff0066C6),
+                        child: const Text(""),
                       )
                     : Container(),
                 Card(
@@ -183,25 +184,22 @@ class _MarkerHistoryState extends State<MarkerHistory> {
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Wijzigen",
-        child: const Icon(Icons.edit),
+        child: const Icon(Icons.edit, color: Colors.white,),
         heroTag: "edit",
-        onPressed: () {     
-  
+        onPressed: () {
           if (editObjectInfomartion.userStatusEquipment == null) {
             editObjectInfomartion.userStatusEquipment = "";
           }
 
-          _animateToIndex(list.length.toDouble()).then(
-            (onValue) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => (NewMarkerInformation(
-                      markerinformation: editObjectInfomartion)),
-                ),
-              );
-            });
-        
+          _animateToIndex(list.length.toDouble()).then((onValue) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => (NewMarkerInformation(
+                    markerinformation: editObjectInfomartion)),
+              ),
+            );
+          });
         },
       ),
     );

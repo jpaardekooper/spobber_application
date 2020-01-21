@@ -12,8 +12,9 @@ void main() async {
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    initIcons();
-    runApp(MyApp());
+    initIcons().then((_) {
+      runApp(MyApp());
+    });
   });
 }
 
@@ -57,8 +58,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         //Theme color can be found under theme directory
-        //  primarySwatch: myColor,    
-        primaryColor: myColor,        
+        //  primarySwatch: myColor,
+        primaryColor: myColor,
         accentColor: const Color.fromRGBO(51, 216, 178, 1),
       ),
       home: LoginPage(),
