@@ -78,9 +78,7 @@ class _MarkerHistoryState extends State<MarkerHistory> {
             if (editObjectInfomartion.secretId == null) {
               editObjectInfomartion.secretId = "";
             }
-          } else if (data['variable'] == "id") {
-            editObjectInfomartion.secretId = data['value'];
-          } else if (data['variable'] == "type") {
+          }  else if (data['variable'] == "type") {
             editObjectInfomartion.type = data['value'];
             if (editObjectInfomartion.type == null) {
               editObjectInfomartion.type = "";

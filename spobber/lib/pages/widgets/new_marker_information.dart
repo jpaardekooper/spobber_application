@@ -43,8 +43,11 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     'Lijmlas Railpro-HIRD'
   ];
   String _typesTxt = '';
+  bool typesTextChanged = false;
   String _statusTxt = '';
+  bool statusChanged = false;
   String _plaatsingTxt = '';
+  bool plaatsingChanged = false;
   List<String> _plaatsing = <String>[
     '',
     '01-vk_Ltg',
@@ -183,6 +186,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     '137-wlnr2-ak_psk3_L',
     '138-wlnr2-ak_psk3_R',
     '139-wlnr2-ak_Rssps',
+    'Es-las'
   ];
   MarkerDetail newMarkerDetail = MarkerDetail();
   final GlobalKey<ScaffoldState> _scaffoldKeyThree = GlobalKey<ScaffoldState>();
@@ -319,6 +323,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                   isDense: true,
                   onChanged: (String newValue) {
                     setState(() {
+                      typesTextChanged = true;
                       newMarkerDetail.type = newValue;
                       _typesTxt = newValue;
                       state.didChange(newValue);
@@ -337,6 +342,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           },
           validator: (val) {
             return val != '' ? null : 'Selecteer het type es-las';
+          },
+          onSaved: (value) {
+            newMarkerDetail.type = value;
           },
         ),
         Divider(
@@ -416,15 +424,18 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       color: Theme.of(context).accentColor,
                       fontSize: 17,
                       fontWeight: FontWeight.bold)),
-              isEmpty: _statusTxt == widget.markerinformation.equipmentStatus,
+              // isEmpty: _statusTxt == widget.markerinformation.equipmentStatus,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton(
-                  value: _statusTxt,
+                  value: statusChanged
+                      ? _statusTxt
+                      : widget.markerinformation.equipmentStatus,
                   isDense: true,
                   autofocus: false,
                   focusNode: fequipmentStatus,
                   onChanged: (String newValue) {
                     setState(() {
+                      statusChanged = true;
                       newMarkerDetail.equipmentStatus = newValue;
                       _statusTxt = newValue;
                       state.didChange(newValue);
@@ -553,15 +564,18 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       color: Theme.of(context).accentColor,
                       fontSize: 17,
                       fontWeight: FontWeight.bold)),
-              isEmpty: _plaatsingTxt == widget.markerinformation.placement,
+              // isEmpty: _plaatsingTxt == widget.markerinformation.placement,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton(
-                  value: _plaatsingTxt,
+                  value: plaatsingChanged
+                      ? _plaatsingTxt
+                      : widget.markerinformation.placement,
                   isDense: true,
                   autofocus: false,
                   focusNode: fplacement,
                   onChanged: (String newValue) {
                     setState(() {
+                      plaatsingChanged = true;
                       newMarkerDetail.placement = newValue;
                       _plaatsingTxt = newValue;
                       state.didChange(newValue);
@@ -580,6 +594,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           },
           validator: (val) {
             return val != '' ? null : 'Plaatsing van het object';
+          },
+          onSaved: (value) {
+            newMarkerDetail.placement = value;
           },
         ),
         TextFormField(
@@ -792,6 +809,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               return '';
             }
           },
+          onSaved: (value) {
+            newMarkerDetail.creator = userInformation.username;
+          },
         ),
         MaterialButton(
           // minWidth: _loginAnimation.value,
@@ -820,8 +840,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
       appBar: AppBar(
         title: Text(widget.markerinformation.readableID),
         leading: new IconButton(
-          icon: Icon(Icons.arrow_back, color: _send ? Colors.grey : Colors.white),
-          onPressed: _send ? null :() => Navigator.of(context).pop(),
+          icon:
+              Icon(Icons.arrow_back, color: _send ? Colors.grey : Colors.white),
+          onPressed: _send ? null : () => Navigator.of(context).pop(),
         ),
       ),
       body: SingleChildScrollView(
