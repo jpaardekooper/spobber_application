@@ -46,9 +46,9 @@ class _MarkerHistoryState extends State<MarkerHistory> {
 
   MarkerDetail editObjectInfomartion = new MarkerDetail();
   final _controller = ScrollController();
-  final _height = 90;
+  final _height = 10;
 
-  _animateToIndex(i) => _controller.animateTo(_height * i,
+  _animateToIndex(i) => _controller.animateTo(i,
       duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);
 
   @override
@@ -212,7 +212,7 @@ class _MarkerHistoryState extends State<MarkerHistory> {
             editObjectInfomartion.userStatusEquipment = "";
           }
 
-          _animateToIndex(list.length.toDouble()).then((onValue) {
+          _animateToIndex(list.length.toDouble()*35).then((onValue) {
             Navigator.push(
               context,
               MaterialPageRoute(
