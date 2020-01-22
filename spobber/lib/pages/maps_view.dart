@@ -320,7 +320,7 @@ class _MapViewState extends State<MapView>
     if (Platform.isIOS) {
       iosMapStopped?.cancel();
       iosMapStopped =
-          Timer(const Duration(milliseconds: 150), _updateMarkerOnMap);
+          Timer(const Duration(milliseconds: 400), _updateMarkerOnMap);
     }
   }
 
