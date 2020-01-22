@@ -53,7 +53,7 @@ class _MarkerHistoryState extends State<MarkerHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(    
+    return Scaffold(
       body: ListView.separated(
         controller: _controller,
         itemCount: list.length,
@@ -78,7 +78,7 @@ class _MarkerHistoryState extends State<MarkerHistory> {
             if (editObjectInfomartion.secretId == null) {
               editObjectInfomartion.secretId = "";
             }
-          }  else if (data['variable'] == "type") {
+          } else if (data['variable'] == "type") {
             editObjectInfomartion.type = data['value'];
             if (editObjectInfomartion.type == null) {
               editObjectInfomartion.type = "";
@@ -152,8 +152,7 @@ class _MarkerHistoryState extends State<MarkerHistory> {
             if (editObjectInfomartion.year == null) {
               editObjectInfomartion.year = 0;
             }
-          }
-           else if (data['variable'] == "image") {
+          } else if (data['variable'] == "image") {
             // editObjectInfomartion. = data['value'];
             // if (editObjectInfomartion.year == null) {
             //   editObjectInfomartion.year = 0;
@@ -166,40 +165,38 @@ class _MarkerHistoryState extends State<MarkerHistory> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 index % 3 == 0 && index != 0
-                    ? Container(
-                        color: const Color(0xff0066C6),
-                        child: const Text(""),
-                      )
-                    : Container(),
-                   Card(
-               //  margin: index == list.length ? EdgeInsets.only(bottom: 50) : EdgeInsets.only(bottom: 0),
-                  child: ListTile(
-                    contentPadding: index == list.length-1 ? EdgeInsets.only(left: 10, right: 60, top: 10, bottom: 10) : EdgeInsets.all(10),
-                    leading: const Icon(Icons.info),
-                    title: Text(
-                      data['variable'].toString().toUpperCase(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      data['value'].toString(),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.content_copy),
-                      iconSize: 20,
-                      color: Colors.grey[500],
-                      onPressed: () {
-                        Clipboard.setData(
-                            new ClipboardData(text: data['value'].toString()));
-                        showToast("Copied", context,
-                            gravity: Toast.BOTTOM,
-                            duration: Toast.LENGTH_SHORT);
-                      },
-                    ),
-                  ),
-                ),
-               
+                    ? Container(color: const Color(0xff0066C6), height: 10)
+                    : Card(
+                        //  margin: index == list.length ? EdgeInsets.only(bottom: 50) : EdgeInsets.only(bottom: 0),
+                        child: ListTile(
+                          contentPadding: index == list.length - 1
+                              ? EdgeInsets.only(
+                                  left: 10, right: 60, top: 10, bottom: 10)
+                              : EdgeInsets.all(10),
+                          leading: const Icon(Icons.info),
+                          title: Text(
+                            data['variable'].toString().toUpperCase(),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            data['value'].toString(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.content_copy),
+                            iconSize: 20,
+                            color: Colors.grey[500],
+                            onPressed: () {
+                              Clipboard.setData(new ClipboardData(
+                                  text: data['value'].toString()));
+                              showToast("Copied", context,
+                                  gravity: Toast.BOTTOM,
+                                  duration: Toast.LENGTH_SHORT);
+                            },
+                          ),
+                        ),
+                      ),
               ]);
         },
       ),

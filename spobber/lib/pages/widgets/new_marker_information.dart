@@ -416,57 +416,85 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
             newMarkerDetail.equipmentId = value;
           },
         ),
-        FormField(
-          builder: (FormFieldState state) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                  alignLabelWithHint: true,
-                  icon: _getStatusCode(_statusTxt),
-                  helperText: 'Status van het object in de railinfrastructuur',
-                  labelText: 'Status'.toUpperCase(),
-                  labelStyle: TextStyle(
-                      color: Theme.of(context).accentColor,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold)),
-              // isEmpty: _statusTxt == widget.markerinformation.equipmentStatus,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                  value: statusChanged
-                      ? _statusTxt
-                      : widget.markerinformation.equipmentStatus,
-                  isDense: true,
-                  autofocus: false,
-                  focusNode: fequipmentStatus,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      statusChanged = true;
-                      newMarkerDetail.equipmentStatus = newValue;
-                      _statusTxt = newValue;
-                      state.didChange(newValue);
-                      _fieldFocusChange(
-                          context, fequipmentStatus, fuserStatusEquipment);
-                    });
-                  },
-                  items: _status.map((String value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
-            );
-          },
-          validator: (val) {
-            return val != '' ? null : 'Status van het object';
+        // FormField(
+        //   builder: (FormFieldState state) {
+        //     return InputDecorator(
+        //       decoration: InputDecoration(
+        //           alignLabelWithHint: true,
+        //           icon: _getStatusCode(_statusTxt),
+        //           helperText: 'Status van het object in de railinfrastructuur',
+        //           labelText: 'Status'.toUpperCase(),
+        //           labelStyle: TextStyle(
+        //               color: Theme.of(context).accentColor,
+        //               fontSize: 17,
+        //               fontWeight: FontWeight.bold)),
+        //       isEmpty: _statusTxt == "",
+        //       child: DropdownButtonHideUnderline(
+        //         child: DropdownButton(
+        //           value: _statusTxt,
+        //           // ? _statusTxt
+        //           // :  widget.markerinformation.equipmentStatus,
+        //           isDense: true,
+        //           autofocus: false,
+        //           focusNode: fequipmentStatus,
+        //           onChanged: (String newValue) {
+        //             setState(() {
+        //               statusChanged = true;
+        //               newMarkerDetail.equipmentStatus = newValue;
+        //               _statusTxt = newValue;
+        //               state.didChange(newValue);
+        //               _fieldFocusChange(
+        //                   context, fequipmentStatus, fuserStatusEquipment);
+        //             });
+        //           },
+        //           items: _status.map((String value) {
+        //             return DropdownMenuItem(
+        //               value: value,
+        //               child: Text(value),
+        //             );
+        //           }).toList(),
+        //         ),
+        //       ),
+        //     );
+        //   },
+        //   validator: (val) {
+        //     return val != '' ? null : 'Status van het object';
+        //   },
+        //   onSaved: (value) {
+        //     if (statusChanged = true) {
+        //       newMarkerDetail.equipmentStatus = value;
+        //     } else {
+        //       newMarkerDetail.equipmentStatus =
+        //           widget.markerinformation.equipmentStatus;
+        //     }
+        //   },
+        // ),
+        TextFormField(
+          enabled: true,
+          initialValue: '${widget.markerinformation.equipmentStatus}',
+          decoration: InputDecoration(
+              alignLabelWithHint: true,
+              icon: const Icon(Icons.live_help),
+              helperText: 'Status van het object in de railinfrastructuur',
+              labelText: 'Status'.toUpperCase(),
+              labelStyle: TextStyle(
+                  color: Theme.of(context).accentColor,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold)),
+          // validator: (value) {
+          //   if (value.isEmpty) {
+          //     return 'Please enter some text';
+          //   } else {
+          //     newMarkerDetail.userStatusEquipment = value;
+          //   }
+          // },
+          autofocus: false,
+          focusNode: fequipmentStatus,
+          onFieldSubmitted: (term) {
+            _fieldFocusChange(context, fequipmentStatus, fuserStatusEquipment);
           },
           onSaved: (value) {
-            if (statusChanged = true) {
-              newMarkerDetail.equipmentStatus = value;
-            } else {
-              newMarkerDetail.equipmentStatus =
-                  widget.markerinformation.equipmentStatus;
-            }
+            newMarkerDetail.equipmentStatus = value;
           },
         ),
         Divider(
