@@ -344,7 +344,11 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
             return val != '' ? null : 'Selecteer het type es-las';
           },
           onSaved: (value) {
-            newMarkerDetail.type = value;
+            if (typesTextChanged) {
+              newMarkerDetail.type = value;
+            } else {
+              newMarkerDetail.type = widget.markerinformation.type;
+            }
           },
         ),
         Divider(
@@ -455,6 +459,14 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           },
           validator: (val) {
             return val != '' ? null : 'Status van het object';
+          },
+          onSaved: (value) {
+            if (statusChanged = true) {
+              newMarkerDetail.equipmentStatus = value;
+            } else {
+              newMarkerDetail.equipmentStatus =
+                  widget.markerinformation.equipmentStatus;
+            }
           },
         ),
         Divider(
@@ -596,7 +608,11 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
             return val != '' ? null : 'Plaatsing van het object';
           },
           onSaved: (value) {
-            newMarkerDetail.placement = value;
+            if (plaatsingChanged) {
+              newMarkerDetail.placement = value;
+            } else {
+              newMarkerDetail.placement = widget.markerinformation.placement;
+            }
           },
         ),
         TextFormField(
