@@ -157,7 +157,7 @@ class _MapViewState extends State<MapView>
   void loadThisDataSet() async {
     for(int i =0; i< places.length; i++){
        final markerLocation = places[i];
-       
+
        markers.add(
         MapMarker(
           readableId: markerLocation.readableID,
@@ -345,13 +345,12 @@ class _MapViewState extends State<MapView>
 
   //when the camera is Idle for Android or IOS update the markers
   Future<void> _updateMarkerOnMap() async {
-    print(currentUpdate);
-    print(_currentZoom);
+
     if (_clusterManager == null ||
         _currentZoom == currentUpdate && loadmarkers == false) return;
     loadmarkers = false;
     currentUpdate = _currentZoom;
-    print("kom ik nu huier");
+
     final updatedMarkers = await MapHelper.getClusterMarkers(
       _clusterManager,
       _currentZoom,
