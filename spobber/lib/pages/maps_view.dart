@@ -155,9 +155,10 @@ class _MapViewState extends State<MapView>
 
   final List<MapMarker> markers = [];
   void loadThisDataSet() async {
-    for (PlaceResponse markerLocation in places) {
-      //if there is no image found and
-      markers.add(
+    for(int i =0; i< places.length; i++){
+       final markerLocation = places[i];
+       
+       markers.add(
         MapMarker(
           readableId: markerLocation.readableID,
           secretId: markerLocation.secretId,
@@ -173,6 +174,24 @@ class _MapViewState extends State<MapView>
         ),
       );
     }
+    // for (PlaceResponse markerLocation in places) {
+    //   //if there is no image found and
+    //   markers.add(
+    //     MapMarker(
+    //       readableId: markerLocation.readableID,
+    //       secretId: markerLocation.secretId,
+    //       equipment: markerLocation.equipmentId.toString(),
+    //       objectUri: markerLocation.objectUri,
+    //       onTapFunction: openMarkerInfo,
+    //       placement: markerLocation.placement,
+    //       position: LatLng(markerLocation.latitude, markerLocation.longitude),
+    //       // LatLng(dp(markerLocation.latitude,6), dp(markerLocation.longitude,6)),
+    //       icon: decideWhichImage(markerLocation.source),
+    //       type: markerLocation.type,
+    //       source: markerLocation.source,
+    //     ),
+    //   );
+    // }
     places.clear();
 
     _clusterManager = await MapHelper.initClusterManager(
