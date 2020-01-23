@@ -436,7 +436,8 @@ class _MapViewState extends State<MapView>
       //
     );
   }
-
+  LatLng mylocation = LatLng(52.2537241,5.463287);
+  
   @override
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);

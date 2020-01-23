@@ -56,12 +56,24 @@ class MapHelper {
 
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
-    final Paint paint = Paint()..color = clusterSize < 300 ? clusterColor : Colors.blue[900];
+    Paint paint;
     final TextPainter textPainter = TextPainter(
       textDirection: TextDirection.ltr,
     );
 
-  
+    if (clusterSize > 1000) {
+      paint = Paint()..color = Colors.blue[900];
+    } else if (clusterSize > 500) {
+      paint = Paint()..color = Colors.blue[800];
+    } else if (clusterSize > 250) {
+      paint = Paint()..color = Colors.blue[600];
+    } else if (clusterSize > 150) {
+      paint = Paint()..color = Colors.blue[500];
+    } else if (clusterSize > 75) {
+      paint = Paint()..color = Colors.blue[400];    
+    } else {
+      paint = Paint()..color = Colors.blue[200];
+    }
     final double radius = width / 2;
 
     canvas.drawCircle(
@@ -69,7 +81,7 @@ class MapHelper {
       radius,
       paint,
     );
-    
+
     textPainter.text = TextSpan(
       text: clusterSize.toString(),
       style: TextStyle(

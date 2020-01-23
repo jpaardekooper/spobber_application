@@ -17,18 +17,16 @@ class MapMarker extends Clusterable {
   final String secretId;
   final LatLng position;
   BitmapDescriptor icon;
-  final VoidCallback onTapFunction;
+  final Function onTapFunction;
   final String equipment;
   final String objectUri;
   final String placement;
   final String source;
   final String type;
 
-
   MapMarker({
     @required this.readableId,
     @required this.position,
-
     this.icon,
     this.secretId,
     this.equipment,
@@ -64,8 +62,8 @@ class MapMarker extends Clusterable {
           //   selectMarker(equipment, secretId, objectUri);
           currentSelectedMarkerID = readableId;
           currentSelectedMarkerSecretID = secretId;
-          currentSelectedMarkerObjectUri = objectUri;  
-            currentSelectedMarkerSource = source;     
+          currentSelectedMarkerObjectUri = objectUri;
+          currentSelectedMarkerSource = source;
         },
         //   consumeTapEvents: true,
         infoWindow: isCluster
