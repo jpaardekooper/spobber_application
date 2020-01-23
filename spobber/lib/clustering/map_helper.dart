@@ -56,11 +56,12 @@ class MapHelper {
 
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
-    final Paint paint = Paint()..color = clusterColor;
+    final Paint paint = Paint()..color = clusterSize < 300 ? clusterColor : Colors.blue[900];
     final TextPainter textPainter = TextPainter(
       textDirection: TextDirection.ltr,
     );
 
+  
     final double radius = width / 2;
 
     canvas.drawCircle(
@@ -68,7 +69,7 @@ class MapHelper {
       radius,
       paint,
     );
-
+    
     textPainter.text = TextSpan(
       text: clusterSize.toString(),
       style: TextStyle(

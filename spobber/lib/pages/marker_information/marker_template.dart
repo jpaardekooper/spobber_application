@@ -12,12 +12,13 @@ class MarkerTemplate extends StatelessWidget {
   MarkerTemplate(
       {Key key,
       @required this.type,
-      this.readableId,
+      @required this.readableId,
       this.secretId,
       @required this.source})
       : super(key: key);
 
   Widget _scaffoldWithTabs(BuildContext context) {
+    print(secretId);
     return SafeArea(
       child: DefaultTabController(
         length: 2,

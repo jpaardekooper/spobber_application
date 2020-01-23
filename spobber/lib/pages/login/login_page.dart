@@ -9,7 +9,6 @@ import 'package:spobber/data/Users.dart';
 import 'package:spobber/pages/login/register_page.dart';
 import 'package:spobber/pages/homescreen_tabs.dart';
 
-
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class LoginPage extends StatefulWidget {
@@ -293,6 +292,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           User.fromJson(json.decode(sharedpreferences.getString('user')));
       String _username = user.username;
       String _password = user.password;
+      goToMainPage();
 
       final response = await http.get(
           'http://spobber.azurewebsites.net/api/authentication/login?username=$_username&password=$_password');
@@ -301,7 +301,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         showMessage('Login was succesvol!', Colors.blue);
 
         //      Future.delayed(const Duration(milliseconds: 500), () {
-        goToMainPage();
+
         //  });
       } else {
         print(response.statusCode);

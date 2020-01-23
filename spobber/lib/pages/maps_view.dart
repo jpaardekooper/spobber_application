@@ -372,7 +372,7 @@ class _MapViewState extends State<MapView>
     return GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
-        target: mylocation,
+        target: LatLng(52.2537241,5.463287),
         zoom: _currentZoom,
       ),
       markers: _markers,
@@ -535,7 +535,7 @@ class _MapViewState extends State<MapView>
       lastmarker = currentMarker;
       _markers.add(currentMarker);
     });
-
+    
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
