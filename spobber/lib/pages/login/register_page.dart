@@ -76,14 +76,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       key: _scaffoldKeyRegister,
-      appBar:  AppBar(
+      appBar: AppBar(
         title: const Text('Registreren'),
       ),
-      body:  SingleChildScrollView(
-        child:  Container(
-          margin:  const EdgeInsets.all(25.0),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(25.0),
           child: Form(
             key: _key,
             autovalidate: _validate,
@@ -102,6 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget registeringUI() {
     return Column(
       children: <Widget>[
+     
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.1,
         ),
@@ -189,15 +190,15 @@ class _RegisterPageState extends State<RegisterPage> {
             labelText: 'Confirm password',
           ),
         ),
-        new SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-        new MaterialButton(
+        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+        MaterialButton(
           // minWidth: _loginAnimation.value,
           minWidth: MediaQuery.of(context).size.width,
           height: 50.0,
           highlightColor: Theme.of(context).primaryColor,
-          color: Color(0xFF0062A5),
+          color: Theme.of(context).primaryColor,
           textColor: Colors.white,
-          child: Text(
+          child: const Text(
             'Verzenden',
             style: TextStyle(color: Colors.white),
           ),

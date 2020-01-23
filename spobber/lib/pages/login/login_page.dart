@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:spobber/clustering/map_helper.dart';
+
 import 'package:spobber/data/Users.dart';
 import 'package:spobber/pages/login/register_page.dart';
 import 'package:spobber/pages/homescreen_tabs.dart';
-import 'package:spobber/data/global_variable.dart';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
 
@@ -43,31 +42,31 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    initIcons();
+    //  initIcons();
     loadData();
   }
 
-  static const String _markerImageUrlSap =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+  // static const String _markerImageUrlSap =
+  //     'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
-  /// Url image used on cluster markers (red)
-  static const String _markerImageUrlSigma =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/SIGMA.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+  // /// Url image used on cluster markers (red)
+  // static const String _markerImageUrlSigma =
+  //     'https://spobberstorageaccount.dfs.core.windows.net/marker/SIGMA.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
-  /// Url image used on cluster markers (blue)
-  static const String _markerImageUrlMeetTrein =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+  // /// Url image used on cluster markers (blue)
+  // static const String _markerImageUrlMeetTrein =
+  //     'https://spobberstorageaccount.dfs.core.windows.net/marker/ust02.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
-  static const String _markerImageSpobber =
-      'https://spobberstorageaccount.dfs.core.windows.net/marker/spobber.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
+  // static const String _markerImageSpobber =
+  //     'https://spobberstorageaccount.dfs.core.windows.net/marker/spobber.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
-  initIcons() async {
-    markerSap = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
-    markerSigma = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
-    markerUst02 =
-        await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
-    markerSpobber = await MapHelper.getMarkerImageFromUrl(_markerImageSpobber);
-  }
+  // initIcons() async {
+  //   markerSap = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
+  //   markerSigma = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
+  //   markerUst02 =
+  //       await MapHelper.getMarkerImageFromUrl(_markerImageUrlMeetTrein);
+  //   markerSpobber = await MapHelper.getMarkerImageFromUrl(_markerImageSpobber);
+  // }
 
   final GlobalKey<ScaffoldState> _scaffoldKeyLogin = GlobalKey<ScaffoldState>();
 
@@ -78,10 +77,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   loadanimation() {
     _loginAnimationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1500));
+        vsync: this, duration: Duration(milliseconds: 1000));
 
     _loginAnimation =
-        Tween(begin: MediaQuery.of(context).size.width * 0.8, end: 50.0)
+        Tween(begin: MediaQuery.of(context).size.width * 0.9, end: 50.0)
             .animate(
       new CurvedAnimation(
         parent: _loginAnimationController,
@@ -92,6 +91,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       ),
     );
   }
+
   bool userFound = false;
   void loadData() async {
     sharedpreferences = await SharedPreferences.getInstance();
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
       final encrypted = encrypter.encrypt(_password, iv: iv);
       final decrypted = encrypter.decrypt(encrypted, iv: iv);
-     // print(decrypted);
+      // print(decrypted);
 
       if (decrypted == _password) {
         saveUser(User(
@@ -129,9 +129,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             email: login.email));
         showMessage('Login was succesvol!', Colors.blue);
 
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          goToMainPage();
-        });
+        //   Future.delayed(const Duration(milliseconds: 1000), () {
+        goToMainPage();
+        //   });
       } else {
         _errorMessage();
       }
@@ -153,6 +153,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       resizeToAvoidBottomPadding: false,
       key: _scaffoldKeyLogin,
       body: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        margin: EdgeInsets.all(25),
         child: new Form(
           key: _key,
           autovalidate: _validate,
@@ -163,128 +165,125 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   Widget loginWidget() {
-    return Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.center,
-        child: Column(children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.26,
-                ),
-                TextFormField(
-                  validator: validateName,
-                  textInputAction: TextInputAction.next,
-                  focusNode: _nameFocus,
-                  onFieldSubmitted: (term) {
-                    _fieldFocusChange(context, _nameFocus, _passwordFocus);
-                  },
-                  autofocus: false,
-                  onSaved: (String val) async {
-                    name = val;
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    errorText: invalidInfo ? 'Invalide inloggegevens' : null,
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
-                ),
-                TextFormField(
-                  validator: validatePassword,
-                  focusNode: _passwordFocus,
-                  textInputAction: TextInputAction.done,
-                  obscureText: checkpassword ? false : true,
-                  autofocus: false,
-                  onSaved: (String val) async {
-                    password = val;
-                    //password = await cryptor.encrypt(val, key);
-                  },
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        Icons.remove_red_eye,
-                        color: checkpassword ? Colors.red : Colors.grey[700],
-                      ),
-                      onPressed: () => setState(() {
-                        checkpassword = !checkpassword;
-                      }),
-                    ),
-                    prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                  ),
-                ),
-              ],
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          height: 150.0,
+          width: 150.0,
+          decoration: new BoxDecoration(
+            image: DecorationImage(
+                image: new AssetImage('assets/ic_launcher.png'),
+                fit: BoxFit.contain),
           ),
-          Padding(
-            padding: EdgeInsets.all(20),
+        ),
+        TextFormField(
+          validator: validateName,
+          textInputAction: TextInputAction.next,
+          focusNode: _nameFocus,
+          onFieldSubmitted: (term) {
+            _fieldFocusChange(context, _nameFocus, _passwordFocus);
+          },
+          autofocus: false,
+          onSaved: (String val) async {
+            name = val;
+          },
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.person),
+            errorText: invalidInfo ? 'Invalide inloggegevens' : null,
+            border: OutlineInputBorder(),
+            labelText: 'Username',
           ),
-          AnimatedBuilder(
-            animation: _loginAnimationController,
-            builder: (context, child) {
-              return MaterialButton(
-                minWidth: _loginAnimation.value,
-                height: 50.0,
-                highlightColor: Theme.of(context).primaryColor,
-                color: Color(0xFF0062A5),
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: _loginAnimation.value > 75
-                      ? new BorderRadius.circular(10.0)
-                      : new BorderRadius.circular(100.0),
-                  //  side: BorderSide(color: Colors.red)
-                ),
-                child: _loginAnimation.value > 75
-                    ? Text(
-                        userFound ? 'Laden' : 'Log in',
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).primaryTextTheme.title.color,
-                            fontSize: 16),
-                      )
-                    : CircularProgressIndicator(
-                        value: null,
-                        strokeWidth: 2,
-                        valueColor:
-                            new AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                onPressed: () => {
-                  FocusScope.of(context).requestFocus(FocusNode()),
-                  _sendToServer(),
-                },
-                splashColor: Colors.blue,
-              );
-            },
-          ),
-
-          Divider(
-            height: 50,
-          ),
-          Container(           
-            height: 30,
-            color: Colors.transparent,
-            child: FlatButton(
-              child: Text(
-                'Heeft u nog geen account?\n Druk hier om te registreren',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.blue[200],
-                  fontSize: 13,
-                ),
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.02,
+        ),
+        TextFormField(
+          validator: validatePassword,
+          focusNode: _passwordFocus,
+          textInputAction: TextInputAction.done,
+          obscureText: checkpassword ? false : true,
+          autofocus: false,
+          onSaved: (String val) async {
+            password = val;
+            //password = await cryptor.encrypt(val, key);
+          },
+          decoration: InputDecoration(
+            suffixIcon: IconButton(
+              icon: Icon(
+                Icons.remove_red_eye,
+                color: checkpassword ? Colors.red : Colors.grey[700],
               ),
-              onPressed:  goToRegistering,
+              onPressed: () => setState(() {
+                checkpassword = !checkpassword;
+              }),
             ),
+            prefixIcon: const Icon(Icons.lock),
+            border: OutlineInputBorder(),
+            labelText: 'Password',
           ),
-        ]));
+        ),
+        Padding(
+          padding: EdgeInsets.all(20),
+        ),
+        AnimatedBuilder(
+          animation: _loginAnimationController,
+          builder: (context, child) {
+            return MaterialButton(
+              minWidth: _loginAnimation.value,
+              height: 50.0,
+              highlightColor: Theme.of(context).primaryColor,
+              color: Theme.of(context).primaryColor,
+              hoverColor: Theme.of(context).primaryColor,
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: _loginAnimation.value > 75
+                    ? new BorderRadius.circular(10.0)
+                    : new BorderRadius.circular(100.0),
+                //  side: BorderSide(color: Colors.red)
+              ),
+              child: _loginAnimation.value > 75
+                  ? Text(
+                      'Log in',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryTextTheme.title.color,
+                          fontSize: 16),
+                    )
+                  : CircularProgressIndicator(
+                      value: null,
+                      strokeWidth: 2,
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+              onPressed: () => {
+                FocusScope.of(context).requestFocus(FocusNode()),
+                _sendToServer(),
+              },
+              splashColor: Colors.blue,
+            );
+          },
+        ),
+        Divider(
+          height: 50,
+        ),
+        Container(
+          height: 30,
+          color: Colors.transparent,
+          child: FlatButton(
+            child: Text(
+              'Heeft u nog geen account?\n Druk hier om te registreren',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.blue[200],
+                fontSize: 14,
+              ),
+            ),
+            onPressed: goToRegistering,
+          ),
+        ),
+      ],
+    );
   }
 
   void autoLogin() async {
@@ -293,6 +292,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           User.fromJson(json.decode(sharedpreferences.getString('user')));
       String _username = user.username;
       String _password = user.password;
+      goToMainPage();
 
       final response = await http.get(
           'http://spobber.azurewebsites.net/api/authentication/login?username=$_username&password=$_password');
@@ -300,9 +300,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       if (response.statusCode == 200) {
         showMessage('Login was succesvol!', Colors.blue);
 
-        Future.delayed(const Duration(milliseconds: 250), () {
-          goToMainPage();
-        });
+        //      Future.delayed(const Duration(milliseconds: 500), () {
+
+        //  });
       } else {
         print(response.statusCode);
         return null;

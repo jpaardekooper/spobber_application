@@ -43,8 +43,11 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     'Lijmlas Railpro-HIRD'
   ];
   String _typesTxt = '';
+  bool typesTextChanged = false;
   String _statusTxt = '';
+  bool statusChanged = false;
   String _plaatsingTxt = '';
+  bool plaatsingChanged = false;
   List<String> _plaatsing = <String>[
     '',
     '01-vk_Ltg',
@@ -183,6 +186,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     '137-wlnr2-ak_psk3_L',
     '138-wlnr2-ak_psk3_R',
     '139-wlnr2-ak_Rssps',
+    'Es-las'
   ];
   MarkerDetail newMarkerDetail = MarkerDetail();
   final GlobalKey<ScaffoldState> _scaffoldKeyThree = GlobalKey<ScaffoldState>();
@@ -216,7 +220,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   Widget registeringUI() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[     
+      children: <Widget>[
         TextFormField(
           enabled: false,
           initialValue: '${widget.markerinformation.readableID}',
@@ -319,6 +323,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                   isDense: true,
                   onChanged: (String newValue) {
                     setState(() {
+                      typesTextChanged = true;
                       newMarkerDetail.type = newValue;
                       _typesTxt = newValue;
                       state.didChange(newValue);
@@ -337,6 +342,13 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           },
           validator: (val) {
             return val != '' ? null : 'Selecteer het type es-las';
+          },
+          onSaved: (value) {
+            if (typesTextChanged) {
+              newMarkerDetail.type = value;
+            } else {
+              newMarkerDetail.type = widget.markerinformation.type;
+            }
           },
         ),
         Divider(
@@ -404,46 +416,85 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
             newMarkerDetail.equipmentId = value;
           },
         ),
-        FormField(
-          builder: (FormFieldState state) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                  alignLabelWithHint: true,
-                  icon: _getStatusCode(_statusTxt),
-                  helperText: 'Status van het object in de railinfrastructuur',
-                  labelText: 'Status'.toUpperCase(),
-                  labelStyle: TextStyle(
-                      color: Theme.of(context).accentColor,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold)),
-              isEmpty: _statusTxt == widget.markerinformation.equipmentStatus,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton(
-                  value: _statusTxt,
-                  isDense: true,
-                  autofocus: false,
-                  focusNode: fequipmentStatus,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      newMarkerDetail.equipmentStatus = newValue;
-                      _statusTxt = newValue;
-                      state.didChange(newValue);
-                      _fieldFocusChange(
-                          context, fequipmentStatus, fuserStatusEquipment);
-                    });
-                  },
-                  items: _status.map((String value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
-            );
+        // FormField(
+        //   builder: (FormFieldState state) {
+        //     return InputDecorator(
+        //       decoration: InputDecoration(
+        //           alignLabelWithHint: true,
+        //           icon: _getStatusCode(_statusTxt),
+        //           helperText: 'Status van het object in de railinfrastructuur',
+        //           labelText: 'Status'.toUpperCase(),
+        //           labelStyle: TextStyle(
+        //               color: Theme.of(context).accentColor,
+        //               fontSize: 17,
+        //               fontWeight: FontWeight.bold)),
+        //       isEmpty: _statusTxt == "",
+        //       child: DropdownButtonHideUnderline(
+        //         child: DropdownButton(
+        //           value: _statusTxt,
+        //           // ? _statusTxt
+        //           // :  widget.markerinformation.equipmentStatus,
+        //           isDense: true,
+        //           autofocus: false,
+        //           focusNode: fequipmentStatus,
+        //           onChanged: (String newValue) {
+        //             setState(() {
+        //               statusChanged = true;
+        //               newMarkerDetail.equipmentStatus = newValue;
+        //               _statusTxt = newValue;
+        //               state.didChange(newValue);
+        //               _fieldFocusChange(
+        //                   context, fequipmentStatus, fuserStatusEquipment);
+        //             });
+        //           },
+        //           items: _status.map((String value) {
+        //             return DropdownMenuItem(
+        //               value: value,
+        //               child: Text(value),
+        //             );
+        //           }).toList(),
+        //         ),
+        //       ),
+        //     );
+        //   },
+        //   validator: (val) {
+        //     return val != '' ? null : 'Status van het object';
+        //   },
+        //   onSaved: (value) {
+        //     if (statusChanged = true) {
+        //       newMarkerDetail.equipmentStatus = value;
+        //     } else {
+        //       newMarkerDetail.equipmentStatus =
+        //           widget.markerinformation.equipmentStatus;
+        //     }
+        //   },
+        // ),
+        TextFormField(
+          enabled: true,
+          initialValue: '${widget.markerinformation.equipmentStatus}',
+          decoration: InputDecoration(
+              alignLabelWithHint: true,
+              icon: const Icon(Icons.live_help),
+              helperText: 'Status van het object in de railinfrastructuur',
+              labelText: 'Status'.toUpperCase(),
+              labelStyle: TextStyle(
+                  color: Theme.of(context).accentColor,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold)),
+          // validator: (value) {
+          //   if (value.isEmpty) {
+          //     return 'Please enter some text';
+          //   } else {
+          //     newMarkerDetail.userStatusEquipment = value;
+          //   }
+          // },
+          autofocus: false,
+          focusNode: fequipmentStatus,
+          onFieldSubmitted: (term) {
+            _fieldFocusChange(context, fequipmentStatus, fuserStatusEquipment);
           },
-          validator: (val) {
-            return val != '' ? null : 'Status van het object';
+          onSaved: (value) {
+            newMarkerDetail.equipmentStatus = value;
           },
         ),
         Divider(
@@ -553,15 +604,18 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
                       color: Theme.of(context).accentColor,
                       fontSize: 17,
                       fontWeight: FontWeight.bold)),
-              isEmpty: _plaatsingTxt == widget.markerinformation.placement,
+              // isEmpty: _plaatsingTxt == widget.markerinformation.placement,
               child: DropdownButtonHideUnderline(
                 child: DropdownButton(
-                  value: _plaatsingTxt,
+                  value: plaatsingChanged
+                      ? _plaatsingTxt
+                      : widget.markerinformation.placement,
                   isDense: true,
                   autofocus: false,
                   focusNode: fplacement,
                   onChanged: (String newValue) {
                     setState(() {
+                      plaatsingChanged = true;
                       newMarkerDetail.placement = newValue;
                       _plaatsingTxt = newValue;
                       state.didChange(newValue);
@@ -580,6 +634,13 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           },
           validator: (val) {
             return val != '' ? null : 'Plaatsing van het object';
+          },
+          onSaved: (value) {
+            if (plaatsingChanged) {
+              newMarkerDetail.placement = value;
+            } else {
+              newMarkerDetail.placement = widget.markerinformation.placement;
+            }
           },
         ),
         TextFormField(
@@ -768,12 +829,12 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           // validator: (value) {
           //   if (value.isEmpty) {
           //     return 'Please enter some text';
-          //   } else {             
+          //   } else {
           //     return '';
           //   }
           // },
         ),
-         TextFormField(
+        TextFormField(
           enabled: false,
           initialValue: "${userInformation.username}",
           decoration: InputDecoration(
@@ -792,6 +853,9 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
               return '';
             }
           },
+          onSaved: (value) {
+            newMarkerDetail.creator = userInformation.username;
+          },
         ),
         MaterialButton(
           // minWidth: _loginAnimation.value,
@@ -800,24 +864,30 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
           highlightColor: Theme.of(context).primaryColor,
           color: Theme.of(context).primaryColor,
           textColor: Colors.white,
-          child: Text(
+          child: const Text(
             'Verzenden',
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
           onPressed: _submitForm,
-          splashColor: Colors.blue,
+          splashColor: Theme.of(context).accentColor,
         ),
       ],
     );
   }
 
   bool _validate = false;
+  bool _send = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKeyThree,
       appBar: AppBar(
         title: Text(widget.markerinformation.readableID),
+        leading: new IconButton(
+          icon:
+              Icon(Icons.arrow_back, color: _send ? Colors.grey : Colors.white),
+          onPressed: _send ? null : () => Navigator.of(context).pop(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -854,52 +924,54 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   }
 
   void _submitForm() async {
-  
     // if (_formKey.validate()) {
     //   setState(() {
     //     _validate = true;
     //   });
     //   showMessage('Form is not valid!  Please review and correct.');
     // } else {
-      newMarkerDetail.readableID = widget.markerinformation.readableID;
-      newMarkerDetail.secretId = widget.markerinformation.secretId;
-      newMarkerDetail.picFileName = "";
-      _formKey.currentState.save(); //This invokes each onSaved event
+    setState(() {
+      _send = true;
+    });
+    newMarkerDetail.readableID = widget.markerinformation.readableID;
+    newMarkerDetail.secretId = widget.markerinformation.secretId;
+    newMarkerDetail.picFileName = "";
+    _formKey.currentState.save(); //This invokes each onSaved event
 
-      print('Form save called, newContact is now up to date...');
-      print('secretId: ${newMarkerDetail.secretId}');
-      print('type: ${newMarkerDetail.type}');
-      print('description: ${newMarkerDetail.description}');
-      print('equipmentStatus: ${newMarkerDetail.equipmentStatus}');
-      print('userStatusEquipment: ${newMarkerDetail.userStatusEquipment}');
-      print('parentEquipKind: ${newMarkerDetail.parentEquipKind}');
-      print('datacollection: ${newMarkerDetail.datacollection}');
-      print('placement: ${newMarkerDetail.placement}');
-      print('LAT: ${newMarkerDetail.latitude}');
-      print('LONG: ${newMarkerDetail.longitude}');
-      print('runNr: ${newMarkerDetail.runNr}');
-      print('trackVersion: ${newMarkerDetail.trackVersion}');
-      print('source: ${newMarkerDetail.source}');
-      print('year: ${newMarkerDetail.year}');
-      print('readableID: ${newMarkerDetail.readableID}');
-      print('Auteur: ${newMarkerDetail.creator}');
-      print('========================================');
-      print('Submitting to back end...');
-      print('TODO - we will write the submission part next...');
+    print('Form save called, newContact is now up to date...');
+    print('secretId: ${newMarkerDetail.secretId}');
+    print('type: ${newMarkerDetail.type}');
+    print('description: ${newMarkerDetail.description}');
+    print('equipmentStatus: ${newMarkerDetail.equipmentStatus}');
+    print('userStatusEquipment: ${newMarkerDetail.userStatusEquipment}');
+    print('parentEquipKind: ${newMarkerDetail.parentEquipKind}');
+    print('datacollection: ${newMarkerDetail.datacollection}');
+    print('placement: ${newMarkerDetail.placement}');
+    print('LAT: ${newMarkerDetail.latitude}');
+    print('LONG: ${newMarkerDetail.longitude}');
+    print('runNr: ${newMarkerDetail.runNr}');
+    print('trackVersion: ${newMarkerDetail.trackVersion}');
+    print('source: ${newMarkerDetail.source}');
+    print('year: ${newMarkerDetail.year}');
+    print('readableID: ${newMarkerDetail.readableID}');
+    print('Auteur: ${newMarkerDetail.creator}');
+    print('========================================');
+    print('Submitting to back end...');
+    print('TODO - we will write the submission part next...');
 
-      var contactService = new MarkerDetail();
-      contactService
-          .createContact(newMarkerDetail)
-          .then((value) => showMessage(
-              'New contact created for ${newMarkerDetail.readableID}!',
-              Colors.blue))
-          .then((_) {
-        Future.delayed(const Duration(milliseconds: 1000), () {
-          Navigator.of(context).pop();
-        });
+    var contactService = new MarkerDetail();
+    contactService
+        .createContact(newMarkerDetail)
+        .then((value) => showMessage(
+            'New contact created for ${newMarkerDetail.readableID}!',
+            Colors.blue))
+        .then((_) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.of(context).pop();
       });
-    }
- // }
+    });
+  }
+  // }
 
   @override
   void dispose() {

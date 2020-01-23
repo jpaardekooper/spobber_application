@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:spobber/data/marker_detail.dart';
 import 'package:spobber/pages/widgets/new_marker_information.dart';
+import 'package:spobber/pages/widgets/show_toast.dart';
+import 'package:toast/toast.dart';
 
 class MarkerHistory extends StatefulWidget {
   final String secretid;
@@ -42,11 +45,17 @@ class _MarkerHistoryState extends State<MarkerHistory> {
   }
 
   MarkerDetail editObjectInfomartion = new MarkerDetail();
+  final _controller = ScrollController();
+  final _height = 10;
+
+  _animateToIndex(i) => _controller.animateTo(i,
+      duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.separated(
+        controller: _controller,
         itemCount: list.length,
         separatorBuilder: (BuildContext context, int index) => Divider(
           height: 0,
@@ -54,211 +63,164 @@ class _MarkerHistoryState extends State<MarkerHistory> {
         itemBuilder: (BuildContext context, int index) {
           final data = list[index];
 
-          if (data['variable'] == "readable_id" || data['variable'] == "id") {
+          if (data['variable'] == "readable_id") {
             editObjectInfomartion.readableID = data['value'];
-            if (editObjectInfomartion.readableID == "" ||
-                editObjectInfomartion.readableID == null) {
+            if (editObjectInfomartion.readableID == null) {
               editObjectInfomartion.readableID = "";
             }
-          }
-          if (data['variable'] == "equipment_id") {
+          } else if (data['variable'] == "equipment_id") {
             editObjectInfomartion.equipmentId = data['value'];
-            if (editObjectInfomartion.equipmentId == "" ||
-                editObjectInfomartion.equipmentId == null) {
+            if (editObjectInfomartion.equipmentId == null) {
               editObjectInfomartion.equipmentId = "";
             }
-          }
-          if (data['variable'] == "secret_id" || data['variable'] == "id") {
+          } else if (data['variable'] == "secret_id") {
             editObjectInfomartion.secretId = data['value'];
-            if (editObjectInfomartion.secretId == "" ||
-                editObjectInfomartion.secretId == null) {
-              editObjectInfomartion.secretId = "NOT_FOUND";
+            if (editObjectInfomartion.secretId == null) {
+              editObjectInfomartion.secretId = "";
             }
-          }
-          if (data['variable'] == "type") {
+          } else if (data['variable'] == "type") {
             editObjectInfomartion.type = data['value'];
-            if (editObjectInfomartion.type == "" ||
-                editObjectInfomartion.type == null) {
+            if (editObjectInfomartion.type == null) {
               editObjectInfomartion.type = "";
             }
-          }
-          if (data['variable'] == "description") {
+          } else if (data['variable'] == "description") {
             editObjectInfomartion.description = data['value'];
-            if (editObjectInfomartion.description == "" ||
-                editObjectInfomartion.description == null) {
+            if (editObjectInfomartion.description == null) {
               editObjectInfomartion.description = "";
             }
-          }
-          if (data['variable'] == "equipment_status") {
+          } else if (data['variable'] == "equipment_status") {
             editObjectInfomartion.equipmentStatus = data['value'];
-            if (editObjectInfomartion.equipmentStatus == "" ||
-                editObjectInfomartion.equipmentStatus == null) {
+            if (editObjectInfomartion.equipmentStatus == null) {
               editObjectInfomartion.equipmentStatus = "";
             }
-          }
-          if (data['variable'] == "user_status_equipment") {
+          } else if (data['variable'] == "user_status_equipment") {
             editObjectInfomartion.userStatusEquipment = data['value'];
-            if (editObjectInfomartion.userStatusEquipment == "" ||
-                editObjectInfomartion.userStatusEquipment == null) {
+            if (editObjectInfomartion.userStatusEquipment == null) {
               editObjectInfomartion.userStatusEquipment = "";
             }
-          }
-          if (data['variable'] == "parent_equip_kind") {
+          } else if (data['variable'] == "parent_equip_kind") {
             editObjectInfomartion.parentEquipKind = data['value'];
-            if (editObjectInfomartion.parentEquipKind == "" ||
-                editObjectInfomartion.parentEquipKind == null) {
+            if (editObjectInfomartion.parentEquipKind == null) {
               editObjectInfomartion.parentEquipKind = "";
             }
-          }
-          if (data['variable'] == "datacollection") {
+          } else if (data['variable'] == "datacollection") {
             editObjectInfomartion.datacollection = data['value'];
-            if (editObjectInfomartion.datacollection == "" ||
-                editObjectInfomartion.datacollection == null) {
+            if (editObjectInfomartion.datacollection == null) {
               editObjectInfomartion.datacollection = "";
             }
-          }
-          if (data['variable'] == "placement") {
+          } else if (data['variable'] == "placement") {
             editObjectInfomartion.placement = data['value'];
-            if (editObjectInfomartion.placement == "" ||
-                editObjectInfomartion.placement == null) {
+            if (editObjectInfomartion.placement == null) {
               editObjectInfomartion.placement = "";
             }
-          }
-          if (data['variable'] == "latitude") {
+          } else if (data['variable'] == "latitude") {
             editObjectInfomartion.latitude = data['value'];
-          }
-          if (data['variable'] == "longitude") {
+          } else if (data['variable'] == "longitude") {
             editObjectInfomartion.longitude = data['value'];
-          }
-          if (data['variable'] == "pic_file_name") {
+          } else if (data['variable'] == "pic_file_name") {
             editObjectInfomartion.picFileName = data['value'];
-            if (editObjectInfomartion.picFileName == "" ||
-                editObjectInfomartion.picFileName == null) {
+            if (editObjectInfomartion.picFileName == null) {
               editObjectInfomartion.picFileName = "";
             }
-          }
-          if (data['variable'] == "run_nr") {
+          } else if (data['variable'] == "run_nr") {
             editObjectInfomartion.runNr = data['value'];
-            if (editObjectInfomartion.runNr == "" ||
-                editObjectInfomartion.runNr == null) {
+            if (editObjectInfomartion.runNr == null) {
               editObjectInfomartion.runNr = "";
             }
-          }
-          if (data['variable'] == "track_version") {
+          } else if (data['variable'] == "track_version") {
             editObjectInfomartion.trackVersion = data['value'];
-            if (editObjectInfomartion.trackVersion == "" ||
-                editObjectInfomartion.trackVersion == null) {
+            if (editObjectInfomartion.trackVersion == null) {
               editObjectInfomartion.trackVersion = "";
             }
-          }
-          if (data['variable'] == "source") {
+          } else if (data['variable'] == "source") {
             editObjectInfomartion.source = data['value'];
-            if (editObjectInfomartion.source == "" ||
-                editObjectInfomartion.source == null) {
+            if (editObjectInfomartion.source == null) {
               editObjectInfomartion.source = "";
             }
-          }
-          if (data['variable'] == "source") {
+          } else if (data['variable'] == "source") {
             editObjectInfomartion.source = data['value'];
-            if (editObjectInfomartion.source == "" ||
-                editObjectInfomartion.source == null) {
+            if (editObjectInfomartion.source == null) {
               editObjectInfomartion.source = "";
             }
-          }
-          if (data['variable'] == "creator") {
+          } else if (data['variable'] == "creator") {
             editObjectInfomartion.creator = data['value'];
-            if (editObjectInfomartion.creator == "" ||
-                editObjectInfomartion.creator == null) {
+            if (editObjectInfomartion.creator == null) {
               editObjectInfomartion.creator = "";
             }
-          }
-          if (data['variable'] == "year") {
+          } else if (data['variable'] == "year") {
             editObjectInfomartion.year = data['value'];
-            if (editObjectInfomartion.year == 0 ||
-                editObjectInfomartion.year == null) {
+            if (editObjectInfomartion.year == null) {
               editObjectInfomartion.year = 0;
             }
+          } else if (data['variable'] == "image") {
+            // editObjectInfomartion. = data['value'];
+            // if (editObjectInfomartion.year == null) {
+            //   editObjectInfomartion.year = 0;
+            // }
           }
 
-          if (index % 4 == 0) {
-            return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    color: Theme.of(context).accentColor,
-                    child: Text(""),
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.all(10.0),
-                    leading: Icon(Icons.info),
-                    title: Text(
-                      data['variable'].toString().toUpperCase(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      data['value'].toString(),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ]);
-          }
-          return ListTile(
-            contentPadding: EdgeInsets.all(10.0),
-            leading: Icon(Icons.info),
-            title: Text(
-              data['variable'].toString().toUpperCase(),
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              data['value'].toString(),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          );
+          //     if (index % 4 == 0) {
+          return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                index % 3 == 0 && index != 0
+                    ? Container(color: const Color(0xff0066C6), height: 10)
+                    : Card(
+                        //  margin: index == list.length ? EdgeInsets.only(bottom: 50) : EdgeInsets.only(bottom: 0),
+                        child: ListTile(
+                          contentPadding: index == list.length - 1
+                              ? EdgeInsets.only(
+                                  left: 10, right: 60, top: 10, bottom: 10)
+                              : EdgeInsets.all(10),
+                          leading: const Icon(Icons.info),
+                          title: Text(
+                            data['variable'].toString().toUpperCase(),
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            data['value'].toString(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.content_copy),
+                            iconSize: 20,
+                            color: Colors.grey[500],
+                            onPressed: () {
+                              Clipboard.setData(new ClipboardData(
+                                  text: data['value'].toString()));
+                              showToast("Copied", context,
+                                  gravity: Toast.BOTTOM,
+                                  duration: Toast.LENGTH_SHORT);
+                            },
+                          ),
+                        ),
+                      ),
+              ]);
         },
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Wijzigen",
-        child: const Icon(Icons.edit),
+        child: const Icon(
+          Icons.edit,
+          color: Colors.white,
+        ),
         heroTag: "edit",
-        onPressed: () async {
-          final MarkerDetail setMarkerInfo = MarkerDetail(
-              //          id: editObjectInfomartion.readableID,
-              secretId: editObjectInfomartion.secretId,
-              type: editObjectInfomartion.type,
-              description: editObjectInfomartion.description,
-              equipmentId: editObjectInfomartion.equipmentId,
-              equipmentStatus: editObjectInfomartion.equipmentStatus,
-              userStatusEquipment:
-                  editObjectInfomartion.userStatusEquipment == null
-                      ? editObjectInfomartion.userStatusEquipment = ""
-                      : editObjectInfomartion.userStatusEquipment,
-              parentEquipKind: editObjectInfomartion.parentEquipKind,
-              datacollection: editObjectInfomartion.datacollection,
-              placement: editObjectInfomartion.placement,
-              latitude: editObjectInfomartion.latitude,
-              longitude: editObjectInfomartion.longitude,
-              picFileName: editObjectInfomartion.picFileName,
-              runNr: editObjectInfomartion.runNr,
-              trackVersion: editObjectInfomartion.trackVersion,
-              source: editObjectInfomartion.source,
-              year: editObjectInfomartion.year, // => 21-04-2019 02:40:25
-              readableID: editObjectInfomartion.readableID,
-              creator: editObjectInfomartion.creator);
+        onPressed: () {
+          if (editObjectInfomartion.userStatusEquipment == null) {
+            editObjectInfomartion.userStatusEquipment = "";
+          }
 
-          Future.delayed(Duration(milliseconds: 500)).then(
-            (onValue) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      (NewMarkerInformation(markerinformation: setMarkerInfo)),
-                ),
-              );
-            },
-          );
+          _animateToIndex(list.length.toDouble()*35).then((onValue) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => (NewMarkerInformation(
+                    markerinformation: editObjectInfomartion)),
+              ),
+            );
+          });
         },
       ),
     );

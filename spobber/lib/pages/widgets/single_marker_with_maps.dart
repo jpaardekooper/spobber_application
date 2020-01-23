@@ -87,6 +87,7 @@ class _SingleMarkerWithMapsState extends State<SingleMarkerWithMaps> {
                     type: singleMarker[0].type,
                     readableId: singleMarker[0].readableID,
                     secretId: singleMarker[0].secretId,
+                    source: singleMarker[0].source
                   ),
                 ),
               );

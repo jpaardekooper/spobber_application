@@ -64,13 +64,10 @@ class _MapViewState extends State<MapView>
   /// Color of the cluster text
   final Color _clusterTextColor = Colors.white;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   //  if (mounted) {
-  //   initIcons();
-  //   //  }
-  // }
+  @override
+  void initState() {
+    super.initState();
+  }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
   Widget _search() {
@@ -85,8 +82,6 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   Future loadDataToMaps() async {
-     closeBottomSheet(isBottomSheetActive);
-     isBottomSheetActive = false;
     loadmarkers = true;
     currentUpdate = 0;
     if (setDataSource.length <= 0) {
@@ -130,12 +125,9 @@ class _MapViewState extends State<MapView>
 
   MapType mapType = MapType.terrain;
   void changeMapType() {
-     closeBottomSheet(isBottomSheetActive);
-     isBottomSheetActive = false;
     final MapType nextType = MapType.values[mapType.index == 2 ? 1 : 2];
-    setState(() {
-      mapType = nextType;
-    });
+    mapType = nextType;
+    setState(() {});
   }
 
   _mapTypeCycler() {
@@ -163,9 +155,10 @@ class _MapViewState extends State<MapView>
 
   final List<MapMarker> markers = [];
   void loadThisDataSet() async {
-    for (PlaceResponse markerLocation in places) {
-      //if there is no image found and
-      markers.add(
+    for(int i =0; i< places.length; i++){
+       final markerLocation = places[i];
+
+       markers.add(
         MapMarker(
           readableId: markerLocation.readableID,
           secretId: markerLocation.secretId,
@@ -181,6 +174,24 @@ class _MapViewState extends State<MapView>
         ),
       );
     }
+    // for (PlaceResponse markerLocation in places) {
+    //   //if there is no image found and
+    //   markers.add(
+    //     MapMarker(
+    //       readableId: markerLocation.readableID,
+    //       secretId: markerLocation.secretId,
+    //       equipment: markerLocation.equipmentId.toString(),
+    //       objectUri: markerLocation.objectUri,
+    //       onTapFunction: openMarkerInfo,
+    //       placement: markerLocation.placement,
+    //       position: LatLng(markerLocation.latitude, markerLocation.longitude),
+    //       // LatLng(dp(markerLocation.latitude,6), dp(markerLocation.longitude,6)),
+    //       icon: decideWhichImage(markerLocation.source),
+    //       type: markerLocation.type,
+    //       source: markerLocation.source,
+    //     ),
+    //   );
+    // }
     places.clear();
 
     _clusterManager = await MapHelper.initClusterManager(
@@ -221,9 +232,8 @@ class _MapViewState extends State<MapView>
       points: points,
     );
     if (mounted) {
-      setState(() {
-        polylines[polylineId] = polyline;
-      });
+      polylines[polylineId] = polyline;
+      setState(() {});
     }
   }
 
@@ -241,8 +251,6 @@ class _MapViewState extends State<MapView>
   }
 
   getDataSourcePopUp() {
-     closeBottomSheet(isBottomSheetActive);
-     isBottomSheetActive = false;
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -250,33 +258,29 @@ class _MapViewState extends State<MapView>
           switchValueisSap: isSap,
           valueChangedisSap: (value) {
             if (mounted) {
-              setState(() {
-                isSap = value;
-              });
+              isSap = value;
+              setState(() {});
             }
           },
           switchValueisSigma: isSigma,
           valueChangedisSigma: (value) {
             if (mounted) {
-              setState(() {
-                isSigma = value;
-              });
+              isSigma = value;
+              setState(() {});
             }
           },
           switchValueisUST02: isUST02,
           valueChangedisUST02: (value) {
             if (mounted) {
-              setState(() {
-                isUST02 = value;
-              });
+              isUST02 = value;
+              setState(() {});
             }
           },
           switchValueisSpobber: isSpobber,
           valueChangedisSpobber: (value) {
             if (mounted) {
-              setState(() {
-                isSpobber = value;
-              });
+              isSpobber = value;
+              setState(() {});
             }
           },
         );
@@ -309,6 +313,7 @@ class _MapViewState extends State<MapView>
           type: "ES-LAS",
           readableId: currentSelectedMarkerID,
           secretId: currentSelectedMarkerSecretID,
+          source: currentSelectedMarkerSource,
         ),
       ),
     );
@@ -334,19 +339,18 @@ class _MapViewState extends State<MapView>
     if (Platform.isIOS) {
       iosMapStopped?.cancel();
       iosMapStopped =
-          Timer(const Duration(milliseconds: 150), _updateMarkerOnMap);
+          Timer(const Duration(milliseconds: 400), _updateMarkerOnMap);
     }
   }
 
   //when the camera is Idle for Android or IOS update the markers
   Future<void> _updateMarkerOnMap() async {
-    print(currentUpdate);
-    print(_currentZoom);
+
     if (_clusterManager == null ||
         _currentZoom == currentUpdate && loadmarkers == false) return;
     loadmarkers = false;
     currentUpdate = _currentZoom;
-    print("kom ik nu huier");
+
     final updatedMarkers = await MapHelper.getClusterMarkers(
       _clusterManager,
       _currentZoom,
@@ -368,7 +372,7 @@ class _MapViewState extends State<MapView>
     return GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
-        target: mylocation,
+        target: LatLng(52.2537241,5.463287),
         zoom: _currentZoom,
       ),
       markers: _markers,
@@ -411,8 +415,6 @@ class _MapViewState extends State<MapView>
   }
 
   _goToCurrentLocation() async {
-     closeBottomSheet(isBottomSheetActive);
-     isBottomSheetActive = false;
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
@@ -425,89 +427,93 @@ class _MapViewState extends State<MapView>
     );
   }
 
+  Widget _bottomAppBar(double lat, double long) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: bottomNavigatorInformation(lat, long),
+      //
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);
-    if (userLocation == null) {
-      return const Center(child: CircularProgressIndicator());
-    } else {
-      mylocation = LatLng(userLocation.latitude, userLocation.longitude);
-      return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            //maps changer
+    userLocation == null
+        ? const Center(child: CircularProgressIndicator())
+        : mylocation = LatLng(userLocation.latitude, userLocation.longitude);
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          //maps changer
+          createGoogleMapsMap(),
+          _mapTypeCycler(),
 
-            createGoogleMapsMap(),
-            _mapTypeCycler(),
-
-            _location(),
-            // Map markers loading indicator
-            _loadingIndicator(),
-            _search(),
-            //filter
-            _changeSourceFilter(),
-          ],
-        ),
-        floatingActionButton: FancyFab(),
-        bottomNavigationBar: bottomNavigatorInformation(
-            userLocation.latitude, userLocation.longitude),
-      );
-    }
-  }
-
-  bool isBottomSheetActive = false;
-
-  closeBottomSheet(bool value) {
-    if (value == true) {
-      isBottomSheetActive = false;
-      Navigator.of(context).pop();
-    }
+          _location(),
+          // Map markers loading indicator
+          _loadingIndicator(),
+          _search(),
+          //filter
+          _changeSourceFilter(),
+          _bottomAppBar(mylocation.latitude, mylocation.longitude),
+        ],
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50.0),
+        child: FancyFab(),
+      ),
+      //  bottomNavigationBar: b;
+    );
   }
 
   Widget bottomNavigatorInformation(double lat, double long) {
     return GestureDetector(
-      onTap: () {
-        if (markers.length <= 0 || markers.length > 30) {
-          isBottomSheetActive = false;
-          return;
-        } else {
-          isBottomSheetActive = true;
-          showBottomSheet<void>(
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (BuildContext context) {
-              return BottomSheetSwitch(
-                markers: markers,
-                latitude: lat,
-                longitude: long,
-                gotoLocation: goToMarkerLocation,
-                openMarkerInfo: openMarkerInfo,
-              );
-            },
-          );
-        }
-      },
-      child: BottomAppBar(
-        color: markers.length <= 0 || markers.length > 30
-            ? Theme.of(context).primaryColor
-            : Theme.of(context).accentColor,
-        child: new Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-                icon: markers.length <= 0 || markers.length > 30
-                    ? const Icon(
-                        Icons.not_listed_location,
-                        color: Colors.white,
-                      )
-                    : const Icon(Icons.touch_app, color: Colors.white),
-                onPressed: () {}),
-            bottomApptext(),
-          ],
-        ),
-      ),
-    );
+        onTap: () {
+          if (markers.length <= 0 || markers.length > 30) {
+            return;
+          } else {
+            showModalBottomSheet<void>(
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (BuildContext context) {
+                return BottomSheetSwitch(
+                  markers: markers,
+                  latitude: lat,
+                  longitude: long,
+                  gotoLocation: goToMarkerLocation,
+                  openMarkerInfo: openMarkerInfo,
+                );
+              },
+            );
+          }
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(60),
+            topLeft: Radius.circular(60),
+          ),
+          child: BottomAppBar(
+            color: markers.length <= 0 || markers.length > 30
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).accentColor,
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                    icon: markers.length <= 0 || markers.length > 30
+                        ? const Icon(
+                            Icons.filter,
+                            color: Colors.white,
+                          )
+                        : const Icon(Icons.touch_app, color: Colors.white),
+                    onPressed: () {}),
+                bottomApptext(),
+              ],
+            ),
+          ),
+        ));
   }
 
   int _markerIdCounter = 0;
@@ -529,14 +535,14 @@ class _MapViewState extends State<MapView>
       lastmarker = currentMarker;
       _markers.add(currentMarker);
     });
-
+    
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
           //  bearing: 270.0,
           target: LatLng(lat, long),
           // tilt: 30.0,
-          zoom: 20.0,
+          zoom: 21.0,
         ),
       ),
     );
@@ -567,9 +573,14 @@ class _MapViewState extends State<MapView>
         "Er zijn geen objecten gevonden klik op zoeken",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       );
+    } else if (markers.length > 30) {
+      text = Text(
+        "Er zijn ${markers.length.toString()} objecten gevonden.",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      );
     } else {
       text = Text(
-        "Er zijn ${markers.length.toString()} objecten gevonden, klik hier voor meer informatie",
+        "Er zijn ${markers.length.toString()} objecten gevonden. \nKlik hier voor meer informatie",
         style: TextStyle(color: Colors.white),
       );
     }
@@ -597,6 +608,4 @@ class _MapViewState extends State<MapView>
       ),
     );
   }
-
-
 }
