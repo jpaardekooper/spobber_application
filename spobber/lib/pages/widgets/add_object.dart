@@ -320,9 +320,9 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: <Color>[
-                  Color(0xFF1b2932),
-                  Color(0xFF1b2932),
-                  Color(0xE61b2932),
+                  const Color(0xFF1b2932),
+                  const Color(0xFF1b2932),
+                 const  Color(0xE61b2932),
                 ],
               ),
             ),

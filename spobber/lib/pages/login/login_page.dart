@@ -154,20 +154,20 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         key: _scaffoldKeyLogin,
         body: Container(
           decoration: BoxDecoration(
-                // Box decoration takes a gradient
-                gradient: LinearGradient(
-                  // Where the linear gradient begins and ends
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  // Add one stop for each color. Stops should increase from 0 to 1
-                  stops: [0.1, 0.9],
-                  colors: [
-                    // Colors are easy thanks to Flutter's Colors class.
-                    Color(0xff004990),
-                    Color(0xff0066C6),
-                  ],
-                ),
-              ),
+            // Box decoration takes a gradient
+            gradient: LinearGradient(
+              // Where the linear gradient begins and ends
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              // Add one stop for each color. Stops should increase from 0 to 1
+              stops: [0.1, 0.9],
+              colors: [
+                // Colors are easy thanks to Flutter's Colors class.
+                Color(0xff004990),
+                Color(0xff0066C6),
+              ],
+            ),
+          ),
           child: Form(
             key: _key,
             autovalidate: _validate,

@@ -443,7 +443,6 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  LatLng mylocation = LatLng(52.2537241, 5.463287);
 
   @override
   Widget build(BuildContext context) {
@@ -451,6 +450,8 @@ class _MapViewState extends State<MapView>
     userLocation == null
         ? const Center(child: CircularProgressIndicator())
         : mylocation = LatLng(userLocation.latitude, userLocation.longitude);
+
+        print(mylocation);
     return Scaffold(
       body: Stack(
         children: <Widget>[
