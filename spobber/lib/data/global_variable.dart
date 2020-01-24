@@ -35,7 +35,7 @@ MarkerId makeSelectedMarkerbigger;
 
 final String searchObject = "";
 
-LatLng mylocation;
+LatLng mylocation = LatLng(52.2537241, 5.463287);
 bool platformIsIOS;
 
 User userInformation;
@@ -44,4 +44,3 @@ BitmapDescriptor markerSap;
 BitmapDescriptor markerSigma;
 BitmapDescriptor markerUst02;
 BitmapDescriptor markerSpobber;
-

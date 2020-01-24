@@ -56,7 +56,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Container( color: Colors.transparent, child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +111,7 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
           ),
         ),
       ],
-    );
+    ));
   }
 
   void _onScroll() { 

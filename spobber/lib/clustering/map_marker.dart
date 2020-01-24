@@ -55,7 +55,7 @@ class MapMarker extends Clusterable {
           position.latitude,
           position.longitude,
         ),
-
+        draggable: isCluster ? false : true,
         icon: icon,
         anchor: Offset(0.5, 0.5),
         onTap: () {
@@ -84,12 +84,11 @@ class MapMarker extends Clusterable {
       String secretId, String type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var imageData;
-    print(source);
+
     if (source == "SAP") {
       imageData = "assets/SAP.png";
     } else if (source == "SIGMA") {
       imageData = "assets/SIGMA.png";
-      print(imageData);
     } else if (source == "UST02") {
       imageData = "assets/UST02.png";
     } else if (source == "SPOBBER") {
@@ -97,7 +96,6 @@ class MapMarker extends Clusterable {
     } else {
       return;
     }
-    print(imageData);
 
     /// get the favorite position then added to prefs
     var placeName = readableid;

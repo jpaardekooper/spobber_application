@@ -34,6 +34,7 @@ class _MapViewState extends State<MapView>
   @override
   void dispose() {
     super.dispose();
+    _closeModalBottomSheet();
   }
 
   /// Set of displayed markers and cluster markers on the map
@@ -67,6 +68,8 @@ class _MapViewState extends State<MapView>
   @override
   void initState() {
     super.initState();
+
+    _closeModalBottomSheet();
   }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
@@ -82,6 +85,7 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   Future loadDataToMaps() async {
+    _closeModalBottomSheet();
     loadmarkers = true;
     currentUpdate = 0;
     if (setDataSource.length <= 0) {
@@ -102,7 +106,6 @@ class _MapViewState extends State<MapView>
           await _mapController.getVisibleRegion();
 
       _visibleRegion = visibleRegion;
-      print("setting visible region: $visibleRegion");
 
       LoadMarkers loadmarkers = LoadMarkers(
         northLatitude: _visibleRegion.northeast.latitude,
@@ -155,10 +158,10 @@ class _MapViewState extends State<MapView>
 
   final List<MapMarker> markers = [];
   void loadThisDataSet() async {
-    for(int i =0; i< places.length; i++){
-       final markerLocation = places[i];
+    for (int i = 0; i < places.length; i++) {
+      final markerLocation = places[i];
 
-       markers.add(
+      markers.add(
         MapMarker(
           readableId: markerLocation.readableID,
           secretId: markerLocation.secretId,
@@ -305,7 +308,6 @@ class _MapViewState extends State<MapView>
   }
 
   Future openMarkerInfo() async {
-    print("HALO test function activated");
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -326,53 +328,59 @@ class _MapViewState extends State<MapView>
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
   Future<void> _updateMarkers([double updatedZoom]) async {
-    if (_clusterManager == null || updatedZoom == _currentZoom) return;
-
-    if (updatedZoom != null) {
-      _currentZoom = updatedZoom;
-    }
-
-    setState(() {
-      _areMarkersLoading = false;
-    });
-
-    if (Platform.isIOS) {
-      iosMapStopped?.cancel();
-      iosMapStopped =
-          Timer(const Duration(milliseconds: 400), _updateMarkerOnMap);
+    if (_clusterManager == null || updatedZoom == _currentZoom) {
+      return;
+    } else {
+      if (updatedZoom != null) {
+        _currentZoom = updatedZoom;
+      } else {
+        return;
+      }
+      if (Platform.isIOS) {
+        iosMapStopped?.cancel();
+        iosMapStopped =
+            Timer(const Duration(milliseconds: 400), _updateMarkerOnMap);
+      } else {
+        return;
+      }
+      setState(() {
+        _areMarkersLoading = false;
+      });
     }
   }
 
   //when the camera is Idle for Android or IOS update the markers
   Future<void> _updateMarkerOnMap() async {
-
     if (_clusterManager == null ||
-        _currentZoom == currentUpdate && loadmarkers == false) return;
-    loadmarkers = false;
-    currentUpdate = _currentZoom;
+        _currentZoom == currentUpdate && loadmarkers == false) {
+      return;
+    } else {
+      loadmarkers = false;
+      currentUpdate = _currentZoom;
 
-    final updatedMarkers = await MapHelper.getClusterMarkers(
-      _clusterManager,
-      _currentZoom,
-      _clusterColor,
-      _clusterTextColor,
-      80,
-    );
+      final updatedMarkers = await MapHelper.getClusterMarkers(
+        _clusterManager,
+        _currentZoom,
+        _clusterColor,
+        _clusterTextColor,
+        80,
+      );
 
-    _markers
-      ..clear()
-      ..addAll(updatedMarkers);
+      _markers
+        ..clear()
+        ..addAll(updatedMarkers);
 
-    setState(() {
-      _areMarkersLoading = true;
-    });
+      setState(() {
+        _areMarkersLoading = true;
+      });
+    }
   }
 
   Widget createGoogleMapsMap() {
     return GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
-        target: LatLng(52.2537241,5.463287),
+        target: LatLng(52.2537241, 5.463287),
         zoom: _currentZoom,
       ),
       markers: _markers,
@@ -427,17 +435,18 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  Widget _bottomAppBar(double lat, double long) {
+  Widget _bottomAppBar(double lat, double long, BuildContext context) {
     return Positioned(
       left: 0,
       right: 0,
       bottom: 0,
-      child: bottomNavigatorInformation(lat, long),
+      child: bottomNavigatorInformation(lat, long, context),
       //
     );
   }
-  LatLng mylocation = LatLng(52.2537241,5.463287);
-  
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     var userLocation = Provider.of<UserLocation>(context);
@@ -445,6 +454,8 @@ class _MapViewState extends State<MapView>
         ? const Center(child: CircularProgressIndicator())
         : mylocation = LatLng(userLocation.latitude, userLocation.longitude);
     return Scaffold(
+      key: _scaffoldKey,
+
       body: Stack(
         children: <Widget>[
           //maps changer
@@ -457,7 +468,7 @@ class _MapViewState extends State<MapView>
           _search(),
           //filter
           _changeSourceFilter(),
-          _bottomAppBar(mylocation.latitude, mylocation.longitude),
+          _bottomAppBar(mylocation.latitude, mylocation.longitude, context),
         ],
       ),
       floatingActionButton: Padding(
@@ -468,16 +479,23 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  Widget bottomNavigatorInformation(double lat, double long) {
+  void _closeModalBottomSheet() {
+    if (controller != null) {
+      controller.close();
+      controller = null;
+    }
+  }
+
+  PersistentBottomSheetController controller;
+  Widget bottomNavigatorInformation(
+      double lat, double long, BuildContext context) {
     return GestureDetector(
         onTap: () {
           if (markers.length <= 0 || markers.length > 30) {
             return;
           } else {
-            showModalBottomSheet<void>(
-              context: context,
-              backgroundColor: Colors.transparent,
-              builder: (BuildContext context) {
+            controller = _scaffoldKey.currentState.showBottomSheet<Null>(
+              (BuildContext context) {
                 return BottomSheetSwitch(
                   markers: markers,
                   latitude: lat,
@@ -536,7 +554,7 @@ class _MapViewState extends State<MapView>
       lastmarker = currentMarker;
       _markers.add(currentMarker);
     });
-    
+
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(

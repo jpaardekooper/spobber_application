@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
         //  primarySwatch: myColor,
         primaryColor: myColor,
         accentColor: const Color.fromRGBO(51, 216, 178, 1),
+        bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent)
       ),
       home: LoginPage(),
       routes: <String, WidgetBuilder>{
