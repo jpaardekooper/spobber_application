@@ -55,7 +55,7 @@ class MapMarker extends Clusterable {
           position.latitude,
           position.longitude,
         ),
-
+        draggable: isCluster? false : true,
         icon: icon,
         anchor: Offset(0.5, 0.5),
         onTap: () {
