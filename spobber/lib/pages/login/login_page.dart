@@ -224,8 +224,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             labelText: 'Password',
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(20),
+       SizedBox(
+          height: MediaQuery.of(context).size.height * 0.02,
         ),
         AnimatedBuilder(
           animation: _loginAnimationController,
@@ -265,10 +265,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           },
         ),
         Divider(
-          height: 50,
+          height: 40,
         ),
         Container(
-          height: 30,
+          height: 50,
           color: Colors.transparent,
           child: FlatButton(
             child: Text(
