@@ -15,12 +15,12 @@ class NewMarkerInformation extends StatefulWidget {
 // the form.
 class _MarkerInfoState extends State<NewMarkerInformation> {
   final _formKey = GlobalKey<FormState>();
-  List<String> _status = <String>[
-    '',
-    'Actief',
-    'Inactief',
-    'Gereed voor verwijdering',
-  ];
+  // List<String> _status = <String>[
+  //   '',
+  //   'Actief',
+  //   'Inactief',
+  //   'Gereed voor verwijdering',
+  // ];
 
   List<String> _types = <String>[
     '',
@@ -44,7 +44,7 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
   ];
   String _typesTxt = '';
   bool typesTextChanged = false;
-  String _statusTxt = '';
+  // String _statusTxt = '';
   bool statusChanged = false;
   String _plaatsingTxt = '';
   bool plaatsingChanged = false;
@@ -902,20 +902,20 @@ class _MarkerInfoState extends State<NewMarkerInformation> {
     );
   }
 
-  _getStatusCode(String status) {
-    ///   'Actief',
-    // 'Inactief ',
-    // 'Gereed voor verwijdering',
-    if (status == 'Actief') {
-      return const Icon(Icons.sentiment_satisfied, color: Colors.green);
-    } else if (status == 'Inactief') {
-      return const Icon(Icons.sentiment_satisfied, color: Colors.orange);
-    } else if (status == 'Gereed voor verwijdering') {
-      return const Icon(Icons.sentiment_satisfied, color: Colors.red);
-    } else if (status == '') {
-      return const Icon(Icons.sentiment_satisfied);
-    }
-  }
+  // _getStatusCode(String status) {
+  //   ///   'Actief',
+  //   // 'Inactief ',
+  //   // 'Gereed voor verwijdering',
+  //   if (status == 'Actief') {
+  //     return const Icon(Icons.sentiment_satisfied, color: Colors.green);
+  //   } else if (status == 'Inactief') {
+  //     return const Icon(Icons.sentiment_satisfied, color: Colors.orange);
+  //   } else if (status == 'Gereed voor verwijdering') {
+  //     return const Icon(Icons.sentiment_satisfied, color: Colors.red);
+  //   } else if (status == '') {
+  //     return const Icon(Icons.sentiment_satisfied);
+  //   }
+  // }
 
   void showMessage(String message, [MaterialColor color = Colors.red]) {
     _scaffoldKeyThree.currentState.showSnackBar(new SnackBar(

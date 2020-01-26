@@ -46,7 +46,6 @@ class _MarkerHistoryState extends State<MarkerHistory> {
 
   MarkerDetail editObjectInfomartion = new MarkerDetail();
   final _controller = ScrollController();
-  final _height = 10;
 
   _animateToIndex(i) => _controller.animateTo(i,
       duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);

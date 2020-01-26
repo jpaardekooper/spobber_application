@@ -8,7 +8,6 @@ import 'package:spobber/clustering/map_marker.dart';
 import 'package:spobber/clustering/map_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/load_markers.dart';
-import 'package:spobber/data/place_response.dart';
 import 'package:spobber/network/location_services.dart';
 import 'package:spobber/pages/marker_information/marker_template.dart';
 import 'package:spobber/data/global_variable.dart';
@@ -378,6 +377,7 @@ class _MapViewState extends State<MapView>
 
   Widget createGoogleMapsMap() {
     return GoogleMap(
+      padding: EdgeInsets.only(bottom: 50),
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
         target: LatLng(52.2537241, 5.463287),
@@ -437,6 +437,7 @@ class _MapViewState extends State<MapView>
 
   Widget _bottomAppBar(double lat, double long, BuildContext context) {
     return Positioned(
+      height: 50,
       left: 0,
       right: 0,
       bottom: 0,
@@ -460,6 +461,7 @@ class _MapViewState extends State<MapView>
         children: <Widget>[
           //maps changer
           createGoogleMapsMap(),
+
           _mapTypeCycler(),
 
           _location(),
@@ -468,6 +470,7 @@ class _MapViewState extends State<MapView>
           _search(),
           //filter
           _changeSourceFilter(),
+          _copyRight(),
           _bottomAppBar(mylocation.latitude, mylocation.longitude, context),
         ],
       ),
@@ -535,23 +538,21 @@ class _MapViewState extends State<MapView>
         ));
   }
 
-  int _markerIdCounter = 0;
   Marker lastmarker;
   Marker currentMarker;
   goToMarkerLocation(double lat, double long) {
-    final String markerIdVal = 'marker_id_$_markerIdCounter';
-    _markerIdCounter++;
+    final String markerIdVal = 'marker_id_';
     final MarkerId markerId = MarkerId(markerIdVal);
 
     final Marker marker = Marker(
-      markerId: markerId,
-      position: LatLng(lat, long),
-    );
+        markerId: markerId,
+        position: LatLng(lat, long),
+        icon: BitmapDescriptor.defaultMarkerWithHue(500));
 
+    _markers.remove(lastmarker);
+    currentMarker = marker;
+    lastmarker = currentMarker;
     setState(() {
-      _markers.remove(lastmarker);
-      currentMarker = marker;
-      lastmarker = currentMarker;
       _markers.add(currentMarker);
     });
 
@@ -583,12 +584,12 @@ class _MapViewState extends State<MapView>
   Widget bottomApptext() {
     Text text;
     if (setDataSource.length == 0) {
-      text = Text(
+      text = const Text(
         "Selecteer een databron",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       );
     } else if (markers.length <= 0) {
-      text = Text(
+      text = const Text(
         "Er zijn geen objecten gevonden klik op zoeken",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       );
@@ -624,6 +625,26 @@ class _MapViewState extends State<MapView>
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  _copyRight() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 0),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+         width: MediaQuery.of(context).size.width,
+          color: Colors.grey.withOpacity(0.4),
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: const Text(
+              'Eigendom van Result! Data.ai, Zoetermeer, onderdeel van de Result! groep, meer informatie bij info@resultdata.ai',
+              style: TextStyle(fontSize: 10, color: Colors.white),
+            ),
+          ),
+        ),
       ),
     );
   }

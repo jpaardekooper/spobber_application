@@ -61,16 +61,16 @@ class MapHelper {
       textDirection: TextDirection.ltr,
     );
 
-    if (clusterSize > 1000) {
-      paint = Paint()..color = Colors.blue[900];
-    } else if (clusterSize > 500) {
-      paint = Paint()..color = Colors.blue[800];
-    } else if (clusterSize > 250) {
-      paint = Paint()..color = Colors.blue[600];
-    } else if (clusterSize > 150) {
-      paint = Paint()..color = Colors.blue[500];
-    } else if (clusterSize > 75) {
-      paint = Paint()..color = Colors.blue[400];    
+    if (clusterSize >= 1000) {
+      paint = Paint()..color = Colors.red[400];
+    } else if (clusterSize >= 500) {
+      paint = Paint()..color = Colors.orange[700];
+    } else if (clusterSize >= 200) {
+       paint = Paint()..color = Colors.orange[200];
+    } else if (clusterSize >= 100) {
+      paint = Paint()..color = Colors.yellow;
+    } else if (clusterSize >= 50) {
+      paint = Paint()..color = Colors.blue[400];
     } else {
       paint = Paint()..color = Colors.blue[200];
     }
