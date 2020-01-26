@@ -547,25 +547,27 @@ class _MapViewState extends State<MapView>
     final Marker marker = Marker(
         markerId: markerId,
         position: LatLng(lat, long),
-        icon: BitmapDescriptor.defaultMarkerWithHue(500));
+        icon: BitmapDescriptor.defaultMarker);
 
     _markers.remove(lastmarker);
-    currentMarker = marker;
-    lastmarker = currentMarker;
-    setState(() {
-      _markers.add(currentMarker);
-    });
 
-    _mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          //  bearing: 270.0,
-          target: LatLng(lat, long),
-          // tilt: 30.0,
-          zoom: 21.0,
-        ),
+    lastmarker = currentMarker;
+
+    _mapController
+        .animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        //  bearing: 270.0,
+        target: LatLng(lat, long),
+        // tilt: 30.0,
+        zoom: 21.0,
       ),
-    );
+    ))
+        .then((_) {
+      setState(() {
+        currentMarker = marker;
+        _markers.add(currentMarker);
+      });
+    });
   }
 
   goToMarkerZoomLocation(double lat, double long, currentzoom) {
@@ -635,7 +637,7 @@ class _MapViewState extends State<MapView>
       child: Align(
         alignment: Alignment.topCenter,
         child: Container(
-         width: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width,
           color: Colors.grey.withOpacity(0.4),
           child: Padding(
             padding: const EdgeInsets.all(4),
