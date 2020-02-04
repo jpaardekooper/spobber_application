@@ -1,16 +1,61 @@
-# spobber
+# Project Spobber
 
-A new Flutter project.
+One Paragraph of project description goes here
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-A few resources to get you started if this is your first Flutter project:
+### Prerequisites
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+What things you need to install the software and how to install them
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+Please make sure you have followed the steps on (https://flutter.dev/docs/get-started/install)
+Make sure you have installed github
+Make sure you have an editor i prefer VSCode
+
+```
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Step 1
+
+```
+Download or Clone this repository typing in the terminal git --clone and copy the repository url
+```
+
+Step 2
+
+```
+Open project in VScode
+```
+
+Step 3
+
+```
+Open a simulator in VScode or attach your mobile device to the computer
+```
+
+Step 4
+
+```
+Type in the terminal of VScode Flutter run or Flutter run --release 
+```
+
+Step 5
+
+```
+Enjoy having an build version on your mobile
+```
+
+![Image description](https://raw.githubusercontent.com/jpaardekooper/spobber_application/master/spobber/assets/resultmanagers.png?token=AEV4BLHI6XFYVTZDMBCGNPS6IKJ7E)
+
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+

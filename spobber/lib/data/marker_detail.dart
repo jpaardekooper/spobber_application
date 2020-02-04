@@ -56,6 +56,7 @@ class MarkerDetail {
         description: json['description'],
         equipmentId: json['equipment_id'],
         equipmentStatus: json['equipment_Status'],
+        userStatusEquipment: json['user_status_equipment'],
         parentEquipKind: json['parent_equip_kind'],
         datacollection: json['datacollection'],
         placement: json['placement'],
@@ -103,6 +104,7 @@ class MarkerDetail {
     markerObjectToPush.description = map['description'];
     markerObjectToPush.equipmentId = map['equipment_id'];
     markerObjectToPush.equipmentStatus = map['equipment_Status'];
+    markerObjectToPush.userStatusEquipment = map['user_status_equipment'];
     markerObjectToPush.parentEquipKind = map['parent_equip_kind'];
     markerObjectToPush.datacollection = map['datacollection'];
     markerObjectToPush.placement = map['placement'];
@@ -128,6 +130,7 @@ class MarkerDetail {
     map['description'] = markerObjectToPush.description;
     map['equipment_id'] = markerObjectToPush.equipmentId;
     map['equipment_Status'] = markerObjectToPush.equipmentStatus;
+    map['user_status_equipment'] = markerObjectToPush.userStatusEquipment;
     map['parent_equip_kind'] = markerObjectToPush.parentEquipKind;
     map['datacollection'] = markerObjectToPush.datacollection;
     map['placement'] = markerObjectToPush.placement;

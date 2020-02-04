@@ -469,8 +469,7 @@ class _MapViewState extends State<MapView>
           _loadingIndicator(),
           _search(),
           //filter
-          _changeSourceFilter(),
-          _copyRight(),
+          _changeSourceFilter(),         
           _bottomAppBar(mylocation.latitude, mylocation.longitude, context),
         ],
       ),
@@ -631,23 +630,6 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  _copyRight() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 0),
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          color: Colors.grey.withOpacity(0.4),
-          child: Padding(
-            padding: const EdgeInsets.all(4),
-            child: const Text(
-              'Eigendom van Result! Data.ai, Zoetermeer, onderdeel van de Result! groep, meer informatie bij info@resultdata.ai',
-              style: TextStyle(fontSize: 10, color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
+
 }

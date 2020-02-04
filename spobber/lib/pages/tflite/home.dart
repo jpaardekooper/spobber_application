@@ -62,7 +62,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
     return Scaffold(  
-      appBar: AppBar(),    
+      appBar: AppBar(
+        title: const Text("Tensor Flow"),
+      ),    
       body: _model == ""
           ? Center(
               child: CircularProgressIndicator()

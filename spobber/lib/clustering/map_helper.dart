@@ -146,9 +146,9 @@ class MapHelper {
     return Fluster<MapMarker>(
       minZoom: minZoom,
       maxZoom: maxZoom,
-      radius: 150,
-      extent: 2048,
-      nodeSize: 64,
+      radius: 300, // Cluster radius in pixels
+      extent: 4096,  // Tile extent. Radius is calculated with it.
+      nodeSize: 64, // Size of the KD-tree leaf node.
       points: markers,
       createCluster: (
         BaseCluster cluster,
