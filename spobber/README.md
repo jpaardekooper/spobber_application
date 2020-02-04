@@ -51,7 +51,7 @@ Step 5
 Enjoy having an build version on your mobile
 ```
 
-![Image description](https://raw.githubusercontent.com/jpaardekooper/spobber_application/master/spobber/assets/resultmanagers.png?token=AEV4BLHI6XFYVTZDMBCGNPS6IKJ7E)
+![Image description](https://raw.githubusercontent.com/jpaardekooper/spobber_application/master/debug.jpg?token=AEV4BLFVLMA74L5QE3BCPUK6IKOOU)
 
 
 
