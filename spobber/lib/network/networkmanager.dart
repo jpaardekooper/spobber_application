@@ -104,6 +104,7 @@ Future<HttpClientResponse> uploadImage(
 //   }
 // }
 
+
 Future<List<PlaceResponse>> loadMarkers(
     List<String> dataSources, String url) async {
   if (!await _ping()) {

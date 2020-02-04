@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   final GlobalKey<ScaffoldState> _scaffoldKeyLogin = GlobalKey<ScaffoldState>();
 
-  void showMessage(String message, [MaterialColor color = Colors.red]) {
+  void showMessage(String message, Color color) {
     _scaffoldKeyLogin.currentState.showSnackBar(
         new SnackBar(backgroundColor: color, content: new Text(message)));
   }
@@ -150,139 +150,171 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     });
 
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      key: _scaffoldKeyLogin,
-      body: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        margin: EdgeInsets.all(25),
-        child: new Form(
-          key: _key,
-          autovalidate: _validate,
-          child: loginWidget(),
-        ),
-      ),
-    );
+        resizeToAvoidBottomPadding: false,
+        key: _scaffoldKeyLogin,
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            // Box decoration takes a gradient
+            gradient: LinearGradient(
+              // Where the linear gradient begins and ends
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              // Add one stop for each color. Stops should increase from 0 to 1
+              stops: [0.1, 0.9],
+              colors: [
+                // Colors are easy thanks to Flutter's Colors class.
+                const Color(0xff004990),
+                const Color(0xff0066C6),
+              ],
+            ),
+          ),
+          child: Form(
+            key: _key,
+            autovalidate: _validate,
+            child: loginWidget(),
+          ),
+        ));
   }
 
   Widget loginWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          height: 150.0,
-          width: 150.0,
-          decoration: new BoxDecoration(
-            image: DecorationImage(
-                image: new AssetImage('assets/ic_launcher.png'),
-                fit: BoxFit.contain),
-          ),
-        ),
-        TextFormField(
-          validator: validateName,
-          textInputAction: TextInputAction.next,
-          focusNode: _nameFocus,
-          onFieldSubmitted: (term) {
-            _fieldFocusChange(context, _nameFocus, _passwordFocus);
-          },
-          autofocus: false,
-          onSaved: (String val) async {
-            name = val;
-          },
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.person),
-            errorText: invalidInfo ? 'Invalide inloggegevens' : null,
-            border: OutlineInputBorder(),
-            labelText: 'Username',
-          ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.02,
-        ),
-        TextFormField(
-          validator: validatePassword,
-          focusNode: _passwordFocus,
-          textInputAction: TextInputAction.done,
-          obscureText: checkpassword ? false : true,
-          autofocus: false,
-          onSaved: (String val) async {
-            password = val;
-            //password = await cryptor.encrypt(val, key);
-          },
-          decoration: InputDecoration(
-            suffixIcon: IconButton(
-              icon: Icon(
-                Icons.remove_red_eye,
-                color: checkpassword ? Colors.red : Colors.grey[700],
+    return Center(
+      child: Container(
+        decoration: new BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                bottomLeft: const Radius.circular(10.0),
+                bottomRight: const Radius.circular(10.0),
+                topLeft: const Radius.circular(10.0),
+                topRight: const Radius.circular(10.0))),
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: 130.0,
+              width: 130.0,
+              decoration: const BoxDecoration(
+                image: const DecorationImage(
+                    image: const AssetImage('assets/ic_launcher.png'),
+                    fit: BoxFit.contain),
               ),
-              onPressed: () => setState(() {
-                checkpassword = !checkpassword;
-              }),
             ),
-            prefixIcon: const Icon(Icons.lock),
-            border: OutlineInputBorder(),
-            labelText: 'Password',
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(20),
-        ),
-        AnimatedBuilder(
-          animation: _loginAnimationController,
-          builder: (context, child) {
-            return MaterialButton(
-              minWidth: _loginAnimation.value,
-              height: 50.0,
-              highlightColor: Theme.of(context).primaryColor,
-              color: Theme.of(context).primaryColor,
-              hoverColor: Theme.of(context).primaryColor,
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: _loginAnimation.value > 75
-                    ? new BorderRadius.circular(10.0)
-                    : new BorderRadius.circular(100.0),
-                //  side: BorderSide(color: Colors.red)
-              ),
-              child: _loginAnimation.value > 75
-                  ? Text(
-                      'Log in',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryTextTheme.title.color,
-                          fontSize: 16),
-                    )
-                  : CircularProgressIndicator(
-                      value: null,
-                      strokeWidth: 2,
-                      valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-              onPressed: () => {
-                FocusScope.of(context).requestFocus(FocusNode()),
-                _sendToServer(),
+            TextFormField(
+              validator: validateName,
+              textInputAction: TextInputAction.next,
+              focusNode: _nameFocus,
+              onFieldSubmitted: (term) {
+                _fieldFocusChange(context, _nameFocus, _passwordFocus);
               },
-              splashColor: Colors.blue,
-            );
-          },
-        ),
-        Divider(
-          height: 50,
-        ),
-        Container(
-          height: 30,
-          color: Colors.transparent,
-          child: FlatButton(
-            child: Text(
-              'Heeft u nog geen account?\n Druk hier om te registreren',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.blue[200],
-                fontSize: 14,
+              autofocus: false,
+              onSaved: (String val) async {
+                name = val;
+              },
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person),
+                errorText:
+                    invalidInfo ? 'Verkeerde gebruikersnaam opgegeven' : null,
+                border: OutlineInputBorder(),
+                labelText: 'Username',
               ),
             ),
-            onPressed: goToRegistering,
-          ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            TextFormField(
+              validator: validatePassword,
+              focusNode: _passwordFocus,
+              textInputAction: TextInputAction.done,
+              obscureText: checkpassword ? false : true,
+              autofocus: false,
+              onSaved: (String val) async {
+                password = val;
+                //password = await cryptor.encrypt(val, key);
+              },
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.remove_red_eye,
+                    color: checkpassword ? Colors.red : Colors.grey[700],
+                  ),
+                  onPressed: () => setState(() {
+                    checkpassword = !checkpassword;
+                  }),
+                ),
+                prefixIcon: const Icon(Icons.lock),
+                border: OutlineInputBorder(),
+                labelText: 'Password',
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            AnimatedBuilder(
+              animation: _loginAnimationController,
+              builder: (context, child) {
+                return MaterialButton(
+                  //    minWidth: _loginAnimation.value,
+                  height: 50.0,
+                  highlightColor: Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColor,
+                  hoverColor: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: _loginAnimation.value > 150
+                        ? BorderRadius.circular(10.0)
+                        : BorderRadius.circular(50.0),
+                    //  side: BorderSide(color: Colors.red)
+                  ),
+                  child: _loginAnimation.value > 150
+                      ? Text(
+                          'Log in',
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .primaryTextTheme
+                                  .title
+                                  .color,
+                              fontSize: 16),
+                        )
+                      : CircularProgressIndicator(
+                          value: null,
+                          strokeWidth: 2,
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                  onPressed: () => {
+                    FocusScope.of(context).requestFocus(FocusNode()),
+                    _sendToServer(),
+                  },
+                  splashColor: Colors.blue,
+                );
+              },
+            ),
+            Divider(
+              height: 40,
+            ),
+            Container(
+              color: Colors.transparent,
+              child: FlatButton(
+                child: Text(
+                  'Heeft u nog geen account?\n Druk hier om te registreren',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.blue[200],
+                    fontSize: 14,
+                  ),
+                ),
+                onPressed: goToRegistering,
+              ),
+            ),
+            Container(height: 10),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -299,10 +331,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       print(response.statusCode);
       if (response.statusCode == 200) {
         showMessage('Login was succesvol!', Colors.blue);
-
-        //      Future.delayed(const Duration(milliseconds: 500), () {
-
-        //  });
       } else {
         print(response.statusCode);
         return null;
@@ -376,7 +404,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   _errorMessage() {
     _loginAnimationController.reverse();
-    showMessage('Invalide inloggegevens!', Colors.red);
+    showMessage('Verkeerde gegevens opgegeven!', Colors.red[700]);
     setState(() {
       invalidInfo = true;
     });

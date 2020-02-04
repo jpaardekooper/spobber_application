@@ -31,19 +31,8 @@ class TabsViewMaps extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    getData();
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
-      //   setState(() {
-      platformIsIOS = true;
-      // });
-    } else {
-      //  setState(() {
-      platformIsIOS = false;
-      //   });
-    }
-    
-     
-
+    getData(context);
+   
     ErrorWidget.builder = getErrorWidget;
     return StreamProvider<UserLocation>(
       builder: (context) => LocationService().locationStream,
@@ -151,7 +140,16 @@ class TabsViewMaps extends StatelessWidget {
     );
   }
 
-  Future<User> getData() async {
+  Future<User> getData(BuildContext context) async {
+     if (Theme.of(context).platform == TargetPlatform.iOS) {
+      //   setState(() {
+      platformIsIOS = true;
+      // });
+    } else {
+      //  setState(() {
+      platformIsIOS = false;
+      //   });
+    }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String item = prefs.getString('user');
     userInformation = User.fromJson(json.decode(item));

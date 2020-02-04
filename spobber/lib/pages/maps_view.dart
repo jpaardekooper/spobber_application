@@ -8,7 +8,6 @@ import 'package:spobber/clustering/map_marker.dart';
 import 'package:spobber/clustering/map_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:spobber/data/load_markers.dart';
-import 'package:spobber/data/place_response.dart';
 import 'package:spobber/network/location_services.dart';
 import 'package:spobber/pages/marker_information/marker_template.dart';
 import 'package:spobber/data/global_variable.dart';
@@ -34,6 +33,7 @@ class _MapViewState extends State<MapView>
   @override
   void dispose() {
     super.dispose();
+    _closeModalBottomSheet();
   }
 
   /// Set of displayed markers and cluster markers on the map
@@ -67,13 +67,15 @@ class _MapViewState extends State<MapView>
   @override
   void initState() {
     super.initState();
+
+    _closeModalBottomSheet();
   }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
   Widget _search() {
     return StackingMapWidget(
       alignment: Alignment.topRight,
-      padding: const EdgeInsets.fromLTRB(0, 70, 12, 0),
+      padding: const EdgeInsets.fromLTRB(0, 90, 12, 0),
       onpressedFunction: loadDataToMaps,
       mapIcon: const Icon(Icons.search, size: 20),
     );
@@ -82,6 +84,7 @@ class _MapViewState extends State<MapView>
   LatLngBounds _visibleRegion;
 
   Future loadDataToMaps() async {
+    _closeModalBottomSheet();
     loadmarkers = true;
     currentUpdate = 0;
     if (setDataSource.length <= 0) {
@@ -102,7 +105,6 @@ class _MapViewState extends State<MapView>
           await _mapController.getVisibleRegion();
 
       _visibleRegion = visibleRegion;
-      print("setting visible region: $visibleRegion");
 
       LoadMarkers loadmarkers = LoadMarkers(
         northLatitude: _visibleRegion.northeast.latitude,
@@ -133,7 +135,7 @@ class _MapViewState extends State<MapView>
   _mapTypeCycler() {
     return StackingMapWidget(
       alignment: Alignment.topLeft,
-      padding: const EdgeInsets.fromLTRB(12, 10, 0, 0),
+      padding: const EdgeInsets.fromLTRB(12, 30, 0, 0),
       onpressedFunction: changeMapType,
       mapIcon: const Icon(Icons.map, size: 20),
     );
@@ -155,10 +157,10 @@ class _MapViewState extends State<MapView>
 
   final List<MapMarker> markers = [];
   void loadThisDataSet() async {
-    for(int i =0; i< places.length; i++){
-       final markerLocation = places[i];
+    for (int i = 0; i < places.length; i++) {
+      final markerLocation = places[i];
 
-       markers.add(
+      markers.add(
         MapMarker(
           readableId: markerLocation.readableID,
           secretId: markerLocation.secretId,
@@ -244,7 +246,7 @@ class _MapViewState extends State<MapView>
   Widget _changeSourceFilter() {
     return StackingMapWidget(
       alignment: Alignment.topRight,
-      padding: const EdgeInsets.fromLTRB(0, 130, 12, 0),
+      padding: const EdgeInsets.fromLTRB(0, 150, 12, 0),
       onpressedFunction: getDataSourcePopUp,
       mapIcon: getIcon(setDataSource.length),
     );
@@ -305,7 +307,6 @@ class _MapViewState extends State<MapView>
   }
 
   Future openMarkerInfo() async {
-    print("HALO test function activated");
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -326,53 +327,60 @@ class _MapViewState extends State<MapView>
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
   Future<void> _updateMarkers([double updatedZoom]) async {
-    if (_clusterManager == null || updatedZoom == _currentZoom) return;
-
-    if (updatedZoom != null) {
-      _currentZoom = updatedZoom;
-    }
-
-    setState(() {
-      _areMarkersLoading = false;
-    });
-
-    if (Platform.isIOS) {
-      iosMapStopped?.cancel();
-      iosMapStopped =
-          Timer(const Duration(milliseconds: 400), _updateMarkerOnMap);
+    if (_clusterManager == null || updatedZoom == _currentZoom) {
+      return;
+    } else {
+      if (updatedZoom != null) {
+        _currentZoom = updatedZoom;
+      } else {
+        return;
+      }
+      if (Platform.isIOS) {
+        iosMapStopped?.cancel();
+        iosMapStopped =
+            Timer(const Duration(milliseconds: 400), _updateMarkerOnMap);
+      } else {
+        return;
+      }
+      setState(() {
+        _areMarkersLoading = false;
+      });
     }
   }
 
   //when the camera is Idle for Android or IOS update the markers
   Future<void> _updateMarkerOnMap() async {
-
     if (_clusterManager == null ||
-        _currentZoom == currentUpdate && loadmarkers == false) return;
-    loadmarkers = false;
-    currentUpdate = _currentZoom;
+        _currentZoom == currentUpdate && loadmarkers == false) {
+      return;
+    } else {
+      loadmarkers = false;
+      currentUpdate = _currentZoom;
 
-    final updatedMarkers = await MapHelper.getClusterMarkers(
-      _clusterManager,
-      _currentZoom,
-      _clusterColor,
-      _clusterTextColor,
-      80,
-    );
+      final updatedMarkers = await MapHelper.getClusterMarkers(
+        _clusterManager,
+        _currentZoom,
+        _clusterColor,
+        _clusterTextColor,
+        80,
+      );
 
-    _markers
-      ..clear()
-      ..addAll(updatedMarkers);
+      _markers
+        ..clear()
+        ..addAll(updatedMarkers);
 
-    setState(() {
-      _areMarkersLoading = true;
-    });
+      setState(() {
+        _areMarkersLoading = true;
+      });
+    }
   }
 
   Widget createGoogleMapsMap() {
     return GoogleMap(
+      padding: EdgeInsets.only(bottom: 50),
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
-        target: LatLng(52.2537241,5.463287),
+        target: LatLng(52.2537241, 5.463287),
         zoom: _currentZoom,
       ),
       markers: _markers,
@@ -405,7 +413,7 @@ class _MapViewState extends State<MapView>
   Widget _location() {
     return StackingMapWidget(
       alignment: Alignment.topRight,
-      padding: const EdgeInsets.fromLTRB(0, 10, 12, 0),
+      padding: const EdgeInsets.fromLTRB(0, 30, 12, 0),
       onpressedFunction: _goToCurrentLocation,
       mapIcon: const Icon(
         Icons.location_searching,
@@ -427,15 +435,18 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  Widget _bottomAppBar(double lat, double long) {
+  Widget _bottomAppBar(double lat, double long, BuildContext context) {
     return Positioned(
+      height: 50,
       left: 0,
       right: 0,
       bottom: 0,
-      child: bottomNavigatorInformation(lat, long),
+      child: bottomNavigatorInformation(lat, long, context),
       //
     );
   }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -444,10 +455,13 @@ class _MapViewState extends State<MapView>
         ? const Center(child: CircularProgressIndicator())
         : mylocation = LatLng(userLocation.latitude, userLocation.longitude);
     return Scaffold(
+      key: _scaffoldKey,
+
       body: Stack(
         children: <Widget>[
           //maps changer
           createGoogleMapsMap(),
+
           _mapTypeCycler(),
 
           _location(),
@@ -456,7 +470,8 @@ class _MapViewState extends State<MapView>
           _search(),
           //filter
           _changeSourceFilter(),
-          _bottomAppBar(mylocation.latitude, mylocation.longitude),
+          _copyRight(),
+          _bottomAppBar(mylocation.latitude, mylocation.longitude, context),
         ],
       ),
       floatingActionButton: Padding(
@@ -467,16 +482,23 @@ class _MapViewState extends State<MapView>
     );
   }
 
-  Widget bottomNavigatorInformation(double lat, double long) {
+  void _closeModalBottomSheet() {
+    if (controller != null) {
+      controller.close();
+      controller = null;
+    }
+  }
+
+  PersistentBottomSheetController controller;
+  Widget bottomNavigatorInformation(
+      double lat, double long, BuildContext context) {
     return GestureDetector(
         onTap: () {
           if (markers.length <= 0 || markers.length > 30) {
             return;
           } else {
-            showModalBottomSheet<void>(
-              context: context,
-              backgroundColor: Colors.transparent,
-              builder: (BuildContext context) {
+            controller = _scaffoldKey.currentState.showBottomSheet<Null>(
+              (BuildContext context) {
                 return BottomSheetSwitch(
                   markers: markers,
                   latitude: lat,
@@ -516,36 +538,36 @@ class _MapViewState extends State<MapView>
         ));
   }
 
-  int _markerIdCounter = 0;
   Marker lastmarker;
   Marker currentMarker;
   goToMarkerLocation(double lat, double long) {
-    final String markerIdVal = 'marker_id_$_markerIdCounter';
-    _markerIdCounter++;
+    final String markerIdVal = 'marker_id_';
     final MarkerId markerId = MarkerId(markerIdVal);
 
     final Marker marker = Marker(
-      markerId: markerId,
-      position: LatLng(lat, long),
-    );
+        markerId: markerId,
+        position: LatLng(lat, long),
+        icon: BitmapDescriptor.defaultMarker);
 
-    setState(() {
-      _markers.remove(lastmarker);
-      currentMarker = marker;
-      lastmarker = currentMarker;
-      _markers.add(currentMarker);
-    });
-    
-    _mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          //  bearing: 270.0,
-          target: LatLng(lat, long),
-          // tilt: 30.0,
-          zoom: 21.0,
-        ),
+    _markers.remove(lastmarker);
+
+    lastmarker = currentMarker;
+
+    _mapController
+        .animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        //  bearing: 270.0,
+        target: LatLng(lat, long),
+        // tilt: 30.0,
+        zoom: 21.0,
       ),
-    );
+    ))
+        .then((_) {
+      setState(() {
+        currentMarker = marker;
+        _markers.add(currentMarker);
+      });
+    });
   }
 
   goToMarkerZoomLocation(double lat, double long, currentzoom) {
@@ -564,12 +586,12 @@ class _MapViewState extends State<MapView>
   Widget bottomApptext() {
     Text text;
     if (setDataSource.length == 0) {
-      text = Text(
+      text = const Text(
         "Selecteer een databron",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       );
     } else if (markers.length <= 0) {
-      text = Text(
+      text = const Text(
         "Er zijn geen objecten gevonden klik op zoeken",
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       );
@@ -605,6 +627,26 @@ class _MapViewState extends State<MapView>
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  _copyRight() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 0),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          color: Colors.grey.withOpacity(0.4),
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: const Text(
+              'Eigendom van Result! Data.ai, Zoetermeer, onderdeel van de Result! groep, meer informatie bij info@resultdata.ai',
+              style: TextStyle(fontSize: 10, color: Colors.white),
+            ),
+          ),
+        ),
       ),
     );
   }

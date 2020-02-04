@@ -56,68 +56,70 @@ class _BottomSheetSwitch extends State<BottomSheetSwitch> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
-              borderRadius: new BorderRadius.only(
-                  topLeft: const Radius.circular(60.0),
-                  topRight: const Radius.circular(60.0))),
-          child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 4),
-                    width: 25,
-                    child: Divider(
-                      color: Colors.white,
-                      thickness: 2,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+        color: Colors.transparent,   
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: new BorderRadius.only(
+                      topLeft: const Radius.circular(60.0),
+                      topRight: const Radius.circular(60.0))),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Column(
                     children: <Widget>[
-                      Text(
-                        "Swipe naar beneden om te sluiten",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
+                      Container(
+                        margin: EdgeInsets.only(top: 4),
+                        width: 25,
+                        child: Divider(
+                          color: Colors.white,
+                          thickness: 2,
+                        ),
                       ),
-                      const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.white,
-                      )
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "Swipe naar beneden om te sluiten",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          const Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
                     ],
-                  ),
-                ],
-              )),
-        ),
-        Container(
-          height: 125.0,
-          color: Theme.of(context).primaryColor,
-          width: MediaQuery.of(context).size.width,
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: widget.markers.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _coffeeShopList(index);
-            },
-          ),
-        ),
-      ],
-    );
+                  )),
+            ),
+            Container(
+              height: 125.0,
+              color: Theme.of(context).primaryColor,
+              width: MediaQuery.of(context).size.width,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: widget.markers.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _coffeeShopList(index);
+                },
+              ),
+            ),
+          ],
+        ));
   }
 
-  void _onScroll() { 
+  void _onScroll() {
     moveCamera();
     if (_pageController.page.toInt() != prevPage) {
-      prevPage = _pageController.page.toInt();    
+      prevPage = _pageController.page.toInt();
     }
   }
 

@@ -46,7 +46,6 @@ class _MarkerHistoryState extends State<MarkerHistory> {
 
   MarkerDetail editObjectInfomartion = new MarkerDetail();
   final _controller = ScrollController();
-  final _height = 10;
 
   _animateToIndex(i) => _controller.animateTo(i,
       duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);
@@ -164,39 +163,49 @@ class _MarkerHistoryState extends State<MarkerHistory> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                // index % 3 == 0 && index != 0
+                //   ? Container(color: const Color(0xff0066C6), height: 10)
+                Card(
+                  margin: index == list.length - 1
+                      ? EdgeInsets.only(bottom: 50)
+                      : EdgeInsets.only(bottom: 0),
+                  child: ListTile(
+                    contentPadding: index == list.length
+                        ? EdgeInsets.only(
+                            left: 10, right: 60, top: 10, bottom: 10)
+                        : EdgeInsets.all(10),
+                    leading: const Icon(Icons.info),
+                    title: Text(
+                      data['variable'].toString().toUpperCase(),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      data['value'].toString(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.content_copy),
+                      iconSize: 20,
+                      color: Colors.grey[500],
+                      onPressed: () {
+                        Clipboard.setData(
+                            new ClipboardData(text: data['value'].toString()));
+                        showToast("Copied", context,
+                            gravity: Toast.BOTTOM,
+                            duration: Toast.LENGTH_SHORT);
+                      },
+                    ),
+                  ),
+                ),
                 index % 3 == 0 && index != 0
-                    ? Container(color: const Color(0xff0066C6), height: 10)
-                    : Card(
-                        //  margin: index == list.length ? EdgeInsets.only(bottom: 50) : EdgeInsets.only(bottom: 0),
-                        child: ListTile(
-                          contentPadding: index == list.length - 1
-                              ? EdgeInsets.only(
-                                  left: 10, right: 60, top: 10, bottom: 10)
-                              : EdgeInsets.all(10),
-                          leading: const Icon(Icons.info),
-                          title: Text(
-                            data['variable'].toString().toUpperCase(),
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            data['value'].toString(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.content_copy),
-                            iconSize: 20,
-                            color: Colors.grey[500],
-                            onPressed: () {
-                              Clipboard.setData(new ClipboardData(
-                                  text: data['value'].toString()));
-                              showToast("Copied", context,
-                                  gravity: Toast.BOTTOM,
-                                  duration: Toast.LENGTH_SHORT);
-                            },
-                          ),
-                        ),
-                      ),
+                    ? Container(
+                        color: const Color(0xff0066C6),
+                        height: 10,
+                      )
+                    : Container(),
+
+                //   ? Container(color: const Color(0xff0066C6), height: 10)
               ]);
         },
       ),
@@ -212,7 +221,7 @@ class _MarkerHistoryState extends State<MarkerHistory> {
             editObjectInfomartion.userStatusEquipment = "";
           }
 
-          _animateToIndex(list.length.toDouble()*35).then((onValue) {
+          _animateToIndex(list.length.toDouble() * 35).then((onValue) {
             Navigator.push(
               context,
               MaterialPageRoute(

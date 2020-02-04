@@ -17,18 +17,16 @@ class MapMarker extends Clusterable {
   final String secretId;
   final LatLng position;
   BitmapDescriptor icon;
-  final VoidCallback onTapFunction;
+  final Function onTapFunction;
   final String equipment;
   final String objectUri;
   final String placement;
   final String source;
   final String type;
 
-
   MapMarker({
     @required this.readableId,
     @required this.position,
-
     this.icon,
     this.secretId,
     this.equipment,
@@ -57,15 +55,15 @@ class MapMarker extends Clusterable {
           position.latitude,
           position.longitude,
         ),
-
+        draggable: isCluster ? false : true,
         icon: icon,
         anchor: Offset(0.5, 0.5),
         onTap: () {
           //   selectMarker(equipment, secretId, objectUri);
           currentSelectedMarkerID = readableId;
           currentSelectedMarkerSecretID = secretId;
-          currentSelectedMarkerObjectUri = objectUri;  
-            currentSelectedMarkerSource = source;     
+          currentSelectedMarkerObjectUri = objectUri;
+          currentSelectedMarkerSource = source;
         },
         //   consumeTapEvents: true,
         infoWindow: isCluster
@@ -86,12 +84,11 @@ class MapMarker extends Clusterable {
       String secretId, String type) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var imageData;
-    print(source);
+
     if (source == "SAP") {
       imageData = "assets/SAP.png";
     } else if (source == "SIGMA") {
       imageData = "assets/SIGMA.png";
-      print(imageData);
     } else if (source == "UST02") {
       imageData = "assets/UST02.png";
     } else if (source == "SPOBBER") {
@@ -99,7 +96,6 @@ class MapMarker extends Clusterable {
     } else {
       return;
     }
-    print(imageData);
 
     /// get the favorite position then added to prefs
     var placeName = readableid;
