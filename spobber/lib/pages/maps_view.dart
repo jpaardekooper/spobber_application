@@ -75,7 +75,7 @@ class _MapViewState extends State<MapView>
   Widget _search() {
     return StackingMapWidget(
       alignment: Alignment.topRight,
-      padding: const EdgeInsets.fromLTRB(0, 70, 12, 0),
+      padding: const EdgeInsets.fromLTRB(0, 90, 12, 0),
       onpressedFunction: loadDataToMaps,
       mapIcon: const Icon(Icons.search, size: 20),
     );
@@ -135,7 +135,7 @@ class _MapViewState extends State<MapView>
   _mapTypeCycler() {
     return StackingMapWidget(
       alignment: Alignment.topLeft,
-      padding: const EdgeInsets.fromLTRB(12, 10, 0, 0),
+      padding: const EdgeInsets.fromLTRB(12, 30, 0, 0),
       onpressedFunction: changeMapType,
       mapIcon: const Icon(Icons.map, size: 20),
     );
@@ -246,7 +246,7 @@ class _MapViewState extends State<MapView>
   Widget _changeSourceFilter() {
     return StackingMapWidget(
       alignment: Alignment.topRight,
-      padding: const EdgeInsets.fromLTRB(0, 130, 12, 0),
+      padding: const EdgeInsets.fromLTRB(0, 150, 12, 0),
       onpressedFunction: getDataSourcePopUp,
       mapIcon: getIcon(setDataSource.length),
     );
@@ -413,7 +413,7 @@ class _MapViewState extends State<MapView>
   Widget _location() {
     return StackingMapWidget(
       alignment: Alignment.topRight,
-      padding: const EdgeInsets.fromLTRB(0, 10, 12, 0),
+      padding: const EdgeInsets.fromLTRB(0, 30, 12, 0),
       onpressedFunction: _goToCurrentLocation,
       mapIcon: const Icon(
         Icons.location_searching,
