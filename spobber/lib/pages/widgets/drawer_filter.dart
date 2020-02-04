@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spobber/data/global_variable.dart';
 import 'package:spobber/pages/history_view.dart';
 import 'package:spobber/pages/tflite/home.dart';
@@ -59,7 +60,7 @@ class _DrawerFilter extends State<DrawerFilter> {
           },
         ),
         ListTile(
-          title:const Text("Geschiedenis:"),
+          title: const Text("Geschiedenis:"),
           // subtitle: Text("date"),
           leading: Icon(Icons.history),
           trailing: Icon(
@@ -75,9 +76,9 @@ class _DrawerFilter extends State<DrawerFilter> {
           },
         ),
         ListTile(
-          title:const Text("Info:"),
+          title: const Text("Info:"),
           //  subtitle: Text("date"),
-          leading:const Icon(Icons.info),
+          leading: const Icon(Icons.info),
           trailing: Icon(
             Icons.arrow_forward_ios,
             color: Theme.of(context).accentColor,
@@ -92,12 +93,59 @@ class _DrawerFilter extends State<DrawerFilter> {
         ),
         Divider(),
         ListTile(
-          title:const Text('Versie 4.0.0'),
+          title: const Text(
+              'Eigendom van Result! Data.ai, Zoetermeer, onderdeel van de Result! groep, meer informatie bij info@resultdata.ai'),
           enabled: false,
-          leading: const Icon(Icons.system_update),
+          leading: const Icon(Icons.copyright),
         )
       ],
     );
+  }
+
+  static const double heightPop = 30;
+  static const double widthPop = 70;
+
+  void popupMessage() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Afmelden'),
+          content: const Text('Weet u zeker dat u wilt afmelden?'),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text("Annuleren"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Container(
+                alignment: Alignment.center,
+                height: heightPop,
+                width: widthPop,
+                color: Colors.red,
+                child: const Text(
+                  'Bevestigen',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, color: Colors.white),
+                ),
+              ),
+              onPressed: () => goToLogin(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void goToLogin() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   setState(() {
+    prefs.remove('user');
+//    });
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/screen1', (Route<dynamic> route) => false);
   }
 
   Widget _buildUserDetail() {
@@ -106,22 +154,36 @@ class _DrawerFilter extends State<DrawerFilter> {
       child: ListView(
         children: [
           ListTile(
-            title:const Text("User details"),
+              title: const Text("Afmelden"),
+              leading: const Icon(
+                Icons.exit_to_app,
+                color: Colors.red,
+              ),
+              onTap: popupMessage),
+          Divider(),
+          ListTile(
+            title: const Text("User details"),
             leading: Icon(Icons.info_outline),
           ),
           Divider(),
           ListTile(
-            title:const Text("Device"),
+            title: const Text("Device"),
             subtitle: Theme.of(context).platform == TargetPlatform.iOS
-                ?const Text("IOS Device")
+                ? const Text("IOS Device")
                 : const Text("Android Device"),
             leading: Icon(Icons.device_unknown),
           ),
           ListTile(
-            title:const Text("Account is gemaakt op:"),
-            subtitle:const Text("date"),
-            leading:const Icon(Icons.question_answer),
-          ),            
+            title: const Text("Account is gemaakt op:"),
+            subtitle: const Text("31-1-2020"),
+            leading: const Icon(Icons.question_answer),
+          ),
+          Divider(),
+          ListTile(
+            title: const Text('Versie 5.0.0'),
+            enabled: false,
+            leading: const Icon(Icons.system_update),
+          ),
         ],
       ),
     );
@@ -145,7 +207,7 @@ class _DrawerFilter extends State<DrawerFilter> {
                   ? Colors.blue
                   : Colors.white,
               child: Theme.of(context).platform == TargetPlatform.iOS
-                  ?const Text("I", style: TextStyle(fontSize: 40.0))
+                  ? const Text("I", style: TextStyle(fontSize: 40.0))
                   : const Text("A", style: TextStyle(fontSize: 40.0))),
         ),
         Expanded(

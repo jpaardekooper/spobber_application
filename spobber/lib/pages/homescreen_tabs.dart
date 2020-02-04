@@ -15,12 +15,12 @@ import 'widgets/error_view.dart';
 
 import 'widgets/drawer_filter.dart';
 
-// class TabsViewMaps extends StatefulWidget {
-//   @override
-//   _TabsState createState() => _TabsState();
-// }
+class TabsViewMaps extends StatefulWidget {
+  @override
+  _TabsState createState() => _TabsState();
+}
 
-class TabsViewMaps extends StatelessWidget {
+class _TabsState extends State<TabsViewMaps> {
   // @override
   // void initState() {
   // //  super.initState();
@@ -31,6 +31,7 @@ class TabsViewMaps extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ErrorWidget.builder = getErrorWidget;
     getData();
     if (Theme.of(context).platform == TargetPlatform.iOS) {
       //   setState(() {
@@ -41,10 +42,9 @@ class TabsViewMaps extends StatelessWidget {
       platformIsIOS = false;
       //   });
     }
-    ErrorWidget.builder = getErrorWidget;
-    return StreamProvider<UserLocation>(
-      builder: (context) => LocationService().locationStream,
-      child: SafeArea(
+    return SafeArea(
+      child: StreamProvider<UserLocation>(
+        builder: (context) => LocationService().locationStream,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           key: _scaffoldKey,
@@ -58,29 +58,19 @@ class TabsViewMaps extends StatelessWidget {
                   'Spobber',
                   style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
-                actions: <Widget>[
-               
-                  
-                    IconButton(
-                    icon: const Icon(Icons.exit_to_app), color: Colors.white54,
-                    onPressed: () => popupMessage(context),
-                  ),
-               
-                
-                ],
                 flexibleSpace: Container(
                   color: Theme.of(context).primaryColor,
                 ),
                 bottom: TabBar(indicatorColor: Colors.white, tabs: <Widget>[
                   //Tab(icon: Icon(Icons.home), text: 'Home'),
                   new Container(
-                    //      height: 50,
+                    height: 50,
                     child: const Tab(
                       text: 'Kaart',
                     ),
                   ),
                   new Container(
-                    //       height: 50,
+                    height: 50,
                     child: const Tab(text: 'Zoeken'),
                   ),
                   // new Container(
@@ -111,56 +101,10 @@ class TabsViewMaps extends StatelessWidget {
     );
   }
 
-  static const double heightPop = 40;
-  static const double widthPop = 80;
-
-  void popupMessage(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Afmelden'),
-          content: const Text('Weet u zeker dat u wilt afmelden?'),
-          actions: <Widget>[
-            FlatButton(
-              child: const Text("Annuleren"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Container(
-                alignment: Alignment.center,
-                height: heightPop,
-                width: widthPop,
-                color: Theme.of(context).primaryColor,
-                child: const Text(
-                  'Bevestigen',
-                  style: const TextStyle(fontWeight: FontWeight.w600,
-                       color: Colors.white),
-                ),
-              ),
-              onPressed: () => goToLogin(context),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<User> getData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String item = prefs.getString('user');
     userInformation = User.fromJson(json.decode(item));
     return userInformation;
-  }
-
-  void goToLogin(BuildContext context) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    //   setState(() {
-    prefs.remove('user');
-//    });
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil('/screen1', (Route<dynamic> route) => false);
   }
 }
