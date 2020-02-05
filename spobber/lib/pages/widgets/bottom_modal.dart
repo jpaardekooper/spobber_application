@@ -7,7 +7,10 @@ import 'dart:math' show cos, sqrt, asin;
 import 'package:spobber/data/global_variable.dart';
 
 //import '../../data/global_variable.dart';
-
+///
+///this widget is for the bottomSheet of the app it is loaded in the maps_view.dart 
+///showing the user the difference between current location and marker location
+///also adding a slideShow
 class BottomSheetSwitch extends StatefulWidget {
   BottomSheetSwitch({
     @required this.markers,

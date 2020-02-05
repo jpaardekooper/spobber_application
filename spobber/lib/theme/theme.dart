@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+///
+///Theme colors for the application
 const MaterialColor myColor =
     const MaterialColor(0xFF1b2932, const <int, Color>{
   50: const Color(0x0D1b2932),

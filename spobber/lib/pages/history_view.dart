@@ -5,13 +5,9 @@ import 'package:spobber/data/place_response.dart';
 import 'package:spobber/pages/widgets/single_marker_with_maps.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
-
+///
+///this widget is to check the local storage data from the device using Shared_preference plugin
 class HistoryView extends StatefulWidget {
-  // @override
-  // State<StatefulWidget> createState() {
-  //   return HistoryViewState();
-  // }
-
   @override
   HistoryViewState createState() => HistoryViewState();
 }

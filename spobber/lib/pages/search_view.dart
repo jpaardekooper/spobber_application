@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-
-//import 'package:latlong/latlong.dart';
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:spobber/data/place_response.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:spobber/pages/widgets/single_marker_with_maps.dart';
-
 import '../data/global_variable.dart';
 import 'dart:async';
 import '../data/place_response.dart';
@@ -23,12 +18,7 @@ class SearchView extends StatefulWidget {
 class _SearchViewState extends State<SearchView> {
   //to retrieve position from TextField
   final myController = TextEditingController();
-  //final favoritePlaceController = TextEditingController();
 
-  //ClusteringHelper clusteringHelper;
-
-  ///changes after declaring the desired location
-  // Widget _searchView;
   double lat = 0.00;
   double long = 0.00;
   bool _empty = false;
@@ -43,6 +33,7 @@ class _SearchViewState extends State<SearchView> {
     super.dispose();
   }
 
+//Texteditor to fill in the ID of an object
   Widget inputContainer() {
     return Container(
       child: Padding(
@@ -139,10 +130,11 @@ class _SearchViewState extends State<SearchView> {
 
   final FocusNode _searchField = FocusNode();
 
+//Get the marker ID that is filled in the form
+//if status code gives an oke sign we continue and we parse it into a placeResponse List
   Future<bool> fillMarkerList(http.Response response) async {
-    //  setState(() {
     singleMarker.clear();
-//    });
+
     if (response.statusCode == 200) {
       // final data = json.decode(response.body);
       singleMarker = (json.decode(response.body) as List)

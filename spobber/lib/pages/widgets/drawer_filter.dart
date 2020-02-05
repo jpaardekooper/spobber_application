@@ -6,7 +6,9 @@ import 'package:spobber/pages/history_view.dart';
 import 'package:spobber/pages/tflite/home.dart';
 import 'package:spobber/pages/widgets/page.dart';
 import 'add_object.dart';
-
+///
+///this is the side menu of the widget
+///opens when you swipe from the left to the right
 class DrawerFilter extends StatefulWidget {
   @override
   _DrawerFilter createState() => _DrawerFilter();

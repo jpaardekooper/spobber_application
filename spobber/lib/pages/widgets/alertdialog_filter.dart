@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../data/global_variable.dart';
-
+///
+///this widget is used to show sources of the application
+///prefered to have it more dynamic but for now its static
 class AlertDialogFilter extends StatefulWidget {
   AlertDialogFilter(
       {@required this.switchValueisSap,

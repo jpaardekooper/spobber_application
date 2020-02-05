@@ -14,18 +14,16 @@ import 'maps_view.dart';
 import 'widgets/error_view.dart';
 
 import 'widgets/drawer_filter.dart';
-
+///
+///this is the tab controller for Spobber 
+///Once logged in you will see 2 tabs
+///Kaart & zoeken will be initiliazed in this widget tree
 class TabsViewMaps extends StatefulWidget {
   @override
   _TabsState createState() => _TabsState();
 }
 
 class _TabsState extends State<TabsViewMaps> {
-  // @override
-  // void initState() {
-  // //  super.initState();
-
-  // }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 

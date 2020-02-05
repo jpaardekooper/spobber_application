@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:spobber/network/networkmanager.dart';
 
+///uploading the image to the datastorage
 class TakePictureScreen extends StatefulWidget {
   final String id;
   final String secretId;
@@ -77,6 +78,9 @@ class _TakePictureScreen extends State<TakePictureScreen> {
     }
   }
 
+//adding a compress so the quality goes down
+//100 was to big for base64
+//maximum is now 88 you can lower it even more
   Future<File> testCompressAndGetFile(File file, String targetPath) async {
     var result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,

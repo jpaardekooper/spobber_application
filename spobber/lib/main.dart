@@ -18,6 +18,7 @@ void main() async {
   });
 }
 
+//url to SAP img (yellow)
 const String _markerImageUrlSap =
     'https://spobberstorageaccount.dfs.core.windows.net/marker/sap2.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
@@ -32,6 +33,7 @@ const String _markerImageUrlMeetTrein =
 const String _markerImageSpobber =
     'https://spobberstorageaccount.dfs.core.windows.net/marker/spobber.png?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2021-07-13T22:18:33Z&st=2019-10-24T14:18:33Z&spr=https&sig=W%2BMVqLEyoZmIRE3aj9147RJ%2FYrsbl0uEcjuPVNsNYU4%3D';
 
+//initializing the icons before the app starts
 initIcons() async {
   markerSap = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSap);
   markerSigma = await MapHelper.getMarkerImageFromUrl(_markerImageUrlSigma);
@@ -39,20 +41,8 @@ initIcons() async {
   markerSpobber = await MapHelper.getMarkerImageFromUrl(_markerImageSpobber);
 }
 
-// List<CameraDescription> cameras;
-
-// Future<Null> main() async {
-//   try {
-//     cameras = await availableCameras();
-//   } on CameraException catch (e) {
-//     print('Error: $e.code\nError Message: $e.message');
-//   }
-//   runApp(new MyApp());
-// }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

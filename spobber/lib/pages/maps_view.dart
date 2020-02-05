@@ -17,7 +17,9 @@ import 'package:spobber/pages/widgets/bottom_modal.dart';
 import 'package:spobber/pages/widgets/show_toast.dart';
 import 'package:spobber/pages/widgets/stackingMapWidget.dart';
 import 'package:toast/toast.dart';
-
+///
+///this widget has the purpose to show the Google Maps map to the user
+///loading clusters and get information about an object
 class MapView extends StatefulWidget {
   @override
   _MapViewState createState() => _MapViewState();
@@ -157,6 +159,7 @@ class _MapViewState extends State<MapView>
 
   final List<MapMarker> markers = [];
   void loadThisDataSet() async {
+    //forloop vs foreach
     for (int i = 0; i < places.length; i++) {
       final markerLocation = places[i];
 

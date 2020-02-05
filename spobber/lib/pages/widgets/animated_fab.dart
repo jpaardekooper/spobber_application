@@ -4,6 +4,9 @@ import 'package:spobber/pages/tflite/home.dart';
 
 import 'add_object.dart';
 
+///
+///this is an animated FloatingActionBUtton that is used in maps_view.dart
+///you can change the pages
 class FancyFab extends StatefulWidget {
   // final Function() onPressed;
   // final String tooltip;

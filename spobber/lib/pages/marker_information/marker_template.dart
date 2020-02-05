@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'marker_history.dart';
 import '../gridview/gridview_demo.dart';
 
+///
+///same as the home_screentabs this widget loads a tabbar controller
+///in this case if the data source is equal to SAP or SIGMA it will not load the show image widget
+///else if the source is Spobber or UST02 it will load images
 class MarkerTemplate extends StatelessWidget {
   final String type;
   final String readableId;
@@ -17,8 +21,7 @@ class MarkerTemplate extends StatelessWidget {
       @required this.source})
       : super(key: key);
 
-  Widget _scaffoldWithTabs(BuildContext context) {
-    print(secretId);
+  Widget _scaffoldWithTabs(BuildContext context) {  
     return SafeArea(
       child: DefaultTabController(
         length: 2,
